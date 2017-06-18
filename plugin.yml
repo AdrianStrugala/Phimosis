@@ -1,0 +1,24 @@
+name: Phimosis
+version: 1.0
+main: Phimosis.Main
+author: Ehwar
+description: Magia Starozytnych Elfow pozwala Ehwarowi na zostanie godnym nastepca khajickiego Boga
+
+commands:
+  kupkwarc:
+  kupkosci:
+  kupjasnopyl:
+  kupzloto:
+  kupdiamenty:
+  kupczerwonyproszek:
+  kupsnieg:
+  kuppiaskowiec:
+  sprzedajziemie:
+  sprzedajzloto:
+  sprzedajbruk:
+  sprzedajdiamenty:
+  sprzedajpiasek:
+  sprzedajzelazo:
+  sprzedajwegiel:
+  chwalaJP2:
+  morphingtime:
