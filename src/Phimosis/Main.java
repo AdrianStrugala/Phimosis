@@ -3,19 +3,14 @@ package Phimosis;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Ocelot;
-import org.bukkit.entity.Ocelot.Type;
 import org.bukkit.entity.Parrot;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -48,9 +43,9 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 			if (inventory.containsAtLeast(sztabka, price * mul)) {
 				inventory.removeItem(sztabka);
 				inventory.addItem(kosci);
-				player.sendMessage("§cJP2: OK");
+				player.sendMessage("ï¿½cJP2: OK");
 			} else
-				player.sendMessage("§cJP2: Chuj Ci w dupe. Nie masz " + mul * price + " szmaragdow.");
+				player.sendMessage("ï¿½cJP2: Chuj Ci w dupe. Nie masz " + mul * price + " szmaragdow.");
 
 		}
 	}
@@ -74,9 +69,9 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 			if (inventory.containsAtLeast(oferta, mul)) {
 				inventory.removeItem(oferta);
 				inventory.addItem(waluta);
-				player.sendMessage("§cJP2: OK");
+				player.sendMessage("ï¿½cJP2: OK");
 			} else
-				player.sendMessage("§cJP2: Chuj Ci w dupe. Nie masz " + mul + " " + sprzedaj);
+				player.sendMessage("ï¿½cJP2: Chuj Ci w dupe. Nie masz " + mul + " " + sprzedaj);
 
 		}
 	}
@@ -209,9 +204,9 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 				if (inventory.containsAtLeast(sztabka, price * mul)) {
 					inventory.removeItem(sztabka);
 					inventory.addItem(kosci);
-					player.sendMessage("§cJP2: OK");
+					player.sendMessage("ï¿½cJP2: OK");
 				} else
-					player.sendMessage("§cJP2: Chuj Ci w dupe. Nie masz " + mul * price + " szmaragdow.");
+					player.sendMessage("ï¿½cJP2: Chuj Ci w dupe. Nie masz " + mul * price + " szmaragdow.");
 
 			}
 
@@ -238,9 +233,9 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 				if (inventory.containsAtLeast(sztabka, price * mul)) {
 					inventory.removeItem(sztabka);
 					inventory.addItem(kosci);
-					player.sendMessage("§cJP2: OK");
+					player.sendMessage("ï¿½cJP2: OK");
 				} else
-					player.sendMessage("§cJP2: Chuj Ci w dupe. Nie masz " + mul * price + " szmaragdow.");
+					player.sendMessage("ï¿½cJP2: Chuj Ci w dupe. Nie masz " + mul * price + " szmaragdow.");
 
 			}
 
@@ -267,9 +262,9 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 				if (inventory.containsAtLeast(sztabka, price * mul)) {
 					inventory.removeItem(sztabka);
 					inventory.addItem(kosci);
-					player.sendMessage("§cJP2: OK");
+					player.sendMessage("ï¿½cJP2: OK");
 				} else
-					player.sendMessage("§cJP2: Chuj Ci w dupe. Nie masz " + mul * price + " szmaragdow.");
+					player.sendMessage("ï¿½cJP2: Chuj Ci w dupe. Nie masz " + mul * price + " szmaragdow.");
 
 			}
 
@@ -296,9 +291,9 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 				if (inventory.containsAtLeast(sztabka, price * mul)) {
 					inventory.removeItem(sztabka);
 					inventory.addItem(kosci);
-					player.sendMessage("§cJP2: OK");
+					player.sendMessage("ï¿½cJP2: OK");
 				} else
-					player.sendMessage("§cJP2: Chuj Ci w dupe. Nie masz " + mul * price + " szmaragdow.");
+					player.sendMessage("ï¿½cJP2: Chuj Ci w dupe. Nie masz " + mul * price + " szmaragdow.");
 
 			}
 
@@ -325,9 +320,9 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 				if (inventory.containsAtLeast(sztabka, price * mul)) {
 					inventory.removeItem(sztabka);
 					inventory.addItem(kosci);
-					player.sendMessage("§cJP2: OK");
+					player.sendMessage("ï¿½cJP2: OK");
 				} else
-					player.sendMessage("§cJP2: Chuj Ci w dupe. Nie masz " + mul * price + " szmaragdow.");
+					player.sendMessage("ï¿½cJP2: Chuj Ci w dupe. Nie masz " + mul * price + " szmaragdow.");
 
 			}
 
@@ -354,9 +349,9 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 				if (inventory.containsAtLeast(sztabka, price * mul)) {
 					inventory.removeItem(sztabka);
 					inventory.addItem(kosci);
-					player.sendMessage("§cJP2: OK");
+					player.sendMessage("ï¿½cJP2: OK");
 				} else
-					player.sendMessage("§cJP2: Chuj Ci w dupe. Nie masz " + mul * price + " szmaragdow.");
+					player.sendMessage("ï¿½cJP2: Chuj Ci w dupe. Nie masz " + mul * price + " szmaragdow.");
 
 			}
 
@@ -383,9 +378,9 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 				if (inventory.containsAtLeast(sztabka, price * mul)) {
 					inventory.removeItem(sztabka);
 					inventory.addItem(kosci);
-					player.sendMessage("§cJP2: OK");
+					player.sendMessage("ï¿½cJP2: OK");
 				} else
-					player.sendMessage("§cJP2: Chuj Ci w dupe. Nie masz " + mul * price + " szmaragdow.");
+					player.sendMessage("ï¿½cJP2: Chuj Ci w dupe. Nie masz " + mul * price + " szmaragdow.");
 
 			}
 
@@ -412,9 +407,9 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 				if (inventory.containsAtLeast(sztabka, price * mul)) {
 					inventory.removeItem(sztabka);
 					inventory.addItem(kosci);
-					player.sendMessage("§cJP2: OK");
+					player.sendMessage("ï¿½cJP2: OK");
 				} else
-					player.sendMessage("§cJP2: Chuj Ci w dupe. Nie masz " + mul * price + " szmaragdow.");
+					player.sendMessage("ï¿½cJP2: Chuj Ci w dupe. Nie masz " + mul * price + " szmaragdow.");
 
 			}
 
@@ -441,9 +436,9 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 				if (inventory.containsAtLeast(sztabka, price * mul)) {
 					inventory.removeItem(sztabka);
 					inventory.addItem(kosci);
-					player.sendMessage("§cJP2: OK");
+					player.sendMessage("ï¿½cJP2: OK");
 				} else
-					player.sendMessage("§cJP2: Chuj Ci w dupe. Nie masz " + mul * price + " szmaragdow.");
+					player.sendMessage("ï¿½cJP2: Chuj Ci w dupe. Nie masz " + mul * price + " szmaragdow.");
 
 			}
 
@@ -511,9 +506,9 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 				if (inventory.containsAtLeast(oferta, mul)) {
 					inventory.removeItem(oferta);
 					inventory.addItem(waluta);
-					player.sendMessage("§cJP2: OK");
+					player.sendMessage("ï¿½cJP2: OK");
 				} else
-					player.sendMessage("§cJP2: Chuj Ci w dupe. Nie masz " + mul + " " + Material.LOG);
+					player.sendMessage("ï¿½cJP2: Chuj Ci w dupe. Nie masz " + mul + " " + Material.LOG);
 
 			}
 
@@ -537,9 +532,9 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 				if (inventory.containsAtLeast(oferta, mul)) {
 					inventory.removeItem(oferta);
 					inventory.addItem(waluta);
-					player.sendMessage("§cJP2: OK");
+					player.sendMessage("ï¿½cJP2: OK");
 				} else
-					player.sendMessage("§cJP2: Chuj Ci w dupe. Nie masz " + mul + " " + oferta);
+					player.sendMessage("ï¿½cJP2: Chuj Ci w dupe. Nie masz " + mul + " " + oferta);
 
 			}
 
@@ -552,7 +547,7 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 				sender.sendMessage("This command can only be run by a player.");
 			} else {
 				Player player = (Player) sender;
-				player.sendMessage("§cJP2: JEB!");
+				player.sendMessage("ï¿½cJP2: JEB!");
 
 				World w = player.getWorld();
 				for (Entity e : w.getNearbyEntities(player.getLocation(), 10, 10, 10)) {
@@ -568,13 +563,16 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 				sender.sendMessage("This command can only be run by a player.");
 			} else {
 				Player player = (Player) sender;
-				player.sendMessage("§cJP2: El Khajito byl bogiem!");
+				player.sendMessage("ï¿½cJP2: El Khajito byl bogiem!");
 
 				World w = player.getWorld();
 
 				Location location = player.getEyeLocation();
 
-				Ocelot kot = (Ocelot) w.spawnEntity(location, EntityType.OCELOT);
+				// Ocelot kot = (Ocelot) w.spawnEntity(location,
+				// EntityType.OCELOT);
+
+				Ocelot kot = new Ocelot();
 				kot.setOwner(player);
 
 				Random generator = new Random();
@@ -595,6 +593,9 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 					break;
 
 				}
+
+				w.spawnEntity(location, kot);
+
 			}
 
 		} else if (cmd.getName().equalsIgnoreCase("papuga")) {
@@ -602,14 +603,29 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 				sender.sendMessage("This command can only be run by a player.");
 			} else {
 				Player player = (Player) sender;
-				player.sendMessage("§cJP2: Cwir cwir kurwa!");
+				player.sendMessage("ï¿½cJP2: Cwir cwir kurwa!");
 
 				World w = player.getWorld();
 
 				Location location = player.getEyeLocation();
 
-				Parrot kot = (Parrot) w.spawnEntity(location, EntityType.PARROT);
-				kot.setOwner(player);
+				Parrot papuga = (Parrot) w.spawnEntity(location, EntityType.PARROT);
+				papuga.setOwner(player);
+			}
+
+		} else if (cmd.getName().equalsIgnoreCase("wojownik")) {
+			if (!(sender instanceof Player)) {
+				sender.sendMessage("This command can only be run by a player.");
+			} else {
+				Player player = (Player) sender;
+				player.sendMessage("ï¿½cJP2: !");
+
+				World w = player.getWorld();
+				Location location = player.getEyeLocation();
+
+				Parrot piesel = (wolf) w.spawnEntity(location, EntityType.WOLF);
+				piesel.setOwner(player);
+				piesel.CollarColor = white;
 			}
 
 		} else if (cmd.getName().equalsIgnoreCase("chwalaJP2")) {
@@ -641,7 +657,7 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 				inventory.addItem(pickaxe);
 				inventory.addItem(spade);
 				inventory.addItem(axe);
-				player.sendMessage("§cJP2: Blogoslawie cie :)");
+				player.sendMessage("ï¿½cJP2: Blogoslawie cie :)");
 			}
 
 		} else if (cmd.getName().equalsIgnoreCase("morphingtime")) {
@@ -668,7 +684,7 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 					meta2.setColor(Color.RED);
 					meta3.setColor(Color.RED);
 					meta4.setColor(Color.RED);
-					sender.sendMessage("§cJP2: Czerwony Ranger! Aktywacja!");
+					sender.sendMessage("ï¿½cJP2: Czerwony Ranger! Aktywacja!");
 					break;
 
 				case "Ehwar":
@@ -677,7 +693,7 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 					meta2.setColor(Color.WHITE);
 					meta3.setColor(Color.WHITE);
 					meta4.setColor(Color.WHITE);
-					sender.sendMessage("§cJP2: Bialy Ranger! Aktywacja!");
+					sender.sendMessage("ï¿½cJP2: Bialy Ranger! Aktywacja!");
 					break;
 
 				case "chkstate":
@@ -686,7 +702,7 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 					meta2.setColor(Color.BLUE);
 					meta3.setColor(Color.BLUE);
 					meta4.setColor(Color.BLUE);
-					sender.sendMessage("§cJP2: Niebieski Ranger! Aktywacja!");
+					sender.sendMessage("ï¿½cJP2: Niebieski Ranger! Aktywacja!");
 					break;
 
 				case "Broden94":
@@ -695,7 +711,7 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 					meta2.setColor(Color.PURPLE);
 					meta3.setColor(Color.PURPLE);
 					meta4.setColor(Color.PURPLE);
-					sender.sendMessage("§cJP2: Fioletowy Ranger! Aktywacja!");
+					sender.sendMessage("ï¿½cJP2: Fioletowy Ranger! Aktywacja!");
 					break;
 
 				case "walikmalik":
@@ -704,11 +720,11 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 					meta2.setColor(Color.BLACK);
 					meta3.setColor(Color.BLACK);
 					meta4.setColor(Color.BLACK);
-					sender.sendMessage("§cJP2: Czarny Ranger! Aktywacja!");
+					sender.sendMessage("ï¿½cJP2: Czarny Ranger! Aktywacja!");
 					break;
 
 				default:
-					sender.sendMessage("§cJP2: Nie jestes Rengersem");
+					sender.sendMessage("ï¿½cJP2: Nie jestes Rengersem");
 					break;
 
 				}
@@ -740,25 +756,25 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 
 					world.setStorm(false);
 					world.setThundering(false);
-					Bukkit.broadcastMessage("§cJP2: Ustawiam czyste niebo.");
+					Bukkit.broadcastMessage("ï¿½cJP2: Ustawiam czyste niebo.");
 					break;
 
 				case "deszcz":
 
 					world.setStorm(true);
 					world.setThundering(false);
-					Bukkit.broadcastMessage("§cJP2: Ustawiam deszcz.");
+					Bukkit.broadcastMessage("ï¿½cJP2: Ustawiam deszcz.");
 					break;
 
 				case "burza":
 
 					world.setStorm(true);
 					world.setThundering(true);
-					Bukkit.broadcastMessage("§cJP2: Ustawiam burze.");
+					Bukkit.broadcastMessage("ï¿½cJP2: Ustawiam burze.");
 					break;
 
 				default:
-					sender.sendMessage("§cJP2: Chuj Ci w dupe. Nie ma takiej pogody.");
+					sender.sendMessage("ï¿½cJP2: Chuj Ci w dupe. Nie ma takiej pogody.");
 					break;
 
 				}
@@ -777,19 +793,19 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
 				case "dzien":
 
 					world.setTime(0);
-					Bukkit.broadcastMessage("§cJP2: Robie dzien.");
+					Bukkit.broadcastMessage("ï¿½cJP2: Robie dzien.");
 					break;
 
 				case "noc":
 
 					world.setTime(13000);
-					Bukkit.broadcastMessage("§cJP2: Robie noc.");
+					Bukkit.broadcastMessage("ï¿½cJP2: Robie noc.");
 					break;
 
 				default:
 
 					world.setTime(Integer.parseInt(args[0]));
-					Bukkit.broadcastMessage("§cJP2: Ustawiam czas: " + args[0]);
+					Bukkit.broadcastMessage("ï¿½cJP2: Ustawiam czas: " + args[0]);
 					break;
 
 				}
