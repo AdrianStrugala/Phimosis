@@ -1,0 +1,11 @@
+{
+  "school": "dragon",
+  "cooldown_ticks": 260,
+  "targeting": { "type": "aim", "range": 14 },
+  "delivery": { "type": "instant", "speed": 1.0 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 5.5 },
+    { "type": "knockback", "strength": 3.0 },
+    { "type": "status_effect", "effect": "minecraft:nausea", "duration": 80, "amplifier": 0, "chance": 1.0 }
+  ]
+}

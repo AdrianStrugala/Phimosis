@@ -1,0 +1,150 @@
+[
+  {"from": "predator_root",    "to": "tough_hide"},
+  {"from": "predator_root",    "to": "diggers_instinct"},
+  {"from": "predator_root",    "to": "tackle"},
+
+  {"from": "tough_hide",        "to": "vital_core_1"},
+  {"from": "tough_hide",        "to": "iron_skin_1"},
+  {"from": "tough_hide",        "to": "predator_fist"},
+
+  {"from": "vital_core_1",      "to": "vital_core_2"},
+  {"from": "vital_core_1",      "to": "drain_essence"},
+  {"from": "vital_core_2",      "to": "vital_core_3"},
+  {"from": "vital_core_3",      "to": "titan_heart"},
+  {"from": "titan_heart",       "to": "undying_will"},
+  {"from": "titan_heart",       "to": "immortal_flesh"},
+  {"from": "drain_essence",     "to": "vampiric"},
+  {"from": "vampiric",          "to": "immortal_flesh"},
+
+  {"from": "iron_skin_1",       "to": "iron_skin_2"},
+  {"from": "iron_skin_2",       "to": "iron_skin_3"},
+  {"from": "iron_skin_2",       "to": "endurance"},
+  {"from": "iron_skin_3",       "to": "diamond_hide"},
+  {"from": "diamond_hide",      "to": "fortress_body"},
+  {"from": "endurance",         "to": "magic_ward"},
+  {"from": "magic_ward",        "to": "iron_will"},
+  {"from": "iron_will",         "to": "bulwark"},
+
+  {"from": "predator_fist",     "to": "predator_strength"},
+  {"from": "predator_fist",     "to": "swift_predator"},
+  {"from": "swift_predator",    "to": "hunter_step"},
+  {"from": "hunter_step",       "to": "apex_speed"},
+  {"from": "predator_strength", "to": "battle_hardened"},
+  {"from": "battle_hardened",   "to": "alpha_predator"},
+
+  {"from": "fortress_body",     "to": "apex_predator"},
+  {"from": "undying_will",      "to": "apex_predator"},
+  {"from": "bulwark",           "to": "apex_predator"},
+  {"from": "alpha_predator",    "to": "apex_predator"},
+  {"from": "apex_speed",        "to": "apex_predator"},
+  {"from": "immortal_flesh",    "to": "apex_predator"},
+
+  {"from": "diggers_instinct",  "to": "stone_sense"},
+  {"from": "diggers_instinct",  "to": "woodcutter"},
+  {"from": "diggers_instinct",  "to": "swift_hands"},
+
+  {"from": "stone_sense",       "to": "deep_miner_1"},
+  {"from": "stone_sense",       "to": "ore_eye"},
+  {"from": "swift_hands",       "to": "nimble_fingers"},
+  {"from": "woodcutter",        "to": "lumberjack"},
+
+  {"from": "deep_miner_1",      "to": "deep_miner_2"},
+  {"from": "ore_eye",           "to": "fortune_seeker"},
+  {"from": "nimble_fingers",    "to": "foreman"},
+  {"from": "lumberjack",        "to": "forest_fury"},
+  {"from": "lumberjack",        "to": "foreman"},
+
+  {"from": "deep_miner_2",      "to": "vein_hunter"},
+  {"from": "fortune_seeker",    "to": "gem_sense"},
+  {"from": "foreman",           "to": "efficiency_master"},
+  {"from": "forest_fury",       "to": "master_carpenter"},
+
+  {"from": "vein_hunter",       "to": "grand_excavator"},
+  {"from": "gem_sense",         "to": "grand_excavator"},
+  {"from": "efficiency_master", "to": "grand_excavator"},
+  {"from": "master_carpenter",  "to": "master_builder"},
+
+  {"from": "grand_excavator",   "to": "grand_architect"},
+  {"from": "master_builder",    "to": "grand_architect"},
+
+  {"from": "tackle", "to": "mach_punch"},
+  {"from": "tackle", "to": "ember"},
+  {"from": "tackle", "to": "thundershock"},
+  {"from": "tackle", "to": "water_gun"},
+  {"from": "tackle", "to": "powder_snow"},
+  {"from": "tackle", "to": "vine_whip"},
+  {"from": "tackle", "to": "confusion"},
+  {"from": "tackle", "to": "night_shade"},
+  {"from": "tackle", "to": "dragon_breath"},
+  {"from": "tackle", "to": "poison_sting"},
+  {"from": "tackle", "to": "rock_throw"},
+  {"from": "tackle", "to": "gust"},
+  {"from": "tackle", "to": "iron_tail"},
+  {"from": "tackle", "to": "dazzling_gleam"},
+
+  {"from": "mach_punch",    "to": "close_combat"},
+  {"from": "close_combat",  "to": "focus_blast"},
+  {"from": "focus_blast",   "to": "hyper_beam"},
+
+  {"from": "ember",         "to": "will_o_wisp"},
+  {"from": "ember",         "to": "flamethrower"},
+  {"from": "flamethrower",  "to": "fire_blast"},
+  {"from": "fire_blast",    "to": "overheat"},
+  {"from": "overheat",      "to": "sacred_fire"},
+  {"from": "sacred_fire",   "to": "explosion"},
+
+  {"from": "thundershock",  "to": "thunderbolt"},
+  {"from": "thunderbolt",   "to": "thunder"},
+  {"from": "thunder",       "to": "discharge"},
+  {"from": "discharge",     "to": "volt_tackle"},
+
+  {"from": "water_gun",     "to": "bubble_beam"},
+  {"from": "bubble_beam",   "to": "water_pulse"},
+  {"from": "water_pulse",   "to": "surf"},
+  {"from": "surf",          "to": "hydro_pump"},
+  {"from": "hydro_pump",    "to": "scald"},
+
+  {"from": "powder_snow",   "to": "ice_shard"},
+  {"from": "ice_shard",     "to": "ice_beam"},
+  {"from": "ice_beam",      "to": "frost_nova"},
+  {"from": "frost_nova",    "to": "blizzard"},
+
+  {"from": "vine_whip",     "to": "leech_seed"},
+  {"from": "vine_whip",     "to": "razor_leaf"},
+  {"from": "razor_leaf",    "to": "leaf_blade"},
+  {"from": "leaf_blade",    "to": "energy_ball"},
+  {"from": "energy_ball",   "to": "petal_blizzard"},
+  {"from": "petal_blizzard","to": "solar_beam"},
+  {"from": "solar_beam",    "to": "nature_burst"},
+
+  {"from": "confusion",     "to": "psybeam"},
+  {"from": "psybeam",       "to": "psychic"},
+  {"from": "psychic",       "to": "psychic_blast"},
+  {"from": "psychic_blast", "to": "future_sight"},
+
+  {"from": "night_shade",   "to": "shadow_ball"},
+  {"from": "shadow_ball",   "to": "dark_pulse"},
+  {"from": "dark_pulse",    "to": "hex"},
+  {"from": "hex",           "to": "foul_play"},
+
+  {"from": "dragon_breath", "to": "dragon_pulse"},
+  {"from": "dragon_pulse",  "to": "draco_meteor"},
+  {"from": "draco_meteor",  "to": "outrage"},
+
+  {"from": "poison_sting",  "to": "poison_strike"},
+  {"from": "poison_strike", "to": "sludge_bomb"},
+  {"from": "sludge_bomb",   "to": "toxic"},
+
+  {"from": "rock_throw",    "to": "rock_slide"},
+  {"from": "rock_slide",    "to": "stone_edge"},
+  {"from": "stone_edge",    "to": "seismic_slam"},
+  {"from": "seismic_slam",  "to": "earthquake"},
+
+  {"from": "gust",          "to": "aerial_ace"},
+  {"from": "aerial_ace",    "to": "aerial_strike"},
+
+  {"from": "iron_tail",     "to": "iron_strike"},
+  {"from": "iron_strike",   "to": "flash_cannon"},
+
+  {"from": "dazzling_gleam","to": "moonblast"}
+]

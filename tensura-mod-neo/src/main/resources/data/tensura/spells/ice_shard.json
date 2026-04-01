@@ -1,0 +1,10 @@
+{
+  "school": "ice",
+  "cooldown_ticks": 80,
+  "targeting": { "type": "aim", "range": 18 },
+  "delivery": { "type": "projectile", "speed": 2.5 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 1.2 },
+    { "type": "status_effect", "effect": "minecraft:slowness", "duration": 60, "amplifier": 0, "chance": 0.4 }
+  ]
+}

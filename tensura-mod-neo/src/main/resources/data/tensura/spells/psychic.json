@@ -1,0 +1,11 @@
+{
+  "school": "psychic",
+  "cooldown_ticks": 160,
+  "targeting": { "type": "aim", "range": 20 },
+  "delivery": { "type": "instant", "speed": 1.0 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 2.5 },
+    { "type": "knockback", "strength": 3.0 },
+    { "type": "status_effect", "effect": "minecraft:weakness", "duration": 80, "amplifier": 0, "chance": 0.4 }
+  ]
+}

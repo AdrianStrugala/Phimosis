@@ -1,0 +1,11 @@
+{
+  "school": "fire",
+  "cooldown_ticks": 260,
+  "targeting": { "type": "aim", "range": 18 },
+  "delivery": { "type": "projectile", "speed": 1.5 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 5.0 },
+    { "type": "fire", "seconds": 6 },
+    { "type": "status_effect", "effect": "minecraft:weakness", "duration": 100, "amplifier": 1, "chance": 0.5 }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "school": "nature",
+  "cooldown_ticks": 260,
+  "targeting": { "type": "aim", "range": 30 },
+  "delivery": { "type": "projectile", "speed": 2.5 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 4.0 }
+  ]
+}

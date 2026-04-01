@@ -1,0 +1,10 @@
+{
+  "school": "fairy",
+  "cooldown_ticks": 160,
+  "targeting": { "type": "area", "range": 6 },
+  "delivery": { "type": "instant", "speed": 1.0 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 2.0 },
+    { "type": "status_effect", "effect": "minecraft:blindness", "duration": 60, "amplifier": 0, "chance": 0.5 }
+  ]
+}

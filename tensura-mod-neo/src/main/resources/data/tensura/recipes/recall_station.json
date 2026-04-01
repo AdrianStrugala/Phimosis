@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SPS",
+    "SSS"
+  ],
+  "key": {
+    "S": { "item": "minecraft:stone" },
+    "P": { "item": "cobblemon:poke_ball" }
+  },
+  "result": {
+    "item": "tensura:recall_station",
+    "count": 1
+  }
+}

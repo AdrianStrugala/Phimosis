@@ -1,0 +1,21 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "cobblemon:item/type_gem/fighting_gem"
+  },
+  "overrides": [
+    { "predicate": { "tensura:school":  1 }, "model": "tensura:item/spell_lightning" },
+    { "predicate": { "tensura:school":  2 }, "model": "tensura:item/spell_fire"      },
+    { "predicate": { "tensura:school":  3 }, "model": "tensura:item/spell_water"     },
+    { "predicate": { "tensura:school":  4 }, "model": "tensura:item/spell_ice"       },
+    { "predicate": { "tensura:school":  5 }, "model": "tensura:item/spell_shadow"    },
+    { "predicate": { "tensura:school":  6 }, "model": "tensura:item/spell_psychic"   },
+    { "predicate": { "tensura:school":  7 }, "model": "tensura:item/spell_dragon"    },
+    { "predicate": { "tensura:school":  8 }, "model": "tensura:item/spell_nature"    },
+    { "predicate": { "tensura:school":  9 }, "model": "tensura:item/spell_poison"    },
+    { "predicate": { "tensura:school": 10 }, "model": "tensura:item/spell_earth"     },
+    { "predicate": { "tensura:school": 11 }, "model": "tensura:item/spell_wind"      },
+    { "predicate": { "tensura:school": 12 }, "model": "tensura:item/spell_fairy"     },
+    { "predicate": { "tensura:school": 13 }, "model": "tensura:item/spell_steel"     }
+  ]
+}

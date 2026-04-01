@@ -1,0 +1,11 @@
+{
+  "school": "physical",
+  "cooldown_ticks": 220,
+  "targeting": { "type": "aim", "range": 20 },
+  "delivery": { "type": "projectile", "speed": 1.5 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 4.0 },
+    { "type": "knockback", "strength": 3.5 },
+    { "type": "status_effect", "effect": "minecraft:weakness", "duration": 100, "amplifier": 1, "chance": 0.5 }
+  ]
+}

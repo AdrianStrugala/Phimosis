@@ -1,0 +1,11 @@
+{
+  "school": "fire",
+  "cooldown_ticks": 600,
+  "targeting": { "type": "area", "range": 9, "radius": 9 },
+  "delivery": { "type": "explosion", "speed": 1.0 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 8.0 },
+    { "type": "fire", "seconds": 6 },
+    { "type": "knockback", "strength": 5.0 }
+  ]
+}

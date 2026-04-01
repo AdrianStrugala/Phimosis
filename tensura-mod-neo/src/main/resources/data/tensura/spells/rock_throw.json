@@ -1,0 +1,9 @@
+{
+  "school": "earth",
+  "cooldown_ticks": 80,
+  "targeting": { "type": "aim", "range": 16 },
+  "delivery": { "type": "projectile", "speed": 1.4 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 1.2 }
+  ]
+}

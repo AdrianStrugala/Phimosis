@@ -1,0 +1,853 @@
+{
+  "predator_root": {
+    "title": "The Awakening",
+    "description": "The Predator stirs. Three paths diverge: Body to the left, Craft to the right, Devour below.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:nether_star"},
+    "rewards": [],
+    "cost": 0
+  },
+
+  "tough_hide": {
+    "title": "Tough Hide",
+    "description": "Your skin begins to harden. +1 Armor.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:leather_chestplate"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "generic.armor", "value": 1.0, "operation": "addition"}}],
+    "cost": 1
+  },
+  "vital_core_1": {
+    "title": "Vital Core I",
+    "description": "Your body absorbs life force. +4 Max HP.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:red_dye"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "generic.max_health", "value": 4.0, "operation": "addition"}}],
+    "cost": 2
+  },
+  "vital_core_2": {
+    "title": "Vital Core II",
+    "description": "Your vitality deepens. +4 Max HP.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:red_dye"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "generic.max_health", "value": 4.0, "operation": "addition"}}],
+    "cost": 3
+  },
+  "vital_core_3": {
+    "title": "Vital Core III",
+    "description": "Life essence flows freely. +6 Max HP.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:magenta_dye"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "generic.max_health", "value": 6.0, "operation": "addition"}}],
+    "cost": 4
+  },
+  "titan_heart": {
+    "title": "Titan Heart",
+    "description": "Your heart beats with primordial strength. +8 Max HP.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:nether_star"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "generic.max_health", "value": 8.0, "operation": "addition"}}],
+    "cost": 5
+  },
+  "undying_will": {
+    "title": "Undying Will",
+    "description": "Your will to survive transcends death itself. +10 Max HP.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:totem_of_undying"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "generic.max_health", "value": 10.0, "operation": "addition"}}],
+    "cost": 7
+  },
+  "iron_skin_1": {
+    "title": "Iron Skin I",
+    "description": "Your flesh hardens like iron. +2 Armor.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:iron_chestplate"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "generic.armor", "value": 2.0, "operation": "addition"}}],
+    "cost": 2
+  },
+  "iron_skin_2": {
+    "title": "Iron Skin II",
+    "description": "Blows barely dent you. +2 Armor.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:iron_chestplate"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "generic.armor", "value": 2.0, "operation": "addition"}}],
+    "cost": 3
+  },
+  "iron_skin_3": {
+    "title": "Iron Skin III",
+    "description": "Your body is a fortress. +3 Armor.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:chainmail_chestplate"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "generic.armor", "value": 3.0, "operation": "addition"}}],
+    "cost": 4
+  },
+  "diamond_hide": {
+    "title": "Diamond Hide",
+    "description": "Skin hard as diamond. +3 Armor, +2 Toughness.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:diamond_chestplate"},
+    "rewards": [
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.armor", "value": 3.0, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.armor_toughness", "value": 2.0, "operation": "addition"}}
+    ],
+    "cost": 5
+  },
+  "fortress_body": {
+    "title": "Fortress Body",
+    "description": "You are an immovable wall of flesh. +5 Armor, +3 Toughness.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:netherite_chestplate"},
+    "rewards": [
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.armor", "value": 5.0, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.armor_toughness", "value": 3.0, "operation": "addition"}}
+    ],
+    "cost": 7
+  },
+  "swift_predator": {
+    "title": "Swift Predator",
+    "description": "You move with hunter's grace. +Speed.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:feather"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "generic.movement_speed", "value": 0.01, "operation": "addition"}}],
+    "cost": 3
+  },
+  "hunter_step": {
+    "title": "Hunter's Step",
+    "description": "Your strides become longer and faster. +Speed.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:feather"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "generic.movement_speed", "value": 0.01, "operation": "addition"}}],
+    "cost": 4
+  },
+  "apex_speed": {
+    "title": "Apex Velocity",
+    "description": "You blur through the battlefield. +Speed, +Sprint.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:rabbit_foot"},
+    "rewards": [
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.movement_speed", "value": 0.015, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "puffish:sprinting_speed", "value": 0.15, "operation": "addition"}}
+    ],
+    "cost": 5
+  },
+  "drain_essence": {
+    "title": "Drain Essence",
+    "description": "Strikes steal life from your foes.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:honey_bottle"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "puffish:life_steal", "value": 0.05, "operation": "addition"}}],
+    "cost": 4
+  },
+  "vampiric": {
+    "title": "Vampiric",
+    "description": "Each kill feeds your hunger for life. +Life Steal.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:spider_eye"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "puffish:life_steal", "value": 0.08, "operation": "addition"}}],
+    "cost": 5
+  },
+  "immortal_flesh": {
+    "title": "Immortal Flesh",
+    "description": "Your body refuses to die. +HP, +Life Steal, +Regen.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:golden_apple"},
+    "rewards": [
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.max_health", "value": 6.0, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "puffish:life_steal", "value": 0.05, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "puffish:natural_regeneration", "value": 0.05, "operation": "addition"}}
+    ],
+    "cost": 6
+  },
+  "endurance": {
+    "title": "Endurance",
+    "description": "Melee strikes glance off your body.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:shield"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "puffish:melee_resistance", "value": 0.05, "operation": "addition"}}],
+    "cost": 3
+  },
+  "magic_ward": {
+    "title": "Magic Ward",
+    "description": "Your absorbed essence wards off magical attacks.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:enchanted_book"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "puffish:magic_resistance", "value": 0.05, "operation": "addition"}}],
+    "cost": 4
+  },
+  "iron_will": {
+    "title": "Iron Will",
+    "description": "Nothing breaks your resolve. +All Resistance.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:obsidian"},
+    "rewards": [
+      {"type": "puffish_skills:attribute", "data": {"attribute": "puffish:melee_resistance", "value": 0.05, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "puffish:magic_resistance", "value": 0.05, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "puffish:ranged_resistance", "value": 0.05, "operation": "addition"}}
+    ],
+    "cost": 6
+  },
+  "bulwark": {
+    "title": "Bulwark",
+    "description": "You become an unmovable fortress against all attacks.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:netherite_scrap"},
+    "rewards": [
+      {"type": "puffish_skills:attribute", "data": {"attribute": "puffish:melee_resistance", "value": 0.08, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.armor", "value": 2.0, "operation": "addition"}}
+    ],
+    "cost": 7
+  },
+  "predator_fist": {
+    "title": "Predator's Fist",
+    "description": "Your strikes carry lethal intent. +1 Attack Damage.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:iron_sword"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "generic.attack_damage", "value": 1.0, "operation": "addition"}}],
+    "cost": 2
+  },
+  "predator_strength": {
+    "title": "Predator's Strength",
+    "description": "Your power grows with each slain foe. +2 Attack Damage.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:diamond_sword"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "generic.attack_damage", "value": 2.0, "operation": "addition"}}],
+    "cost": 4
+  },
+  "battle_hardened": {
+    "title": "Battle Hardened",
+    "description": "Countless battles have sharpened your edge. +Attack Speed.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:clock"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "generic.attack_speed", "value": 0.3, "operation": "addition"}}],
+    "cost": 4
+  },
+  "alpha_predator": {
+    "title": "Alpha Predator",
+    "description": "The apex of physical combat. +3 Attack Damage, +Speed.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:netherite_sword"},
+    "rewards": [
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.attack_damage", "value": 3.0, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.movement_speed", "value": 0.01, "operation": "addition"}}
+    ],
+    "cost": 6
+  },
+  "apex_predator": {
+    "title": "APEX PREDATOR",
+    "description": "You have transcended mortality. The ultimate evolution of flesh and will. +10 HP, +5 Armor, +3 Attack, +Speed, +Life Steal.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:enchanted_golden_apple"},
+    "rewards": [
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.max_health", "value": 10.0, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.armor", "value": 5.0, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.armor_toughness", "value": 3.0, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.attack_damage", "value": 3.0, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.movement_speed", "value": 0.02, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "puffish:life_steal", "value": 0.1, "operation": "addition"}}
+    ],
+    "cost": 10
+  },
+
+  "diggers_instinct": {
+    "title": "Digger's Instinct",
+    "description": "The earth yields its secrets to you. +Mining Speed.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:stone_pickaxe"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "puffish:mining_speed", "value": 1.0, "operation": "addition"}}],
+    "cost": 1
+  },
+  "stone_sense": {
+    "title": "Stone Sense",
+    "description": "You feel the composition of rock. +Mining Speed.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:iron_pickaxe"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "puffish:mining_speed", "value": 1.0, "operation": "addition"}}],
+    "cost": 2
+  },
+  "deep_miner_1": {
+    "title": "Deep Miner I",
+    "description": "The deep earth holds no fear for you. +Mining Speed.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:iron_pickaxe"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "puffish:mining_speed", "value": 1.0, "operation": "addition"}}],
+    "cost": 3
+  },
+  "deep_miner_2": {
+    "title": "Deep Miner II",
+    "description": "Stone shatters at your touch. +Mining Speed x2.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:diamond_pickaxe"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "puffish:mining_speed", "value": 2.0, "operation": "addition"}}],
+    "cost": 4
+  },
+  "vein_hunter": {
+    "title": "Vein Hunter",
+    "description": "Ores reveal themselves to your trained eye. +Mining Speed, +Luck.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:raw_iron"},
+    "rewards": [
+      {"type": "puffish_skills:attribute", "data": {"attribute": "puffish:mining_speed", "value": 2.0, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.luck", "value": 1.0, "operation": "addition"}}
+    ],
+    "cost": 5
+  },
+  "grand_excavator": {
+    "title": "Grand Excavator",
+    "description": "Mountains crumble before you. Massive mining power.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:netherite_pickaxe"},
+    "rewards": [
+      {"type": "puffish_skills:attribute", "data": {"attribute": "puffish:mining_speed", "value": 3.0, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "puffish:pickaxe_speed", "value": 2.0, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.luck", "value": 1.0, "operation": "addition"}}
+    ],
+    "cost": 7
+  },
+  "ore_eye": {
+    "title": "Ore Eye",
+    "description": "Fortune favors the prepared mind. +Luck.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:emerald"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "generic.luck", "value": 1.0, "operation": "addition"}}],
+    "cost": 2
+  },
+  "fortune_seeker": {
+    "title": "Fortune Seeker",
+    "description": "Rare materials come to you naturally. +Luck.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:diamond"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "generic.luck", "value": 1.0, "operation": "addition"}}],
+    "cost": 3
+  },
+  "gem_sense": {
+    "title": "Gem Sense",
+    "description": "Riches pour from every strike. +Luck x2.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:amethyst_shard"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "generic.luck", "value": 2.0, "operation": "addition"}}],
+    "cost": 5
+  },
+  "efficiency_master": {
+    "title": "Efficiency Master",
+    "description": "Every motion is optimal. +Mining Speed, +Pickaxe Speed.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:clock"},
+    "rewards": [
+      {"type": "puffish_skills:attribute", "data": {"attribute": "puffish:mining_speed", "value": 1.0, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "puffish:pickaxe_speed", "value": 1.0, "operation": "addition"}}
+    ],
+    "cost": 5
+  },
+  "woodcutter": {
+    "title": "Woodcutter",
+    "description": "Trees fall at your command. +Axe Speed.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:stone_axe"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "puffish:axe_speed", "value": 0.5, "operation": "addition"}}],
+    "cost": 2
+  },
+  "lumberjack": {
+    "title": "Lumberjack",
+    "description": "Forests tremble at your approach. +Axe Speed, +Attack Damage.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:iron_axe"},
+    "rewards": [
+      {"type": "puffish_skills:attribute", "data": {"attribute": "puffish:axe_speed", "value": 0.5, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.attack_damage", "value": 1.0, "operation": "addition"}}
+    ],
+    "cost": 3
+  },
+  "forest_fury": {
+    "title": "Forest Fury",
+    "description": "Your axe moves with terrifying speed. +Axe Speed x2.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:diamond_axe"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "puffish:axe_speed", "value": 1.0, "operation": "addition"}}],
+    "cost": 4
+  },
+  "foreman": {
+    "title": "Foreman",
+    "description": "You command with authority and strength. +Attack Damage.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:map"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "generic.attack_damage", "value": 2.0, "operation": "addition"}}],
+    "cost": 4
+  },
+  "master_carpenter": {
+    "title": "Master Carpenter",
+    "description": "Wood bends to your will. +Axe Speed, +Attack Damage.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:netherite_axe"},
+    "rewards": [
+      {"type": "puffish_skills:attribute", "data": {"attribute": "puffish:axe_speed", "value": 1.0, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.attack_damage", "value": 2.0, "operation": "addition"}}
+    ],
+    "cost": 6
+  },
+  "swift_hands": {
+    "title": "Swift Hands",
+    "description": "Your hands move faster than thought. +Attack Speed.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:rabbit_foot"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "generic.attack_speed", "value": 0.3, "operation": "addition"}}],
+    "cost": 2
+  },
+  "nimble_fingers": {
+    "title": "Nimble Fingers",
+    "description": "Dexterous and precise. +Attack Speed.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:rabbit_foot"},
+    "rewards": [{"type": "puffish_skills:attribute", "data": {"attribute": "generic.attack_speed", "value": 0.3, "operation": "addition"}}],
+    "cost": 3
+  },
+  "master_builder": {
+    "title": "Master Builder",
+    "description": "Colonies flourish under your command. +Axe Speed, +Attack Damage.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:bricks"},
+    "rewards": [
+      {"type": "puffish_skills:attribute", "data": {"attribute": "puffish:axe_speed", "value": 1.0, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.attack_damage", "value": 1.0, "operation": "addition"}}
+    ],
+    "cost": 6
+  },
+  "grand_architect": {
+    "title": "GRAND ARCHITECT",
+    "description": "You shape the world to your vision. +All Craft Stats, +Damage, +Speed.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:enchanted_golden_apple"},
+    "rewards": [
+      {"type": "puffish_skills:attribute", "data": {"attribute": "puffish:mining_speed", "value": 3.0, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "puffish:axe_speed", "value": 2.0, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "puffish:pickaxe_speed", "value": 2.0, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.luck", "value": 2.0, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.attack_damage", "value": 3.0, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.attack_speed", "value": 0.5, "operation": "addition"}},
+      {"type": "puffish_skills:attribute", "data": {"attribute": "generic.movement_speed", "value": 0.01, "operation": "addition"}}
+    ],
+    "cost": 10
+  },
+
+  "tackle": {
+    "title": "Tackle",
+    "description": "The most basic of physical strikes. You have taken your first step.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:iron_sword"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s tackle"}}],
+    "cost": 1
+  },
+  "mach_punch": {
+    "title": "Mach Punch",
+    "description": "A lightning-fast punch that blurs through the air.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:iron_sword"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s mach_punch"}}],
+    "cost": 2
+  },
+  "close_combat": {
+    "title": "Close Combat",
+    "description": "Total physical commitment. Maximum damage at point-blank range.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:diamond_sword"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s close_combat"}}],
+    "cost": 4
+  },
+  "focus_blast": {
+    "title": "Focus Blast",
+    "description": "A sphere of pure focused energy launched with devastating force.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:magma_cream"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s focus_blast"}}],
+    "cost": 5
+  },
+  "hyper_beam": {
+    "title": "Hyper Beam",
+    "description": "The pinnacle of physical power — a beam of pure destructive energy.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:netherite_sword"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s hyper_beam"}}],
+    "cost": 7
+  },
+  "ember": {
+    "title": "Ember",
+    "description": "A weak flame, but it sets the foundation for greater fire.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:fire_charge"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s ember"}}],
+    "cost": 2
+  },
+  "will_o_wisp": {
+    "title": "Will-O-Wisp",
+    "description": "A ghostly fire that burns without dealing direct harm, leaving lasting burns.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:soul_lantern"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s will_o_wisp"}}],
+    "cost": 2
+  },
+  "flamethrower": {
+    "title": "Flamethrower",
+    "description": "A sustained stream of scorching fire.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:blaze_rod"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s flamethrower"}}],
+    "cost": 3
+  },
+  "fire_blast": {
+    "title": "Fire Blast",
+    "description": "A massive cross-shaped inferno that sears everything nearby.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:blaze_powder"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s fire_blast"}}],
+    "cost": 4
+  },
+  "overheat": {
+    "title": "Overheat",
+    "description": "Release all fire energy in one catastrophic burst.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:magma_block"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s overheat"}}],
+    "cost": 5
+  },
+  "sacred_fire": {
+    "title": "Sacred Fire",
+    "description": "A divine flame of sacred intensity.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:fire_charge"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s sacred_fire"}}],
+    "cost": 6
+  },
+  "explosion": {
+    "title": "EXPLOSION",
+    "description": "The ultimate sacrifice. An earth-shattering detonation that obliterates everything nearby.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:tnt"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s explosion"}}],
+    "cost": 8
+  },
+  "thundershock": {
+    "title": "Thundershock",
+    "description": "A small jolt of electricity — the first spark of lightning mastery.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:lightning_rod"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s thundershock"}}],
+    "cost": 2
+  },
+  "thunderbolt": {
+    "title": "Thunderbolt",
+    "description": "A focused lightning bolt of tremendous power.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:lightning_rod"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s thunderbolt"}}],
+    "cost": 3
+  },
+  "thunder": {
+    "title": "Thunder",
+    "description": "A deafening thunderclap that calls down a real lightning bolt.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:copper_block"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s thunder"}}],
+    "cost": 5
+  },
+  "discharge": {
+    "title": "Discharge",
+    "description": "A massive electrical discharge that paralyzes all nearby.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:copper_ingot"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s discharge"}}],
+    "cost": 5
+  },
+  "volt_tackle": {
+    "title": "Volt Tackle",
+    "description": "Wrap yourself in electricity and charge with catastrophic force.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:nether_star"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s volt_tackle"}}],
+    "cost": 7
+  },
+  "water_gun": {
+    "title": "Water Gun",
+    "description": "A pressurized stream of water that knocks foes back.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:water_bucket"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s water_gun"}}],
+    "cost": 2
+  },
+  "bubble_beam": {
+    "title": "Bubble Beam",
+    "description": "A stream of fast-moving bubbles that slow the target.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:bubble_coral"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s bubble_beam"}}],
+    "cost": 3
+  },
+  "water_pulse": {
+    "title": "Water Pulse",
+    "description": "A pulsing wave of water that disorients the target.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:prismarine_shard"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s water_pulse"}}],
+    "cost": 3
+  },
+  "surf": {
+    "title": "Surf",
+    "description": "Summon a massive wave that sweeps away all nearby foes.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:blue_ice"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s surf"}}],
+    "cost": 4
+  },
+  "hydro_pump": {
+    "title": "Hydro Pump",
+    "description": "An explosive blast of water at maximum pressure.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:heart_of_the_sea"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s hydro_pump"}}],
+    "cost": 6
+  },
+  "scald": {
+    "title": "Scald",
+    "description": "Superheated water that burns and weakens on contact.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:magma_cream"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s scald"}}],
+    "cost": 6
+  },
+  "powder_snow": {
+    "title": "Powder Snow",
+    "description": "A freezing cloud of powder snow that slows all caught within.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:snowball"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s powder_snow"}}],
+    "cost": 2
+  },
+  "ice_shard": {
+    "title": "Ice Shard",
+    "description": "A razor-sharp shard of ice launched at blinding speed.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:packed_ice"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s ice_shard"}}],
+    "cost": 3
+  },
+  "ice_beam": {
+    "title": "Ice Beam",
+    "description": "A sustained beam of absolute zero temperature.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:blue_ice"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s ice_beam"}}],
+    "cost": 4
+  },
+  "frost_nova": {
+    "title": "Frost Nova",
+    "description": "Freeze everything around you in an instant.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:ice"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s frost_nova"}}],
+    "cost": 5
+  },
+  "blizzard": {
+    "title": "Blizzard",
+    "description": "Summon a raging blizzard. None survive the cold.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:powder_snow_bucket"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s blizzard"}}],
+    "cost": 7
+  },
+  "vine_whip": {
+    "title": "Vine Whip",
+    "description": "A lashing strike of living vines.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:vine"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s vine_whip"}}],
+    "cost": 2
+  },
+  "leech_seed": {
+    "title": "Leech Seed",
+    "description": "Plant a parasitic seed that drains life from your foe.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:wheat_seeds"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s leech_seed"}}],
+    "cost": 3
+  },
+  "razor_leaf": {
+    "title": "Razor Leaf",
+    "description": "Sharp leaves slice through targets with poison's touch.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:oak_leaves"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s razor_leaf"}}],
+    "cost": 3
+  },
+  "leaf_blade": {
+    "title": "Leaf Blade",
+    "description": "A leaf blade sharp enough to cut steel.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:bamboo"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s leaf_blade"}}],
+    "cost": 4
+  },
+  "energy_ball": {
+    "title": "Energy Ball",
+    "description": "A concentrated orb of natural energy.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:slime_ball"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s energy_ball"}}],
+    "cost": 4
+  },
+  "petal_blizzard": {
+    "title": "Petal Blizzard",
+    "description": "A storm of razor petals that shreds everything in range.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:pink_petals"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s petal_blizzard"}}],
+    "cost": 5
+  },
+  "solar_beam": {
+    "title": "Solar Beam",
+    "description": "Harness the sun's full power in a devastating beam.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:sunflower"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s solar_beam"}}],
+    "cost": 6
+  },
+  "nature_burst": {
+    "title": "Nature Burst",
+    "description": "Unleash the raw force of nature in a healing explosion.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:chorus_flower"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s nature_burst"}}],
+    "cost": 7
+  },
+  "confusion": {
+    "title": "Confusion",
+    "description": "A weak psychic wave that muddles the mind.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:amethyst_shard"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s confusion"}}],
+    "cost": 2
+  },
+  "psybeam": {
+    "title": "Psybeam",
+    "description": "A beam of psychic energy that bends reality.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:amethyst_block"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s psybeam"}}],
+    "cost": 3
+  },
+  "psychic": {
+    "title": "Psychic",
+    "description": "Telekinetic force launches foes through the air.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:large_amethyst_bud"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s psychic"}}],
+    "cost": 4
+  },
+  "psychic_blast": {
+    "title": "Psychic Blast",
+    "description": "A focused psychic shockwave of terrifying power.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:nether_star"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s psychic_blast"}}],
+    "cost": 5
+  },
+  "future_sight": {
+    "title": "Future Sight",
+    "description": "See the threads of fate. Heal yourself and resist harm.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:spyglass"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s future_sight"}}],
+    "cost": 6
+  },
+  "night_shade": {
+    "title": "Night Shade",
+    "description": "Shadow energy that blinds and haunts the target.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:black_dye"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s night_shade"}}],
+    "cost": 2
+  },
+  "shadow_ball": {
+    "title": "Shadow Ball",
+    "description": "A ball of compressed shadow energy that weakens on impact.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:black_concrete"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s shadow_ball"}}],
+    "cost": 3
+  },
+  "dark_pulse": {
+    "title": "Dark Pulse",
+    "description": "A pulse of dark energy that may cause flinching.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:obsidian"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s dark_pulse"}}],
+    "cost": 4
+  },
+  "hex": {
+    "title": "Hex",
+    "description": "Deals massive damage to weakened targets.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:wither_skeleton_skull"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s hex"}}],
+    "cost": 5
+  },
+  "foul_play": {
+    "title": "Foul Play",
+    "description": "Turn your enemy's strength against them.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:netherite_ingot"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s foul_play"}}],
+    "cost": 6
+  },
+  "dragon_breath": {
+    "title": "Dragon Breath",
+    "description": "A breath of toxic dragonfire.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:dragon_breath"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s dragon_breath"}}],
+    "cost": 3
+  },
+  "dragon_pulse": {
+    "title": "Dragon Pulse",
+    "description": "A condensed sphere of dragon energy.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:dragon_head"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s dragon_pulse"}}],
+    "cost": 4
+  },
+  "draco_meteor": {
+    "title": "Draco Meteor",
+    "description": "Call down a meteor of pure dragon power from the sky.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:netherite_scrap"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s draco_meteor"}}],
+    "cost": 6
+  },
+  "outrage": {
+    "title": "Outrage",
+    "description": "Unleash uncontrollable draconic rage. Devastating but disorienting.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:nether_star"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s outrage"}}],
+    "cost": 8
+  },
+  "poison_sting": {
+    "title": "Poison Sting",
+    "description": "A venomous strike with chance to poison.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:poisonous_potato"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s poison_sting"}}],
+    "cost": 2
+  },
+  "poison_strike": {
+    "title": "Poison Strike",
+    "description": "A reliable poison attack.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:fermented_spider_eye"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s poison_strike"}}],
+    "cost": 3
+  },
+  "sludge_bomb": {
+    "title": "Sludge Bomb",
+    "description": "A cloud of toxic sludge poisons all nearby.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:slime_block"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s sludge_bomb"}}],
+    "cost": 4
+  },
+  "toxic": {
+    "title": "Toxic",
+    "description": "Inflicts deadly poison that withers the soul.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:wither_rose"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s toxic"}}],
+    "cost": 6
+  },
+  "rock_throw": {
+    "title": "Rock Throw",
+    "description": "Hurl a heavy stone at your target.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:cobblestone"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s rock_throw"}}],
+    "cost": 2
+  },
+  "rock_slide": {
+    "title": "Rock Slide",
+    "description": "Avalanche of stones that may cause flinching.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:stone"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s rock_slide"}}],
+    "cost": 3
+  },
+  "stone_edge": {
+    "title": "Stone Edge",
+    "description": "Razor-sharp stone spikes erupt with critical force.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:smooth_stone"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s stone_edge"}}],
+    "cost": 4
+  },
+  "seismic_slam": {
+    "title": "Seismic Slam",
+    "description": "Slam the earth to send shockwaves outward.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:deepslate"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s seismic_slam"}}],
+    "cost": 5
+  },
+  "earthquake": {
+    "title": "Earthquake",
+    "description": "The earth itself convulses, swallowing all in range.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:bedrock"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s earthquake"}}],
+    "cost": 7
+  },
+  "gust": {
+    "title": "Gust",
+    "description": "A burst of wind that knocks targets away.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:feather"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s gust"}}],
+    "cost": 2
+  },
+  "aerial_ace": {
+    "title": "Aerial Ace",
+    "description": "A precision strike that never misses.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:elytra"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s aerial_ace"}}],
+    "cost": 3
+  },
+  "aerial_strike": {
+    "title": "Aerial Strike",
+    "description": "Dive from above for a devastating area strike.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:phantom_membrane"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s aerial_strike"}}],
+    "cost": 5
+  },
+  "iron_tail": {
+    "title": "Iron Tail",
+    "description": "A metallic strike that weakens the target's defenses.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:iron_ingot"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s iron_tail"}}],
+    "cost": 3
+  },
+  "iron_strike": {
+    "title": "Iron Strike",
+    "description": "A heavy steel projectile with knockback.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:iron_block"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s iron_strike"}}],
+    "cost": 4
+  },
+  "flash_cannon": {
+    "title": "Flash Cannon",
+    "description": "A beam of blinding steel energy that weakens on impact.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:netherite_ingot"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s flash_cannon"}}],
+    "cost": 6
+  },
+  "dazzling_gleam": {
+    "title": "Dazzling Gleam",
+    "description": "A burst of blinding fairy light.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:glowstone_dust"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s dazzling_gleam"}}],
+    "cost": 3
+  },
+  "moonblast": {
+    "title": "Moonblast",
+    "description": "Channel the power of the moon in a devastating area blast.",
+    "icon": {"type": "puffish_skills:item", "item": "minecraft:end_crystal"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s moonblast"}}],
+    "cost": 7
+  }
+}

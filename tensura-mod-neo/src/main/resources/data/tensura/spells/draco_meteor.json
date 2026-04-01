@@ -1,0 +1,11 @@
+{
+  "school": "dragon",
+  "cooldown_ticks": 300,
+  "targeting": { "type": "aim", "range": 20, "radius": 6 },
+  "delivery": { "type": "meteor", "speed": 1.0 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 5.0 },
+    { "type": "fire", "seconds": 4 },
+    { "type": "knockback", "strength": 3.0 }
+  ]
+}

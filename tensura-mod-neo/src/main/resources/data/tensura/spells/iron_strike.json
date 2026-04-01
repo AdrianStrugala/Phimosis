@@ -1,0 +1,10 @@
+{
+  "school": "steel",
+  "cooldown_ticks": 160,
+  "targeting": { "type": "aim", "range": 14 },
+  "delivery": { "type": "projectile", "speed": 1.6 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 2.8 },
+    { "type": "knockback", "strength": 2.5 }
+  ]
+}

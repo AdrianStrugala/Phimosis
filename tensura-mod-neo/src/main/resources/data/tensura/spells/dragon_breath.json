@@ -1,0 +1,11 @@
+{
+  "school": "dragon",
+  "cooldown_ticks": 200,
+  "targeting": { "type": "aim", "range": 18 },
+  "delivery": { "type": "beam", "speed": 1.0 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 3.0 },
+    { "type": "fire", "seconds": 5 },
+    { "type": "status_effect", "effect": "minecraft:poison", "duration": 60, "amplifier": 0, "chance": 0.5 }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "school": "earth",
+  "cooldown_ticks": 160,
+  "targeting": { "type": "area", "range": 7 },
+  "delivery": { "type": "instant", "speed": 1.0 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 2.2 },
+    { "type": "status_effect", "effect": "minecraft:slowness", "duration": 60, "amplifier": 1, "chance": 0.3 }
+  ]
+}

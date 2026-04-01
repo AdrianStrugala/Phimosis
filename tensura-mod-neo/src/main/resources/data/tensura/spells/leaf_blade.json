@@ -1,0 +1,10 @@
+{
+  "school": "nature",
+  "cooldown_ticks": 140,
+  "targeting": { "type": "aim", "range": 12 },
+  "delivery": { "type": "instant", "speed": 1.0 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 3.0 },
+    { "type": "status_effect", "effect": "minecraft:weakness", "duration": 60, "amplifier": 0, "chance": 0.2 }
+  ]
+}

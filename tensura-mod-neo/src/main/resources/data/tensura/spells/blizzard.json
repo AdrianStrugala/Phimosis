@@ -1,0 +1,10 @@
+{
+  "school": "ice",
+  "cooldown_ticks": 240,
+  "targeting": { "type": "area", "range": 10, "radius": 10 },
+  "delivery": { "type": "cloud", "speed": 1.0 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 3.5 },
+    { "type": "status_effect", "effect": "minecraft:slowness", "duration": 200, "amplifier": 3, "chance": 0.7 }
+  ]
+}

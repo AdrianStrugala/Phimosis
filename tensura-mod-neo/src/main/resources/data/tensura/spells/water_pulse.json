@@ -1,0 +1,10 @@
+{
+  "school": "water",
+  "cooldown_ticks": 120,
+  "targeting": { "type": "aim", "range": 16 },
+  "delivery": { "type": "projectile", "speed": 1.5 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 1.8 },
+    { "type": "status_effect", "effect": "minecraft:slowness", "duration": 80, "amplifier": 0, "chance": 0.3 }
+  ]
+}

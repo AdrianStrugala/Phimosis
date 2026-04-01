@@ -1,0 +1,10 @@
+{
+  "school": "lightning",
+  "cooldown_ticks": 200,
+  "targeting": { "type": "area", "range": 8, "radius": 8 },
+  "delivery": { "type": "cloud", "speed": 1.0 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 2.5 },
+    { "type": "status_effect", "effect": "minecraft:slowness", "duration": 80, "amplifier": 1, "chance": 0.5 }
+  ]
+}

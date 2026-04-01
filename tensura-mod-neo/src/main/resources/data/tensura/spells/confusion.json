@@ -1,0 +1,10 @@
+{
+  "school": "psychic",
+  "cooldown_ticks": 80,
+  "targeting": { "type": "aim", "range": 14 },
+  "delivery": { "type": "projectile", "speed": 1.4 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 1.0 },
+    { "type": "status_effect", "effect": "minecraft:nausea", "duration": 100, "amplifier": 0, "chance": 0.3 }
+  ]
+}

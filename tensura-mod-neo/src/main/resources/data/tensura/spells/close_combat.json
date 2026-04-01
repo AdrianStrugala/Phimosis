@@ -1,0 +1,10 @@
+{
+  "school": "physical",
+  "cooldown_ticks": 280,
+  "targeting": { "type": "aim", "range": 8 },
+  "delivery": { "type": "instant", "speed": 1.0 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 5.0 },
+    { "type": "knockback", "strength": 4.0 }
+  ]
+}

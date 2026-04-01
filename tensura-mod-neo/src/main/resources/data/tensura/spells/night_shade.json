@@ -1,0 +1,10 @@
+{
+  "school": "shadow",
+  "cooldown_ticks": 120,
+  "targeting": { "type": "aim", "range": 16 },
+  "delivery": { "type": "instant", "speed": 1.0 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 1.5 },
+    { "type": "status_effect", "effect": "minecraft:darkness", "duration": 100, "amplifier": 0, "chance": 0.8 }
+  ]
+}

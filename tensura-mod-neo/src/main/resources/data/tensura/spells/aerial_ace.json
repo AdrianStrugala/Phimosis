@@ -1,0 +1,9 @@
+{
+  "school": "wind",
+  "cooldown_ticks": 100,
+  "targeting": { "type": "aim", "range": 18 },
+  "delivery": { "type": "projectile", "speed": 2.5 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 1.8 }
+  ]
+}

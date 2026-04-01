@@ -1,0 +1,10 @@
+{
+  "school": "water",
+  "cooldown_ticks": 160,
+  "targeting": { "type": "area", "range": 7 },
+  "delivery": { "type": "instant", "speed": 1.0 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 2.2 },
+    { "type": "knockback", "strength": 2.5 }
+  ]
+}

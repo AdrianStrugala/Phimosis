@@ -1,0 +1,10 @@
+{
+  "school": "nature",
+  "cooldown_ticks": 100,
+  "targeting": { "type": "aim", "range": 16 },
+  "delivery": { "type": "projectile", "speed": 2.0 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 1.8 },
+    { "type": "status_effect", "effect": "minecraft:poison", "duration": 40, "amplifier": 0, "chance": 0.3 }
+  ]
+}

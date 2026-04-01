@@ -1,0 +1,11 @@
+{
+  "school": "steel",
+  "cooldown_ticks": 160,
+  "targeting": { "type": "aim", "range": 10 },
+  "delivery": { "type": "instant", "speed": 1.0 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 2.5 },
+    { "type": "knockback", "strength": 2.0 },
+    { "type": "status_effect", "effect": "minecraft:weakness", "duration": 100, "amplifier": 0, "chance": 0.3 }
+  ]
+}

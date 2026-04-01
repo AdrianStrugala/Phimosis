@@ -1,0 +1,10 @@
+{
+  "school": "fire",
+  "cooldown_ticks": 140,
+  "targeting": { "type": "aim", "range": 16 },
+  "delivery": { "type": "beam", "speed": 1.0 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 2.0 },
+    { "type": "fire", "seconds": 4 }
+  ]
+}

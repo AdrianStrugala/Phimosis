@@ -1,0 +1,9 @@
+{
+  "school": "poison",
+  "cooldown_ticks": 240,
+  "targeting": { "type": "aim", "range": 14, "radius": 3 },
+  "delivery": { "type": "cloud", "speed": 1.0 },
+  "impact": [
+    { "type": "status_effect", "effect": "minecraft:wither", "duration": 200, "amplifier": 1, "chance": 1.0 }
+  ]
+}
