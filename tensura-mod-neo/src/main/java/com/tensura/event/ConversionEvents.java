@@ -17,6 +17,7 @@ import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.entity.citizen.Skill;
 import com.minecolonies.api.entity.citizen.citizenhandlers.ICitizenSkillHandler;
 import com.tensura.TensuraMod;
+import com.tensura.data.ConversionHelper;
 import com.tensura.data.DynamicCitizenSpeciesData;
 import kotlin.Unit;
 import net.minecraft.core.BlockPos;
@@ -135,19 +136,24 @@ public class ConversionEvents {
         int citizenId = dataView.getId();
 
         DynamicCitizenSpeciesData data = DynamicCitizenSpeciesData.get(level);
-        if (!data.contains(citizenId)) return;
+
+        // Determine owner: enrolled citizens have a stored ownerUUID; for non-enrolled,
+        // the recalling player becomes the owner.
+        boolean enrolled = data.contains(citizenId);
+        UUID ownerUUID = enrolled ? data.ownerMap.get(citizenId) : event.getEntity().getUUID();
+        Integer colonyId = enrolled ? data.colonyIdMap.get(citizenId) : null;
+
+        // For non-enrolled citizens we still need a mappable species — bail silently if none found
+        var citizenSkills = citizen.getCitizenDataView() != null
+                ? citizen.getCitizenDataView().getCitizenSkillHandler() : null;
+        if (citizenSkills == null) return;
+
+        Pokemon restoredPokemon = ConversionHelper.buildRecalledPokemon(
+                citizenId, citizen, citizenSkills, data, level.registryAccess());
+        if (restoredPokemon == null) return; // no species found — do nothing
 
         // Cancel so the Pokeball item isn't thrown
         event.setCanceled(true);
-
-        UUID ownerUUID = data.ownerMap.get(citizenId);
-        CompoundTag pokemonNbt = data.pokemonNbt.get(citizenId);
-        Integer colonyId = data.colonyIdMap.get(citizenId);
-        if (pokemonNbt == null || ownerUUID == null || colonyId == null) return;
-
-        // Restore Pokemon from saved NBT (all IVs, EVs, moveset, etc.)
-        Pokemon restoredPokemon = new Pokemon();
-        restoredPokemon.loadFromNBT(level.registryAccess(), pokemonNbt);
 
         // Add to owner's party
         ServerPlayer owner = level.getServer().getPlayerList().getPlayer(ownerUUID);
@@ -160,26 +166,34 @@ public class ConversionEvents {
             }
         }
 
-        // Remove citizen from colony
-        IColony colony = IColonyManager.getInstance().getColonyByWorld(colonyId, level);
-        if (colony != null) {
-            ICivilianData civilianData = colony.getCitizenManager().getCivilian(citizenId);
-            if (civilianData != null) {
+        // Resolve colony and remove citizen
+        if (colonyId != null) {
+            IColony colony = IColonyManager.getInstance().getColonyByWorld(colonyId, level);
+            if (colony != null) {
+                ICivilianData civilianData = colony.getCitizenManager().getCivilian(citizenId);
+                if (civilianData != null) {
+                    citizen.remove(Entity.RemovalReason.DISCARDED);
+                    colony.getCitizenManager().removeCivilian(civilianData);
+                } else {
+                    citizen.remove(Entity.RemovalReason.DISCARDED);
+                }
+            } else {
                 citizen.remove(Entity.RemovalReason.DISCARDED);
-                colony.getCitizenManager().removeCivilian(civilianData);
             }
         } else {
-            // Colony not found by ID — still remove the entity
+            // Non-enrolled: just remove the entity (no colony record to clean up)
             citizen.remove(Entity.RemovalReason.DISCARDED);
         }
 
-        // Remove from data store and broadcast
-        data.remove(citizenId);
+        String speciesName = capitalize(restoredPokemon.getSpecies().getName());
+
+        if (enrolled) {
+            data.remove(citizenId);
+        }
         ColonyStartupEvents.broadcastSpeciesMap(level);
 
         TensuraMod.LOGGER.info("[Tensura] Recalled citizen #{} (owner={})", citizenId, ownerUUID);
 
-        String speciesName = capitalize(data.dynamicSpecies.getOrDefault(citizenId, "Pokemon"));
         if (owner != null) {
             owner.sendSystemMessage(Component.literal("\u00a7b" + speciesName + " powrócił do drużyny."));
         }

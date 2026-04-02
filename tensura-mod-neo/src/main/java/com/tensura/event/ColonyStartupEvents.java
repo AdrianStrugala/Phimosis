@@ -149,6 +149,11 @@ public class ColonyStartupEvents {
         CITIZEN_TO_SPECIES = Collections.unmodifiableMap(m);
     }
 
+    /** Exposes the hardcoded citizen→species map for non-enrolled citizen recall. */
+    public static Map<Integer, String> getHardcodedSpeciesMap() {
+        return CITIZEN_TO_SPECIES;
+    }
+
     @SubscribeEvent
     public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;

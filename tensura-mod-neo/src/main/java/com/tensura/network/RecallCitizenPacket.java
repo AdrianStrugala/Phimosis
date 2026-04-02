@@ -8,9 +8,9 @@ import com.minecolonies.api.colony.IColonyManager;
 import com.minecolonies.api.colony.ICivilianData;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.tensura.TensuraMod;
+import com.tensura.data.ConversionHelper;
 import com.tensura.data.DynamicCitizenSpeciesData;
 import com.tensura.event.ColonyStartupEvents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -48,13 +48,31 @@ public record RecallCitizenPacket(int citizenId) implements CustomPacketPayload 
             int id = pkt.citizenId;
             if (!data.contains(id)) return;
 
+            // Only the citizen's owner may recall via the Recall Station
             UUID ownerUUID = data.ownerMap.get(id);
-            CompoundTag pokemonNbt = data.pokemonNbt.get(id);
-            Integer colonyId = data.colonyIdMap.get(id);
-            if (pokemonNbt == null || ownerUUID == null || colonyId == null) return;
+            if (ownerUUID == null || !ownerUUID.equals(sender.getUUID())) return;
 
-            Pokemon restoredPokemon = new Pokemon();
-            restoredPokemon.loadFromNBT(level.registryAccess(), pokemonNbt);
+            Integer colonyId = data.colonyIdMap.get(id);
+            if (colonyId == null) return;
+
+            // Find the citizen entity in the world to pass to ConversionHelper
+            IColony colony = IColonyManager.getInstance().getColonyByWorld(colonyId, level);
+            if (colony == null) return;
+
+            ICivilianData civilianData = colony.getCitizenManager().getCivilian(id);
+            if (civilianData == null) return;
+
+            // Resolve the citizen entity (needed for ConversionHelper.resolveSpecies fallback)
+            AbstractEntityCitizen citizenEntity = civilianData.getEntity()
+                    .map(e -> (AbstractEntityCitizen) e)
+                    .orElse(null);
+            // citizenEntity may be null if chunk is unloaded; ConversionHelper handles it
+            // (for enrolled citizens the entity isn't needed — only the NBT)
+            var skills = civilianData.getCitizenSkillHandler();
+
+            Pokemon restoredPokemon = ConversionHelper.buildRecalledPokemon(
+                    id, citizenEntity, skills, data, level.registryAccess());
+            if (restoredPokemon == null) return;
 
             ServerPlayer owner = level.getServer().getPlayerList().getPlayer(ownerUUID);
             if (owner != null) {
@@ -66,23 +84,16 @@ public record RecallCitizenPacket(int citizenId) implements CustomPacketPayload 
                 }
             }
 
-            IColony colony = IColonyManager.getInstance().getColonyByWorld(colonyId, level);
-            if (colony != null) {
-                ICivilianData civilianData = colony.getCitizenManager().getCivilian(id);
-                if (civilianData != null) {
-                    civilianData.getEntity().ifPresent(e -> ((AbstractEntityCitizen) e).discard());
-                    colony.getCitizenManager().removeCivilian(civilianData);
-                }
-            }
+            if (citizenEntity != null) citizenEntity.discard();
+            colony.getCitizenManager().removeCivilian(civilianData);
 
-            String speciesName = capitalize(data.dynamicSpecies.getOrDefault(id, "Pokemon"));
+            String speciesName = capitalize(restoredPokemon.getSpecies().getName());
             data.remove(id);
             ColonyStartupEvents.broadcastSpeciesMap(level);
             TensuraMod.LOGGER.info("[Tensura] Recalled citizen #{} via RecallStation (owner={})", id, ownerUUID);
 
-            ServerPlayer owner2 = level.getServer().getPlayerList().getPlayer(ownerUUID);
-            if (owner2 != null) {
-                owner2.sendSystemMessage(Component.literal("\u00a7b" + speciesName + " powrócił do drużyny."));
+            if (owner != null) {
+                owner.sendSystemMessage(Component.literal("\u00a7b" + speciesName + " powrócił do drużyny."));
             }
         });
     }

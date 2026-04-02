@@ -1,5 +1,8 @@
 package com.tensura.block;
 
+import com.minecolonies.api.colony.IColony;
+import com.minecolonies.api.colony.IColonyManager;
+import com.minecolonies.api.colony.ICivilianData;
 import com.tensura.data.DynamicCitizenSpeciesData;
 import com.tensura.gui.RecallStationMenu;
 import net.minecraft.core.BlockPos;
@@ -35,14 +38,22 @@ public class RecallStationBlock extends Block {
         if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.PASS;
         if (!(level instanceof ServerLevel serverLevel)) return InteractionResult.PASS;
 
+        UUID playerUUID = serverPlayer.getUUID();
         DynamicCitizenSpeciesData data = DynamicCitizenSpeciesData.get(serverLevel);
         List<RecallStationMenu.RecallEntry> entries = new ArrayList<>();
+
         for (var entry : data.dynamicSpecies.entrySet()) {
             int citizenId = entry.getKey();
             String species = entry.getValue();
+
+            // Only show citizens that belong to this player
             UUID ownerUUID = data.ownerMap.get(citizenId);
+            if (ownerUUID == null || !ownerUUID.equals(playerUUID)) continue;
+
+            // Resolve citizen's display name from colony data
+            String citizenName = resolveCitizenName(serverLevel, data, citizenId);
             String ownerName = resolveOwnerName(serverLevel, ownerUUID);
-            entries.add(new RecallStationMenu.RecallEntry(citizenId, species, ownerName));
+            entries.add(new RecallStationMenu.RecallEntry(citizenId, citizenName, species, ownerName));
         }
 
         serverPlayer.openMenu(new MenuProvider() {
@@ -57,12 +68,22 @@ public class RecallStationBlock extends Block {
             buf.writeInt(entries.size());
             for (var e : entries) {
                 buf.writeInt(e.citizenId());
+                buf.writeUtf(e.citizenName());
                 buf.writeUtf(e.species());
                 buf.writeUtf(e.ownerName());
             }
         });
 
         return InteractionResult.SUCCESS;
+    }
+
+    private static String resolveCitizenName(ServerLevel level, DynamicCitizenSpeciesData data, int citizenId) {
+        Integer colonyId = data.colonyIdMap.get(citizenId);
+        if (colonyId == null) return "";
+        IColony colony = IColonyManager.getInstance().getColonyByWorld(colonyId, level);
+        if (colony == null) return "";
+        ICivilianData civilian = colony.getCitizenManager().getCivilian(citizenId);
+        return civilian != null ? civilian.getName() : "";
     }
 
     private static String resolveOwnerName(ServerLevel level, UUID uuid) {

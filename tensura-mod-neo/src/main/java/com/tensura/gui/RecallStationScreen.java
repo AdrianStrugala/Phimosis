@@ -65,7 +65,8 @@ public class RecallStationScreen extends AbstractContainerScreen<RecallStationMe
         } else {
             for (int i = 0; i < menu.getEntries().size(); i++) {
                 var entry = menu.getEntries().get(i);
-                String label = capitalize(entry.species()) + "  \u00a77(" + entry.ownerName() + ")";
+                String name = entry.citizenName().isEmpty() ? capitalize(entry.species()) : entry.citizenName();
+                String label = name + "  \u00a7e[" + capitalize(entry.species()) + "]\u00a7r";
                 gfx.drawString(font, label, leftPos + PADDING, listTop + i * ROW_HEIGHT + 4, 0xFFFFFFFF, false);
             }
         }
