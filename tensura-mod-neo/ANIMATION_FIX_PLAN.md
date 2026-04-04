@@ -76,6 +76,19 @@ if (lastAnimTick.getOrDefault(citizenId, -1L) != currentTick) {
 
 Połącz Podejście 1 i 2.
 
+### Podejście 3b — Sync deltaMovement z citizena
+
+Cobblemon używa własnego systemu animacji Bedrock (nie vanilla `walkAnimation`).
+`PokemonClientDelegate.tick()` decyduje o POSE_TYPE na podstawie `entity.getDeltaMovement()`.
+Fake entity ma `deltaMovement = Vec3.ZERO` → delegate widzi brak ruchu → POSE_TYPE wraca na STAND.
+
+W `onRenderLivingPre`, przed `set(MOVING)`:
+```java
+fake.setDeltaMovement(citizen.getDeltaMovement());
+```
+Efekt: następny tick fake entity widzi poprawny wektor prędkości, delegate ustawia WALK.
+Połączyć z Podejściem 1 (POSE_TYPE fix jako zabezpieczenie).
+
 ### Podejście 4 — calculateEntityAnimation() zamiast ręcznego update
 
 Zamiast ręcznego liczenia walkSpeed, użyć publicznej metody MC:

@@ -28,8 +28,11 @@ No test suite exists — NeoForge mods are typically tested by running the clien
 
 After `./gradlew build`, the JAR is in `tensura-mod-neo/build/libs/`. Copy it to:
 
-- **Client**: Minecraft mods folder (e.g. `%APPDATA%\.minecraft\mods\`)
-- **Server**: `D:\Serv Phimosis 2k37\mods\`
+- **Client**: `%APPDATA%\.minecraft\mods\` ← always deploy here alongside server
+- **Test server**: `D:\Serv Test\mods\` ← always deploy here during development
+- **Production server**: `D:\Serv Phimosis 2k37\mods\` ← NEVER deploy here without explicit confirmation
+
+**Deploy rule**: Every build must go to BOTH test server AND client. Never to production without explicit user instruction.
 
 ## Tensura Mod Architecture
 

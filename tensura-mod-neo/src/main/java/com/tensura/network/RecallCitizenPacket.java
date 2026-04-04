@@ -5,11 +5,12 @@ import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.minecolonies.api.colony.IColony;
 import com.minecolonies.api.colony.IColonyManager;
+import com.minecolonies.api.colony.ICitizenData;
 import com.minecolonies.api.colony.ICivilianData;
-import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.tensura.TensuraMod;
 import com.tensura.data.ConversionHelper;
 import com.tensura.data.DynamicCitizenSpeciesData;
+import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.tensura.event.ColonyStartupEvents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -23,7 +24,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import java.util.UUID;
 
-public record RecallCitizenPacket(int citizenId) implements CustomPacketPayload {
+public record RecallCitizenPacket(int citizenId, int colonyId) implements CustomPacketPayload {
 
     public static final Type<RecallCitizenPacket> TYPE =
             new Type<>(ResourceLocation.fromNamespaceAndPath(TensuraMod.MOD_ID, "recall_citizen"));
@@ -31,6 +32,7 @@ public record RecallCitizenPacket(int citizenId) implements CustomPacketPayload 
     public static final StreamCodec<RegistryFriendlyByteBuf, RecallCitizenPacket> STREAM_CODEC =
             StreamCodec.composite(
                     ByteBufCodecs.INT, RecallCitizenPacket::citizenId,
+                    ByteBufCodecs.INT, RecallCitizenPacket::colonyId,
                     RecallCitizenPacket::new
             );
 
@@ -44,43 +46,48 @@ public record RecallCitizenPacket(int citizenId) implements CustomPacketPayload 
             ServerPlayer sender = (ServerPlayer) ctx.player();
             ServerLevel level = sender.serverLevel();
 
-            DynamicCitizenSpeciesData data = DynamicCitizenSpeciesData.get(level);
-            int id = pkt.citizenId;
-            if (!data.contains(id)) return;
-
-            // Only the citizen's owner may recall via the Recall Station
-            UUID ownerUUID = data.ownerMap.get(id);
-            if (ownerUUID == null || !ownerUUID.equals(sender.getUUID())) return;
-
-            Integer colonyId = data.colonyIdMap.get(id);
-            if (colonyId == null) return;
-
-            // Find the citizen entity in the world to pass to ConversionHelper
-            IColony colony = IColonyManager.getInstance().getColonyByWorld(colonyId, level);
+            IColony colony = IColonyManager.getInstance().getColonyByWorld(pkt.colonyId(), level);
             if (colony == null) return;
 
-            ICivilianData civilianData = colony.getCitizenManager().getCivilian(id);
+            ICivilianData civilianData = colony.getCitizenManager().getCivilian(pkt.citizenId());
             if (civilianData == null) return;
 
-            // Resolve the citizen entity (needed for ConversionHelper.resolveSpecies fallback)
+            DynamicCitizenSpeciesData data = DynamicCitizenSpeciesData.get(level);
+
+            // Enrolled citizens: only the registered owner may recall
+            if (data.contains(pkt.citizenId())) {
+                UUID ownerUUID = data.ownerMap.get(pkt.citizenId());
+                if (ownerUUID == null || !ownerUUID.equals(sender.getUUID())) return;
+            }
+
             AbstractEntityCitizen citizenEntity = civilianData.getEntity()
+                    .filter(e -> e instanceof AbstractEntityCitizen)
                     .map(e -> (AbstractEntityCitizen) e)
                     .orElse(null);
-            // citizenEntity may be null if chunk is unloaded; ConversionHelper handles it
-            // (for enrolled citizens the entity isn't needed — only the NBT)
-            var skills = civilianData.getCitizenSkillHandler();
+
+            var skills = ((ICitizenData) civilianData).getCitizenSkillHandler();
 
             Pokemon restoredPokemon = ConversionHelper.buildRecalledPokemon(
-                    id, citizenEntity, skills, data, level.registryAccess());
+                    pkt.citizenId(), citizenEntity, skills, data, level.registryAccess());
             if (restoredPokemon == null) return;
+
+            // Owner is sender for non-enrolled; stored UUID for enrolled
+            UUID ownerUUID = data.contains(pkt.citizenId())
+                    ? data.ownerMap.get(pkt.citizenId())
+                    : sender.getUUID();
 
             ServerPlayer owner = level.getServer().getPlayerList().getPlayer(ownerUUID);
             if (owner != null) {
                 try {
                     PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(owner);
-                    party.add(restoredPokemon);
+                    if (!party.add(restoredPokemon)) {
+                        owner.sendSystemMessage(Component.literal("§cParty jest pełne! Zwolnij miejsce przed recall."));
+                        return;
+                    }
                 } catch (Exception e) {
                     TensuraMod.LOGGER.warn("[Tensura] Failed to restore Pokemon on recall: {}", e.getMessage());
+                    sender.sendSystemMessage(Component.literal("§cBłąd podczas recall — spróbuj ponownie."));
+                    return;
                 }
             }
 
@@ -88,9 +95,9 @@ public record RecallCitizenPacket(int citizenId) implements CustomPacketPayload 
             colony.getCitizenManager().removeCivilian(civilianData);
 
             String speciesName = capitalize(restoredPokemon.getSpecies().getName());
-            data.remove(id);
+            data.remove(pkt.citizenId());
             ColonyStartupEvents.broadcastSpeciesMap(level);
-            TensuraMod.LOGGER.info("[Tensura] Recalled citizen #{} via RecallStation (owner={})", id, ownerUUID);
+            TensuraMod.LOGGER.info("[Tensura] Recalled citizen #{} via RecallStation (owner={})", pkt.citizenId(), ownerUUID);
 
             if (owner != null) {
                 owner.sendSystemMessage(Component.literal("\u00a7b" + speciesName + " powrócił do drużyny."));

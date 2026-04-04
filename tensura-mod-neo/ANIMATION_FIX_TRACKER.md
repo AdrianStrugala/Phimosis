@@ -26,13 +26,22 @@ Plik do edycji: `src/main/java/com/tensura/client/PokemonCitizenRenderHandler.ja
 
 | # | Data | Opis zmiany | Wynik | Obserwacje |
 |---|------|------------|-------|------------|
-| 1 | — | (przykłady wcześniejszych prób — uzupełnić) | — | — |
+| 1–30 | przed 2026-04-03 | ~30 wcześniejszych prób (nieudokumentowane) | ❌ | — |
+| 31 | 2026-04-03 | FIX A: set POSE_TYPE=WALK/STAND + FIX B: walkAnimation.update() | ❌ | walkAnimation nieistotne — Cobblemon używa Bedrock animations, nie vanilla limbSwing |
+| 32 | 2026-04-03 | FIX A + FIX B + sync `deltaMovement` z citizena | 🔄 do testu | Cobblemon delegate.tick() czyta deltaMovement do decyzji o POSE_TYPE |
 
 ---
 
+## Kluczowe odkrycie
+
+Cobblemon używa **własnego systemu Bedrock/blockbench animations** (`PosableState.currentPose`),
+nie vanilla `walkAnimation.speed`. `PokemonClientDelegate.tick()` decyduje o pozie na podstawie
+`entity.getDeltaMovement()`. Fake entity bez zsynchronizowanego `deltaMovement` zawsze widzi
+prędkość = 0 → zawsze STAND.
+
 ## Aktualne podejście do testowania
 
-### Podejście A — Napraw POSE_TYPE
+### Podejście 3b (aktywne) — deltaMovement + POSE_TYPE
 
 Zmiana w `onRenderLivingPre`, po linii `fake.getEntityData().set(PokemonEntity.getMOVING(), moving);`:
 

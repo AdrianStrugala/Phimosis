@@ -75,20 +75,23 @@ public class ConversionEvents {
             ICitizenData citizenData = (ICitizenData) civilianData;
             int citizenId = civilianData.getId();
 
-            // Set citizen name (Pokemon's display name)
+            // Set citizen name and gender from Pokemon
             String name = poke.getDisplayName(false).getString();
             citizenData.setName(name);
+            boolean isFemale = poke.getGender() == com.cobblemon.mod.common.pokemon.Gender.FEMALE;
+            civilianData.setGender(isFemale);
 
-            // Map base stats → citizen skills
+            // Map base stats + level → citizen skills
             var baseStats = poke.getSpecies().getBaseStats();
+            int pokeLevel = poke.getLevel();
             ICitizenSkillHandler skills = citizenData.getCitizenSkillHandler();
-            setSkill(skills, Skill.Stamina,    baseStats.getOrDefault(Stats.HP, 45));
-            setSkill(skills, Skill.Strength,   baseStats.getOrDefault(Stats.ATTACK, 45));
-            setSkill(skills, Skill.Athletics,  baseStats.getOrDefault(Stats.DEFENCE, 45));
-            setSkill(skills, Skill.Mana,       baseStats.getOrDefault(Stats.SPECIAL_ATTACK, 45));
-            setSkill(skills, Skill.Knowledge,  baseStats.getOrDefault(Stats.SPECIAL_DEFENCE, 45));
-            setSkill(skills, Skill.Agility,    baseStats.getOrDefault(Stats.SPEED, 45));
-            setSkill(skills, Skill.Dexterity,  baseStats.getOrDefault(Stats.SPEED, 45));
+            setSkill(skills, Skill.Stamina,    baseStats.getOrDefault(Stats.HP, 45),             pokeLevel);
+            setSkill(skills, Skill.Strength,   baseStats.getOrDefault(Stats.ATTACK, 45),         pokeLevel);
+            setSkill(skills, Skill.Athletics,  baseStats.getOrDefault(Stats.DEFENCE, 45),        pokeLevel);
+            setSkill(skills, Skill.Mana,       baseStats.getOrDefault(Stats.SPECIAL_ATTACK, 45), pokeLevel);
+            setSkill(skills, Skill.Knowledge,  baseStats.getOrDefault(Stats.SPECIAL_DEFENCE, 45),pokeLevel);
+            setSkill(skills, Skill.Agility,    baseStats.getOrDefault(Stats.SPEED, 45),          pokeLevel);
+            setSkill(skills, Skill.Dexterity,  baseStats.getOrDefault(Stats.SPEED, 45),          pokeLevel);
 
             // Save to persistent data
             DynamicCitizenSpeciesData data = DynamicCitizenSpeciesData.get(level);
@@ -201,9 +204,9 @@ public class ConversionEvents {
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
-    /** Scales a Pokemon base stat (0–255) to a MineColonies skill level (1–10). */
-    private static void setSkill(ICitizenSkillHandler handler, Skill skill, int baseStat) {
-        int level = Math.max(1, baseStat * 10 / 255);
+    /** Scales a Pokemon base stat (0–255) and level (1–100) to a MineColonies skill level (1–100). */
+    private static void setSkill(ICitizenSkillHandler handler, Skill skill, int baseStat, int pokeLevel) {
+        int level = Math.max(1, (int)(baseStat / 255.0 * pokeLevel));
         handler.incrementLevel(skill, level);
     }
 

@@ -12,7 +12,7 @@ import java.util.List;
 
 public class RecallStationMenu extends AbstractContainerMenu {
 
-    public record RecallEntry(int citizenId, String citizenName, String species, String ownerName) {}
+    public record RecallEntry(int citizenId, String citizenName, String species, int colonyId, boolean canRecall) {}
 
     private final List<RecallEntry> entries;
 
@@ -28,7 +28,7 @@ public class RecallStationMenu extends AbstractContainerMenu {
         int size = buf.readInt();
         this.entries = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            entries.add(new RecallEntry(buf.readInt(), buf.readUtf(), buf.readUtf(), buf.readUtf()));
+            entries.add(new RecallEntry(buf.readInt(), buf.readUtf(), buf.readUtf(), buf.readInt(), buf.readBoolean()));
         }
     }
 

@@ -2,6 +2,7 @@ package com.tensura.client;
 
 import com.cobblemon.mod.common.CobblemonEntities;
 import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
+import com.cobblemon.mod.common.entity.PoseType;
 import com.cobblemon.mod.common.entity.pokemon.PokemonBehaviourFlag;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.pokemon.Pokemon;
@@ -26,6 +27,7 @@ public class PokemonCitizenRenderHandler {
     private static final Map<Integer, PokemonEntity> fakeEntities = new HashMap<>();
     // Track entity IDs of our fake Pokemon so we can cancel their own render events
     private static final Set<Integer> fakeEntityIds = new HashSet<>();
+    private static final Map<Integer, Long> lastAnimTick = new HashMap<>();
     // Set to true while we are manually rendering a fake entity — prevents our handler from cancelling its own render
     private static boolean manualRendering = false;
 
@@ -65,6 +67,14 @@ public class PokemonCitizenRenderHandler {
         double dz = citizen.getZ() - citizen.zo;
         boolean moving = (dx * dx + dz * dz) > 0.001;
 
+        // FIX B: Update walkAnimation once per tick with citizen's actual movement speed
+        long currentTick = citizen.level().getGameTime();
+        if (lastAnimTick.getOrDefault(citizenId, -1L) != currentTick) {
+            float walkSpeed = moving ? Math.min((float) Math.sqrt(dx * dx + dz * dz) * 4.0f, 1.0f) : 0.0f;
+            fake.walkAnimation.update(walkSpeed, 0.4f);
+            lastAnimTick.put(citizenId, currentTick);
+        }
+
         if (moving) {
             float bodyDelta = Mth.wrapDegrees(citizen.yBodyRot - fake.yBodyRot);
             fake.yBodyRotO = fake.yBodyRot;
@@ -73,7 +83,14 @@ public class PokemonCitizenRenderHandler {
             fake.yBodyRotO = fake.yBodyRot;
         }
 
+        fake.setDeltaMovement(citizen.getDeltaMovement());
         fake.getEntityData().set(PokemonEntity.getMOVING(), moving);
+
+        // FIX A: Sync POSE_TYPE so Cobblemon selects walk animations
+        PoseType targetPose = moving ? PoseType.WALK : PoseType.STAND;
+        if (fake.getEntityData().get(PokemonEntity.getPOSE_TYPE()) != targetPose) {
+            fake.getEntityData().set(PokemonEntity.getPOSE_TYPE(), targetPose);
+        }
 
         boolean working = citizen.swingTime > 0 && !moving;
         fake.setBehaviourFlag(PokemonBehaviourFlag.EXCITED, working);

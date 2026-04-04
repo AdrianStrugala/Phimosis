@@ -49,7 +49,9 @@ public class ConversionHelper {
             // Case B: non-enrolled
             String species = resolveSpecies(citizenId, citizen);
             if (species == null) return null;
-            return buildFreshPokemon(species, skills);
+            String name = citizen.getName().getString();
+            boolean isFemale = citizen.isFemale();
+            return buildFreshPokemon(species, skills, name, isFemale);
         }
     }
 
@@ -63,6 +65,9 @@ public class ConversionHelper {
         applyStatProgression(pokemon, Stats.SPECIAL_ATTACK,  skills, Skill.Mana,      baseStats.getOrDefault(Stats.SPECIAL_ATTACK, 45));
         applyStatProgression(pokemon, Stats.SPECIAL_DEFENCE, skills, Skill.Knowledge, baseStats.getOrDefault(Stats.SPECIAL_DEFENCE, 45));
         applyStatProgression(pokemon, Stats.SPEED,           skills, Skill.Agility,   baseStats.getOrDefault(Stats.SPEED, 45));
+
+        int newLevel = Math.max(pokemon.getLevel(), averageSkillLevel(skills));
+        pokemon.setLevel(Math.min(100, newLevel));
     }
 
     /**
@@ -75,43 +80,53 @@ public class ConversionHelper {
             ICitizenSkillHandler skills, Skill skill, int baseStat) {
 
         int origLevel = Math.max(1, baseStat * 10 / 255); // level assigned at enrollment
-        int currLevel = skills.getSkill(skill).getLevel();
+        int currLevel = skills.getLevel(skill);
         int delta = Math.max(0, currLevel - origLevel);
         if (delta == 0) return;
 
         int evGain    = delta * 255 / 10;
-        int currentEV = pokemon.getEvs().getOrDefault(stat, 0);
+        int currentEV = pokemon.getEvs().getOrDefault(stat);
         int newEV     = Math.min(252, currentEV + evGain);
-        pokemon.getEvs().put(stat, newEV);
+        pokemon.getEvs().set(stat, newEV);
 
         int overflow = (currentEV + evGain) - newEV;
         if (overflow > 0) {
             int ivGain    = overflow * 31 / 255;
-            int currentIV = pokemon.getIvs().getOrDefault(stat, 0);
-            pokemon.getIvs().put(stat, Math.min(31, currentIV + ivGain));
+            int currentIV = pokemon.getIvs().getOrDefault(stat);
+            pokemon.getIvs().set(stat, Math.min(31, currentIV + ivGain));
         }
     }
 
     // ── Case B: create a fresh Pokemon for a never-enrolled citizen ───────────
 
-    private static Pokemon buildFreshPokemon(String speciesName, ICitizenSkillHandler skills) {
+    private static Pokemon buildFreshPokemon(String speciesName, ICitizenSkillHandler skills, String nickname, boolean isFemale) {
         var speciesObj = PokemonSpecies.INSTANCE.getByName(speciesName);
         if (speciesObj == null) return null;
 
         Pokemon pokemon = new Pokemon();
         pokemon.setSpecies(speciesObj);
+        pokemon.setNickname(net.minecraft.network.chat.Component.literal(nickname));
+        pokemon.setGender(isFemale ? com.cobblemon.mod.common.pokemon.Gender.FEMALE : com.cobblemon.mod.common.pokemon.Gender.MALE);
 
         // Level mirrors the average skill level (citizen skills range 0–100)
         int avgLevel = averageSkillLevel(skills);
         pokemon.setLevel(Math.max(1, Math.min(100, avgLevel)));
 
         // IVs (0–31) scaled from skill level (0–100)
-        pokemon.getIvs().put(Stats.HP,              skillToIV(skills, Skill.Stamina));
-        pokemon.getIvs().put(Stats.ATTACK,          skillToIV(skills, Skill.Strength));
-        pokemon.getIvs().put(Stats.DEFENCE,         skillToIV(skills, Skill.Athletics));
-        pokemon.getIvs().put(Stats.SPECIAL_ATTACK,  skillToIV(skills, Skill.Mana));
-        pokemon.getIvs().put(Stats.SPECIAL_DEFENCE, skillToIV(skills, Skill.Knowledge));
-        pokemon.getIvs().put(Stats.SPEED,           skillToIV(skills, Skill.Agility));
+        pokemon.getIvs().set(Stats.HP,              skillToIV(skills, Skill.Stamina));
+        pokemon.getIvs().set(Stats.ATTACK,          skillToIV(skills, Skill.Strength));
+        pokemon.getIvs().set(Stats.DEFENCE,         skillToIV(skills, Skill.Athletics));
+        pokemon.getIvs().set(Stats.SPECIAL_ATTACK,  skillToIV(skills, Skill.Mana));
+        pokemon.getIvs().set(Stats.SPECIAL_DEFENCE, skillToIV(skills, Skill.Knowledge));
+        pokemon.getIvs().set(Stats.SPEED,           skillToIV(skills, Skill.Agility));
+
+        // EVs (0–252) scaled from skill level (0–100)
+        pokemon.getEvs().set(Stats.HP,              skillToEV(skills, Skill.Stamina));
+        pokemon.getEvs().set(Stats.ATTACK,          skillToEV(skills, Skill.Strength));
+        pokemon.getEvs().set(Stats.DEFENCE,         skillToEV(skills, Skill.Athletics));
+        pokemon.getEvs().set(Stats.SPECIAL_ATTACK,  skillToEV(skills, Skill.Mana));
+        pokemon.getEvs().set(Stats.SPECIAL_DEFENCE, skillToEV(skills, Skill.Knowledge));
+        pokemon.getEvs().set(Stats.SPEED,           skillToEV(skills, Skill.Agility));
 
         return pokemon;
     }
@@ -135,16 +150,20 @@ public class ConversionHelper {
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     private static int skillToIV(ICitizenSkillHandler skills, Skill skill) {
-        return Math.min(31, skills.getSkill(skill).getLevel() * 31 / 100);
+        return Math.min(31, skills.getLevel(skill) * 31 / 100);
+    }
+
+    private static int skillToEV(ICitizenSkillHandler skills, Skill skill) {
+        return Math.min(252, skills.getLevel(skill) * 252 / 100);
     }
 
     private static int averageSkillLevel(ICitizenSkillHandler skills) {
-        int sum = skills.getSkill(Skill.Stamina).getLevel()
-                + skills.getSkill(Skill.Strength).getLevel()
-                + skills.getSkill(Skill.Athletics).getLevel()
-                + skills.getSkill(Skill.Mana).getLevel()
-                + skills.getSkill(Skill.Knowledge).getLevel()
-                + skills.getSkill(Skill.Agility).getLevel();
+        int sum = skills.getLevel(Skill.Stamina)
+                + skills.getLevel(Skill.Strength)
+                + skills.getLevel(Skill.Athletics)
+                + skills.getLevel(Skill.Mana)
+                + skills.getLevel(Skill.Knowledge)
+                + skills.getLevel(Skill.Agility);
         return sum / 6;
     }
 }

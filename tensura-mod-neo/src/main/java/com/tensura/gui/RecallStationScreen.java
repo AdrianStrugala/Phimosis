@@ -28,13 +28,15 @@ public class RecallStationScreen extends AbstractContainerScreen<RecallStationMe
 
         for (int i = 0; i < menu.getEntries().size(); i++) {
             var entry = menu.getEntries().get(i);
+            if (!entry.canRecall()) continue;
+
             int y = listTop + i * ROW_HEIGHT;
             int btnX = leftPos + GUI_WIDTH - PADDING - 60;
 
             addRenderableWidget(Button.builder(
                     Component.literal("Recall"),
                     btn -> {
-                        PacketDistributor.sendToServer(new RecallCitizenPacket(entry.citizenId()));
+                        PacketDistributor.sendToServer(new RecallCitizenPacket(entry.citizenId(), entry.colonyId()));
                         onClose();
                     })
                     .pos(btnX, y)
@@ -60,14 +62,23 @@ public class RecallStationScreen extends AbstractContainerScreen<RecallStationMe
 
         int listTop = topPos + 30;
         if (menu.getEntries().isEmpty()) {
-            gfx.drawCenteredString(font, Component.literal("No enrolled citizens"),
+            gfx.drawCenteredString(font, Component.literal("No citizens in colony"),
                     leftPos + GUI_WIDTH / 2, listTop + 20, 0xFFAAAAAA);
         } else {
             for (int i = 0; i < menu.getEntries().size(); i++) {
                 var entry = menu.getEntries().get(i);
-                String name = entry.citizenName().isEmpty() ? capitalize(entry.species()) : entry.citizenName();
-                String label = name + "  \u00a7e[" + capitalize(entry.species()) + "]\u00a7r";
-                gfx.drawString(font, label, leftPos + PADDING, listTop + i * ROW_HEIGHT + 4, 0xFFFFFFFF, false);
+                int textColor;
+                String label;
+                if (entry.canRecall()) {
+                    String name = entry.citizenName() == null || entry.citizenName().isEmpty()
+                            ? capitalize(entry.species()) : entry.citizenName();
+                    label = name + "  \u00a7e[" + capitalize(entry.species()) + "]\u00a7r";
+                    textColor = 0xFFFFFFFF;
+                } else {
+                    label = entry.citizenName() == null || entry.citizenName().isEmpty() ? "Unknown" : entry.citizenName();
+                    textColor = 0xFF888888;
+                }
+                gfx.drawString(font, label, leftPos + PADDING, listTop + i * ROW_HEIGHT + 4, textColor, false);
             }
         }
     }

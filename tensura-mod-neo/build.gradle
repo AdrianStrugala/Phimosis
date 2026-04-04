@@ -85,3 +85,19 @@ tasks.named('jar', Jar).configure {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
+
+// Auto-increment patch version in gradle.properties after every successful build
+tasks.named('build').configure {
+    doLast {
+        def propsFile = file('gradle.properties')
+        def props = new Properties()
+        propsFile.withInputStream { props.load(it) }
+        def current = props.getProperty('mod_version', '1.0.0')
+        def parts = current.tokenize('.')
+        parts[2] = (parts[2].toInteger() + 1).toString()
+        def next = parts.join('.')
+        def content = propsFile.text.replaceFirst(/mod_version=\S+/, "mod_version=${next}")
+        propsFile.text = content
+        println "Version bumped: ${current} → ${next}"
+    }
+}

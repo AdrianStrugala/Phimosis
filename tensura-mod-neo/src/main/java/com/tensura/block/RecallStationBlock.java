@@ -2,8 +2,10 @@ package com.tensura.block;
 
 import com.minecolonies.api.colony.IColony;
 import com.minecolonies.api.colony.IColonyManager;
+import com.minecolonies.api.colony.ICitizenData;
 import com.minecolonies.api.colony.ICivilianData;
 import com.tensura.data.DynamicCitizenSpeciesData;
+import com.tensura.event.ColonyStartupEvents;
 import com.tensura.gui.RecallStationMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -22,8 +24,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 public class RecallStationBlock extends Block {
 
@@ -38,23 +41,44 @@ public class RecallStationBlock extends Block {
         if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.PASS;
         if (!(level instanceof ServerLevel serverLevel)) return InteractionResult.PASS;
 
-        UUID playerUUID = serverPlayer.getUUID();
         DynamicCitizenSpeciesData data = DynamicCitizenSpeciesData.get(serverLevel);
-        List<RecallStationMenu.RecallEntry> entries = new ArrayList<>();
+        Map<Integer, String> hardcodedMap = ColonyStartupEvents.getHardcodedSpeciesMap();
+        Map<Integer, String> speciesMap = data.mergedWith(hardcodedMap);
 
-        for (var entry : data.dynamicSpecies.entrySet()) {
-            int citizenId = entry.getKey();
-            String species = entry.getValue();
+        // Use LinkedHashMap to deduplicate by citizenId while preserving order
+        Map<Integer, RecallStationMenu.RecallEntry> entriesById = new LinkedHashMap<>();
 
-            // Only show citizens that belong to this player
-            UUID ownerUUID = data.ownerMap.get(citizenId);
-            if (ownerUUID == null || !ownerUUID.equals(playerUUID)) continue;
+        // 1) Enrolled citizens from DynamicCitizenSpeciesData — reliable, always correct
+        for (Map.Entry<Integer, String> e : data.dynamicSpecies.entrySet()) {
+            int citizenId = e.getKey();
+            String species = e.getValue();
+            Integer colonyId = data.colonyIdMap.get(citizenId);
+            if (colonyId == null) continue;
 
-            // Resolve citizen's display name from colony data
-            String citizenName = resolveCitizenName(serverLevel, data, citizenId);
-            String ownerName = resolveOwnerName(serverLevel, ownerUUID);
-            entries.add(new RecallStationMenu.RecallEntry(citizenId, citizenName, species, ownerName));
+            String citizenName = resolveCitizenName(serverLevel, colonyId, citizenId);
+
+            entriesById.put(citizenId, new RecallStationMenu.RecallEntry(
+                    citizenId, citizenName, species, colonyId, true));
         }
+
+        // 2) Citizens from the closest colony — for hardcoded-species citizens
+        IColony colony = IColonyManager.getInstance().getClosestIColony(serverLevel, pos);
+        if (colony != null) {
+            for (ICitizenData citizen : colony.getCitizenManager().getCitizens()) {
+                int citizenId = citizen.getId();
+                if (entriesById.containsKey(citizenId)) continue; // already added above
+
+                String species = speciesMap.get(citizenId);
+                boolean canRecall = species != null;
+
+                entriesById.put(citizenId, new RecallStationMenu.RecallEntry(
+                        citizenId, citizen.getName(),
+                        species != null ? species : "",
+                        colony.getID(), canRecall));
+            }
+        }
+
+        List<RecallStationMenu.RecallEntry> entries = new ArrayList<>(entriesById.values());
 
         serverPlayer.openMenu(new MenuProvider() {
             @Override
@@ -66,31 +90,23 @@ public class RecallStationBlock extends Block {
             }
         }, (RegistryFriendlyByteBuf buf) -> {
             buf.writeInt(entries.size());
-            for (var e : entries) {
-                buf.writeInt(e.citizenId());
-                buf.writeUtf(e.citizenName());
-                buf.writeUtf(e.species());
-                buf.writeUtf(e.ownerName());
+            for (var entry : entries) {
+                buf.writeInt(entry.citizenId());
+                buf.writeUtf(entry.citizenName());
+                buf.writeUtf(entry.species());
+                buf.writeInt(entry.colonyId());
+                buf.writeBoolean(entry.canRecall());
             }
         });
 
         return InteractionResult.SUCCESS;
     }
 
-    private static String resolveCitizenName(ServerLevel level, DynamicCitizenSpeciesData data, int citizenId) {
-        Integer colonyId = data.colonyIdMap.get(citizenId);
-        if (colonyId == null) return "";
+    private static String resolveCitizenName(ServerLevel level, int colonyId, int citizenId) {
         IColony colony = IColonyManager.getInstance().getColonyByWorld(colonyId, level);
         if (colony == null) return "";
         ICivilianData civilian = colony.getCitizenManager().getCivilian(citizenId);
         return civilian != null ? civilian.getName() : "";
     }
 
-    private static String resolveOwnerName(ServerLevel level, UUID uuid) {
-        if (uuid == null) return "Unknown";
-        ServerPlayer online = level.getServer().getPlayerList().getPlayer(uuid);
-        if (online != null) return online.getName().getString();
-        return level.getServer().getProfileCache()
-                .get(uuid).map(p -> p.getName()).orElse(uuid.toString().substring(0, 8));
-    }
 }
