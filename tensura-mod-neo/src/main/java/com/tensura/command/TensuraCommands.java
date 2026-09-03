@@ -111,11 +111,11 @@ public class TensuraCommands {
                 + "§c! Zabij odpowiedniego Pokémona."));
         }
 
-        // Re-block the node so it can be clicked again next time (server source = bypasses op check)
-        // Note: puffish_skills uses "block" subcommand, not "lock"
+        // Re-lock the node so it can be clicked again next time (server source = bypasses op check)
+        // puffish_skills subcommands under "skills" are: unlock | lock | reset
         target.getServer().getCommands().performPrefixedCommand(
             target.getServer().createCommandSourceStack(),
-            "puffish_skills skills block " + target.getGameProfile().getName() + " devour " + spellName
+            "puffish_skills skills lock " + target.getGameProfile().getName() + " devour " + spellName
         );
         return 1;
     }
