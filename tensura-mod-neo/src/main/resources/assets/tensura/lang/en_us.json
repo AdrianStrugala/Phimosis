@@ -4,5 +4,7 @@
   "effect.tensura.wet": "Wet",
   "effect.tensura.frozen": "Frozen",
   "effect.tensura.paralyzed": "Paralyzed",
-  "effect.tensura.exhausted": "Exhausted"
+  "effect.tensura.exhausted": "Exhausted",
+  "effect.tensura.exposed": "Exposed",
+  "effect.tensura.toxic": "Toxic"
 }

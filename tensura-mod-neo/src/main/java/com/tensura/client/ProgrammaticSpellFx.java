@@ -39,6 +39,13 @@ public final class ProgrammaticSpellFx {
         switch (shape) {
             case "beam", "ribbon" -> effect.getFxData().objects().add(
                     beam(duration, palette));
+            case "cone" -> effect.getFxData().objects().add(
+                cone(duration, palette));
+            case "wave" -> {
+                effect.getFxData().objects().add(ring(duration, palette, 8.0f, 0.16f));
+                effect.getFxData().objects().add(sphere(duration, palette,
+                    6.0f, 0.18f, 0.22f, false, false));
+            }
             case "telegraph" -> effect.getFxData().objects().add(
                     ring(duration, palette, 2.2f, 0.10f));
             case "zone" -> {
@@ -78,6 +85,16 @@ public final class ProgrammaticSpellFx {
         cone.setRadius(0.35f);
         cone.setRadiusThickness(0.35f);
         cone.setAngle(18.0f);
+        emitter.config.shape.setShape(cone);
+        return emitter;
+    }
+
+    private static ParticleEmitter cone(int duration, Palette palette) {
+        ParticleEmitter emitter = particle(duration, palette, 12.0f, 0.18f, 0.28f, false);
+        Cone cone = new Cone();
+        cone.setRadius(0.85f);
+        cone.setRadiusThickness(0.75f);
+        cone.setAngle(35.0f);
         emitter.config.shape.setShape(cone);
         return emitter;
     }
@@ -155,8 +172,23 @@ public final class ProgrammaticSpellFx {
             case "snow_zone", "moving_blizzard", "storm_cast" ->
                     new Palette(0xFFE0F2FE, 0xAA7DD3FC);
             case "water_shell", "water_spiral", "heavy_splash",
-                    "water_burst", "dash_forward", "two_hand_channel" ->
+                    "water_burst", "dash_forward", "two_hand_channel",
+                    "water_front", "surf_wave", "ground_slam" ->
                     new Palette(0xDD38BDF8, 0x8867E8F9);
+                case "flame_stream", "fire_burst", "smoke_afterglow",
+                    "channel_forward" ->
+                    new Palette(0xFFFFC857, 0xCCEF4444);
+                case "toxic_spikes", "poison_burst", "toxic_ground",
+                    "throw_overhead" ->
+                    new Palette(0xFFD8B4FE, 0xCC65A30D);
+                case "combat_impact", "melee_finisher", "melee_left" ->
+                    new Palette(0xFFFFF7ED, 0xCCE11D48);
+                case "shadow_path", "shadow_slash", "shadow_afterimage",
+                    "shadow_step" ->
+                    new Palette(0xFF312E81, 0xAA111827);
+                case "prismatic_beam", "psychic_burst", "ricochet_arc",
+                    "cast_point" ->
+                    new Palette(0xFFF0ABFC, 0xCC22D3EE);
             default -> new Palette(0xFFE2E8F0, 0x888B5CF6);
         };
     }

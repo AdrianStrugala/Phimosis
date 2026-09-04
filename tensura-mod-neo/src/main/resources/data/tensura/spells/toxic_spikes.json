@@ -1,0 +1,29 @@
+{
+  "pokemon_type": "poison",
+  "category": "status",
+  "power": 0.0,
+  "school": "poison",
+  "cooldown_ticks": 300,
+  "targeting": {
+    "type": "area",
+    "range": 12.0,
+    "radius": 1.25,
+    "max_targets": 0
+  },
+  "delivery": {
+    "type": "trap",
+    "projectile_count": 3,
+    "duration_ticks": 400
+  },
+  "impact": [],
+  "visual": {
+    "cast_animation": "throw_overhead",
+    "telegraph": "toxic_spikes",
+    "impact": "poison_burst",
+    "aftermath": "toxic_ground"
+  },
+  "sound": {
+    "cast": "minecraft:block.pointed_dripstone.place",
+    "impact": "minecraft:entity.spider.hurt"
+  }
+}

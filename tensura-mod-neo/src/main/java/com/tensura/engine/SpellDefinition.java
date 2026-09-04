@@ -42,6 +42,12 @@ public class SpellDefinition {
          * "delayed_area" — telegraphs a fixed area before applying impacts
          * "moving_zone"  — moves and applies periodic area impacts
          * "protective_aura" — follows the caster and mitigates allied damage
+         * "channel_cone" — repeatedly applies impacts in a forward cone
+         * "wave"        — moves a ground-level front through enemies
+         * "trap"        — persists at a location and triggers on entry
+         * "melee_combo" — applies a timed sequence of close-range hits
+         * "teleport_strike" — teleports behind an aimed target and strikes
+         * "ricochet_beam" — instant beam that redirects to one extra target
          */
         public String type = "projectile";
         public double speed = 1.5;
@@ -56,6 +62,10 @@ public class SpellDefinition {
         public double movement_speed = 0.0;
         public double homing_strength = 0.0;
         public double pull_strength = 0.0;
+        public double cone_angle = 45.0;
+        public int combo_hits = 1;
+        public int combo_interval_ticks = 4;
+        public int bounce_count = 0;
     }
 
     public static class Impact {

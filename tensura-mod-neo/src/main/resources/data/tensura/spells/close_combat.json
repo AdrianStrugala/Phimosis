@@ -1,10 +1,31 @@
 {
+  "pokemon_type": "fighting",
+  "category": "physical",
+  "power": 24.0,
   "school": "physical",
-  "cooldown_ticks": 280,
-  "targeting": { "type": "aim", "range": 8 },
-  "delivery": { "type": "instant", "speed": 1.0 },
+  "cooldown_ticks": 320,
+  "targeting": {
+    "type": "aim",
+    "range": 3.0,
+    "width": 1.0,
+    "max_targets": 1
+  },
+  "delivery": {
+    "type": "melee_combo",
+    "combo_hits": 3,
+    "combo_interval_ticks": 5
+  },
   "impact": [
-    { "type": "damage", "damage_multiplier": 5.0 },
-    { "type": "knockback", "strength": 4.0 }
-  ]
+    { "type": "damage", "damage_multiplier": 0.3333333333 },
+    { "type": "knockback", "strength": 0.15 }
+  ],
+  "visual": {
+    "cast_animation": "melee_left",
+    "impact": "combat_impact",
+    "aftermath": "melee_finisher"
+  },
+  "sound": {
+    "cast": "minecraft:entity.player.attack.sweep",
+    "impact": "minecraft:entity.player.attack.strong"
+  }
 }

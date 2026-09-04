@@ -22,6 +22,7 @@ public class SpellStatusEvents {
     @SubscribeEvent
     public void onPlayerTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        tickToxic(player);
         boolean immobilized = player.hasEffect(TensuraMobEffects.ASLEEP)
                 || player.hasEffect(TensuraMobEffects.FROZEN);
         if (!immobilized && !player.hasEffect(TensuraMobEffects.PARALYZED)) return;
@@ -41,6 +42,7 @@ public class SpellStatusEvents {
     public void onEntityTick(EntityTickEvent.Post event) {
         if (!(event.getEntity() instanceof LivingEntity living) || living instanceof ServerPlayer) return;
         if (living.level().isClientSide) return;
+        tickToxic(living);
         boolean immobilized = living.hasEffect(TensuraMobEffects.ASLEEP)
                 || living.hasEffect(TensuraMobEffects.FROZEN);
         if (!immobilized && !living.hasEffect(TensuraMobEffects.PARALYZED)) return;
@@ -93,5 +95,19 @@ public class SpellStatusEvents {
         level.sendParticles(ParticleTypes.ENCHANT,
                 living.getX(), living.getY() + living.getBbHeight() + 0.25, living.getZ(),
                 3, 0.25, 0.15, 0.25, 0.02);
+    }
+
+    private static void tickToxic(LivingEntity living) {
+        MobEffectInstance toxic = living.getEffect(TensuraMobEffects.TOXIC);
+        if (toxic == null || living.tickCount % 20 != 0) return;
+        int elapsedSteps = Math.max(0, (200 - toxic.getDuration()) / 40);
+        float damage = 1.0f + toxic.getAmplifier() * 0.5f
+                + Math.min(3, elapsedSteps) * 0.5f;
+        living.hurt(living.damageSources().magic(), damage);
+        if (living.level() instanceof ServerLevel level) {
+            level.sendParticles(ParticleTypes.WITCH,
+                    living.getX(), living.getY() + living.getBbHeight() * 0.5,
+                    living.getZ(), 6, 0.3, 0.45, 0.3, 0.03);
+        }
     }
 }

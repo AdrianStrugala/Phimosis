@@ -5,6 +5,7 @@ import com.tensura.engine.SpellDefinition;
 import com.tensura.engine.SpellExecutor;
 import com.tensura.engine.SpellTargetingRules;
 import com.tensura.network.SpellVfxDispatcher;
+import com.tensura.registry.TensuraMobEffects;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -15,8 +16,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
@@ -39,8 +44,12 @@ public class SpellRuntimeController {
     private static final List<ActiveVortex> VORTEXES = new ArrayList<>();
     private static final List<DelayedHit> DELAYED_HITS = new ArrayList<>();
     private static final List<ActiveChannelBeam> CHANNEL_BEAMS = new ArrayList<>();
+    private static final List<ActiveChannelCone> CHANNEL_CONES = new ArrayList<>();
     private static final List<DelayedArea> DELAYED_AREAS = new ArrayList<>();
     private static final List<MovingZone> MOVING_ZONES = new ArrayList<>();
+    private static final List<ActiveWave> WAVES = new ArrayList<>();
+    private static final List<ActiveTrap> TRAPS = new ArrayList<>();
+    private static final List<ActiveMeleeCombo> MELEE_COMBOS = new ArrayList<>();
     private static final List<ProtectiveAura> PROTECTIVE_AURAS = new ArrayList<>();
     private static final Map<UUID, ActiveCounter> COUNTERS = new HashMap<>();
     private static final Map<UUID, GuardState> GUARDS = new HashMap<>();
@@ -121,6 +130,52 @@ public class SpellRuntimeController {
                 definition, duration));
         SpellExecutor.playLoopSound(effectCaster, definition);
         SpellExecutor.sendRuntimeBeamVfx(owner, effectCaster, target, definition);
+        return true;
+    }
+
+    public static boolean startChannelCone(ServerPlayer owner, LivingEntity effectCaster,
+                                           SpellDefinition definition) {
+        int duration = Math.max(1, definition.delivery.duration_ticks);
+        CHANNEL_CONES.add(new ActiveChannelCone(effectCaster.level().dimension(),
+                owner.getUUID(), effectCaster.getUUID(), definition, duration));
+        SpellExecutor.playLoopSound(effectCaster, definition);
+        return true;
+    }
+
+    public static boolean startWave(ServerPlayer owner, LivingEntity effectCaster,
+                                    SpellDefinition definition, Vec3 center, Vec3 direction) {
+        int duration = Math.max(1, definition.delivery.duration_ticks);
+        WAVES.add(new ActiveWave(effectCaster.level().dimension(), owner.getUUID(),
+                effectCaster.getUUID(), center, direction, definition, duration));
+        SpellExecutor.playLoopSound(effectCaster, definition);
+        return true;
+    }
+
+    public static boolean startTrap(ServerPlayer owner, LivingEntity effectCaster,
+                                    SpellDefinition definition, Vec3 center, Vec3 direction) {
+        TRAPS.removeIf(trap -> trap.ownerId.equals(owner.getUUID()));
+        Vec3 horizontal = new Vec3(direction.x, 0.0, direction.z);
+        if (horizontal.lengthSqr() < 1.0E-6) horizontal = new Vec3(0.0, 0.0, 1.0);
+        Vec3 right = new Vec3(-horizontal.z, 0.0, horizontal.x).normalize();
+        int trapCount = Math.max(1, Math.min(3, definition.delivery.projectile_count));
+        int duration = Math.max(20, definition.delivery.duration_ticks);
+        Map<UUID, Integer> triggerCounts = new HashMap<>();
+        for (int index = 0; index < trapCount; index++) {
+            double offset = (index - (trapCount - 1) * 0.5) * 2.0;
+            TRAPS.add(new ActiveTrap(effectCaster.level().dimension(), owner.getUUID(),
+                    effectCaster.getUUID(), center.add(right.scale(offset)),
+                definition, duration, triggerCounts));
+        }
+        return true;
+    }
+
+    public static boolean startMeleeCombo(ServerPlayer owner, LivingEntity effectCaster,
+                                          LivingEntity target, SpellDefinition definition) {
+        if (!SpellTargetingRules.canHarm(owner, effectCaster, target)) return false;
+        MELEE_COMBOS.removeIf(combo -> combo.effectCasterId.equals(effectCaster.getUUID()));
+        MELEE_COMBOS.add(new ActiveMeleeCombo(effectCaster.level().dimension(),
+                owner.getUUID(), effectCaster.getUUID(), target.getUUID(), definition,
+                Math.max(1, definition.delivery.combo_hits)));
         return true;
     }
 
@@ -254,8 +309,12 @@ public class SpellRuntimeController {
         tickVortexes(event.getServer());
         tickDelayedHits(event.getServer());
         tickChannelBeams(event.getServer());
+        tickChannelCones(event.getServer());
         tickDelayedAreas(event.getServer());
         tickMovingZones(event.getServer());
+        tickWaves(event.getServer());
+        tickTraps(event.getServer());
+        tickMeleeCombos(event.getServer());
         tickProtectiveAuras(event.getServer());
         tickGuards(event.getServer());
         tickPendingCasts(event.getServer());
@@ -330,10 +389,18 @@ public class SpellRuntimeController {
                 || delayed.effectCasterId.equals(playerId));
         CHANNEL_BEAMS.removeIf(beam -> beam.ownerId.equals(playerId)
                 || beam.effectCasterId.equals(playerId));
+        CHANNEL_CONES.removeIf(cone -> cone.ownerId.equals(playerId)
+            || cone.effectCasterId.equals(playerId));
         DELAYED_AREAS.removeIf(area -> area.ownerId.equals(playerId)
                 || area.effectCasterId.equals(playerId));
         MOVING_ZONES.removeIf(zone -> zone.ownerId.equals(playerId)
                 || zone.effectCasterId.equals(playerId));
+        WAVES.removeIf(wave -> wave.ownerId.equals(playerId)
+            || wave.effectCasterId.equals(playerId));
+        TRAPS.removeIf(trap -> trap.ownerId.equals(playerId)
+            || trap.effectCasterId.equals(playerId));
+        MELEE_COMBOS.removeIf(combo -> combo.ownerId.equals(playerId)
+            || combo.effectCasterId.equals(playerId));
         PROTECTIVE_AURAS.removeIf(aura -> aura.ownerId.equals(playerId)
                 || aura.effectCasterId.equals(playerId));
         COUNTERS.entrySet().removeIf(entry -> entry.getKey().equals(playerId)
@@ -349,8 +416,12 @@ public class SpellRuntimeController {
         VORTEXES.clear();
         DELAYED_HITS.clear();
         CHANNEL_BEAMS.clear();
+        CHANNEL_CONES.clear();
         DELAYED_AREAS.clear();
         MOVING_ZONES.clear();
+        WAVES.clear();
+        TRAPS.clear();
+        MELEE_COMBOS.clear();
         PROTECTIVE_AURAS.clear();
         COUNTERS.clear();
         GUARDS.clear();
@@ -478,6 +549,31 @@ public class SpellRuntimeController {
         }
     }
 
+    private static void tickChannelCones(MinecraftServer server) {
+        Iterator<ActiveChannelCone> iterator = CHANNEL_CONES.iterator();
+        while (iterator.hasNext()) {
+            ActiveChannelCone cone = iterator.next();
+            ServerLevel level = server.getLevel(cone.dimension);
+            ServerPlayer owner = server.getPlayerList().getPlayer(cone.ownerId);
+            Entity source = level == null ? null : level.getEntity(cone.effectCasterId);
+            if (level == null || owner == null || owner.level() != level
+                    || !(source instanceof LivingEntity effectCaster) || !effectCaster.isAlive()
+                    || --cone.remainingTicks < 0) {
+                iterator.remove();
+                continue;
+            }
+
+            int interval = Math.max(1, cone.definition.delivery.tick_interval_ticks);
+            if (cone.remainingTicks % interval == 0) {
+                SpellExecutor.castRuntimeCone(owner, effectCaster, cone.definition);
+            }
+            if (cone.remainingTicks > 0 && cone.remainingTicks % 20 == 0) {
+                SpellExecutor.playLoopSound(effectCaster, cone.definition);
+            }
+            if (cone.remainingTicks == 0) iterator.remove();
+        }
+    }
+
     private static void tickDelayedAreas(MinecraftServer server) {
         Iterator<DelayedArea> iterator = DELAYED_AREAS.iterator();
         while (iterator.hasNext()) {
@@ -582,6 +678,155 @@ public class SpellRuntimeController {
             if (zone.remainingTicks == 0) iterator.remove();
         }
     }
+
+        private static void tickWaves(MinecraftServer server) {
+        Iterator<ActiveWave> iterator = WAVES.iterator();
+        while (iterator.hasNext()) {
+            ActiveWave wave = iterator.next();
+            ServerLevel level = server.getLevel(wave.dimension);
+            ServerPlayer owner = server.getPlayerList().getPlayer(wave.ownerId);
+            Entity source = level == null ? null : level.getEntity(wave.effectCasterId);
+            if (level == null || owner == null || owner.level() != level
+                || !(source instanceof LivingEntity effectCaster) || !effectCaster.isAlive()
+                || --wave.remainingTicks < 0) {
+            iterator.remove();
+            continue;
+            }
+
+            double speed = Math.max(0.1, wave.definition.delivery.movement_speed);
+            Vec3 nextCenter = wave.center.add(wave.direction.scale(speed));
+            HitResult obstruction = level.clip(new ClipContext(
+                wave.center.add(0.0, 0.6, 0.0), nextCenter.add(0.0, 0.6, 0.0),
+                ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, effectCaster));
+            if (obstruction.getType() == HitResult.Type.BLOCK) {
+            iterator.remove();
+            continue;
+            }
+            wave.center = nextCenter;
+
+            double width = wave.definition.targeting.width > 0.0
+                ? wave.definition.targeting.width : 3.0;
+            double radius = wave.definition.targeting.radius > 0.0
+                ? wave.definition.targeting.radius : 1.5;
+            level.sendParticles(ParticleTypes.SPLASH,
+                wave.center.x, wave.center.y + 0.8, wave.center.z,
+                18, width * 0.45, 0.8, width * 0.45, 0.08);
+            level.sendParticles(ParticleTypes.BUBBLE,
+                wave.center.x, wave.center.y + 0.45, wave.center.z,
+                8, width * 0.4, 0.45, width * 0.4, 0.04);
+            if (wave.remainingTicks % 4 == 0) {
+            SpellVfxDispatcher.send(level, "wave", wave.definition.visual.aftermath,
+                wave.definition.school, wave.center,
+                wave.center.add(wave.direction.scale(2.0)), width,
+                6, effectCaster, false);
+            }
+
+            AABB area = new AABB(wave.center, wave.center).inflate(width, radius, width);
+            List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, area,
+                target -> SpellTargetingRules.canHarm(owner, effectCaster, target)
+                    && target.getY() <= wave.center.y + radius + 1.0);
+            targets.sort((left, right) -> Double.compare(
+                left.distanceToSqr(wave.center), right.distanceToSqr(wave.center)));
+            boolean reachedTargetLimit = false;
+            for (LivingEntity target : targets) {
+            if (!wave.hitEntities.add(target.getUUID())) continue;
+            SpellExecutor.applyImpacts(owner, effectCaster, target, wave.definition);
+            Vec3 movement = target.getDeltaMovement();
+            target.setDeltaMovement(movement.add(
+                wave.direction.x * 0.55, 0.18, wave.direction.z * 0.55));
+            target.hurtMarked = true;
+            if (wave.definition.targeting.max_targets > 0
+                && wave.hitEntities.size() >= wave.definition.targeting.max_targets) {
+                reachedTargetLimit = true;
+                break;
+            }
+            }
+            if (reachedTargetLimit || wave.remainingTicks == 0) iterator.remove();
+        }
+        }
+
+        private static void tickTraps(MinecraftServer server) {
+        Iterator<ActiveTrap> iterator = TRAPS.iterator();
+        while (iterator.hasNext()) {
+            ActiveTrap trap = iterator.next();
+            ServerLevel level = server.getLevel(trap.dimension);
+            ServerPlayer owner = server.getPlayerList().getPlayer(trap.ownerId);
+            if (level == null || owner == null || owner.level() != level
+                || --trap.remainingTicks < 0) {
+            iterator.remove();
+            continue;
+            }
+            Entity source = level.getEntity(trap.effectCasterId);
+            LivingEntity effectCaster = source instanceof LivingEntity living && living.isAlive()
+                ? living : owner;
+            double radius = trap.definition.targeting.radius > 0.0
+                ? trap.definition.targeting.radius : 1.25;
+            if (trap.remainingTicks % 8 == 0) {
+            level.sendParticles(ParticleTypes.WITCH,
+                trap.center.x, trap.center.y + 0.12, trap.center.z,
+                4, radius * 0.45, 0.08, radius * 0.45, 0.01);
+            }
+
+            Set<UUID> currentOccupants = new HashSet<>();
+            List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class,
+                new AABB(trap.center, trap.center).inflate(radius, 0.8, radius),
+                target -> SpellTargetingRules.canHarm(owner, effectCaster, target));
+            for (LivingEntity target : targets) {
+            currentOccupants.add(target.getUUID());
+            if (trap.occupants.contains(target.getUUID())) continue;
+            int triggerCount = trap.triggerCounts.merge(target.getUUID(), 1, Integer::sum);
+            if (triggerCount == 1) {
+                target.addEffect(new MobEffectInstance(MobEffects.POISON,
+                    120, 0, false, true, true));
+            } else {
+                target.addEffect(new MobEffectInstance(TensuraMobEffects.TOXIC,
+                    200, Math.min(2, triggerCount - 2), false, true, true));
+            }
+            SpellExecutor.applyImpacts(owner, effectCaster, target, trap.definition);
+            }
+            trap.occupants.clear();
+            trap.occupants.addAll(currentOccupants);
+            if (trap.remainingTicks == 0) iterator.remove();
+        }
+        }
+
+        private static void tickMeleeCombos(MinecraftServer server) {
+        Iterator<ActiveMeleeCombo> iterator = MELEE_COMBOS.iterator();
+        while (iterator.hasNext()) {
+            ActiveMeleeCombo combo = iterator.next();
+            ServerLevel level = server.getLevel(combo.dimension);
+            ServerPlayer owner = server.getPlayerList().getPlayer(combo.ownerId);
+            Entity source = level == null ? null : level.getEntity(combo.effectCasterId);
+            Entity targetEntity = level == null ? null : level.getEntity(combo.targetId);
+            if (level == null || owner == null || owner.level() != level
+                || !(source instanceof LivingEntity effectCaster) || !effectCaster.isAlive()
+                || !(targetEntity instanceof LivingEntity target) || !target.isAlive()
+                || !SpellTargetingRules.canHarm(owner, effectCaster, target)
+                || target.distanceTo(effectCaster) > combo.definition.targeting.range) {
+            iterator.remove();
+            continue;
+            }
+
+            if (combo.ticksUntilHit-- > 0) continue;
+            boolean finalHit = combo.remainingHits == 1;
+            effectCaster.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES,
+                target.getBoundingBox().getCenter());
+            SpellExecutor.applyImpacts(owner, effectCaster, target,
+                combo.definition, finalHit);
+            level.sendParticles(finalHit ? ParticleTypes.EXPLOSION : ParticleTypes.CRIT,
+                target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(),
+                finalHit ? 4 : 12, 0.35, 0.4, 0.35, 0.08);
+            combo.remainingHits--;
+            if (combo.remainingHits <= 0) {
+            effectCaster.addEffect(new MobEffectInstance(TensuraMobEffects.EXPOSED,
+                80, 0, false, true, true));
+            iterator.remove();
+            } else {
+            combo.ticksUntilHit = Math.max(1,
+                combo.definition.delivery.combo_interval_ticks);
+            }
+        }
+        }
 
     private static void tickProtectiveAuras(MinecraftServer server) {
         Iterator<ProtectiveAura> iterator = PROTECTIVE_AURAS.iterator();
@@ -779,6 +1024,24 @@ public class SpellRuntimeController {
         }
     }
 
+    private static class ActiveChannelCone {
+        private final ResourceKey<Level> dimension;
+        private final UUID ownerId;
+        private final UUID effectCasterId;
+        private final SpellDefinition definition;
+        private int remainingTicks;
+
+        private ActiveChannelCone(ResourceKey<Level> dimension, UUID ownerId,
+                                  UUID effectCasterId, SpellDefinition definition,
+                                  int remainingTicks) {
+            this.dimension = dimension;
+            this.ownerId = ownerId;
+            this.effectCasterId = effectCasterId;
+            this.definition = definition;
+            this.remainingTicks = remainingTicks;
+        }
+    }
+
     private static class DelayedArea {
         private final ResourceKey<Level> dimension;
         private final UUID ownerId;
@@ -820,6 +1083,76 @@ public class SpellRuntimeController {
                     ? horizontal.normalize() : Vec3.ZERO;
             this.definition = definition;
             this.remainingTicks = remainingTicks;
+        }
+    }
+
+    private static class ActiveWave {
+        private final ResourceKey<Level> dimension;
+        private final UUID ownerId;
+        private final UUID effectCasterId;
+        private final Vec3 direction;
+        private final SpellDefinition definition;
+        private final Set<UUID> hitEntities = new HashSet<>();
+        private Vec3 center;
+        private int remainingTicks;
+
+        private ActiveWave(ResourceKey<Level> dimension, UUID ownerId,
+                           UUID effectCasterId, Vec3 center, Vec3 direction,
+                           SpellDefinition definition, int remainingTicks) {
+            this.dimension = dimension;
+            this.ownerId = ownerId;
+            this.effectCasterId = effectCasterId;
+            this.center = center;
+            Vec3 horizontal = new Vec3(direction.x, 0.0, direction.z);
+            this.direction = horizontal.lengthSqr() > 1.0E-6
+                    ? horizontal.normalize() : Vec3.ZERO;
+            this.definition = definition;
+            this.remainingTicks = remainingTicks;
+        }
+    }
+
+    private static class ActiveTrap {
+        private final ResourceKey<Level> dimension;
+        private final UUID ownerId;
+        private final UUID effectCasterId;
+        private final Vec3 center;
+        private final SpellDefinition definition;
+        private final Set<UUID> occupants = new HashSet<>();
+        private final Map<UUID, Integer> triggerCounts;
+        private int remainingTicks;
+
+        private ActiveTrap(ResourceKey<Level> dimension, UUID ownerId,
+                           UUID effectCasterId, Vec3 center,
+                   SpellDefinition definition, int remainingTicks,
+                   Map<UUID, Integer> triggerCounts) {
+            this.dimension = dimension;
+            this.ownerId = ownerId;
+            this.effectCasterId = effectCasterId;
+            this.center = center;
+            this.definition = definition;
+            this.remainingTicks = remainingTicks;
+            this.triggerCounts = triggerCounts;
+        }
+    }
+
+    private static class ActiveMeleeCombo {
+        private final ResourceKey<Level> dimension;
+        private final UUID ownerId;
+        private final UUID effectCasterId;
+        private final UUID targetId;
+        private final SpellDefinition definition;
+        private int remainingHits;
+        private int ticksUntilHit;
+
+        private ActiveMeleeCombo(ResourceKey<Level> dimension, UUID ownerId,
+                                 UUID effectCasterId, UUID targetId,
+                                 SpellDefinition definition, int remainingHits) {
+            this.dimension = dimension;
+            this.ownerId = ownerId;
+            this.effectCasterId = effectCasterId;
+            this.targetId = targetId;
+            this.definition = definition;
+            this.remainingHits = remainingHits;
         }
     }
 

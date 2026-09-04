@@ -1,10 +1,39 @@
 {
+  "pokemon_type": "water",
+  "category": "special",
+  "power": 20.0,
   "school": "water",
-  "cooldown_ticks": 160,
-  "targeting": { "type": "area", "range": 7 },
-  "delivery": { "type": "instant", "speed": 1.0 },
+  "cooldown_ticks": 360,
+  "targeting": {
+    "type": "wave",
+    "range": 16.0,
+    "width": 3.5,
+    "radius": 1.5,
+    "max_targets": 12
+  },
+  "delivery": {
+    "type": "wave",
+    "duration_ticks": 20,
+    "movement_speed": 0.8
+  },
   "impact": [
-    { "type": "damage", "damage_multiplier": 2.2 },
-    { "type": "knockback", "strength": 2.5 }
-  ]
+    { "type": "damage", "damage_multiplier": 1.0 },
+    {
+      "type": "wet",
+      "duration": 100,
+      "show_particles": true,
+      "show_icon": true
+    }
+  ],
+  "visual": {
+    "cast_animation": "ground_slam",
+    "telegraph": "water_front",
+    "impact": "heavy_splash",
+    "aftermath": "surf_wave"
+  },
+  "sound": {
+    "cast": "minecraft:entity.player.splash.high_speed",
+    "loop": "minecraft:entity.boat.paddle_water",
+    "impact": "minecraft:entity.player.splash"
+  }
 }

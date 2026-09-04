@@ -237,7 +237,7 @@ public class CobblemonMoveMapper {
         n("shadow_force",       "shadow_ball");
         n("spectral_thief",     "foul_play");
         n("moongeist_beam",     "shadow_ball");
-        n("shadow_sneak",       "night_shade");
+        n("shadow_sneak",       "shadow_sneak");
         n("shadow_punch",       "night_shade");
         n("night_daze",         "dark_pulse");
         n("lick",               "night_shade");
@@ -293,7 +293,7 @@ public class CobblemonMoveMapper {
         n("sludge_bomb",        "sludge_bomb");
         n("sludge_wave",        "sludge_bomb");
         n("toxic",              "toxic");
-        n("toxic_spikes",       "toxic");
+        n("toxic_spikes",       "toxic_spikes");
         n("venoshock",          "sludge_bomb");
         n("acid",               "poison_sting");
         n("smog",               "poison_sting");

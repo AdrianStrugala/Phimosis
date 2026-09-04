@@ -122,7 +122,8 @@ public final class SpellVfxManager {
     }
 
     private static boolean isDirectional(String shape) {
-        return "beam".equals(shape) || "ribbon".equals(shape);
+        return "beam".equals(shape) || "ribbon".equals(shape)
+                || "cone".equals(shape) || "wave".equals(shape);
     }
 
     private static double scale(SpellVfxPacket packet) {
