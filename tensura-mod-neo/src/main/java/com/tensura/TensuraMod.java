@@ -1,11 +1,14 @@
 package com.tensura;
 
 import com.tensura.command.TensuraCommands;
+import com.tensura.config.TensuraConfig;
 import com.tensura.event.CombatCompanionEvents;
 import com.tensura.event.ColonyGamemodeEvents;
 import com.tensura.event.ColonyStartupEvents;
 import com.tensura.event.ConversionEvents;
 import com.tensura.event.NoHungerEvents;
+import com.tensura.event.PredatorEvents;
+import com.tensura.event.PredatorSyncEvents;
 import com.tensura.event.TensuraAttributeEffects;
 import com.tensura.gui.RecallStationScreen;
 import com.tensura.item.SpellItem;
@@ -24,7 +27,9 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
@@ -39,7 +44,9 @@ public class TensuraMod {
     public static final String MOD_ID = "tensura";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
-    public TensuraMod(IEventBus modBus) {
+    public TensuraMod(IEventBus modBus, ModContainer container) {
+        container.registerConfig(ModConfig.Type.SERVER, TensuraConfig.SPEC);
+
         TensuraBlockRegistry.BLOCKS.register(modBus);
         TensuraItemRegistry.ITEMS.register(modBus);
         TensuraMenuRegistry.MENUS.register(modBus);
@@ -54,6 +61,8 @@ public class TensuraMod {
         NeoForge.EVENT_BUS.register(new ColonyGamemodeEvents());
         NeoForge.EVENT_BUS.register(new TensuraCommands());
         NeoForge.EVENT_BUS.register(new ColonyStartupEvents());
+        NeoForge.EVENT_BUS.register(new PredatorEvents());
+        NeoForge.EVENT_BUS.register(new PredatorSyncEvents());
         // ConversionEvents must be registered BEFORE CombatCompanionEvents
         NeoForge.EVENT_BUS.register(ConversionEvents.class);
         ConversionEvents.registerCobblemonHooks();

@@ -2,6 +2,7 @@ package com.tensura.command;
 
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.tensura.data.PredatorAbsorption;
 import com.tensura.data.PredatorData;
 import com.tensura.engine.SpellRegistry;
 import com.tensura.item.SpellItem;
@@ -51,19 +52,7 @@ public class TensuraCommands {
                         )
                     )
                 )
-                // Used by puffish_skills Devour tree rewards — always checks absorption
-                .then(Commands.literal("absorb_spell")
-                    .then(Commands.argument("player", EntityArgument.player())
-                        .then(Commands.argument("spell", StringArgumentType.word())
-                            .executes(ctx -> {
-                                ServerPlayer target = EntityArgument.getPlayer(ctx, "player");
-                                String spell = StringArgumentType.getString(ctx, "spell");
-                                return giveAbsorbedSpell(target, spell);
-                            })
-                        )
-                    )
-                )
-                // Devour node reward: give spell if absorbed, then re-lock node so it can be clicked again
+                // Devour tree inner button: hand out a copy, then re-arm the node
                 .then(Commands.literal("devour_recover")
                     .then(Commands.argument("player", EntityArgument.player())
                         .then(Commands.argument("spell", StringArgumentType.word())
@@ -71,6 +60,18 @@ public class TensuraCommands {
                                 ServerPlayer target = EntityArgument.getPlayer(ctx, "player");
                                 String spell = StringArgumentType.getString(ctx, "spell");
                                 return devourRecover(target, spell);
+                            })
+                        )
+                    )
+                )
+                // Admin/debug: hand out a spell the player has already absorbed
+                .then(Commands.literal("absorb_spell")
+                    .then(Commands.argument("player", EntityArgument.player())
+                        .then(Commands.argument("spell", StringArgumentType.word())
+                            .executes(ctx -> {
+                                ServerPlayer target = EntityArgument.getPlayer(ctx, "player");
+                                String spell = StringArgumentType.getString(ctx, "spell");
+                                return giveAbsorbedSpell(target, spell);
                             })
                         )
                     )
@@ -96,8 +97,12 @@ public class TensuraCommands {
     }
 
     /**
-     * Devour tree reward: give SpellItem if absorbed, else show error. Always re-locks the
-     * devour node so the player can click it again (infinite recovery).
+     * Reward of the devour tree's inner button. Hands out a copy if the spell is absorbed,
+     * then re-locks that button so it can be clicked again.
+     *
+     * The re-lock is deferred to the next server task on purpose: this runs from inside
+     * puffish's own unlock handling, and locking the skill in the middle of that would
+     * race with puffish writing the unlock down.
      */
     private static int devourRecover(ServerPlayer target, String spellName) {
         ResourceLocation id = ResourceLocation.tryParse("tensura:" + spellName);
@@ -105,24 +110,23 @@ public class TensuraCommands {
 
         if (PredatorData.hasAbsorbed(target, id)) {
             target.addItem(SpellItem.create(id));
+            target.sendSystemMessage(Component.literal(
+                    "§a[Predator] Odzyskano: §e" + PredatorAbsorption.prettyName(id)));
         } else {
             target.sendSystemMessage(Component.literal(
-                "§c[Predator] Nie pochłonąłeś jeszcze §e" + spellName.replace("_", " ")
-                + "§c! Zabij odpowiedniego Pokémona."));
+                    "§c[Predator] Nie pochłonąłeś jeszcze §e" + PredatorAbsorption.prettyName(id)
+                    + "§c! Zabij odpowiedniego Pokémona."));
         }
 
-        // Re-block the node so it can be clicked again next time (server source = bypasses op check)
-        // Note: puffish_skills uses "block" subcommand, not "lock"
-        target.getServer().getCommands().performPrefixedCommand(
-            target.getServer().createCommandSourceStack(),
-            "puffish_skills skills block " + target.getGameProfile().getName() + " devour " + spellName
-        );
+        target.getServer().execute(() -> {
+            if (!target.hasDisconnected()) PredatorAbsorption.lockDispenser(target, id);
+        });
         return 1;
     }
 
     /**
-     * Used as puffish_skills Devour tree reward. Always checks absorption regardless of
-     * caller permissions (puffish_skills runs commands as the server/op).
+     * Hands the player a copy of a spell they have already absorbed. Same guarantee as
+     * the Predator Codex — never grants a spell that is not in the absorbed list.
      */
     private static int giveAbsorbedSpell(ServerPlayer target, String spellName) {
         ResourceLocation id = ResourceLocation.tryParse("tensura:" + spellName);
