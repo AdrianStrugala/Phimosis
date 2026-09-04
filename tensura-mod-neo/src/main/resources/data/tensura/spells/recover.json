@@ -1,0 +1,45 @@
+{
+  "pokemon_type": "normal",
+  "category": "status",
+  "power": 0.0,
+  "school": "psychic",
+  "cooldown_ticks": 220,
+  "targeting": {
+    "type": "self",
+    "range": 0.0
+  },
+  "delivery": {
+    "type": "self",
+    "speed": 0.0
+  },
+  "impact": [
+    {
+      "type": "heal",
+      "recipient": "target",
+      "amount": 8.0
+    },
+    {
+      "type": "status_effect",
+      "recipient": "target",
+      "effect": "minecraft:resistance",
+      "duration": 200,
+      "amplifier": 0,
+      "chance": 1.0
+    },
+    {
+      "type": "status_effect",
+      "recipient": "target",
+      "effect": "minecraft:regeneration",
+      "duration": 100,
+      "amplifier": 0,
+      "chance": 1.0
+    }
+  ],
+  "visual": {
+    "cast_animation": "restore",
+    "impact": "psychic_restore"
+  },
+  "sound": {
+    "cast": "minecraft:entity.player.levelup"
+  }
+}

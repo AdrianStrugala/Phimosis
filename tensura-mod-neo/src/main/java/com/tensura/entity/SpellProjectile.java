@@ -41,6 +41,8 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
     private int projectileIndex = 0;
     private int projectileCount = 1;
     private UUID meteorGroup;
+    private UUID projectileGroup;
+    private UUID sourceEntityId;
 
     // Deserialization constructor (required by EntityType.Builder.of)
     public SpellProjectile(EntityType<? extends SpellProjectile> type, Level level) {
@@ -60,7 +62,20 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
 
     public static SpellProjectile create(ServerPlayer caster, ResourceLocation spellId, SpellDefinition def,
                                          Vec3 direction, int projectileIndex, int projectileCount) {
-        Level level = caster.level();
+        return create(caster, caster, spellId, def, direction, projectileIndex, projectileCount);
+    }
+
+    public static SpellProjectile create(ServerPlayer owner, LivingEntity source,
+                                         ResourceLocation spellId, SpellDefinition def,
+                                         Vec3 direction, int projectileIndex, int projectileCount) {
+        return create(owner, source, spellId, def, direction, projectileIndex, projectileCount, null);
+    }
+
+    public static SpellProjectile create(ServerPlayer owner, LivingEntity source,
+                                         ResourceLocation spellId, SpellDefinition def,
+                                         Vec3 direction, int projectileIndex, int projectileCount,
+                                         UUID projectileGroup) {
+        Level level = source.level();
         SpellProjectile proj = new SpellProjectile(TensuraEntityRegistry.SPELL_PROJECTILE.get(), level);
         proj.spellId = spellId.toString();
         proj.entityData.set(DATA_SPELL_ID, proj.spellId);
@@ -68,10 +83,12 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
         proj.projectileIndex = projectileIndex;
         proj.entityData.set(DATA_PROJECTILE_INDEX, projectileIndex);
         proj.projectileCount = projectileCount;
+        proj.projectileGroup = projectileGroup;
+        proj.sourceEntityId = source.getUUID();
 
-        Vec3 eye = caster.getEyePosition();
-        proj.setOwner(caster);
-        proj.moveTo(eye.x, eye.y, eye.z, caster.getYRot(), caster.getXRot());
+        Vec3 eye = source.getEyePosition();
+        proj.setOwner(owner);
+        proj.moveTo(eye.x, eye.y, eye.z, source.getYRot(), source.getXRot());
         proj.setNoGravity(true);
 
         // Constant velocity, straight line — analogous to Spell Engine
@@ -86,7 +103,15 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
     public static SpellProjectile createMeteor(ServerPlayer caster, ResourceLocation spellId, SpellDefinition def,
                                                Vec3 spawnPosition, Vec3 impactPosition, UUID groupId,
                                                int projectileIndex, int projectileCount) {
-        SpellProjectile projectile = new SpellProjectile(TensuraEntityRegistry.SPELL_PROJECTILE.get(), caster.level());
+        return createMeteor(caster, caster, spellId, def, spawnPosition, impactPosition,
+            groupId, projectileIndex, projectileCount);
+        }
+
+        public static SpellProjectile createMeteor(ServerPlayer owner, LivingEntity source,
+                               ResourceLocation spellId, SpellDefinition def,
+                               Vec3 spawnPosition, Vec3 impactPosition, UUID groupId,
+                               int projectileIndex, int projectileCount) {
+        SpellProjectile projectile = new SpellProjectile(TensuraEntityRegistry.SPELL_PROJECTILE.get(), source.level());
         projectile.spellId = spellId.toString();
         projectile.entityData.set(DATA_SPELL_ID, projectile.spellId);
         projectile.school = def.school;
@@ -94,7 +119,8 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
         projectile.entityData.set(DATA_PROJECTILE_INDEX, projectileIndex);
         projectile.projectileCount = projectileCount;
         projectile.meteorGroup = groupId;
-        projectile.setOwner(caster);
+        projectile.sourceEntityId = source.getUUID();
+        projectile.setOwner(owner);
         projectile.moveTo(spawnPosition.x, spawnPosition.y, spawnPosition.z);
         projectile.setNoGravity(true);
         double speed = Math.max(0.5, def.delivery.speed);
@@ -119,14 +145,28 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
     protected void onHitEntity(EntityHitResult result) {
         if (level().isClientSide) return;
         if (!(result.getEntity() instanceof LivingEntity target)) return;
-        if (target.equals(getOwner())) return;
+        if (target.equals(getOwner()) || target.getUUID().equals(sourceEntityId)) return;
 
         SpellDefinition def = SpellRegistry.get(ResourceLocation.parse(spellId)).orElse(null);
         if (def != null && getOwner() instanceof ServerPlayer caster) {
             if (meteorGroup != null) {
                 SpellRuntimeController.applyMeteorImpact(caster, def, position(), meteorGroup);
             } else {
-                SpellExecutor.applyImpacts(caster, target, def, projectileIndex == projectileCount - 1);
+                Entity source = sourceEntityId == null ? null : level().getEntity(sourceEntityId);
+                LivingEntity effectCaster = source instanceof LivingEntity living ? living : caster;
+                boolean finalImpact = projectileIndex == projectileCount - 1;
+                if (projectileGroup != null) {
+                    SpellRuntimeController.ProjectileImpact impact =
+                            SpellRuntimeController.registerProjectileImpact(projectileGroup,
+                                    target.getUUID(), def.targeting.max_targets);
+                    if (!impact.allowed()) {
+                        discard();
+                        return;
+                    }
+                    finalImpact = impact.firstHit();
+                }
+                SpellExecutor.applyImpacts(caster, effectCaster, target, def,
+                        finalImpact);
             }
         }
         this.discard();
@@ -173,6 +213,8 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
         tag.putInt("ProjectileIndex", projectileIndex);
         tag.putInt("ProjectileCount", projectileCount);
         if (meteorGroup != null) tag.putUUID("MeteorGroup", meteorGroup);
+        if (projectileGroup != null) tag.putUUID("ProjectileGroup", projectileGroup);
+        if (sourceEntityId != null) tag.putUUID("SourceEntity", sourceEntityId);
     }
 
     @Override
@@ -186,6 +228,8 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
         entityData.set(DATA_PROJECTILE_INDEX, projectileIndex);
         projectileCount = Math.max(1, tag.getInt("ProjectileCount"));
         meteorGroup = tag.hasUUID("MeteorGroup") ? tag.getUUID("MeteorGroup") : null;
+        projectileGroup = tag.hasUUID("ProjectileGroup") ? tag.getUUID("ProjectileGroup") : null;
+        sourceEntityId = tag.hasUUID("SourceEntity") ? tag.getUUID("SourceEntity") : null;
     }
 
     private SimpleParticleType schoolParticle() {

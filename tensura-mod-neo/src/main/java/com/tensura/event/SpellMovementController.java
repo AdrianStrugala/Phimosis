@@ -1,5 +1,6 @@
 package com.tensura.event;
 
+import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.tensura.engine.SpellDefinition;
 import com.tensura.engine.SpellExecutor;
 import com.tensura.registry.TensuraMobEffects;
@@ -11,6 +12,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.server.ServerStoppedEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.HashMap;
@@ -38,48 +41,84 @@ public class SpellMovementController {
                 : Math.max(1, (int) Math.ceil(distance / Math.max(0.1, definition.delivery.speed)));
 
         ACTIVE_DASHES.put(caster.getUUID(),
-            new ActiveDash(definition, caster.position(), direction.normalize(), distance, durationTicks));
+            new ActiveDash(caster.getUUID(), definition, caster.position(),
+                direction.normalize(), distance, durationTicks));
+        return true;
+        }
+
+        public static boolean startDash(ServerPlayer owner, PokemonEntity companion,
+                        LivingEntity target, SpellDefinition definition) {
+        if (companion.isPassenger() || companion.hasEffect(TensuraMobEffects.ASLEEP)
+            || companion.hasEffect(TensuraMobEffects.FROZEN)) return false;
+
+        Vec3 direction = target.position().subtract(companion.position());
+        direction = new Vec3(direction.x, 0.0, direction.z);
+        if (direction.lengthSqr() < 1.0E-6) return false;
+
+        double distance = definition.delivery.distance > 0.0
+            ? definition.delivery.distance
+            : definition.targeting.range;
+        int durationTicks = definition.delivery.duration_ticks > 0
+            ? definition.delivery.duration_ticks
+            : Math.max(1, (int) Math.ceil(distance / Math.max(0.1, definition.delivery.speed)));
+
+        ACTIVE_DASHES.put(companion.getUUID(),
+            new ActiveDash(owner.getUUID(), definition, companion.position(),
+                direction.normalize(), distance, durationTicks));
         return true;
     }
 
     @SubscribeEvent
     public void onPlayerTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        tickDash(player);
+    }
 
-        ActiveDash dash = ACTIVE_DASHES.get(player.getUUID());
+    @SubscribeEvent
+    public void onEntityTick(EntityTickEvent.Post event) {
+        if (event.getEntity() instanceof PokemonEntity companion) {
+            tickDash(companion);
+        }
+    }
+
+    private static void tickDash(LivingEntity caster) {
+        ActiveDash dash = ACTIVE_DASHES.get(caster.getUUID());
         if (dash == null) return;
-        if (!player.isAlive() || player.hasEffect(TensuraMobEffects.ASLEEP)) {
-            stopDash(player);
+        if (!(caster.level() instanceof ServerLevel level)) return;
+        ServerPlayer owner = caster instanceof ServerPlayer player
+                ? player
+            : level.getServer().getPlayerList().getPlayer(dash.ownerId);
+        if (owner == null || !caster.isAlive() || caster.hasEffect(TensuraMobEffects.ASLEEP)
+                || caster.hasEffect(TensuraMobEffects.FROZEN)) {
+            stopDash(caster);
             return;
         }
 
         double stepLength = Math.min(dash.remainingDistance, dash.stepLength);
         Vec3 step = dash.direction.scale(stepLength);
-        AABB startBox = player.getBoundingBox().move(dash.position.subtract(player.position()));
+        AABB startBox = caster.getBoundingBox().move(dash.position.subtract(caster.position()));
         AABB destinationBox = startBox.move(step);
-        if (!player.level().noCollision(player, destinationBox)) {
-            stopDash(player);
+        if (!caster.level().noCollision(caster, destinationBox)) {
+            stopDash(caster);
             return;
         }
 
         AABB sweptBox = startBox.expandTowards(step).inflate(0.35);
         dash.position = dash.position.add(step);
-        player.teleportTo(dash.position.x, dash.position.y, dash.position.z);
-        player.setDeltaMovement(step);
-        player.hurtMarked = true;
+        caster.teleportTo(dash.position.x, dash.position.y, dash.position.z);
+        caster.setDeltaMovement(step);
+        caster.hurtMarked = true;
 
-        if (player.level() instanceof ServerLevel level) {
-            level.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY() + 0.2, player.getZ(),
-                    5, 0.2, 0.1, 0.2, 0.01);
-            for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, sweptBox,
-                    entity -> entity != player && entity.isAlive())) {
-                if (dash.hitEntities.add(target.getUUID())) {
-                    SpellExecutor.applyImpacts(player, target, dash.definition);
-                    int maxTargets = dash.definition.targeting.max_targets;
-                    if (maxTargets > 0 && dash.hitEntities.size() >= maxTargets) {
-                        stopDash(player);
-                        return;
-                    }
+        level.sendParticles(ParticleTypes.CLOUD, caster.getX(), caster.getY() + 0.2, caster.getZ(),
+                5, 0.2, 0.1, 0.2, 0.01);
+        for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, sweptBox,
+                entity -> entity != caster && entity != owner && entity.isAlive())) {
+            if (dash.hitEntities.add(target.getUUID())) {
+                SpellExecutor.applyImpacts(owner, caster, target, dash.definition);
+                int maxTargets = dash.definition.targeting.max_targets;
+                if (maxTargets > 0 && dash.hitEntities.size() >= maxTargets) {
+                    stopDash(caster);
+                    return;
                 }
             }
         }
@@ -87,23 +126,31 @@ public class SpellMovementController {
         dash.remainingDistance -= stepLength;
         dash.remainingTicks--;
         if (dash.remainingDistance <= 0.01 || dash.remainingTicks <= 0) {
-            stopDash(player);
+            stopDash(caster);
         }
     }
 
     @SubscribeEvent
     public void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
-        ACTIVE_DASHES.remove(event.getEntity().getUUID());
+        UUID playerId = event.getEntity().getUUID();
+        ACTIVE_DASHES.entrySet().removeIf(entry -> entry.getKey().equals(playerId)
+                || entry.getValue().ownerId.equals(playerId));
     }
 
-    private static void stopDash(ServerPlayer player) {
-        ACTIVE_DASHES.remove(player.getUUID());
-        Vec3 movement = player.getDeltaMovement();
-        player.setDeltaMovement(0.0, movement.y, 0.0);
-        player.hurtMarked = true;
+    @SubscribeEvent
+    public void onServerStopped(ServerStoppedEvent event) {
+        ACTIVE_DASHES.clear();
+    }
+
+    private static void stopDash(LivingEntity caster) {
+        ACTIVE_DASHES.remove(caster.getUUID());
+        Vec3 movement = caster.getDeltaMovement();
+        caster.setDeltaMovement(0.0, movement.y, 0.0);
+        caster.hurtMarked = true;
     }
 
     private static class ActiveDash {
+        private final UUID ownerId;
         private final SpellDefinition definition;
         private final Vec3 direction;
         private final double stepLength;
@@ -112,8 +159,9 @@ public class SpellMovementController {
         private double remainingDistance;
         private int remainingTicks;
 
-        private ActiveDash(SpellDefinition definition, Vec3 position, Vec3 direction,
+        private ActiveDash(UUID ownerId, SpellDefinition definition, Vec3 position, Vec3 direction,
                            double distance, int durationTicks) {
+            this.ownerId = ownerId;
             this.definition = definition;
             this.position = position;
             this.direction = direction;

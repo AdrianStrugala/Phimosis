@@ -38,6 +38,16 @@ public class SpellExecutor {
     private static final Map<UUID, Map<ResourceLocation, Long>> cooldowns = new HashMap<>();
     private static final Map<UUID, Map<ResourceLocation, ChargeState>> charges = new HashMap<>();
 
+    public static void clearPlayerState(UUID playerId) {
+        cooldowns.remove(playerId);
+        charges.remove(playerId);
+    }
+
+    public static void clearAllState() {
+        cooldowns.clear();
+        charges.clear();
+    }
+
     public static boolean cast(ServerPlayer caster, ResourceLocation spellId) {
         if (caster.hasEffect(TensuraMobEffects.ASLEEP)
             || caster.hasEffect(TensuraMobEffects.FROZEN)
@@ -126,21 +136,52 @@ public class SpellExecutor {
     public static void castAsCompanion(ServerPlayer owner, PokemonEntity companion,
                                         ResourceLocation spellId, SpellDefinition def, LivingEntity target) {
         if (!(companion.level() instanceof ServerLevel serverLevel)) return;
+        if (companion.hasEffect(TensuraMobEffects.ASLEEP)
+                || companion.hasEffect(TensuraMobEffects.FROZEN)
+                || companion.hasEffect(TensuraMobEffects.EXHAUSTED)) return;
 
-        // Companion cooldown: separate key per companion species so each companion has own cooldowns
         ResourceLocation companionSpellKey = ResourceLocation.fromNamespaceAndPath(
                 spellId.getNamespace(), "companion_" + spellId.getPath());
         long now = companion.level().getGameTime();
         Map<ResourceLocation, Long> ownerCooldowns = cooldowns.computeIfAbsent(owner.getUUID(), k -> new HashMap<>());
         if (now < ownerCooldowns.getOrDefault(companionSpellKey, 0L)) return;
-        ownerCooldowns.put(companionSpellKey, now + def.cooldown_ticks);
 
-        applySchoolVisualSelf(owner, def.school); // visual at companion position approximated via owner
+        boolean started = def.cast_time_ticks > 0
+                ? SpellRuntimeController.startCompanionCast(owner, companion, target, spellId, def)
+                : executeCompanionDelivery(owner, companion, target, spellId, def);
+        if (!started) return;
+
+        ownerCooldowns.put(companionSpellKey, now + def.cooldown_ticks);
         serverLevel.sendParticles(schoolParticle(def.school),
                 companion.getX(), companion.getY() + 1, companion.getZ(), 12, 0.3, 0.3, 0.3, 0.05);
+        playCastSound(companion, def);
+    }
 
-        LivingEntity impactTarget = "self".equals(def.targeting.type) ? companion : target;
-        applyImpacts(owner, impactTarget, def);
+    public static boolean executeCompanionDelivery(ServerPlayer owner, PokemonEntity companion,
+                                                    LivingEntity target, ResourceLocation spellId,
+                                                    SpellDefinition def) {
+        if (!companion.isAlive() || !target.isAlive()) return false;
+        return switch (def.delivery.type) {
+            case "dash" -> SpellMovementController.startDash(owner, companion, target, def);
+            case "vortex" -> SpellRuntimeController.startVortex(owner, companion, def, target.position());
+            case "delayed" -> SpellRuntimeController.startDelayed(owner, companion, target, def);
+            case "counter" -> SpellRuntimeController.startCounter(owner, companion, def);
+            case "beam" -> { castCompanionBeam(owner, companion, target, def); yield true; }
+            case "meteor" -> { castMeteorAt(owner, companion, spellId, def, target.position()); yield true; }
+            case "cloud" -> { castCompanionCloud(owner, companion, target.position(), def); yield true; }
+            case "projectile" -> { castCompanionProjectile(owner, companion, target, def, spellId); yield true; }
+            case "explosion" -> { castCompanionExplosion(owner, companion, def); yield true; }
+            case "instant", "self" -> {
+                LivingEntity impactTarget = "self".equals(def.targeting.type) ? companion : target;
+                applyImpacts(owner, companion, impactTarget, def);
+                yield true;
+            }
+            default -> {
+                LivingEntity impactTarget = "self".equals(def.targeting.type) ? companion : target;
+                applyImpacts(owner, companion, impactTarget, def);
+                yield true;
+            }
+        };
     }
 
     // ── Projectile: flying entity like ghast fireball ────────────────────────
@@ -149,12 +190,32 @@ public class SpellExecutor {
         if (!(caster.level() instanceof ServerLevel serverLevel)) return;
         applySchoolVisualSelf(caster, def.school);
         int projectileCount = Math.max(1, def.delivery.projectile_count);
+        UUID projectileGroup = projectileCount > 1
+            ? SpellRuntimeController.createProjectileGroup(serverLevel, 100) : null;
         for (int index = 0; index < projectileCount; index++) {
             double centeredIndex = index - (projectileCount - 1) / 2.0;
             float angle = (float) Math.toRadians(centeredIndex * def.delivery.spread_degrees);
             Vec3 direction = caster.getLookAngle().yRot(angle);
             SpellProjectile projectile = SpellProjectile.create(
-                    caster, spellId, def, direction, index, projectileCount);
+                    caster, caster, spellId, def, direction, index, projectileCount,
+                    projectileGroup);
+            serverLevel.addFreshEntity(projectile);
+        }
+    }
+
+    private static void castCompanionProjectile(ServerPlayer owner, PokemonEntity companion,
+                                                LivingEntity target, SpellDefinition def,
+                                                ResourceLocation spellId) {
+        if (!(companion.level() instanceof ServerLevel serverLevel)) return;
+        Vec3 baseDirection = target.getBoundingBox().getCenter().subtract(companion.getEyePosition()).normalize();
+        int projectileCount = Math.max(1, def.delivery.projectile_count);
+        UUID projectileGroup = projectileCount > 1
+            ? SpellRuntimeController.createProjectileGroup(serverLevel, 100) : null;
+        for (int index = 0; index < projectileCount; index++) {
+            double centeredIndex = index - (projectileCount - 1) / 2.0;
+            float angle = (float) Math.toRadians(centeredIndex * def.delivery.spread_degrees);
+            SpellProjectile projectile = SpellProjectile.create(owner, companion, spellId, def,
+                    baseDirection.yRot(angle), index, projectileCount, projectileGroup);
             serverLevel.addFreshEntity(projectile);
         }
     }
@@ -188,6 +249,22 @@ public class SpellExecutor {
                 e -> e != caster && caster.distanceTo(e) <= radius);
         for (LivingEntity target : targets) {
             applyImpacts(caster, target, def);
+        }
+    }
+
+    private static void castCompanionExplosion(ServerPlayer owner, PokemonEntity companion,
+                                               SpellDefinition def) {
+        if (!(companion.level() instanceof ServerLevel serverLevel)) return;
+        Vec3 position = companion.position();
+        double radius = def.targeting.range;
+        serverLevel.sendParticles(ParticleTypes.EXPLOSION, position.x, position.y + 1, position.z,
+                8, radius * 0.4, 0.5, radius * 0.4, 0.1);
+        AABB area = companion.getBoundingBox().inflate(radius);
+        List<LivingEntity> targets = serverLevel.getEntitiesOfClass(LivingEntity.class, area,
+                entity -> entity != companion && entity != owner && entity.isAlive()
+                        && companion.distanceTo(entity) <= radius);
+        for (LivingEntity target : targets) {
+            applyImpacts(owner, companion, target, def);
         }
     }
 
@@ -259,15 +336,52 @@ public class SpellExecutor {
         }
     }
 
+    private static void castCompanionBeam(ServerPlayer owner, PokemonEntity companion,
+                                          LivingEntity target, SpellDefinition def) {
+        if (!(companion.level() instanceof ServerLevel serverLevel)) return;
+        Vec3 start = companion.getEyePosition();
+        Vec3 desiredEnd = target.getBoundingBox().getCenter();
+        HitResult blockHit = companion.level().clip(new ClipContext(start, desiredEnd,
+                ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, companion));
+        Vec3 end = blockHit.getType() == HitResult.Type.BLOCK ? blockHit.getLocation() : desiredEnd;
+        Vec3 delta = end.subtract(start);
+        double distance = delta.length();
+        if (distance <= 1.0E-6) return;
+        Vec3 direction = delta.normalize();
+        for (double offset = 0.5; offset < distance; offset += 1.0) {
+            Vec3 position = start.add(direction.scale(offset));
+            serverLevel.sendParticles(schoolParticle(def.school), position.x, position.y, position.z,
+                    3, 0.1, 0.1, 0.1, 0.0);
+        }
+
+        double width = Math.max(0.1, def.targeting.width);
+        List<LivingEntity> targets = serverLevel.getEntitiesOfClass(LivingEntity.class,
+                new AABB(start, end).inflate(width),
+                entity -> entity != companion && entity != owner
+                        && entity.getBoundingBox().inflate(width).clip(start, end).isPresent());
+        targets.sort((left, right) -> Double.compare(left.distanceToSqr(companion),
+                right.distanceToSqr(companion)));
+        if (def.targeting.max_targets > 0 && targets.size() > def.targeting.max_targets) {
+            targets = targets.subList(0, def.targeting.max_targets);
+        }
+        for (LivingEntity beamTarget : targets) {
+            applyImpacts(owner, companion, beamTarget, def);
+        }
+    }
+
     // ── Meteor: impacts from above at aimed location ─────────────────────────
 
     private static void castMeteor(ServerPlayer caster, ResourceLocation spellId, SpellDefinition def) {
-        if (!(caster.level() instanceof ServerLevel serverLevel)) return;
-
         Vec3 center = resolveAimPosition(caster, def.targeting.range);
+        castMeteorAt(caster, caster, spellId, def, center);
+    }
+
+    private static void castMeteorAt(ServerPlayer owner, LivingEntity effectCaster,
+                                     ResourceLocation spellId, SpellDefinition def, Vec3 center) {
+        if (!(effectCaster.level() instanceof ServerLevel serverLevel)) return;
         int projectileCount = Math.max(1, def.delivery.projectile_count);
         double spreadRadius = Math.max(1.0, def.targeting.radius * 0.65);
-        UUID groupId = SpellRuntimeController.createMeteorGroup(caster, 100);
+        UUID groupId = SpellRuntimeController.createMeteorGroup(owner, effectCaster, 100);
 
         serverLevel.sendParticles(ParticleTypes.DRAGON_BREATH, center.x, center.y + 0.1, center.z,
             25, spreadRadius, 0.05, spreadRadius, 0.01);
@@ -280,12 +394,12 @@ public class SpellExecutor {
                 15.0 + serverLevel.random.nextDouble() * 5.0,
                 (serverLevel.random.nextDouble() - 0.5) * 4.0);
             SpellProjectile meteor = SpellProjectile.createMeteor(
-                caster, spellId,
+                owner, effectCaster, spellId,
                 def, spawnPosition, impactPosition, groupId, index, projectileCount);
             serverLevel.addFreshEntity(meteor);
         }
         if (def.delivery.recovery_ticks > 0) {
-            caster.addEffect(new MobEffectInstance(TensuraMobEffects.EXHAUSTED,
+            effectCaster.addEffect(new MobEffectInstance(TensuraMobEffects.EXHAUSTED,
                     def.delivery.recovery_ticks, 0, false, true, true));
         }
     }
@@ -317,6 +431,20 @@ public class SpellExecutor {
                 e -> e != caster);
         for (LivingEntity t : targets) {
             applyImpacts(caster, t, def);
+        }
+    }
+
+    private static void castCompanionCloud(ServerPlayer owner, PokemonEntity companion,
+                                           Vec3 position, SpellDefinition def) {
+        if (!(companion.level() instanceof ServerLevel serverLevel)) return;
+        double radius = def.targeting.radius > 0 ? def.targeting.radius : 4.0;
+        serverLevel.sendParticles(schoolParticle(def.school), position.x, position.y + 1, position.z,
+                40, radius * 0.5, 1.0, radius * 0.5, 0.03);
+        List<LivingEntity> targets = serverLevel.getEntitiesOfClass(LivingEntity.class,
+                new AABB(position, position).inflate(radius),
+                entity -> entity != companion && entity != owner && entity.isAlive());
+        for (LivingEntity cloudTarget : targets) {
+            applyImpacts(owner, companion, cloudTarget, def);
         }
     }
 
@@ -431,7 +559,7 @@ public class SpellExecutor {
         }
     }
 
-    private static void playCastSound(ServerPlayer caster, SpellDefinition def) {
+    private static void playCastSound(LivingEntity caster, SpellDefinition def) {
         if (def.sound.cast == null || def.sound.cast.isBlank()) return;
         BuiltInRegistries.SOUND_EVENT.getOptional(ResourceLocation.parse(def.sound.cast))
                 .ifPresent(sound -> caster.level().playSound(null, caster.getX(), caster.getY(), caster.getZ(),
@@ -493,20 +621,31 @@ public class SpellExecutor {
     // ── Impact application ───────────────────────────────────────────────────
 
     public static void applyImpacts(ServerPlayer caster, LivingEntity target, SpellDefinition def) {
-        applyImpacts(caster, target, def, true);
+        applyImpacts(caster, caster, target, def, true);
     }
 
     public static void applyImpacts(ServerPlayer caster, LivingEntity target,
                                     SpellDefinition def, boolean finalProjectile) {
+        applyImpacts(caster, caster, target, def, finalProjectile);
+    }
+
+    public static void applyImpacts(ServerPlayer owner, LivingEntity effectCaster,
+                                    LivingEntity target, SpellDefinition def) {
+        applyImpacts(owner, effectCaster, target, def, true);
+    }
+
+    public static void applyImpacts(ServerPlayer owner, LivingEntity effectCaster,
+                                    LivingEntity target, SpellDefinition def,
+                                    boolean finalProjectile) {
         for (SpellDefinition.Impact impact : def.impact) {
-            LivingEntity recipient = "caster".equals(impact.recipient) ? caster : target;
+            LivingEntity recipient = "caster".equals(impact.recipient) ? effectCaster : target;
             switch (impact.type) {
                 case "damage" -> {
                     double baseDamage = def.power >= 0.0
                             ? def.power
-                            : caster.getAttackStrengthScale(0) * 6.0;
+                            : owner.getAttackStrengthScale(0) * 6.0;
                     float dmg = (float) (baseDamage * impact.damage_multiplier);
-                    target.hurt(caster.damageSources().playerAttack(caster), Math.max(1, dmg));
+                    target.hurt(owner.damageSources().playerAttack(owner), Math.max(1, dmg));
                 }
                 case "status_effect" -> {
                     if (Math.random() <= impact.chance && !impact.effect.isEmpty()) {
@@ -518,12 +657,12 @@ public class SpellExecutor {
                 }
                 case "fire"     -> target.igniteForSeconds(impact.seconds);
                 case "knockback" -> {
-                    Vec3 dir = target.position().subtract(caster.position()).normalize().scale(impact.strength);
+                    Vec3 dir = target.position().subtract(effectCaster.position()).normalize().scale(impact.strength);
                     target.setDeltaMovement(target.getDeltaMovement().add(dir.x, 0.4, dir.z));
                     target.hurtMarked = true;
                 }
                 case "pull" -> {
-                    Vec3 delta = caster.position().subtract(target.position());
+                    Vec3 delta = effectCaster.position().subtract(target.position());
                     if (delta.lengthSqr() > 1.0E-6) {
                         Vec3 pull = delta.normalize().scale(impact.strength);
                         target.setDeltaMovement(target.getDeltaMovement().add(pull.x, 0.15, pull.z));
@@ -567,6 +706,6 @@ public class SpellExecutor {
                 case "guard" -> SpellRuntimeController.addGuard(recipient, impact.amount, impact.duration);
             }
         }
-        playImpactSound(caster, target, def);
+        playImpactSound(owner, target, def);
     }
 }

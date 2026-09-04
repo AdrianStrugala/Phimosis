@@ -1,6 +1,6 @@
 # Rework pochlonietych spelli
 
-Status: propozycja projektowa  
+Status: propozycja projektowa
 Zakres: 100 spelli, mechaniki RPG, balans, VFX, animacje i migracja
 
 ## Stan implementacji - 2026-09-04

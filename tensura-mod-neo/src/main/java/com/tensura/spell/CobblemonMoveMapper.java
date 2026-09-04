@@ -282,7 +282,7 @@ public class CobblemonMoveMapper {
         n("eternabeam",         "draco_meteor");
         n("scale_shot",         "dragon_pulse");
         n("dual_wingbeat",      "aerial_ace");
-        n("jungle_healing",     "future_sight");
+        n("jungle_healing",     "recover");
 
         // ═══════════════════════════════════════════════════════════════════
         // POISON
@@ -338,7 +338,7 @@ public class CobblemonMoveMapper {
         n("bone_club",          "rock_throw");
         n("bonemerang",         "rock_throw");
         n("bone_rush",          "rock_throw");
-        n("shore_up",           "future_sight");
+        n("shore_up",           "recover");
         n("poltergeist",        "shadow_ball");
         n("sandsear_storm",     "earthquake");
         n("high_horsepower",    "earthquake");
@@ -536,18 +536,18 @@ public class CobblemonMoveMapper {
         // SPECIAL STATUS → these produce utility spells
         // ═══════════════════════════════════════════════════════════════════
         n("rest",               "rest");
-        n("recover",            "future_sight");  // self heal
-        n("morning_sun",        "future_sight");
-        n("synthesis",          "future_sight");
-        n("moonlight",          "future_sight");
-        n("roost",              "future_sight");
-        n("slack_off",          "future_sight");
-        n("soft_boiled",        "future_sight");
-        n("milk_drink",         "future_sight");
-        n("wish",               "future_sight");
-        n("heal_pulse",         "future_sight");
-        n("oblivion_wing",      "future_sight");
-        n("parabolic_charge",   "future_sight");
+        n("recover",            "recover");
+        n("morning_sun",        "recover");
+        n("synthesis",          "recover");
+        n("moonlight",          "recover");
+        n("roost",              "recover");
+        n("slack_off",          "recover");
+        n("soft_boiled",        "recover");
+        n("milk_drink",         "recover");
+        n("wish",               "recover");
+        n("heal_pulse",         "recover");
+        n("oblivion_wing",      "recover");
+        n("parabolic_charge",   "recover");
         n("strength_sap",       "leech_seed");
     }
 

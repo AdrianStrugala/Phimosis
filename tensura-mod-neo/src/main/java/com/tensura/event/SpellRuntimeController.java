@@ -1,5 +1,6 @@
 package com.tensura.event;
 
+import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.tensura.engine.SpellDefinition;
 import com.tensura.engine.SpellExecutor;
 import net.minecraft.core.particles.ParticleTypes;
@@ -16,6 +17,8 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 import java.util.ArrayList;
@@ -34,7 +37,9 @@ public class SpellRuntimeController {
     private static final Map<UUID, ActiveCounter> COUNTERS = new HashMap<>();
     private static final Map<UUID, GuardState> GUARDS = new HashMap<>();
     private static final Map<UUID, MeteorGroup> METEOR_GROUPS = new HashMap<>();
+    private static final Map<UUID, ProjectileGroup> PROJECTILE_GROUPS = new HashMap<>();
     private static final Map<UUID, PendingCast> PENDING_CASTS = new HashMap<>();
+    private static final Map<UUID, PendingCompanionCast> PENDING_COMPANION_CASTS = new HashMap<>();
 
     public static boolean isCasting(ServerPlayer caster) {
         return PENDING_CASTS.containsKey(caster.getUUID());
@@ -49,23 +54,50 @@ public class SpellRuntimeController {
     }
 
     public static boolean startVortex(ServerPlayer caster, SpellDefinition definition, Vec3 center) {
+        return startVortex(caster, caster, definition, center);
+    }
+
+    public static boolean startVortex(ServerPlayer owner, LivingEntity effectCaster,
+                                      SpellDefinition definition, Vec3 center) {
         int duration = Math.max(1, definition.delivery.duration_ticks);
-        VORTEXES.add(new ActiveVortex(caster.level().dimension(), caster.getUUID(), center,
-                definition, duration));
+        VORTEXES.add(new ActiveVortex(effectCaster.level().dimension(), owner.getUUID(),
+                effectCaster.getUUID(), center, definition, duration));
         return true;
     }
 
     public static boolean startDelayed(ServerPlayer caster, LivingEntity target, SpellDefinition definition) {
+        return startDelayed(caster, caster, target, definition);
+    }
+
+    public static boolean startDelayed(ServerPlayer owner, LivingEntity effectCaster,
+                                       LivingEntity target, SpellDefinition definition) {
         int delay = Math.max(1, definition.delivery.delay_ticks);
-        DELAYED_HITS.add(new DelayedHit(caster.level().dimension(), caster.getUUID(),
-                target.getUUID(), definition, delay));
+        DELAYED_HITS.add(new DelayedHit(effectCaster.level().dimension(), owner.getUUID(),
+                effectCaster.getUUID(), target.getUUID(), definition, delay));
         return true;
     }
 
     public static boolean startCounter(ServerPlayer caster, SpellDefinition definition) {
+        return startCounter(caster, caster, definition);
+    }
+
+    public static boolean startCounter(ServerPlayer owner, LivingEntity defender,
+                                       SpellDefinition definition) {
         int duration = Math.max(1, definition.delivery.duration_ticks);
-        COUNTERS.put(caster.getUUID(), new ActiveCounter(definition,
-                caster.level().getGameTime() + duration));
+        COUNTERS.put(defender.getUUID(), new ActiveCounter(owner.getUUID(), definition,
+                defender.level().getGameTime() + duration));
+        return true;
+    }
+
+    public static boolean startCompanionCast(ServerPlayer owner, PokemonEntity companion,
+                                             LivingEntity target, ResourceLocation spellId,
+                                             SpellDefinition definition) {
+        if (PENDING_COMPANION_CASTS.containsKey(companion.getUUID())) return false;
+        UUID targetId = "self".equals(definition.targeting.type)
+                ? companion.getUUID() : target.getUUID();
+        PENDING_COMPANION_CASTS.put(companion.getUUID(), new PendingCompanionCast(
+                companion.level().dimension(), owner.getUUID(), targetId, spellId, definition,
+                companion.level().getGameTime() + Math.max(1, definition.cast_time_ticks)));
         return true;
     }
 
@@ -76,17 +108,44 @@ public class SpellRuntimeController {
     }
 
     public static UUID createMeteorGroup(ServerPlayer caster, int lifetimeTicks) {
+        return createMeteorGroup(caster, caster, lifetimeTicks);
+    }
+
+    public static UUID createMeteorGroup(ServerPlayer owner, LivingEntity effectCaster,
+                                         int lifetimeTicks) {
         UUID groupId = UUID.randomUUID();
         METEOR_GROUPS.put(groupId, new MeteorGroup(
-                caster.level().getGameTime() + Math.max(20, lifetimeTicks)));
+                effectCaster.level().dimension(), effectCaster.getUUID(),
+                effectCaster.level().getGameTime() + Math.max(20, lifetimeTicks)));
         return groupId;
+    }
+
+    public static UUID createProjectileGroup(ServerLevel level, int lifetimeTicks) {
+        UUID groupId = UUID.randomUUID();
+        PROJECTILE_GROUPS.put(groupId, new ProjectileGroup(
+                level.getGameTime() + Math.max(20, lifetimeTicks)));
+        return groupId;
+    }
+
+    public static ProjectileImpact registerProjectileImpact(UUID groupId, UUID targetId,
+                                                            int maxTargets) {
+        ProjectileGroup group = PROJECTILE_GROUPS.get(groupId);
+        if (group == null) return new ProjectileImpact(true, true);
+        boolean knownTarget = group.targets.contains(targetId);
+        if (!knownTarget && maxTargets > 0 && group.targets.size() >= maxTargets) {
+            return new ProjectileImpact(false, false);
+        }
+        group.targets.add(targetId);
+        return new ProjectileImpact(true, group.effectsApplied.add(targetId));
     }
 
     public static void applyMeteorImpact(ServerPlayer caster, SpellDefinition definition,
                                          Vec3 position, UUID groupId) {
         if (!(caster.level() instanceof ServerLevel level)) return;
         MeteorGroup group = METEOR_GROUPS.get(groupId);
-        if (group == null) return;
+        if (group == null || !group.dimension.equals(level.dimension())) return;
+        Entity source = level.getEntity(group.effectCasterId);
+        LivingEntity effectCaster = source instanceof LivingEntity living ? living : caster;
 
         double radius = definition.targeting.radius > 0.0 ? definition.targeting.radius : 3.0;
         AABB area = new AABB(position, position).inflate(radius);
@@ -99,7 +158,7 @@ public class SpellRuntimeController {
             if (definition.targeting.max_targets > 0
                 && group.hitEntities.size() >= definition.targeting.max_targets) break;
             if (group.hitEntities.add(target.getUUID())) {
-                SpellExecutor.applyImpacts(caster, target, definition);
+                SpellExecutor.applyImpacts(caster, effectCaster, target, definition);
             }
         }
         level.sendParticles(ParticleTypes.EXPLOSION, position.x, position.y, position.z,
@@ -114,25 +173,30 @@ public class SpellRuntimeController {
         tickDelayedHits(event.getServer());
         tickGuards(event.getServer());
         tickPendingCasts(event.getServer());
+        tickPendingCompanionCasts(event.getServer());
 
         long now = event.getServer().overworld().getGameTime();
         COUNTERS.entrySet().removeIf(entry -> entry.getValue().expiresAt <= now);
         METEOR_GROUPS.entrySet().removeIf(entry -> entry.getValue().expiresAt <= now);
+        PROJECTILE_GROUPS.entrySet().removeIf(entry -> entry.getValue().expiresAt <= now);
     }
 
     @SubscribeEvent
     public void onLivingDamage(LivingIncomingDamageEvent event) {
         LivingEntity victim = event.getEntity();
+        if (!(victim.level() instanceof ServerLevel serverLevel)) return;
         Entity sourceEntity = event.getSource().getEntity();
 
         ActiveCounter counter = COUNTERS.get(victim.getUUID());
-        if (counter != null && victim instanceof ServerPlayer caster
+        ServerPlayer owner = counter == null ? null
+                : serverLevel.getServer().getPlayerList().getPlayer(counter.ownerId);
+        if (counter != null && owner != null
                 && sourceEntity instanceof LivingEntity attacker && attacker != victim
-                && caster.distanceTo(attacker) <= counter.definition.targeting.range) {
+                && victim.distanceTo(attacker) <= counter.definition.targeting.range) {
             COUNTERS.remove(victim.getUUID());
             event.setCanceled(true);
-            SpellExecutor.applyImpacts(caster, attacker, counter.definition);
-            if (caster.level() instanceof ServerLevel level) {
+            SpellExecutor.applyImpacts(owner, victim, attacker, counter.definition);
+            if (victim.level() instanceof ServerLevel level) {
                 level.sendParticles(ParticleTypes.SMOKE, attacker.getX(), attacker.getY() + 1.0,
                         attacker.getZ(), 15, 0.3, 0.5, 0.3, 0.04);
             }
@@ -161,13 +225,45 @@ public class SpellRuntimeController {
         }
     }
 
+    @SubscribeEvent
+    public void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        UUID playerId = event.getEntity().getUUID();
+        SpellExecutor.clearPlayerState(playerId);
+        VORTEXES.removeIf(vortex -> vortex.ownerId.equals(playerId)
+                || vortex.effectCasterId.equals(playerId));
+        DELAYED_HITS.removeIf(delayed -> delayed.ownerId.equals(playerId)
+                || delayed.effectCasterId.equals(playerId));
+        COUNTERS.entrySet().removeIf(entry -> entry.getKey().equals(playerId)
+                || entry.getValue().ownerId.equals(playerId));
+        GUARDS.remove(playerId);
+        PENDING_CASTS.remove(playerId);
+        PENDING_COMPANION_CASTS.entrySet().removeIf(entry ->
+                entry.getValue().ownerId.equals(playerId));
+    }
+
+    @SubscribeEvent
+    public void onServerStopped(ServerStoppedEvent event) {
+        VORTEXES.clear();
+        DELAYED_HITS.clear();
+        COUNTERS.clear();
+        GUARDS.clear();
+        METEOR_GROUPS.clear();
+        PROJECTILE_GROUPS.clear();
+        PENDING_CASTS.clear();
+        PENDING_COMPANION_CASTS.clear();
+        SpellExecutor.clearAllState();
+    }
+
     private static void tickVortexes(MinecraftServer server) {
         Iterator<ActiveVortex> iterator = VORTEXES.iterator();
         while (iterator.hasNext()) {
             ActiveVortex vortex = iterator.next();
             ServerLevel level = server.getLevel(vortex.dimension);
-            ServerPlayer caster = server.getPlayerList().getPlayer(vortex.casterId);
-            if (level == null || caster == null || caster.level() != level || --vortex.remainingTicks < 0) {
+            ServerPlayer owner = server.getPlayerList().getPlayer(vortex.ownerId);
+            Entity source = level == null ? null : level.getEntity(vortex.effectCasterId);
+            if (level == null || owner == null || owner.level() != level
+                    || !(source instanceof LivingEntity effectCaster) || !effectCaster.isAlive()
+                    || --vortex.remainingTicks < 0) {
                 iterator.remove();
                 continue;
             }
@@ -187,15 +283,15 @@ public class SpellRuntimeController {
 
             List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class,
                     new AABB(vortex.center, vortex.center).inflate(radius),
-                    entity -> entity != caster && entity.isAlive()
-                        && entity.position().distanceToSqr(vortex.center) <= radius * radius);
-                targets.sort((left, right) -> Double.compare(
+                    entity -> entity != effectCaster && entity != owner && entity.isAlive()
+                            && entity.position().distanceToSqr(vortex.center) <= radius * radius);
+            targets.sort((left, right) -> Double.compare(
                     left.position().distanceToSqr(vortex.center),
                     right.position().distanceToSqr(vortex.center)));
-                if (vortex.definition.targeting.max_targets > 0
+            if (vortex.definition.targeting.max_targets > 0
                     && targets.size() > vortex.definition.targeting.max_targets) {
                 targets = targets.subList(0, vortex.definition.targeting.max_targets);
-                }
+            }
             for (LivingEntity target : targets) {
                 Vec3 pullDirection = vortex.center.subtract(target.position());
                 if (pullDirection.lengthSqr() > 0.04) {
@@ -206,7 +302,7 @@ public class SpellRuntimeController {
                     target.hurtMarked = true;
                 }
                 if (vortex.remainingTicks % 20 == 0) {
-                    SpellExecutor.applyImpacts(caster, target, vortex.definition);
+                    SpellExecutor.applyImpacts(owner, effectCaster, target, vortex.definition);
                 }
             }
 
@@ -219,10 +315,12 @@ public class SpellRuntimeController {
         while (iterator.hasNext()) {
             DelayedHit delayed = iterator.next();
             ServerLevel level = server.getLevel(delayed.dimension);
-            ServerPlayer caster = server.getPlayerList().getPlayer(delayed.casterId);
-            Entity entity = level == null ? null : level.getEntity(delayed.targetId);
-            if (level == null || caster == null || caster.level() != level
-                    || !(entity instanceof LivingEntity target) || !target.isAlive()) {
+            ServerPlayer owner = server.getPlayerList().getPlayer(delayed.ownerId);
+            Entity source = level == null ? null : level.getEntity(delayed.effectCasterId);
+            Entity targetEntity = level == null ? null : level.getEntity(delayed.targetId);
+            if (level == null || owner == null || owner.level() != level
+                    || !(source instanceof LivingEntity effectCaster) || !effectCaster.isAlive()
+                    || !(targetEntity instanceof LivingEntity target) || !target.isAlive()) {
                 iterator.remove();
                 continue;
             }
@@ -233,7 +331,7 @@ public class SpellRuntimeController {
                         target.getZ(), 8, 0.35, 0.15, 0.35, 0.02);
             }
             if (delayed.remainingTicks <= 0) {
-                SpellExecutor.applyImpacts(caster, target, delayed.definition);
+                SpellExecutor.applyImpacts(owner, effectCaster, target, delayed.definition);
                 level.sendParticles(ParticleTypes.REVERSE_PORTAL, target.getX(), target.getY() + 1.0,
                         target.getZ(), 35, 0.5, 0.8, 0.5, 0.08);
                 iterator.remove();
@@ -288,17 +386,52 @@ public class SpellRuntimeController {
         }
     }
 
+    private static void tickPendingCompanionCasts(MinecraftServer server) {
+        Iterator<Map.Entry<UUID, PendingCompanionCast>> iterator =
+                PENDING_COMPANION_CASTS.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<UUID, PendingCompanionCast> entry = iterator.next();
+            PendingCompanionCast pending = entry.getValue();
+            ServerLevel level = server.getLevel(pending.dimension);
+            ServerPlayer owner = server.getPlayerList().getPlayer(pending.ownerId);
+            Entity source = level == null ? null : level.getEntity(entry.getKey());
+            Entity targetEntity = level == null ? null : level.getEntity(pending.targetId);
+            if (owner == null || !(source instanceof PokemonEntity companion) || !companion.isAlive()
+                    || !(targetEntity instanceof LivingEntity target) || !target.isAlive()) {
+                iterator.remove();
+                continue;
+            }
+
+            long remaining = pending.completesAt - companion.level().getGameTime();
+            Vec3 movement = companion.getDeltaMovement();
+            companion.setDeltaMovement(0.0, Math.min(0.0, movement.y), 0.0);
+            companion.hurtMarked = true;
+            if (remaining % 5 == 0) {
+                level.sendParticles(ParticleTypes.DRAGON_BREATH,
+                        companion.getX(), companion.getY() + 1.0, companion.getZ(),
+                        8, 0.65, 0.8, 0.65, 0.03);
+            }
+            if (remaining <= 0) {
+                iterator.remove();
+                SpellExecutor.executeCompanionDelivery(owner, companion, target,
+                        pending.spellId, pending.definition);
+            }
+        }
+    }
+
     private static class ActiveVortex {
         private final ResourceKey<Level> dimension;
-        private final UUID casterId;
+        private final UUID ownerId;
+        private final UUID effectCasterId;
         private final Vec3 center;
         private final SpellDefinition definition;
         private int remainingTicks;
 
-        private ActiveVortex(ResourceKey<Level> dimension, UUID casterId, Vec3 center,
+        private ActiveVortex(ResourceKey<Level> dimension, UUID ownerId, UUID effectCasterId, Vec3 center,
                              SpellDefinition definition, int remainingTicks) {
             this.dimension = dimension;
-            this.casterId = casterId;
+            this.ownerId = ownerId;
+            this.effectCasterId = effectCasterId;
             this.center = center;
             this.definition = definition;
             this.remainingTicks = remainingTicks;
@@ -307,22 +440,24 @@ public class SpellRuntimeController {
 
     private static class DelayedHit {
         private final ResourceKey<Level> dimension;
-        private final UUID casterId;
+        private final UUID ownerId;
+        private final UUID effectCasterId;
         private final UUID targetId;
         private final SpellDefinition definition;
         private int remainingTicks;
 
-        private DelayedHit(ResourceKey<Level> dimension, UUID casterId, UUID targetId,
+        private DelayedHit(ResourceKey<Level> dimension, UUID ownerId, UUID effectCasterId, UUID targetId,
                            SpellDefinition definition, int remainingTicks) {
             this.dimension = dimension;
-            this.casterId = casterId;
+            this.ownerId = ownerId;
+            this.effectCasterId = effectCasterId;
             this.targetId = targetId;
             this.definition = definition;
             this.remainingTicks = remainingTicks;
         }
     }
 
-    private record ActiveCounter(SpellDefinition definition, long expiresAt) {}
+    private record ActiveCounter(UUID ownerId, SpellDefinition definition, long expiresAt) {}
 
     private static class GuardState {
         private final ResourceKey<Level> dimension;
@@ -337,13 +472,33 @@ public class SpellRuntimeController {
     }
 
     private static class MeteorGroup {
+        private final ResourceKey<Level> dimension;
+        private final UUID effectCasterId;
         private final long expiresAt;
         private final Set<UUID> hitEntities = new HashSet<>();
 
-        private MeteorGroup(long expiresAt) {
+        private MeteorGroup(ResourceKey<Level> dimension, UUID effectCasterId, long expiresAt) {
+            this.dimension = dimension;
+            this.effectCasterId = effectCasterId;
             this.expiresAt = expiresAt;
         }
     }
 
+    private static class ProjectileGroup {
+        private final long expiresAt;
+        private final Set<UUID> targets = new HashSet<>();
+        private final Set<UUID> effectsApplied = new HashSet<>();
+
+        private ProjectileGroup(long expiresAt) {
+            this.expiresAt = expiresAt;
+        }
+    }
+
+    public record ProjectileImpact(boolean allowed, boolean firstHit) {}
+
     private record PendingCast(ResourceLocation spellId, SpellDefinition definition, long completesAt) {}
+
+    private record PendingCompanionCast(ResourceKey<Level> dimension, UUID ownerId, UUID targetId,
+                                        ResourceLocation spellId, SpellDefinition definition,
+                                        long completesAt) {}
 }
