@@ -1,0 +1,32 @@
+{
+  "pokemon_type": "fire",
+  "category": "special",
+  "power": 10.0,
+  "school": "fire",
+  "cooldown_ticks": 240,
+  "targeting": {
+    "type": "area",
+    "range": 16.0,
+    "radius": 3.5,
+    "max_targets": 8
+  },
+  "delivery": {
+    "type": "vortex",
+    "duration_ticks": 100,
+    "pull_strength": 0.06
+  },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 0.2 },
+    { "type": "fire", "seconds": 2 }
+  ],
+  "visual": {
+    "cast_animation": "fire_spin_cast",
+    "telegraph": "fire_spin_ground",
+    "aftermath": "fire_spiral"
+  },
+  "sound": {
+    "cast": "minecraft:item.firecharge.use",
+    "loop": "minecraft:block.fire.ambient",
+    "impact": "minecraft:entity.generic.burn"
+  }
+}

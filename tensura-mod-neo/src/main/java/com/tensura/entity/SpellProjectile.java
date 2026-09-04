@@ -244,6 +244,7 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
             };
         }
         if (syncedSpellId.endsWith(":draco_meteor")) return new ItemStack(Items.MAGMA_CREAM);
+        if (syncedSpellId.endsWith(":rock_slide")) return new ItemStack(Items.COBBLESTONE);
         if (syncedSpellId.endsWith(":ember")) return new ItemStack(Items.FIRE_CHARGE);
         return new ItemStack(Items.ENDER_PEARL);
     }

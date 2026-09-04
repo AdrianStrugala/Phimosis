@@ -81,7 +81,10 @@ public class SpellRuntimeController {
                 effectCaster.getUUID(), center, definition, duration));
         SpellExecutor.playLoopSound(effectCaster, definition);
         if (effectCaster.level() instanceof ServerLevel level) {
-            SpellVfxDispatcher.send(level, "zone", definition.visual.telegraph,
+            SpellVfxDispatcher.send(level, "telegraph", definition.visual.telegraph,
+                definition.school, center, center, definition.targeting.radius,
+                Math.min(20, duration), effectCaster, false);
+            SpellVfxDispatcher.send(level, "zone", definition.visual.aftermath,
                 definition.school, center, center, definition.targeting.radius,
                 duration, effectCaster, false);
         }
@@ -300,7 +303,9 @@ public class SpellRuntimeController {
         }
         level.sendParticles(ParticleTypes.EXPLOSION, position.x, position.y, position.z,
                 4, radius * 0.35, 0.3, radius * 0.35, 0.05);
-        level.sendParticles(ParticleTypes.DRAGON_BREATH, position.x, position.y, position.z,
+        level.sendParticles("earth".equals(definition.school)
+                ? ParticleTypes.POOF : ParticleTypes.DRAGON_BREATH,
+            position.x, position.y, position.z,
                 30, radius * 0.5, 0.5, radius * 0.5, 0.08);
     }
 
@@ -452,7 +457,8 @@ public class SpellRuntimeController {
             for (int index = 0; index < 8; index++) {
                 double particleAngle = angle + index * Math.PI / 4.0;
                 double particleRadius = radius * (0.35 + (index % 3) * 0.25);
-                level.sendParticles(ParticleTypes.SPLASH,
+                level.sendParticles("fire".equals(vortex.definition.school)
+                        ? ParticleTypes.FLAME : ParticleTypes.SPLASH,
                         vortex.center.x + Math.cos(particleAngle) * particleRadius,
                         vortex.center.y + 0.15 + (index % 2) * 0.35,
                         vortex.center.z + Math.sin(particleAngle) * particleRadius,

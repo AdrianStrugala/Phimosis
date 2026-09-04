@@ -165,7 +165,8 @@ public final class ProgrammaticSpellFx {
             case "electric_ground_ring", "electric_arc" ->
                     new Palette(0xFFFDE047, 0xAA60A5FA);
             case "electro_ball", "electric_burst", "lightning_column",
-                    "electric_afterglow", "sky_call" ->
+                    "electric_afterglow", "sky_call", "volt_charge",
+                    "volt_tackle_shell", "electric_collision" ->
                     new Palette(0xFFFFFFFF, 0xCCFACC15);
             case "aurora_dome", "aurora_curtain", "guard_stance" ->
                     new Palette(0xCC67E8F9, 0xAAFB7185);
@@ -176,7 +177,8 @@ public final class ProgrammaticSpellFx {
                     "water_front", "surf_wave", "ground_slam" ->
                     new Palette(0xDD38BDF8, 0x8867E8F9);
                 case "flame_stream", "fire_burst", "smoke_afterglow",
-                    "channel_forward" ->
+                        "channel_forward", "fire_spin_cast", "fire_spiral",
+                        "fire_spin_ground" ->
                     new Palette(0xFFFFC857, 0xCCEF4444);
                 case "toxic_spikes", "poison_burst", "toxic_ground",
                     "throw_overhead" ->
@@ -189,6 +191,14 @@ public final class ProgrammaticSpellFx {
                 case "prismatic_beam", "psychic_burst", "ricochet_arc",
                     "cast_point" ->
                     new Palette(0xFFF0ABFC, 0xCC22D3EE);
+                    case "rock_call", "falling_rock", "stone_dust",
+                        "rock_slide_shadow", "rock_impact" ->
+                        new Palette(0xFFD6D3D1, 0xCC78716C);
+                    case "recover_focus", "recover_bloom", "recover_afterglow" ->
+                        new Palette(0xFFF0FDF4, 0xCC4ADE80);
+                    case "dark_focus", "dark_pulse_beam", "dark_pulse_impact",
+                        "dark_residue" ->
+                        new Palette(0xFFC084FC, 0xCC1F2937);
             default -> new Palette(0xFFE2E8F0, 0x888B5CF6);
         };
     }

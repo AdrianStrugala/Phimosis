@@ -80,7 +80,7 @@ public class CobblemonMoveMapper {
         n("v_create",           "sacred_fire");
         n("will_o_wisp",        "will_o_wisp");
         n("will-o-wisp",        "will_o_wisp");
-        n("fire_spin",          "flamethrower");
+        n("fire_spin",          "fire_spin");
         n("flame_wheel",        "flamethrower");
         n("blaze_kick",         "flamethrower");
         n("fire_punch",         "ember");

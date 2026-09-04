@@ -1,11 +1,41 @@
 {
+  "pokemon_type": "electric",
+  "category": "physical",
+  "power": 24.0,
   "school": "lightning",
-  "cooldown_ticks": 280,
-  "targeting": { "type": "aim", "range": 10 },
-  "delivery": { "type": "instant", "speed": 1.0 },
+  "cooldown_ticks": 300,
+  "targeting": {
+    "type": "aim",
+    "range": 10.0,
+    "width": 1.1,
+    "max_targets": 1
+  },
+  "delivery": {
+    "type": "dash",
+    "speed": 2.0,
+    "distance": 10.0,
+    "duration_ticks": 5,
+    "steerable": false
+  },
   "impact": [
-    { "type": "damage", "damage_multiplier": 5.5 },
-    { "type": "knockback", "strength": 5.0 },
-    { "type": "status_effect", "effect": "minecraft:slowness", "duration": 60, "amplifier": 2, "chance": 0.3 }
-  ]
+    { "type": "damage", "damage_multiplier": 1.0 },
+    { "type": "recoil", "recipient": "caster", "amount": 8.0 },
+    { "type": "knockback", "strength": 1.0 },
+    {
+      "type": "status_effect",
+      "effect": "tensura:paralyzed",
+      "duration": 60,
+      "amplifier": 0,
+      "chance": 0.1
+    }
+  ],
+  "visual": {
+    "cast_animation": "volt_charge",
+    "trail": "volt_tackle_shell",
+    "impact": "electric_collision"
+  },
+  "sound": {
+    "cast": "minecraft:entity.lightning_bolt.thunder",
+    "impact": "minecraft:block.respawn_anchor.charge"
+  }
 }

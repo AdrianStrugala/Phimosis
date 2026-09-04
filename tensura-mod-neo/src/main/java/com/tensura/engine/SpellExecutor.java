@@ -634,7 +634,8 @@ public class SpellExecutor {
         double spreadRadius = Math.max(1.0, def.targeting.radius * 0.65);
         UUID groupId = SpellRuntimeController.createMeteorGroup(owner, effectCaster, 100);
 
-        serverLevel.sendParticles(ParticleTypes.DRAGON_BREATH, center.x, center.y + 0.1, center.z,
+        serverLevel.sendParticles(schoolParticle(def.school),
+            center.x, center.y + 0.1, center.z,
             25, spreadRadius, 0.05, spreadRadius, 0.01);
         SpellVfxDispatcher.send(serverLevel, "telegraph", def.visual.telegraph,
             def.school, center, center, Math.max(1.0, def.targeting.radius),
@@ -1003,7 +1004,15 @@ public class SpellExecutor {
                     }
                 }
                 case "heal"     -> recipient.heal((float) impact.amount);
+                case "heal_fraction" -> recipient.heal((float) (recipient.getMaxHealth()
+                        * Math.max(0.0, Math.min(1.0, impact.amount))));
                 case "full_heal" -> recipient.setHealth(recipient.getMaxHealth());
+                case "recoil" -> {
+                    if (canHarm && impact.amount > 0.0) {
+                        effectCaster.hurt(effectCaster.damageSources().generic(),
+                                (float) impact.amount);
+                    }
+                }
                 case "cleanse" -> {
                     List<Holder<MobEffect>> harmfulEffects = recipient.getActiveEffects().stream()
                             .filter(instance -> instance.getEffect().value().getCategory().equals(net.minecraft.world.effect.MobEffectCategory.HARMFUL))

@@ -131,8 +131,12 @@ public class SpellMovementController {
         caster.setDeltaMovement(step);
         caster.hurtMarked = true;
 
-        level.sendParticles("water".equals(dash.definition.school)
-                ? ParticleTypes.SPLASH : ParticleTypes.CLOUD,
+        level.sendParticles(switch (dash.definition.school) {
+            case "water" -> ParticleTypes.SPLASH;
+            case "lightning" -> ParticleTypes.ELECTRIC_SPARK;
+            case "fire" -> ParticleTypes.FLAME;
+            default -> ParticleTypes.CLOUD;
+            },
                 caster.getX(), caster.getY() + 0.2, caster.getZ(),
                 5, 0.2, 0.1, 0.2, 0.01);
         for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, sweptBox,

@@ -1,10 +1,39 @@
 {
+  "pokemon_type": "dark",
+  "category": "special",
+  "power": 16.0,
   "school": "shadow",
-  "cooldown_ticks": 140,
-  "targeting": { "type": "aim", "range": 18 },
-  "delivery": { "type": "projectile", "speed": 1.5 },
+  "cooldown_ticks": 200,
+  "targeting": {
+    "type": "beam",
+    "range": 16.0,
+    "width": 0.7,
+    "max_targets": 4
+  },
+  "delivery": {
+    "type": "channel_beam",
+    "duration_ticks": 12,
+    "tick_interval_ticks": 4
+  },
   "impact": [
-    { "type": "damage", "damage_multiplier": 2.0 },
-    { "type": "status_effect", "effect": "minecraft:slowness", "duration": 40, "amplifier": 3, "chance": 0.3 }
-  ]
+    { "type": "damage", "damage_multiplier": 0.3333333333 },
+    {
+      "type": "status_effect",
+      "effect": "minecraft:nausea",
+      "duration": 50,
+      "amplifier": 0,
+      "chance": 0.1
+    }
+  ],
+  "visual": {
+    "cast_animation": "dark_focus",
+    "trail": "dark_pulse_beam",
+    "impact": "dark_pulse_impact",
+    "aftermath": "dark_residue"
+  },
+  "sound": {
+    "cast": "minecraft:entity.warden.sonic_boom",
+    "loop": "minecraft:block.sculk_sensor.clicking",
+    "impact": "minecraft:entity.warden.attack_impact"
+  }
 }
