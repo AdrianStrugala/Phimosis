@@ -2,6 +2,7 @@ package com.tensura.command;
 
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.tensura.data.PredatorAbsorption;
 import com.tensura.data.PredatorData;
 import com.tensura.engine.SpellRegistry;
 import com.tensura.item.SpellItem;
@@ -51,6 +52,18 @@ public class TensuraCommands {
                         )
                     )
                 )
+                // Devour tree inner button: hand out a copy, then re-arm the node
+                .then(Commands.literal("devour_recover")
+                    .then(Commands.argument("player", EntityArgument.player())
+                        .then(Commands.argument("spell", StringArgumentType.word())
+                            .executes(ctx -> {
+                                ServerPlayer target = EntityArgument.getPlayer(ctx, "player");
+                                String spell = StringArgumentType.getString(ctx, "spell");
+                                return devourRecover(target, spell);
+                            })
+                        )
+                    )
+                )
                 // Admin/debug: hand out a spell the player has already absorbed
                 .then(Commands.literal("absorb_spell")
                     .then(Commands.argument("player", EntityArgument.player())
@@ -80,6 +93,34 @@ public class TensuraCommands {
         target.addItem(item);
         src.sendSuccess(() -> Component.literal(
             "§aGave §e" + spellName + " §ato §f" + target.getName().getString()), true);
+        return 1;
+    }
+
+    /**
+     * Reward of the devour tree's inner button. Hands out a copy if the spell is absorbed,
+     * then re-locks that button so it can be clicked again.
+     *
+     * The re-lock is deferred to the next server task on purpose: this runs from inside
+     * puffish's own unlock handling, and locking the skill in the middle of that would
+     * race with puffish writing the unlock down.
+     */
+    private static int devourRecover(ServerPlayer target, String spellName) {
+        ResourceLocation id = ResourceLocation.tryParse("tensura:" + spellName);
+        if (id == null || SpellRegistry.get(id).isEmpty()) return 0;
+
+        if (PredatorData.hasAbsorbed(target, id)) {
+            target.addItem(SpellItem.create(id));
+            target.sendSystemMessage(Component.literal(
+                    "§a[Predator] Odzyskano: §e" + PredatorAbsorption.prettyName(id)));
+        } else {
+            target.sendSystemMessage(Component.literal(
+                    "§c[Predator] Nie pochłonąłeś jeszcze §e" + PredatorAbsorption.prettyName(id)
+                    + "§c! Zabij odpowiedniego Pokémona."));
+        }
+
+        target.getServer().execute(() -> {
+            if (!target.hasDisconnected()) PredatorAbsorption.lockDispenser(target, id);
+        });
         return 1;
     }
 

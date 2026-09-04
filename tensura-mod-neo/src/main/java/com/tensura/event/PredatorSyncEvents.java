@@ -36,10 +36,12 @@ public class PredatorSyncEvents {
             if (player.hasDisconnected()) return;
             for (ResourceLocation spellId : known) {
                 if (absorbed.contains(spellId)) {
-                    PredatorAbsorption.unlockNode(player, spellId);
+                    PredatorAbsorption.unlockOwned(player, spellId);
                 } else {
-                    PredatorAbsorption.lockNode(player, spellId);
+                    PredatorAbsorption.lockOwned(player, spellId);
                 }
+                // Dispensers must never persist unlocked, or their reward stops firing.
+                PredatorAbsorption.lockDispenser(player, spellId);
             }
         });
     }

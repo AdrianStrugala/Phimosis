@@ -27,33 +27,48 @@ public final class PredatorAbsorption {
      */
     public static final String DEVOUR_CATEGORY = "tensura:devour";
 
+    /**
+     * Every spell owns two nodes at the same spot in the devour tree: an oversized
+     * "<spell>_owned" marker that stays unlocked to show the spell is collected, and the
+     * normal "<spell>" dispenser drawn on top of it, which hands out a copy of the item
+     * and immediately re-locks so it can be clicked again.
+     */
+    public static final String OWNED_SUFFIX = "_owned";
+
     private PredatorAbsorption() {}
 
     public static void absorb(ServerPlayer player, ResourceLocation spellId,
                               ServerLevel level, Vec3 pos) {
         PredatorData.markAbsorbed(player, spellId);
         level.addFreshEntity(new ItemEntity(level, pos.x, pos.y, pos.z, SpellItem.create(spellId)));
-        unlockNode(player, spellId);
+        unlockOwned(player, spellId);
         player.sendSystemMessage(Component.literal(
                 "§a[Predator] Pochłonięto: §e" + prettyName(spellId)));
     }
 
-    public static void unlockNode(ServerPlayer player, ResourceLocation spellId) {
-        runPuffish(player, "unlock", spellId);
+    /** Light up the gold marker: this spell is collected. */
+    public static void unlockOwned(ServerPlayer player, ResourceLocation spellId) {
+        runPuffish(player, "unlock", spellId.getPath() + OWNED_SUFFIX);
     }
 
-    public static void lockNode(ServerPlayer player, ResourceLocation spellId) {
-        runPuffish(player, "lock", spellId);
+    /** Put the gold marker out: this spell is not collected. */
+    public static void lockOwned(ServerPlayer player, ResourceLocation spellId) {
+        runPuffish(player, "lock", spellId.getPath() + OWNED_SUFFIX);
+    }
+
+    /** Re-arm the inner button so it can be clicked for another copy. */
+    public static void lockDispenser(ServerPlayer player, ResourceLocation spellId) {
+        runPuffish(player, "lock", spellId.getPath());
     }
 
     /** Server command source = permission 4, so this works for non-op players too. */
-    private static void runPuffish(ServerPlayer player, String op, ResourceLocation spellId) {
+    private static void runPuffish(ServerPlayer player, String op, String skillId) {
         player.getServer().getCommands().performPrefixedCommand(
                 player.getServer().createCommandSourceStack(),
                 "puffish_skills skills " + op + " "
                         + player.getGameProfile().getName() + " "
                         + DEVOUR_CATEGORY + " "
-                        + spellId.getPath());
+                        + skillId);
     }
 
     public static String prettyName(ResourceLocation spellId) {
