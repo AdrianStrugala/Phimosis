@@ -9,6 +9,9 @@ import com.tensura.event.ConversionEvents;
 import com.tensura.event.NoHungerEvents;
 import com.tensura.event.PredatorEvents;
 import com.tensura.event.PredatorSyncEvents;
+import com.tensura.event.SpellMovementController;
+import com.tensura.event.SpellRuntimeController;
+import com.tensura.event.SpellStatusEvents;
 import com.tensura.event.TensuraAttributeEffects;
 import com.tensura.gui.RecallStationScreen;
 import com.tensura.item.SpellItem;
@@ -19,7 +22,7 @@ import com.tensura.registry.TensuraEntityRegistry;
 import com.tensura.registry.TensuraItemRegistry;
 import com.tensura.registry.TensuraMenuRegistry;
 import com.tensura.registry.TensuraMobEffects;
-import net.minecraft.client.renderer.entity.NoopRenderer;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -63,6 +66,9 @@ public class TensuraMod {
         NeoForge.EVENT_BUS.register(new ColonyStartupEvents());
         NeoForge.EVENT_BUS.register(new PredatorEvents());
         NeoForge.EVENT_BUS.register(new PredatorSyncEvents());
+        NeoForge.EVENT_BUS.register(new SpellMovementController());
+        NeoForge.EVENT_BUS.register(new SpellRuntimeController());
+        NeoForge.EVENT_BUS.register(new SpellStatusEvents());
         // ConversionEvents must be registered BEFORE CombatCompanionEvents
         NeoForge.EVENT_BUS.register(ConversionEvents.class);
         ConversionEvents.registerCobblemonHooks();
@@ -102,7 +108,8 @@ public class TensuraMod {
 
         @SubscribeEvent
         public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
-            event.registerEntityRenderer(TensuraEntityRegistry.SPELL_PROJECTILE.get(), NoopRenderer::new);
+            event.registerEntityRenderer(TensuraEntityRegistry.SPELL_PROJECTILE.get(),
+                    context -> new ThrownItemRenderer<>(context, 1.25f, true));
         }
     }
 }

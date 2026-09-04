@@ -1,0 +1,37 @@
+{
+  "pokemon_type": "water",
+  "category": "special",
+  "power": 14.0,
+  "school": "water",
+  "cooldown_ticks": 300,
+  "targeting": {
+    "type": "area",
+    "range": 18.0,
+    "radius": 4.0,
+    "max_targets": 12
+  },
+  "delivery": {
+    "type": "vortex",
+    "duration_ticks": 100,
+    "pull_strength": 0.1
+  },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 0.2 },
+    {
+      "type": "wet",
+      "duration": 120,
+      "show_particles": true,
+      "show_icon": true
+    }
+  ],
+  "visual": {
+    "cast_animation": "ground_cast",
+    "telegraph": "water_ring",
+    "aftermath": "water_vortex"
+  },
+  "sound": {
+    "cast": "minecraft:item.bucket.empty",
+    "loop": "minecraft:block.bubble_column.whirlpool_inside",
+    "impact": "minecraft:entity.player.splash"
+  }
+}

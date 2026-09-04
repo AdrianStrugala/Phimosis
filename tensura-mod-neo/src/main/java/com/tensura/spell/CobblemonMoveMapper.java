@@ -120,7 +120,7 @@ public class CobblemonMoveMapper {
         n("water_pulse",        "water_pulse");
         n("water_spout",        "hydro_pump");
         n("clamp",              "water_pulse");
-        n("whirlpool",          "water_pulse");
+        n("whirlpool",          "whirlpool");
         n("aqua_ring",          "leech_seed");
         n("brine",              "scald");
         n("dive",               "surf");
@@ -243,7 +243,7 @@ public class CobblemonMoveMapper {
         n("bite",               "dark_pulse");
         n("crunch",             "dark_pulse");
         n("thief",              "foul_play");
-        n("sucker_punch",       "dark_pulse");
+        n("sucker_punch",       "sucker_punch");
         n("assurance",          "hex");
         n("feint_attack",       "night_shade");
         n("pursuit",            "dark_pulse");
@@ -440,7 +440,7 @@ public class CobblemonMoveMapper {
         n("doom_desire",        "draco_meteor");
         n("sunsteel_strike",    "iron_strike");
         n("smart_strike",       "iron_tail");
-        n("iron_defense",       "iron_strike");
+        n("iron_defense",       "iron_defense");
         n("shift_gear",         "iron_strike");
         n("magnet_bomb",        "iron_tail");
         n("mirror_shot",        "flash_cannon");
@@ -490,7 +490,7 @@ public class CobblemonMoveMapper {
         n("giga_impact",        "hyper_beam");
         n("double_edge",        "close_combat");
         n("take_down",          "tackle");
-        n("quick_attack",       "mach_punch");
+        n("quick_attack",       "quick_attack");
         n("extreme_speed",      "mach_punch");
         n("mega_punch",         "close_combat");
         n("return",             "tackle");
@@ -504,7 +504,7 @@ public class CobblemonMoveMapper {
         n("last_resort",        "close_combat");
         n("hyper_fang",         "close_combat");
         n("swift",              "aerial_ace");
-        n("tri_attack",         "tackle");
+        n("tri_attack",         "tri_attack");
         n("explosion",          "explosion");
         n("self_destruct",      "explosion");
         n("egg_bomb",           "fire_blast");
@@ -535,6 +535,7 @@ public class CobblemonMoveMapper {
         // ═══════════════════════════════════════════════════════════════════
         // SPECIAL STATUS → these produce utility spells
         // ═══════════════════════════════════════════════════════════════════
+        n("rest",               "rest");
         n("recover",            "future_sight");  // self heal
         n("morning_sun",        "future_sight");
         n("synthesis",          "future_sight");

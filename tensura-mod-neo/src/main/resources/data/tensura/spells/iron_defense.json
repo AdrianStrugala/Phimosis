@@ -1,0 +1,31 @@
+{
+  "pokemon_type": "steel",
+  "category": "status",
+  "power": 0.0,
+  "school": "steel",
+  "cooldown_ticks": 360,
+  "targeting": {
+    "type": "self",
+    "range": 0.0
+  },
+  "delivery": {
+    "type": "self"
+  },
+  "impact": [
+    {
+      "type": "guard",
+      "recipient": "caster",
+      "amount": 16.0,
+      "duration": 160
+    }
+  ],
+  "visual": {
+    "cast_animation": "guard_stance",
+    "impact": "steel_plates",
+    "aftermath": "guard_shell"
+  },
+  "sound": {
+    "cast": "minecraft:item.armor.equip_iron",
+    "impact": "minecraft:block.anvil.place"
+  }
+}

@@ -1,10 +1,31 @@
 {
+  "pokemon_type": "fire",
+  "category": "special",
+  "power": 6.0,
   "school": "fire",
   "cooldown_ticks": 60,
-  "targeting": { "type": "aim", "range": 12 },
-  "delivery": { "type": "projectile", "speed": 1.5 },
+  "targeting": {
+    "type": "aim",
+    "range": 14.0,
+    "width": 0.6,
+    "max_targets": 1
+  },
+  "delivery": {
+    "type": "projectile",
+    "speed": 2.0
+  },
   "impact": [
     { "type": "damage", "damage_multiplier": 1.0 },
-    { "type": "fire", "seconds": 2 }
-  ]
+    { "type": "fire", "seconds": 3 }
+  ],
+  "visual": {
+    "cast_animation": "cast_point",
+    "projectile": "glowing_ember",
+    "trail": "fire_sparks",
+    "impact": "ember_burst"
+  },
+  "sound": {
+    "cast": "minecraft:item.firecharge.use",
+    "impact": "minecraft:block.fire.extinguish"
+  }
 }

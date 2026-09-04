@@ -1,0 +1,29 @@
+{
+  "pokemon_type": "dark",
+  "category": "physical",
+  "power": 14.0,
+  "school": "shadow",
+  "cooldown_ticks": 200,
+  "targeting": {
+    "type": "self",
+    "range": 5.0,
+    "max_targets": 1
+  },
+  "delivery": {
+    "type": "counter",
+    "duration_ticks": 20
+  },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 1.0 },
+    { "type": "knockback", "strength": 0.5 }
+  ],
+  "visual": {
+    "cast_animation": "counter_stance",
+    "telegraph": "dark_flash",
+    "impact": "shadow_afterimage"
+  },
+  "sound": {
+    "cast": "minecraft:entity.ender_eye.death",
+    "impact": "minecraft:entity.player.attack.crit"
+  }
+}

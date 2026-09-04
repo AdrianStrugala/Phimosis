@@ -1,11 +1,29 @@
 {
+  "pokemon_type": "psychic",
+  "category": "special",
+  "power": 28.0,
   "school": "psychic",
-  "cooldown_ticks": 220,
-  "targeting": { "type": "self", "range": 0 },
-  "delivery": { "type": "self", "speed": 1.0 },
+  "cooldown_ticks": 440,
+  "targeting": {
+    "type": "aim",
+    "range": 24.0,
+    "width": 1.0,
+    "max_targets": 1
+  },
+  "delivery": {
+    "type": "delayed",
+    "delay_ticks": 60
+  },
   "impact": [
-    { "type": "heal", "amount": 8.0 },
-    { "type": "status_effect", "effect": "minecraft:resistance", "duration": 200, "amplifier": 0, "chance": 1.0 },
-    { "type": "status_effect", "effect": "minecraft:regeneration", "duration": 100, "amplifier": 0, "chance": 1.0 }
-  ]
+    { "type": "damage", "damage_multiplier": 1.0 }
+  ],
+  "visual": {
+    "cast_animation": "psychic_focus",
+    "telegraph": "future_eye",
+    "impact": "psychic_implosion"
+  },
+  "sound": {
+    "cast": "minecraft:block.enchantment_table.use",
+    "impact": "minecraft:block.respawn_anchor.deplete"
+  }
 }

@@ -1,0 +1,44 @@
+{
+  "pokemon_type": "psychic",
+  "category": "status",
+  "power": 0.0,
+  "school": "psychic",
+  "cooldown_ticks": 1800,
+  "targeting": {
+    "type": "self",
+    "range": 0.0
+  },
+  "delivery": {
+    "type": "self",
+    "speed": 0.0
+  },
+  "impact": [
+    {
+      "type": "cleanse",
+      "recipient": "target"
+    },
+    {
+      "type": "full_heal",
+      "recipient": "target"
+    },
+    {
+      "type": "status_effect",
+      "recipient": "target",
+      "effect": "tensura:asleep",
+      "duration": 100,
+      "amplifier": 0,
+      "chance": 1.0,
+      "show_particles": false,
+      "show_icon": false
+    }
+  ],
+  "visual": {
+    "cast_animation": "rest",
+    "impact": "psychic_rest",
+    "aftermath": "sleep_symbols"
+  },
+  "sound": {
+    "cast": "minecraft:entity.allay.ambient_with_item",
+    "impact": "minecraft:entity.player.levelup"
+  }
+}

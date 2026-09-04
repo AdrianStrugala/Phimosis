@@ -1,10 +1,29 @@
 {
+  "pokemon_type": "grass",
+  "category": "physical",
+  "power": 7.0,
   "school": "nature",
-  "cooldown_ticks": 60,
-  "targeting": { "type": "aim", "range": 10 },
-  "delivery": { "type": "projectile", "speed": 1.8 },
+  "cooldown_ticks": 80,
+  "targeting": {
+    "type": "aim",
+    "range": 10.0,
+    "width": 0.8,
+    "max_targets": 1
+  },
+  "delivery": {
+    "type": "instant"
+  },
   "impact": [
-    { "type": "damage", "damage_multiplier": 1.2 },
-    { "type": "knockback", "strength": 1.0 }
-  ]
+    { "type": "damage", "damage_multiplier": 1.0 },
+    { "type": "pull", "strength": 1.25 }
+  ],
+  "visual": {
+    "cast_animation": "whip",
+    "trail": "vine_tether",
+    "impact": "leaf_snap"
+  },
+  "sound": {
+    "cast": "minecraft:entity.fishing_bobber.throw",
+    "impact": "minecraft:entity.player.attack.sweep"
+  }
 }

@@ -75,6 +75,9 @@ public class SpellItem extends Item {
         SpellRegistry.get(id).ifPresent(def -> {
             tooltip.add(Component.literal("School: " + def.school));
             tooltip.add(Component.literal("Cooldown: " + (def.cooldown_ticks / 20) + "s"));
+            if (def.charges > 1) {
+                tooltip.add(Component.literal("Charges: " + def.charges));
+            }
             tooltip.add(Component.literal("Range: " + (int) def.targeting.range + "m"));
             tooltip.add(Component.literal("Use: Right-click"));
         });

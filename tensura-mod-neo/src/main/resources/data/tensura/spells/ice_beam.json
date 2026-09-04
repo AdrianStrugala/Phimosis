@@ -1,10 +1,35 @@
 {
+  "pokemon_type": "ice",
+  "category": "special",
+  "power": 15.0,
   "school": "ice",
-  "cooldown_ticks": 160,
-  "targeting": { "type": "aim", "range": 20 },
-  "delivery": { "type": "beam", "speed": 1.0 },
+  "cooldown_ticks": 260,
+  "targeting": {
+    "type": "beam",
+    "range": 20.0,
+    "width": 0.75,
+    "max_targets": 6
+  },
+  "delivery": {
+    "type": "beam"
+  },
   "impact": [
-    { "type": "damage", "damage_multiplier": 2.2 },
-    { "type": "status_effect", "effect": "minecraft:slowness", "duration": 160, "amplifier": 2, "chance": 0.7 }
-  ]
+    { "type": "damage", "damage_multiplier": 1.0 },
+    {
+      "type": "freeze_if_wet",
+      "duration": 60,
+      "amplifier": 1,
+      "show_particles": true,
+      "show_icon": true
+    }
+  ],
+  "visual": {
+    "cast_animation": "two_hand_beam",
+    "trail": "ice_beam",
+    "impact": "ice_shatter"
+  },
+  "sound": {
+    "cast": "minecraft:block.amethyst_block.chime",
+    "impact": "minecraft:block.glass.break"
+  }
 }

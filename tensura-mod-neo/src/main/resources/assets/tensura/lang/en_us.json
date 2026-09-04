@@ -1,3 +1,8 @@
 {
-  "block.tensura.recall_station": "Recall Station"
+  "block.tensura.recall_station": "Recall Station",
+  "effect.tensura.asleep": "Asleep",
+  "effect.tensura.wet": "Wet",
+  "effect.tensura.frozen": "Frozen",
+  "effect.tensura.paralyzed": "Paralyzed",
+  "effect.tensura.exhausted": "Exhausted"
 }
