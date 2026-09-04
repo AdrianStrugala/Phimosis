@@ -5,6 +5,7 @@ import com.tensura.entity.SpellProjectile;
 import com.tensura.event.SpellMovementController;
 import com.tensura.event.SpellRuntimeController;
 import com.tensura.network.CooldownSyncPacket;
+import com.tensura.network.SpellVfxDispatcher;
 import com.tensura.registry.TensuraMobEffects;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.minecraft.core.particles.ParticleTypes;
@@ -19,7 +20,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.sounds.SoundSource;
@@ -97,6 +97,7 @@ public class SpellExecutor {
         if (!started) return false;
 
         caster.swing(InteractionHand.MAIN_HAND, true);
+        sendCastVfx(caster, def);
         playCastSound(caster, def);
         if (chargeState != null) {
             int recoveryTicks = def.charge_recovery_ticks > 0
@@ -118,7 +119,11 @@ public class SpellExecutor {
             case "dash" -> SpellMovementController.startDash(caster, def);
             case "vortex" -> castVortex(caster, def);
             case "delayed" -> castDelayed(caster, def);
+            case "delayed_area" -> castDelayedArea(caster, def);
+            case "moving_zone" -> castMovingZone(caster, def);
+            case "protective_aura" -> SpellRuntimeController.startProtectiveAura(caster, caster, def);
             case "counter" -> SpellRuntimeController.startCounter(caster, def);
+            case "channel_beam" -> SpellRuntimeController.startChannelBeam(caster, def);
             case "beam" -> { castBeam(caster, def); yield true; }
             case "meteor" -> { castMeteor(caster, spellId, def); yield true; }
             case "cloud" -> { castCloud(caster, def); yield true; }
@@ -140,6 +145,8 @@ public class SpellExecutor {
         if (companion.hasEffect(TensuraMobEffects.ASLEEP)
                 || companion.hasEffect(TensuraMobEffects.FROZEN)
                 || companion.hasEffect(TensuraMobEffects.EXHAUSTED)) return;
+        if (!"self".equals(def.targeting.type)
+            && !SpellTargetingRules.canHarm(owner, companion, target)) return;
 
         ResourceLocation companionSpellKey = ResourceLocation.fromNamespaceAndPath(
                 spellId.getNamespace(), "companion_" + spellId.getPath());
@@ -153,6 +160,7 @@ public class SpellExecutor {
         if (!started) return;
 
         ownerCooldowns.put(companionSpellKey, now + def.cooldown_ticks);
+        sendCastVfx(companion, def);
         serverLevel.sendParticles(schoolParticle(def.school),
                 companion.getX(), companion.getY() + 1, companion.getZ(), 12, 0.3, 0.3, 0.3, 0.05);
         playCastSound(companion, def);
@@ -162,11 +170,20 @@ public class SpellExecutor {
                                                     LivingEntity target, ResourceLocation spellId,
                                                     SpellDefinition def) {
         if (!companion.isAlive() || !target.isAlive()) return false;
+        if (!"self".equals(def.targeting.type)
+            && !SpellTargetingRules.canHarm(owner, companion, target)) return false;
         return switch (def.delivery.type) {
             case "dash" -> SpellMovementController.startDash(owner, companion, target, def);
             case "vortex" -> SpellRuntimeController.startVortex(owner, companion, def, target.position());
             case "delayed" -> SpellRuntimeController.startDelayed(owner, companion, target, def);
+            case "delayed_area" -> SpellRuntimeController.startDelayedArea(
+                    owner, companion, def, target.position());
+            case "moving_zone" -> startCompanionMovingZone(owner, companion, target, def);
+            case "protective_aura" -> SpellRuntimeController.startProtectiveAura(
+                    owner, companion, def);
             case "counter" -> SpellRuntimeController.startCounter(owner, companion, def);
+            case "channel_beam" -> SpellRuntimeController.startChannelBeam(
+                    owner, companion, target, def);
             case "beam" -> { castCompanionBeam(owner, companion, target, def); yield true; }
             case "meteor" -> { castMeteorAt(owner, companion, spellId, def, target.position()); yield true; }
             case "cloud" -> { castCompanionCloud(owner, companion, target.position(), def); yield true; }
@@ -193,14 +210,17 @@ public class SpellExecutor {
         int projectileCount = Math.max(1, def.delivery.projectile_count);
         UUID projectileGroup = projectileCount > 1
             ? SpellRuntimeController.createProjectileGroup(serverLevel, 100) : null;
+        LivingEntity homingTarget = def.delivery.homing_strength > 0.0
+            ? rayCast(caster, def.targeting.range) : null;
         for (int index = 0; index < projectileCount; index++) {
             double centeredIndex = index - (projectileCount - 1) / 2.0;
             float angle = (float) Math.toRadians(centeredIndex * def.delivery.spread_degrees);
             Vec3 direction = caster.getLookAngle().yRot(angle);
             SpellProjectile projectile = SpellProjectile.create(
                     caster, caster, spellId, def, direction, index, projectileCount,
-                    projectileGroup);
+                    projectileGroup, homingTarget);
             serverLevel.addFreshEntity(projectile);
+                sendProjectileVfx(serverLevel, projectile, def, direction);
         }
     }
 
@@ -216,8 +236,9 @@ public class SpellExecutor {
             double centeredIndex = index - (projectileCount - 1) / 2.0;
             float angle = (float) Math.toRadians(centeredIndex * def.delivery.spread_degrees);
             SpellProjectile projectile = SpellProjectile.create(owner, companion, spellId, def,
-                    baseDirection.yRot(angle), index, projectileCount, projectileGroup);
+                    baseDirection.yRot(angle), index, projectileCount, projectileGroup, target);
             serverLevel.addFreshEntity(projectile);
+                sendProjectileVfx(serverLevel, projectile, def, baseDirection.yRot(angle));
         }
     }
 
@@ -247,7 +268,8 @@ public class SpellExecutor {
         // Hit all entities in radius
         AABB box = caster.getBoundingBox().inflate(radius);
         List<LivingEntity> targets = caster.level().getEntitiesOfClass(LivingEntity.class, box,
-                e -> e != caster && caster.distanceTo(e) <= radius);
+            target -> caster.distanceTo(target) <= radius
+                && SpellTargetingRules.canHarm(caster, caster, target));
         for (LivingEntity target : targets) {
             applyImpacts(caster, target, def);
         }
@@ -262,7 +284,7 @@ public class SpellExecutor {
                 8, radius * 0.4, 0.5, radius * 0.4, 0.1);
         AABB area = companion.getBoundingBox().inflate(radius);
         List<LivingEntity> targets = serverLevel.getEntitiesOfClass(LivingEntity.class, area,
-                entity -> entity != companion && entity != owner && entity.isAlive()
+            entity -> SpellTargetingRules.canHarm(owner, companion, entity)
                         && companion.distanceTo(entity) <= radius);
         for (LivingEntity target : targets) {
             applyImpacts(owner, companion, target, def);
@@ -295,16 +317,23 @@ public class SpellExecutor {
     // ── Beam: raycast hitting ALL entities in a line ─────────────────────────
 
     private static void castBeam(ServerPlayer caster, SpellDefinition def) {
-        if (!(caster.level() instanceof ServerLevel serverLevel)) return;
+        castRuntimeBeam(caster, caster, null, def);
+    }
 
-        Vec3 eye   = caster.getEyePosition();
-        Vec3 look  = caster.getLookAngle().scale(def.targeting.range);
-        Vec3 end   = eye.add(look);
+    public static void sendRuntimeBeamVfx(ServerPlayer owner, LivingEntity effectCaster,
+                                          LivingEntity lockedTarget, SpellDefinition def) {
+        if (!(effectCaster.level() instanceof ServerLevel serverLevel)) return;
+        BeamTrace trace = resolveBeamTrace(owner, effectCaster, lockedTarget, def);
+        sendBeamVfx(serverLevel, effectCaster, def, trace);
+    }
 
-        // Block clip
-        HitResult blockHit = caster.level().clip(new ClipContext(eye, end,
-                ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, caster));
-        Vec3 beamEnd = blockHit.getType() == HitResult.Type.BLOCK ? blockHit.getLocation() : end;
+    public static void castRuntimeBeam(ServerPlayer owner, LivingEntity effectCaster,
+                                       LivingEntity lockedTarget, SpellDefinition def) {
+        if (!(effectCaster.level() instanceof ServerLevel serverLevel)) return;
+        BeamTrace trace = resolveBeamTrace(owner, effectCaster, lockedTarget, def);
+        Vec3 eye = trace.origin();
+        Vec3 beamEnd = trace.end();
+        sendBeamVfx(serverLevel, effectCaster, def, trace);
 
         // Particles along the beam
         double dist = eye.distanceTo(beamEnd);
@@ -317,15 +346,16 @@ public class SpellExecutor {
         // Hit all entities along beam
         double width = Math.max(0.1, def.targeting.width);
         AABB box = new AABB(eye, beamEnd).inflate(width);
-        List<LivingEntity> hit = caster.level().getEntitiesOfClass(LivingEntity.class, box,
-            entity -> entity != caster && entity.getBoundingBox().inflate(width).clip(eye, beamEnd).isPresent());
+        List<LivingEntity> hit = effectCaster.level().getEntitiesOfClass(LivingEntity.class, box,
+            entity -> SpellTargetingRules.canHarm(owner, effectCaster, entity)
+                && entity.getBoundingBox().inflate(width).clip(eye, beamEnd).isPresent());
         hit.sort((left, right) -> Double.compare(
-            left.distanceToSqr(caster), right.distanceToSqr(caster)));
+            left.distanceToSqr(effectCaster), right.distanceToSqr(effectCaster)));
         if (def.targeting.max_targets > 0 && hit.size() > def.targeting.max_targets) {
             hit = hit.subList(0, def.targeting.max_targets);
         }
         for (LivingEntity t : hit) {
-            applyImpacts(caster, t, def);
+            applyImpacts(owner, effectCaster, t, def);
         }
 
         // Lightning visual at end for lightning school
@@ -339,36 +369,38 @@ public class SpellExecutor {
 
     private static void castCompanionBeam(ServerPlayer owner, PokemonEntity companion,
                                           LivingEntity target, SpellDefinition def) {
-        if (!(companion.level() instanceof ServerLevel serverLevel)) return;
-        Vec3 start = companion.getEyePosition();
-        Vec3 desiredEnd = target.getBoundingBox().getCenter();
-        HitResult blockHit = companion.level().clip(new ClipContext(start, desiredEnd,
-                ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, companion));
-        Vec3 end = blockHit.getType() == HitResult.Type.BLOCK ? blockHit.getLocation() : desiredEnd;
-        Vec3 delta = end.subtract(start);
-        double distance = delta.length();
-        if (distance <= 1.0E-6) return;
-        Vec3 direction = delta.normalize();
-        for (double offset = 0.5; offset < distance; offset += 1.0) {
-            Vec3 position = start.add(direction.scale(offset));
-            serverLevel.sendParticles(schoolParticle(def.school), position.x, position.y, position.z,
-                    3, 0.1, 0.1, 0.1, 0.0);
+        castRuntimeBeam(owner, companion, target, def);
+    }
+
+        private static BeamTrace resolveBeamTrace(ServerPlayer owner, LivingEntity effectCaster,
+                              LivingEntity lockedTarget, SpellDefinition def) {
+        Vec3 origin = effectCaster.getEyePosition();
+        Vec3 desiredEnd;
+        if (lockedTarget != null && lockedTarget.isAlive()
+            && SpellTargetingRules.canHarm(owner, effectCaster, lockedTarget)) {
+            Vec3 targetDirection = lockedTarget.getBoundingBox().getCenter().subtract(origin);
+            desiredEnd = origin.add(targetDirection.length() > def.targeting.range
+                ? targetDirection.normalize().scale(def.targeting.range) : targetDirection);
+        } else {
+            desiredEnd = origin.add(effectCaster.getLookAngle().scale(def.targeting.range));
         }
 
-        double width = Math.max(0.1, def.targeting.width);
-        List<LivingEntity> targets = serverLevel.getEntitiesOfClass(LivingEntity.class,
-                new AABB(start, end).inflate(width),
-                entity -> entity != companion && entity != owner
-                        && entity.getBoundingBox().inflate(width).clip(start, end).isPresent());
-        targets.sort((left, right) -> Double.compare(left.distanceToSqr(companion),
-                right.distanceToSqr(companion)));
-        if (def.targeting.max_targets > 0 && targets.size() > def.targeting.max_targets) {
-            targets = targets.subList(0, def.targeting.max_targets);
+        HitResult blockHit = effectCaster.level().clip(new ClipContext(origin, desiredEnd,
+            ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, effectCaster));
+        Vec3 end = blockHit.getType() == HitResult.Type.BLOCK
+            ? blockHit.getLocation() : desiredEnd;
+        return new BeamTrace(origin, end);
         }
-        for (LivingEntity beamTarget : targets) {
-            applyImpacts(owner, companion, beamTarget, def);
+
+        private static void sendBeamVfx(ServerLevel level, LivingEntity effectCaster,
+                        SpellDefinition definition, BeamTrace trace) {
+        int duration = "channel_beam".equals(definition.delivery.type)
+            ? Math.max(2, definition.delivery.tick_interval_ticks + 1)
+            : 8;
+        SpellVfxDispatcher.send(level, "beam", definition.visual.trail,
+            definition.school, trace.origin(), trace.end(),
+            Math.max(0.1, definition.targeting.width), duration, effectCaster, false);
         }
-    }
 
     // ── Meteor: impacts from above at aimed location ─────────────────────────
 
@@ -386,6 +418,9 @@ public class SpellExecutor {
 
         serverLevel.sendParticles(ParticleTypes.DRAGON_BREATH, center.x, center.y + 0.1, center.z,
             25, spreadRadius, 0.05, spreadRadius, 0.01);
+        SpellVfxDispatcher.send(serverLevel, "telegraph", def.visual.telegraph,
+            def.school, center, center, Math.max(1.0, def.targeting.radius),
+            def.delivery.delay_ticks, effectCaster, false);
         for (int index = 0; index < projectileCount; index++) {
             double offsetX = (serverLevel.random.nextDouble() - 0.5) * spreadRadius * 2.0;
             double offsetZ = (serverLevel.random.nextDouble() - 0.5) * spreadRadius * 2.0;
@@ -398,6 +433,8 @@ public class SpellExecutor {
                 owner, effectCaster, spellId,
                 def, spawnPosition, impactPosition, groupId, index, projectileCount);
             serverLevel.addFreshEntity(meteor);
+            sendProjectileVfx(serverLevel, meteor, def,
+                    impactPosition.subtract(spawnPosition));
         }
         if (def.delivery.recovery_ticks > 0) {
             effectCaster.addEffect(new MobEffectInstance(TensuraMobEffects.EXHAUSTED,
@@ -429,7 +466,7 @@ public class SpellExecutor {
         // Immediate AoE in cloud area
         AABB box = new AABB(cloudPos, cloudPos).inflate(radius);
         List<LivingEntity> targets = caster.level().getEntitiesOfClass(LivingEntity.class, box,
-                e -> e != caster);
+            target -> SpellTargetingRules.canHarm(caster, caster, target));
         for (LivingEntity t : targets) {
             applyImpacts(caster, t, def);
         }
@@ -443,7 +480,7 @@ public class SpellExecutor {
                 40, radius * 0.5, 1.0, radius * 0.5, 0.03);
         List<LivingEntity> targets = serverLevel.getEntitiesOfClass(LivingEntity.class,
                 new AABB(position, position).inflate(radius),
-                entity -> entity != companion && entity != owner && entity.isAlive());
+            entity -> SpellTargetingRules.canHarm(owner, companion, entity));
         for (LivingEntity cloudTarget : targets) {
             applyImpacts(owner, companion, cloudTarget, def);
         }
@@ -459,6 +496,43 @@ public class SpellExecutor {
         return target != null && SpellRuntimeController.startDelayed(caster, target, def);
     }
 
+    private static boolean castDelayedArea(ServerPlayer caster, SpellDefinition def) {
+        Vec3 center = resolveAimPosition(caster, def.targeting.range);
+        return SpellRuntimeController.startDelayedArea(caster, caster, def, center);
+    }
+
+    private static boolean castMovingZone(ServerPlayer caster, SpellDefinition def) {
+        Vec3 direction = caster.getLookAngle();
+        Vec3 center = caster.position().add(direction.normalize().scale(2.0));
+        return SpellRuntimeController.startMovingZone(caster, caster, def, center, direction);
+    }
+
+    private static boolean startCompanionMovingZone(ServerPlayer owner, PokemonEntity companion,
+                                                    LivingEntity target, SpellDefinition def) {
+        Vec3 direction = target.position().subtract(companion.position());
+        Vec3 center = companion.position().add(direction.normalize().scale(2.0));
+        return SpellRuntimeController.startMovingZone(owner, companion, def, center, direction);
+    }
+
+        private static void sendProjectileVfx(ServerLevel level, SpellProjectile projectile,
+                          SpellDefinition definition, Vec3 direction) {
+        Vec3 origin = projectile.position();
+        Vec3 target = origin.add(direction.normalize().scale(definition.targeting.range));
+        SpellVfxDispatcher.send(level, "projectile", definition.visual.projectile,
+            definition.school, origin, target, 1.0, definition.delivery.duration_ticks,
+            projectile, false);
+        SpellVfxDispatcher.send(level, "projectile", definition.visual.trail,
+            definition.school, origin, target, 1.0, definition.delivery.duration_ticks,
+            projectile, false);
+        }
+
+    private static void sendCastVfx(LivingEntity effectCaster, SpellDefinition definition) {
+        if (!(effectCaster.level() instanceof ServerLevel level)) return;
+        SpellVfxDispatcher.send(level, "attachment", definition.visual.cast_animation,
+                definition.school, effectCaster.position(), effectCaster.position(),
+                1.0, definition.cast_time_ticks, effectCaster, true);
+    }
+
     // ── Targeting helpers ────────────────────────────────────────────────────
 
     private static List<LivingEntity> resolveTargets(ServerPlayer caster, SpellDefinition def) {
@@ -469,20 +543,21 @@ public class SpellExecutor {
         return hit != null ? List.of(hit) : List.of();
     }
 
-    private static LivingEntity rayCast(Player player, double range) {
-        Vec3 eye = player.getEyePosition();
-        Vec3 look = player.getLookAngle().scale(range);
+    private static LivingEntity rayCast(ServerPlayer caster, double range) {
+        Vec3 eye = caster.getEyePosition();
+        Vec3 look = caster.getLookAngle().scale(range);
         Vec3 end  = eye.add(look);
 
-        HitResult blockHit = player.level().clip(new ClipContext(eye, end,
-                ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
+        HitResult blockHit = caster.level().clip(new ClipContext(eye, end,
+                ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, caster));
         Vec3 target = blockHit.getType() == HitResult.Type.BLOCK ? blockHit.getLocation() : end;
 
-        AABB box = player.getBoundingBox().expandTowards(look).inflate(1.0);
+        AABB box = caster.getBoundingBox().expandTowards(look).inflate(1.0);
         LivingEntity closest = null;
         double closestDistance = range * range;
-        for (Entity entity : player.level().getEntities(player, box)) {
-            if (entity instanceof LivingEntity living && entity != player) {
+        for (Entity entity : caster.level().getEntities(caster, box)) {
+            if (entity instanceof LivingEntity living
+                    && SpellTargetingRules.canHarm(caster, caster, living)) {
                 var intersection = entity.getBoundingBox().inflate(0.3).clip(eye, target);
                 if (intersection.isPresent()) {
                     double distance = eye.distanceToSqr(intersection.get());
@@ -496,21 +571,22 @@ public class SpellExecutor {
         return closest;
     }
 
-    private static Vec3 resolveAimPosition(Player player, double range) {
-        LivingEntity target = rayCast(player, range);
+    private static Vec3 resolveAimPosition(ServerPlayer caster, double range) {
+        LivingEntity target = rayCast(caster, range);
         if (target != null) return target.position();
 
-        Vec3 eye = player.getEyePosition();
-        Vec3 end = eye.add(player.getLookAngle().scale(range));
-        HitResult blockHit = player.level().clip(new ClipContext(eye, end,
-                ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
+        Vec3 eye = caster.getEyePosition();
+        Vec3 end = eye.add(caster.getLookAngle().scale(range));
+        HitResult blockHit = caster.level().clip(new ClipContext(eye, end,
+                ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, caster));
         return blockHit.getType() == HitResult.Type.BLOCK ? blockHit.getLocation() : end;
     }
 
-    private static List<LivingEntity> aoeTargets(Player caster, double range) {
+    private static List<LivingEntity> aoeTargets(ServerPlayer caster, double range) {
         AABB box = caster.getBoundingBox().inflate(range);
         return caster.level().getEntitiesOfClass(LivingEntity.class, box,
-                e -> e != caster && caster.distanceTo(e) <= range);
+                target -> caster.distanceTo(target) <= range
+                        && SpellTargetingRules.canHarm(caster, caster, target));
     }
 
     // ── Visuals ──────────────────────────────────────────────────────────────
@@ -574,6 +650,14 @@ public class SpellExecutor {
                         sound, SoundSource.PLAYERS, 1.0f, 1.0f));
     }
 
+    public static void playLoopSound(LivingEntity source, SpellDefinition def) {
+        if (def.sound.loop == null || def.sound.loop.isBlank()) return;
+        BuiltInRegistries.SOUND_EVENT.getOptional(ResourceLocation.parse(def.sound.loop))
+                .ifPresent(sound -> source.level().playSound(null,
+                        source.getX(), source.getY(), source.getZ(),
+                        sound, SoundSource.PLAYERS, 0.8f, 1.0f));
+    }
+
     private static net.minecraft.core.particles.SimpleParticleType schoolParticle(String school) {
         return switch (school) {
             case "lightning" -> ParticleTypes.ELECTRIC_SPARK;
@@ -619,6 +703,9 @@ public class SpellExecutor {
         }
     }
 
+    private record BeamTrace(Vec3 origin, Vec3 end) {
+    }
+
     // ── Impact application ───────────────────────────────────────────────────
 
     public static void applyImpacts(ServerPlayer caster, LivingEntity target, SpellDefinition def) {
@@ -638,31 +725,55 @@ public class SpellExecutor {
     public static void applyImpacts(ServerPlayer owner, LivingEntity effectCaster,
                                     LivingEntity target, SpellDefinition def,
                                     boolean finalProjectile) {
+        boolean canHarm = SpellTargetingRules.canHarm(owner, effectCaster, target);
         for (SpellDefinition.Impact impact : def.impact) {
             LivingEntity recipient = "caster".equals(impact.recipient) ? effectCaster : target;
             switch (impact.type) {
                 case "damage" -> {
+                    if (!canHarm) continue;
                     double baseDamage = def.power >= 0.0
                             ? def.power
                             : owner.getAttackStrengthScale(0) * 6.0;
                     float dmg = (float) (baseDamage * impact.damage_multiplier);
                     target.hurt(owner.damageSources().playerAttack(owner), Math.max(1, dmg));
                 }
+                case "speed_scaled_damage" -> {
+                    if (!canHarm) continue;
+                    Vec3 casterMovement = effectCaster.getDeltaMovement();
+                    Vec3 targetMovement = target.getDeltaMovement();
+                    double casterSpeed = Math.sqrt(casterMovement.x * casterMovement.x
+                            + casterMovement.z * casterMovement.z);
+                    double targetSpeed = Math.sqrt(targetMovement.x * targetMovement.x
+                            + targetMovement.z * targetMovement.z);
+                    double advantage = Math.max(0.0,
+                            Math.min(1.0, (casterSpeed - targetSpeed) / 0.35));
+                    double maximumPower = Math.max(def.power, impact.amount);
+                    float damage = (float) ((def.power
+                            + (maximumPower - def.power) * advantage) * impact.damage_multiplier);
+                    target.hurt(owner.damageSources().playerAttack(owner), Math.max(1, damage));
+                }
                 case "status_effect" -> {
                     if (Math.random() <= impact.chance && !impact.effect.isEmpty()) {
                         BuiltInRegistries.MOB_EFFECT.getHolder(ResourceLocation.parse(impact.effect))
+                            .filter(holder -> recipient == effectCaster || canHarm
+                                    || holder.value().getCategory()
+                                    != net.minecraft.world.effect.MobEffectCategory.HARMFUL)
                             .ifPresent(holder -> recipient.addEffect(new MobEffectInstance(holder,
-                                    impact.duration, impact.amplifier, impact.ambient,
-                                    impact.show_particles, impact.show_icon)));
+                                impact.duration, impact.amplifier, impact.ambient,
+                                impact.show_particles, impact.show_icon)));
                     }
                 }
-                case "fire"     -> target.igniteForSeconds(impact.seconds);
+                case "fire" -> {
+                    if (canHarm) target.igniteForSeconds(impact.seconds);
+                }
                 case "knockback" -> {
+                    if (!canHarm) continue;
                     Vec3 dir = target.position().subtract(effectCaster.position()).normalize().scale(impact.strength);
                     target.setDeltaMovement(target.getDeltaMovement().add(dir.x, 0.4, dir.z));
                     target.hurtMarked = true;
                 }
                 case "pull" -> {
+                    if (!canHarm) continue;
                     Vec3 delta = effectCaster.position().subtract(target.position());
                     if (delta.lengthSqr() > 1.0E-6) {
                         Vec3 pull = delta.normalize().scale(impact.strength);
@@ -679,10 +790,15 @@ public class SpellExecutor {
                             .toList();
                     harmfulEffects.forEach(recipient::removeEffect);
                 }
-                case "wet" -> recipient.addEffect(new MobEffectInstance(
-                        TensuraMobEffects.WET, impact.duration, 0, false,
-                        impact.show_particles, impact.show_icon));
+                case "wet" -> {
+                    if (canHarm) {
+                        recipient.addEffect(new MobEffectInstance(TensuraMobEffects.WET,
+                                impact.duration, 0, false,
+                                impact.show_particles, impact.show_icon));
+                    }
+                }
                 case "freeze_if_wet" -> {
+                    if (!canHarm) continue;
                     if (recipient.hasEffect(TensuraMobEffects.WET)) {
                         recipient.removeEffect(TensuraMobEffects.WET);
                         recipient.addEffect(new MobEffectInstance(TensuraMobEffects.FROZEN,
@@ -693,8 +809,18 @@ public class SpellExecutor {
                                         impact.duration, Math.max(1, impact.amplifier))));
                     }
                 }
+                case "paralyze_if_wet" -> {
+                    if (!canHarm) continue;
+                    double chance = recipient.hasEffect(TensuraMobEffects.WET)
+                            ? 1.0 : impact.chance;
+                    if (recipient.getRandom().nextDouble() <= chance) {
+                        recipient.addEffect(new MobEffectInstance(TensuraMobEffects.PARALYZED,
+                                impact.duration, impact.amplifier, false,
+                                impact.show_particles, impact.show_icon));
+                    }
+                }
                 case "tri_status" -> {
-                    if (!finalProjectile) continue;
+                    if (!canHarm || !finalProjectile) continue;
                     switch (target.getRandom().nextInt(3)) {
                         case 0 -> target.igniteForSeconds(Math.max(1, impact.seconds));
                         case 1 -> BuiltInRegistries.MOB_EFFECT.getHolder(ResourceLocation.withDefaultNamespace("slowness"))
@@ -707,6 +833,21 @@ public class SpellExecutor {
                 case "guard" -> SpellRuntimeController.addGuard(recipient, impact.amount, impact.duration);
             }
         }
-        playImpactSound(owner, target, def);
+        if (finalProjectile && target.level() instanceof ServerLevel level) {
+            Vec3 impactPosition = target.getBoundingBox().getCenter();
+            double radius = def.targeting.radius > 0.0 ? def.targeting.radius : 1.0;
+            SpellVfxDispatcher.send(level, "impact", def.visual.impact, def.school,
+                impactPosition, impactPosition, radius, 0, effectCaster,
+                !SpellTargetingRules.canHarm(owner, effectCaster, target));
+                    if (!"moving_zone".equals(def.delivery.type)
+                        && !"protective_aura".equals(def.delivery.type)) {
+                    SpellVfxDispatcher.send(level, "aftermath", def.visual.aftermath, def.school,
+                        impactPosition, impactPosition, radius, def.delivery.duration_ticks,
+                        effectCaster, !SpellTargetingRules.canHarm(owner, effectCaster, target));
+                    }
+        }
+        if (def.sound.loop == null || def.sound.loop.isBlank()) {
+            playImpactSound(owner, target, def);
+        }
     }
 }

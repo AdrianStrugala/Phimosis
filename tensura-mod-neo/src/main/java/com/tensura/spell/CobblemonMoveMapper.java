@@ -129,7 +129,7 @@ public class CobblemonMoveMapper {
         n("sparkling_aria",     "bubble_beam");
         n("wave_crash",         "surf");
         n("flip_turn",          "surf");
-        n("aqua_jet",           "water_gun");
+        n("aqua_jet",           "aqua_jet");
         n("crabhammer",         "surf");
         n("muddy_water",        "surf");
         n("water_shuriken",     "water_gun");
@@ -150,7 +150,7 @@ public class CobblemonMoveMapper {
         n("wild_charge",        "thunderbolt");
         n("spark",              "thundershock");
         n("charge_beam",        "thunderbolt");
-        n("electro_ball",       "thunderbolt");
+        n("electro_ball",       "electro_ball");
         n("zap_cannon",         "thunder");
         n("thunder_punch",      "thundershock");
         n("thunder_fang",       "thundershock");
@@ -193,6 +193,7 @@ public class CobblemonMoveMapper {
         n("ceaseless_edge",     "ice_shard");
         n("chilly_reception",   "powder_snow");
         n("glacial_lance",      "blizzard");
+        n("aurora_veil",        "aurora_veil");
 
         // ═══════════════════════════════════════════════════════════════════
         // PSYCHIC

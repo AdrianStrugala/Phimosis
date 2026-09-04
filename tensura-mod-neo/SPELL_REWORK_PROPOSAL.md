@@ -20,6 +20,7 @@ Wdrozone:
 - statusy `Wet`, `Frozen`, `Paralyzed` i `Exhausted`, w tym combo Wet/Frozen;
 - dwa regenerujace sie ladunki `Quick Attack`;
 - widoczne modele projectile, telegraphy particles, tether, efekty impactu oraz dzwieki cast/impact.
+- wspolny filtr friendly fire chroni rzucajacego, jego Pokemony oraz obywateli nalezacych do jego kolonii we wszystkich delivery i w AI companiona.
 
 Walidacja:
 

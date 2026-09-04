@@ -18,5 +18,6 @@ public class NetworkHandler {
         registrar.playToClient(CooldownSyncPacket.TYPE, CooldownSyncPacket.STREAM_CODEC, CooldownSyncPacket::handle);
         registrar.playToClient(CitizenSpeciesSyncPacket.TYPE, CitizenSpeciesSyncPacket.STREAM_CODEC, CitizenSpeciesSyncPacket::handle);
         registrar.playToClient(OpenCodexPacket.TYPE, OpenCodexPacket.STREAM_CODEC, OpenCodexPacket::handle);
+        registrar.playToClient(SpellVfxPacket.TYPE, SpellVfxPacket.STREAM_CODEC, SpellVfxPacket::handle);
     }
 }

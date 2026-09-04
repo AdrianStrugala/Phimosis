@@ -22,3 +22,10 @@ description='''${mod_description}'''
     versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="photon"
+    type="required"
+    versionRange="${photon_version_range}"
+    ordering="AFTER"
+    side="CLIENT"

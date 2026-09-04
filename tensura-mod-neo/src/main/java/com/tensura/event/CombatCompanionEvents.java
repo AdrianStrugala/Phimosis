@@ -4,6 +4,7 @@ import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.api.events.CobblemonEvents;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.tensura.TensuraMod;
+import com.tensura.engine.SpellTargetingRules;
 import com.tensura.goal.AllyFollowGoal;
 import com.tensura.goal.CompanionSpellGoal;
 import com.tensura.spell.CobblemonMoveMapper;
@@ -79,8 +80,7 @@ public class CombatCompanionEvents {
         if (companion == null || !companion.isAlive()) return;
 
         LivingEntity attacked = event.getEntity();
-        if (attacked == companion) return;
-        if (attacked.getTags().contains("tensura:combat_companion")) return;
+        if (!SpellTargetingRules.canHarm(player, companion, attacked)) return;
 
         companion.setTarget(attacked);
     }
@@ -93,7 +93,7 @@ public class CombatCompanionEvents {
         if (!(event.getSource().getEntity() instanceof LivingEntity attacker)) return;
         PokemonEntity companion = activeCompanions.get(owner.getUUID());
         if (companion == null || !companion.isAlive()) return;
-        if (attacker.getTags().contains("tensura:combat_companion")) return;
+        if (!SpellTargetingRules.canHarm(owner, companion, attacker)) return;
 
         companion.setTarget(attacker);
     }

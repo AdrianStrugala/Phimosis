@@ -4,6 +4,7 @@ import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.tensura.engine.SpellDefinition;
 import com.tensura.engine.SpellExecutor;
 import com.tensura.engine.SpellRegistry;
+import com.tensura.engine.SpellTargetingRules;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
@@ -41,6 +42,7 @@ public class CompanionSpellGoal extends Goal {
         if (spells.isEmpty()) return false;
         LivingEntity target = companion.getTarget();
         return target != null && target.isAlive()
+                && SpellTargetingRules.canHarm(owner, companion, target)
                 && companion.distanceToSqr(target) <= CAST_RANGE * CAST_RANGE
                 && cooldown <= 0;
     }
@@ -48,7 +50,8 @@ public class CompanionSpellGoal extends Goal {
     @Override
     public void start() {
         LivingEntity target = companion.getTarget();
-        if (target == null || spells.isEmpty()) return;
+        if (target == null || spells.isEmpty()
+                || !SpellTargetingRules.canHarm(owner, companion, target)) return;
 
         // Pick a random spell the companion knows
         ResourceLocation spellId = spells.get(companion.getRandom().nextInt(spells.size()));

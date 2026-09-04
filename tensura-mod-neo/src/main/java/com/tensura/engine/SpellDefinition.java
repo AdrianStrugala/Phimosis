@@ -38,6 +38,10 @@ public class SpellDefinition {
          * "meteor"      — falls from above onto target position (AoE on landing)
          * "cloud"       — spawns lingering cloud at target position
          * "dash"        — moves the caster along a collision-checked path
+         * "channel_beam" — applies beam impacts periodically while active
+         * "delayed_area" — telegraphs a fixed area before applying impacts
+         * "moving_zone"  — moves and applies periodic area impacts
+         * "protective_aura" — follows the caster and mitigates allied damage
          */
         public String type = "projectile";
         public double speed = 1.5;
@@ -46,7 +50,10 @@ public class SpellDefinition {
         public double distance = 0.0;
         public int duration_ticks = 0;
         public int delay_ticks = 0;
+        public int tick_interval_ticks = 0;
         public int recovery_ticks = 0;
+        public boolean steerable = false;
+        public double movement_speed = 0.0;
         public double homing_strength = 0.0;
         public double pull_strength = 0.0;
     }
@@ -72,6 +79,8 @@ public class SpellDefinition {
         public double strength = 1.0;
         // heal
         public double amount = 4.0;
+        // mitigation
+        public double reduction = 0.0;
     }
 
     public static class Visual {

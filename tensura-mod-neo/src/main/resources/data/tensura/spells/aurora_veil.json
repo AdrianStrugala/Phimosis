@@ -1,0 +1,31 @@
+{
+  "pokemon_type": "ice",
+  "category": "status",
+  "power": 0.0,
+  "school": "ice",
+  "cooldown_ticks": 400,
+  "targeting": {
+    "type": "self",
+    "range": 0.0,
+    "radius": 6.0
+  },
+  "delivery": {
+    "type": "protective_aura",
+    "duration_ticks": 160
+  },
+  "impact": [
+    {
+      "type": "damage_reduction",
+      "reduction": 0.25
+    }
+  ],
+  "visual": {
+    "cast_animation": "guard_stance",
+    "telegraph": "aurora_dome",
+    "aftermath": "aurora_curtain"
+  },
+  "sound": {
+    "cast": "minecraft:block.amethyst_block.chime",
+    "loop": "minecraft:block.amethyst_block.resonate"
+  }
+}

@@ -23,10 +23,15 @@ runs {
     }
     client {
         client()
+        if (project.hasProperty('vfxValidation')) {
+            systemProperty 'tensura.vfxValidation', 'true'
+            arguments.add '--quickPlaySingleplayer'
+            arguments.add 'VfxValidation'
+        }
     }
     server {
         server()
-        programArgument '--nogui'
+        arguments.add '--nogui'
     }
 }
 
@@ -35,6 +40,7 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
     flatDir { dirs 'libs' }
     mavenCentral()
+    maven { url = 'https://maven.firstdark.dev/snapshots' }
 }
 
 dependencies {
@@ -45,12 +51,22 @@ dependencies {
 
     // Kotlin for NeoForge — required for Cobblemon Kotlin interop
     implementation files('libs/kotlinforforge.jar')
+    implementation files('libs/kfflang-neoforge-userdev.jar')
+    implementation files('libs/kfflib-neoforge.jar')
+    implementation files('libs/kffmod-neoforge.jar')
 
     // Kotlin stdlib — needed for compiling against Cobblemon's Kotlin API
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib:2.0.0"
 
     // MineColonies — for EntityCitizen type reference in rendering/commands
     implementation files('libs/minecolonies.jar')
+    runtimeOnly files('libs/blockui.jar')
+    runtimeOnly files('libs/domum-ornamentum.jar')
+    runtimeOnly files('libs/structurize.jar')
+
+    // Photon 2 — GPU-instanced particles, trails, beams, meshes, and timelines
+    implementation "com.lowdragmc.ldlib2:ldlib2-neoforge-${minecraft_version}:${ldlib2_version}:all"
+    implementation files('libs/photon.jar')
 }
 
 tasks.named('processResources', ProcessResources).configure {
@@ -59,6 +75,7 @@ tasks.named('processResources', ProcessResources).configure {
             minecraft_version_range: minecraft_version_range,
             neo_version            : neo_version,
             loader_version_range   : loader_version_range,
+            photon_version_range   : photon_version_range,
             mod_id                 : mod_id, mod_name: mod_name, mod_license: mod_license,
             mod_version            : mod_version, mod_authors: mod_authors, mod_description: mod_description,
     ]

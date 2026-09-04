@@ -3,6 +3,7 @@ package com.tensura.entity;
 import com.tensura.engine.SpellDefinition;
 import com.tensura.engine.SpellExecutor;
 import com.tensura.engine.SpellRegistry;
+import com.tensura.engine.SpellTargetingRules;
 import com.tensura.event.SpellRuntimeController;
 import com.tensura.registry.TensuraEntityRegistry;
 import net.minecraft.core.particles.ParticleTypes;
@@ -44,6 +45,8 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
     private UUID meteorGroup;
     private UUID projectileGroup;
     private UUID sourceEntityId;
+    private UUID homingTargetId;
+    private double homingStrength;
 
     // Deserialization constructor (required by EntityType.Builder.of)
     public SpellProjectile(EntityType<? extends SpellProjectile> type, Level level) {
@@ -76,6 +79,14 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
                                          ResourceLocation spellId, SpellDefinition def,
                                          Vec3 direction, int projectileIndex, int projectileCount,
                                          UUID projectileGroup) {
+        return create(owner, source, spellId, def, direction, projectileIndex, projectileCount,
+                projectileGroup, null);
+    }
+
+    public static SpellProjectile create(ServerPlayer owner, LivingEntity source,
+                                         ResourceLocation spellId, SpellDefinition def,
+                                         Vec3 direction, int projectileIndex, int projectileCount,
+                                         UUID projectileGroup, LivingEntity homingTarget) {
         Level level = source.level();
         SpellProjectile proj = new SpellProjectile(TensuraEntityRegistry.SPELL_PROJECTILE.get(), level);
         proj.spellId = spellId.toString();
@@ -86,6 +97,8 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
         proj.projectileCount = projectileCount;
         proj.projectileGroup = projectileGroup;
         proj.sourceEntityId = source.getUUID();
+        proj.homingTargetId = homingTarget == null ? null : homingTarget.getUUID();
+        proj.homingStrength = Math.max(0.0, Math.min(1.0, def.delivery.homing_strength));
 
         Vec3 eye = source.getEyePosition();
         proj.setOwner(owner);
@@ -105,13 +118,13 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
                                                Vec3 spawnPosition, Vec3 impactPosition, UUID groupId,
                                                int projectileIndex, int projectileCount) {
         return createMeteor(caster, caster, spellId, def, spawnPosition, impactPosition,
-            groupId, projectileIndex, projectileCount);
-        }
+                groupId, projectileIndex, projectileCount);
+    }
 
-        public static SpellProjectile createMeteor(ServerPlayer owner, LivingEntity source,
-                               ResourceLocation spellId, SpellDefinition def,
-                               Vec3 spawnPosition, Vec3 impactPosition, UUID groupId,
-                               int projectileIndex, int projectileCount) {
+    public static SpellProjectile createMeteor(ServerPlayer owner, LivingEntity source,
+                                               ResourceLocation spellId, SpellDefinition def,
+                                               Vec3 spawnPosition, Vec3 impactPosition, UUID groupId,
+                                               int projectileIndex, int projectileCount) {
         SpellProjectile projectile = new SpellProjectile(TensuraEntityRegistry.SPELL_PROJECTILE.get(), source.level());
         projectile.spellId = spellId.toString();
         projectile.entityData.set(DATA_SPELL_ID, projectile.spellId);
@@ -137,9 +150,34 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
             this.discard();
             return;
         }
-        if (level() instanceof ServerLevel sl) {
-            sl.sendParticles(schoolParticle(), getX(), getY(), getZ(), 4, 0.15, 0.15, 0.15, 0.01);
+        if (level() instanceof ServerLevel serverLevel) {
+            updateHoming(serverLevel);
+            serverLevel.sendParticles(schoolParticle(), getX(), getY(), getZ(),
+                    4, 0.15, 0.15, 0.15, 0.01);
         }
+    }
+
+    private void updateHoming(ServerLevel level) {
+        if (homingTargetId == null || homingStrength <= 0.0) return;
+        Entity entity = level.getEntity(homingTargetId);
+        if (!(entity instanceof LivingEntity target) || !target.isAlive()) {
+            homingTargetId = null;
+            return;
+        }
+        Entity ownerEntity = getOwner();
+        if (!(ownerEntity instanceof ServerPlayer owner)) return;
+        Entity source = sourceEntityId == null ? null : level.getEntity(sourceEntityId);
+        LivingEntity effectCaster = source instanceof LivingEntity living ? living : owner;
+        if (!SpellTargetingRules.canHarm(owner, effectCaster, target)) {
+            homingTargetId = null;
+            return;
+        }
+
+        Vec3 movement = getDeltaMovement();
+        double speed = movement.length();
+        if (speed <= 1.0E-6) return;
+        Vec3 desired = target.getBoundingBox().getCenter().subtract(position()).normalize().scale(speed);
+        setDeltaMovement(movement.lerp(desired, homingStrength));
     }
 
     @Override
@@ -150,11 +188,16 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
 
         SpellDefinition def = SpellRegistry.get(ResourceLocation.parse(spellId)).orElse(null);
         if (def != null && getOwner() instanceof ServerPlayer caster) {
+            Entity source = (sourceEntityId == null || !(level() instanceof ServerLevel serverLevel))
+                    ? null : serverLevel.getEntity(sourceEntityId);
+            LivingEntity effectCaster = source instanceof LivingEntity living ? living : caster;
+            if (!SpellTargetingRules.canHarm(caster, effectCaster, target)) {
+                discard();
+                return;
+            }
             if (meteorGroup != null) {
                 SpellRuntimeController.applyMeteorImpact(caster, def, position(), meteorGroup);
             } else {
-                Entity source = (sourceEntityId == null || !(level() instanceof ServerLevel sl2)) ? null : sl2.getEntity(sourceEntityId);
-                LivingEntity effectCaster = source instanceof LivingEntity living ? living : caster;
                 boolean finalImpact = projectileIndex == projectileCount - 1;
                 if (projectileGroup != null) {
                     SpellRuntimeController.ProjectileImpact impact =
@@ -216,6 +259,8 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
         if (meteorGroup != null) tag.putUUID("MeteorGroup", meteorGroup);
         if (projectileGroup != null) tag.putUUID("ProjectileGroup", projectileGroup);
         if (sourceEntityId != null) tag.putUUID("SourceEntity", sourceEntityId);
+        if (homingTargetId != null) tag.putUUID("HomingTarget", homingTargetId);
+        tag.putDouble("HomingStrength", homingStrength);
     }
 
     @Override
@@ -231,6 +276,8 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
         meteorGroup = tag.hasUUID("MeteorGroup") ? tag.getUUID("MeteorGroup") : null;
         projectileGroup = tag.hasUUID("ProjectileGroup") ? tag.getUUID("ProjectileGroup") : null;
         sourceEntityId = tag.hasUUID("SourceEntity") ? tag.getUUID("SourceEntity") : null;
+        homingTargetId = tag.hasUUID("HomingTarget") ? tag.getUUID("HomingTarget") : null;
+        homingStrength = tag.getDouble("HomingStrength");
     }
 
     private SimpleParticleType schoolParticle() {

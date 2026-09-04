@@ -3,6 +3,8 @@ package com.tensura.event;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.tensura.engine.SpellDefinition;
 import com.tensura.engine.SpellExecutor;
+import com.tensura.engine.SpellTargetingRules;
+import com.tensura.network.SpellVfxDispatcher;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -10,7 +12,9 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -34,6 +38,10 @@ public class SpellRuntimeController {
 
     private static final List<ActiveVortex> VORTEXES = new ArrayList<>();
     private static final List<DelayedHit> DELAYED_HITS = new ArrayList<>();
+    private static final List<ActiveChannelBeam> CHANNEL_BEAMS = new ArrayList<>();
+    private static final List<DelayedArea> DELAYED_AREAS = new ArrayList<>();
+    private static final List<MovingZone> MOVING_ZONES = new ArrayList<>();
+    private static final List<ProtectiveAura> PROTECTIVE_AURAS = new ArrayList<>();
     private static final Map<UUID, ActiveCounter> COUNTERS = new HashMap<>();
     private static final Map<UUID, GuardState> GUARDS = new HashMap<>();
     private static final Map<UUID, MeteorGroup> METEOR_GROUPS = new HashMap<>();
@@ -62,6 +70,12 @@ public class SpellRuntimeController {
         int duration = Math.max(1, definition.delivery.duration_ticks);
         VORTEXES.add(new ActiveVortex(effectCaster.level().dimension(), owner.getUUID(),
                 effectCaster.getUUID(), center, definition, duration));
+        SpellExecutor.playLoopSound(effectCaster, definition);
+        if (effectCaster.level() instanceof ServerLevel level) {
+            SpellVfxDispatcher.send(level, "zone", definition.visual.telegraph,
+                definition.school, center, center, definition.targeting.radius,
+                duration, effectCaster, false);
+        }
         return true;
     }
 
@@ -74,6 +88,12 @@ public class SpellRuntimeController {
         int delay = Math.max(1, definition.delivery.delay_ticks);
         DELAYED_HITS.add(new DelayedHit(effectCaster.level().dimension(), owner.getUUID(),
                 effectCaster.getUUID(), target.getUUID(), definition, delay));
+        if (effectCaster.level() instanceof ServerLevel level) {
+            Vec3 targetPosition = target.getBoundingBox().getCenter();
+            SpellVfxDispatcher.send(level, "telegraph", definition.visual.telegraph,
+                definition.school, targetPosition, targetPosition,
+                definition.targeting.radius, delay, target, false);
+        }
         return true;
     }
 
@@ -86,6 +106,68 @@ public class SpellRuntimeController {
         int duration = Math.max(1, definition.delivery.duration_ticks);
         COUNTERS.put(defender.getUUID(), new ActiveCounter(owner.getUUID(), definition,
                 defender.level().getGameTime() + duration));
+        return true;
+    }
+
+    public static boolean startChannelBeam(ServerPlayer caster, SpellDefinition definition) {
+        return startChannelBeam(caster, caster, null, definition);
+    }
+
+    public static boolean startChannelBeam(ServerPlayer owner, LivingEntity effectCaster,
+                                           LivingEntity target, SpellDefinition definition) {
+        int duration = Math.max(1, definition.delivery.duration_ticks);
+        CHANNEL_BEAMS.add(new ActiveChannelBeam(effectCaster.level().dimension(), owner.getUUID(),
+                effectCaster.getUUID(), target == null ? null : target.getUUID(),
+                definition, duration));
+        SpellExecutor.playLoopSound(effectCaster, definition);
+        SpellExecutor.sendRuntimeBeamVfx(owner, effectCaster, target, definition);
+        return true;
+    }
+
+    public static boolean startDelayedArea(ServerPlayer owner, LivingEntity effectCaster,
+                                           SpellDefinition definition, Vec3 center) {
+        int delay = Math.max(1, definition.delivery.delay_ticks);
+        DELAYED_AREAS.add(new DelayedArea(effectCaster.level().dimension(), owner.getUUID(),
+                effectCaster.getUUID(), center, definition, delay));
+        if (effectCaster.level() instanceof ServerLevel level) {
+            SpellVfxDispatcher.send(level, "telegraph", definition.visual.telegraph,
+                definition.school, center, center, definition.targeting.radius,
+                delay, effectCaster, false);
+        }
+        return true;
+    }
+
+    public static boolean startMovingZone(ServerPlayer owner, LivingEntity effectCaster,
+                                          SpellDefinition definition, Vec3 center,
+                                          Vec3 direction) {
+        int duration = Math.max(1, definition.delivery.duration_ticks);
+        MOVING_ZONES.add(new MovingZone(effectCaster.level().dimension(), owner.getUUID(),
+                effectCaster.getUUID(), center, direction, definition, duration));
+        SpellExecutor.playLoopSound(effectCaster, definition);
+        if (effectCaster.level() instanceof ServerLevel level) {
+            Vec3 end = center.add(direction.normalize().scale(
+                Math.max(0.0, definition.delivery.movement_speed) * duration));
+            SpellVfxDispatcher.send(level, "zone", definition.visual.telegraph,
+                definition.school, center, end, definition.targeting.radius,
+                Math.min(20, duration), effectCaster, false);
+        }
+        return true;
+    }
+
+    public static boolean startProtectiveAura(ServerPlayer owner, LivingEntity effectCaster,
+                                              SpellDefinition definition) {
+        int duration = Math.max(1, definition.delivery.duration_ticks);
+        PROTECTIVE_AURAS.add(new ProtectiveAura(effectCaster.level().dimension(), owner.getUUID(),
+                effectCaster.getUUID(), definition, duration));
+        SpellExecutor.playLoopSound(effectCaster, definition);
+        if (effectCaster.level() instanceof ServerLevel level) {
+            SpellVfxDispatcher.send(level, "aura", definition.visual.telegraph,
+                definition.school, effectCaster.position(), effectCaster.position(),
+                definition.targeting.radius, Math.min(20, duration), effectCaster, true);
+            SpellVfxDispatcher.send(level, "aura", definition.visual.aftermath,
+                definition.school, effectCaster.position(), effectCaster.position(),
+                definition.targeting.radius, duration, effectCaster, true);
+        }
         return true;
     }
 
@@ -150,8 +232,8 @@ public class SpellRuntimeController {
         double radius = definition.targeting.radius > 0.0 ? definition.targeting.radius : 3.0;
         AABB area = new AABB(position, position).inflate(radius);
         List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, area,
-            entity -> entity != caster && entity.isAlive()
-                && entity.position().distanceToSqr(position) <= radius * radius);
+                entity -> SpellTargetingRules.canHarm(caster, effectCaster, entity)
+                        && entity.position().distanceToSqr(position) <= radius * radius);
         targets.sort((left, right) -> Double.compare(
             left.position().distanceToSqr(position), right.position().distanceToSqr(position)));
         for (LivingEntity target : targets) {
@@ -171,6 +253,10 @@ public class SpellRuntimeController {
     public void onServerTick(ServerTickEvent.Post event) {
         tickVortexes(event.getServer());
         tickDelayedHits(event.getServer());
+        tickChannelBeams(event.getServer());
+        tickDelayedAreas(event.getServer());
+        tickMovingZones(event.getServer());
+        tickProtectiveAuras(event.getServer());
         tickGuards(event.getServer());
         tickPendingCasts(event.getServer());
         tickPendingCompanionCasts(event.getServer());
@@ -192,6 +278,7 @@ public class SpellRuntimeController {
                 : serverLevel.getServer().getPlayerList().getPlayer(counter.ownerId);
         if (counter != null && owner != null
                 && sourceEntity instanceof LivingEntity attacker && attacker != victim
+                && SpellTargetingRules.canHarm(owner, victim, attacker)
                 && victim.distanceTo(attacker) <= counter.definition.targeting.range) {
             COUNTERS.remove(victim.getUUID());
             event.setCanceled(true);
@@ -201,6 +288,14 @@ public class SpellRuntimeController {
                         attacker.getZ(), 15, 0.3, 0.5, 0.3, 0.04);
             }
             return;
+        }
+
+        double auraReduction = getProtectiveAuraReduction(serverLevel.getServer(), victim);
+        if (auraReduction > 0.0) {
+            event.setAmount((float) (event.getAmount() * (1.0 - auraReduction)));
+            serverLevel.sendParticles(ParticleTypes.END_ROD,
+                    victim.getX(), victim.getY() + 1.0, victim.getZ(),
+                    8, 0.45, 0.65, 0.45, 0.02);
         }
 
         GuardState guard = GUARDS.get(victim.getUUID());
@@ -233,6 +328,14 @@ public class SpellRuntimeController {
                 || vortex.effectCasterId.equals(playerId));
         DELAYED_HITS.removeIf(delayed -> delayed.ownerId.equals(playerId)
                 || delayed.effectCasterId.equals(playerId));
+        CHANNEL_BEAMS.removeIf(beam -> beam.ownerId.equals(playerId)
+                || beam.effectCasterId.equals(playerId));
+        DELAYED_AREAS.removeIf(area -> area.ownerId.equals(playerId)
+                || area.effectCasterId.equals(playerId));
+        MOVING_ZONES.removeIf(zone -> zone.ownerId.equals(playerId)
+                || zone.effectCasterId.equals(playerId));
+        PROTECTIVE_AURAS.removeIf(aura -> aura.ownerId.equals(playerId)
+                || aura.effectCasterId.equals(playerId));
         COUNTERS.entrySet().removeIf(entry -> entry.getKey().equals(playerId)
                 || entry.getValue().ownerId.equals(playerId));
         GUARDS.remove(playerId);
@@ -245,6 +348,10 @@ public class SpellRuntimeController {
     public void onServerStopped(ServerStoppedEvent event) {
         VORTEXES.clear();
         DELAYED_HITS.clear();
+        CHANNEL_BEAMS.clear();
+        DELAYED_AREAS.clear();
+        MOVING_ZONES.clear();
+        PROTECTIVE_AURAS.clear();
         COUNTERS.clear();
         GUARDS.clear();
         METEOR_GROUPS.clear();
@@ -280,10 +387,13 @@ public class SpellRuntimeController {
                         vortex.center.z + Math.sin(particleAngle) * particleRadius,
                         1, 0.05, 0.05, 0.05, 0.02);
             }
+            if (vortex.remainingTicks > 0 && vortex.remainingTicks % 20 == 0) {
+                SpellExecutor.playLoopSound(effectCaster, vortex.definition);
+            }
 
             List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class,
                     new AABB(vortex.center, vortex.center).inflate(radius),
-                    entity -> entity != effectCaster && entity != owner && entity.isAlive()
+                    entity -> SpellTargetingRules.canHarm(owner, effectCaster, entity)
                             && entity.position().distanceToSqr(vortex.center) <= radius * radius);
             targets.sort((left, right) -> Double.compare(
                     left.position().distanceToSqr(vortex.center),
@@ -337,6 +447,197 @@ public class SpellRuntimeController {
                 iterator.remove();
             }
         }
+    }
+
+    private static void tickChannelBeams(MinecraftServer server) {
+        Iterator<ActiveChannelBeam> iterator = CHANNEL_BEAMS.iterator();
+        while (iterator.hasNext()) {
+            ActiveChannelBeam beam = iterator.next();
+            ServerLevel level = server.getLevel(beam.dimension);
+            ServerPlayer owner = server.getPlayerList().getPlayer(beam.ownerId);
+            Entity source = level == null ? null : level.getEntity(beam.effectCasterId);
+            Entity targetEntity = level == null || beam.targetId == null
+                    ? null : level.getEntity(beam.targetId);
+                if (level == null || owner == null || owner.level() != level
+                    || !(source instanceof LivingEntity effectCaster) || !effectCaster.isAlive()
+                    || --beam.remainingTicks < 0) {
+                iterator.remove();
+                continue;
+            }
+
+            int interval = Math.max(1, beam.definition.delivery.tick_interval_ticks);
+            if (beam.remainingTicks > 0 && beam.remainingTicks % 20 == 0) {
+                SpellExecutor.playLoopSound(effectCaster, beam.definition);
+            }
+            if (beam.remainingTicks % interval == 0) {
+                LivingEntity target = targetEntity instanceof LivingEntity living && living.isAlive()
+                        ? living : null;
+                SpellExecutor.castRuntimeBeam(owner, effectCaster, target, beam.definition);
+            }
+            if (beam.remainingTicks == 0) iterator.remove();
+        }
+    }
+
+    private static void tickDelayedAreas(MinecraftServer server) {
+        Iterator<DelayedArea> iterator = DELAYED_AREAS.iterator();
+        while (iterator.hasNext()) {
+            DelayedArea area = iterator.next();
+            ServerLevel level = server.getLevel(area.dimension);
+            ServerPlayer owner = server.getPlayerList().getPlayer(area.ownerId);
+            Entity source = level == null ? null : level.getEntity(area.effectCasterId);
+                if (level == null || owner == null || owner.level() != level
+                    || !(source instanceof LivingEntity effectCaster) || !effectCaster.isAlive()) {
+                iterator.remove();
+                continue;
+            }
+
+            area.remainingTicks--;
+            double radius = area.definition.targeting.radius > 0.0
+                    ? area.definition.targeting.radius : 3.0;
+            double phase = area.remainingTicks * 0.3;
+            for (int index = 0; index < 12; index++) {
+                double angle = phase + index * Math.PI * 2.0 / 12.0;
+                level.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                        area.center.x + Math.cos(angle) * radius,
+                        area.center.y + 0.08,
+                        area.center.z + Math.sin(angle) * radius,
+                        1, 0.02, 0.02, 0.02, 0.0);
+            }
+            if (area.remainingTicks > 0) continue;
+
+            List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class,
+                    new AABB(area.center, area.center).inflate(radius),
+                    target -> SpellTargetingRules.canHarm(owner, effectCaster, target)
+                            && target.position().distanceToSqr(area.center) <= radius * radius);
+            targets.sort((left, right) -> Double.compare(
+                    left.position().distanceToSqr(area.center),
+                    right.position().distanceToSqr(area.center)));
+            if (area.definition.targeting.max_targets > 0
+                    && targets.size() > area.definition.targeting.max_targets) {
+                targets = targets.subList(0, area.definition.targeting.max_targets);
+            }
+            for (LivingEntity target : targets) {
+                SpellExecutor.applyImpacts(owner, effectCaster, target, area.definition);
+            }
+            LightningBolt lightning = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
+            lightning.moveTo(area.center.x, area.center.y, area.center.z);
+            lightning.setVisualOnly(true);
+            level.addFreshEntity(lightning);
+            level.sendParticles(ParticleTypes.FLASH, area.center.x, area.center.y + 1.0,
+                    area.center.z, 2, radius * 0.2, 0.5, radius * 0.2, 0.0);
+            iterator.remove();
+        }
+    }
+
+    private static void tickMovingZones(MinecraftServer server) {
+        Iterator<MovingZone> iterator = MOVING_ZONES.iterator();
+        while (iterator.hasNext()) {
+            MovingZone zone = iterator.next();
+            ServerLevel level = server.getLevel(zone.dimension);
+            ServerPlayer owner = server.getPlayerList().getPlayer(zone.ownerId);
+            Entity source = level == null ? null : level.getEntity(zone.effectCasterId);
+                if (level == null || owner == null || owner.level() != level
+                    || !(source instanceof LivingEntity effectCaster) || !effectCaster.isAlive()
+                    || --zone.remainingTicks < 0) {
+                iterator.remove();
+                continue;
+            }
+
+            zone.center = zone.center.add(zone.direction.scale(
+                    Math.max(0.0, zone.definition.delivery.movement_speed)));
+            double radius = zone.definition.targeting.radius > 0.0
+                    ? zone.definition.targeting.radius : 4.0;
+            level.sendParticles(ParticleTypes.SNOWFLAKE,
+                    zone.center.x, zone.center.y + 1.0, zone.center.z,
+                    10, radius * 0.55, 1.0, radius * 0.55, 0.03);
+            level.sendParticles(ParticleTypes.CLOUD,
+                    zone.center.x, zone.center.y + 0.3, zone.center.z,
+                    4, radius * 0.45, 0.2, radius * 0.45, 0.02);
+                if (zone.remainingTicks % 4 == 0) {
+                SpellVfxDispatcher.send(level, "zone", zone.definition.visual.aftermath,
+                    zone.definition.school, zone.center, zone.center, radius,
+                    6, effectCaster, false);
+                }
+            if (zone.remainingTicks > 0 && zone.remainingTicks % 20 == 0) {
+                SpellExecutor.playLoopSound(effectCaster, zone.definition);
+            }
+
+            int interval = Math.max(1, zone.definition.delivery.tick_interval_ticks);
+            if (zone.remainingTicks % interval == 0) {
+                List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class,
+                        new AABB(zone.center, zone.center).inflate(radius),
+                        target -> SpellTargetingRules.canHarm(owner, effectCaster, target)
+                                && target.position().distanceToSqr(zone.center) <= radius * radius);
+                targets.sort((left, right) -> Double.compare(
+                        left.position().distanceToSqr(zone.center),
+                        right.position().distanceToSqr(zone.center)));
+                if (zone.definition.targeting.max_targets > 0
+                        && targets.size() > zone.definition.targeting.max_targets) {
+                    targets = targets.subList(0, zone.definition.targeting.max_targets);
+                }
+                for (LivingEntity target : targets) {
+                    SpellExecutor.applyImpacts(owner, effectCaster, target, zone.definition);
+                }
+            }
+            if (zone.remainingTicks == 0) iterator.remove();
+        }
+    }
+
+    private static void tickProtectiveAuras(MinecraftServer server) {
+        Iterator<ProtectiveAura> iterator = PROTECTIVE_AURAS.iterator();
+        while (iterator.hasNext()) {
+            ProtectiveAura aura = iterator.next();
+            ServerLevel level = server.getLevel(aura.dimension);
+            ServerPlayer owner = server.getPlayerList().getPlayer(aura.ownerId);
+            Entity source = level == null ? null : level.getEntity(aura.effectCasterId);
+                if (level == null || owner == null || owner.level() != level
+                    || !(source instanceof LivingEntity effectCaster) || !effectCaster.isAlive()
+                    || --aura.remainingTicks < 0) {
+                iterator.remove();
+                continue;
+            }
+
+            if (aura.remainingTicks % 5 == 0) {
+                double radius = aura.definition.targeting.radius > 0.0
+                        ? aura.definition.targeting.radius : 5.0;
+                double phase = aura.remainingTicks * 0.08;
+                for (int index = 0; index < 16; index++) {
+                    double angle = phase + index * Math.PI * 2.0 / 16.0;
+                    level.sendParticles(index % 2 == 0
+                                    ? ParticleTypes.END_ROD : ParticleTypes.SNOWFLAKE,
+                            effectCaster.getX() + Math.cos(angle) * radius,
+                            effectCaster.getY() + 0.3 + (index % 4) * 0.55,
+                            effectCaster.getZ() + Math.sin(angle) * radius,
+                            1, 0.02, 0.04, 0.02, 0.0);
+                }
+            }
+            if (aura.remainingTicks > 0 && aura.remainingTicks % 20 == 0) {
+                SpellExecutor.playLoopSound(effectCaster, aura.definition);
+            }
+            if (aura.remainingTicks == 0) iterator.remove();
+        }
+    }
+
+    private static double getProtectiveAuraReduction(MinecraftServer server, LivingEntity victim) {
+        double reduction = 0.0;
+        for (ProtectiveAura aura : PROTECTIVE_AURAS) {
+            ServerLevel level = server.getLevel(aura.dimension);
+            ServerPlayer owner = server.getPlayerList().getPlayer(aura.ownerId);
+            Entity source = level == null ? null : level.getEntity(aura.effectCasterId);
+                if (level == null || victim.level() != level || owner == null || owner.level() != level
+                    || !(source instanceof LivingEntity effectCaster)
+                    || !SpellTargetingRules.isProtectedAlly(owner, effectCaster, victim)) continue;
+            double radius = aura.definition.targeting.radius > 0.0
+                    ? aura.definition.targeting.radius : 5.0;
+            if (victim.distanceToSqr(effectCaster) <= radius * radius) {
+                reduction = Math.max(reduction,
+                        Math.max(0.0, Math.min(0.9, aura.definition.impact.stream()
+                                .filter(impact -> "damage_reduction".equals(impact.type))
+                                .mapToDouble(impact -> impact.reduction)
+                                .max().orElse(0.0))));
+            }
+        }
+        return reduction;
     }
 
     private static void tickGuards(MinecraftServer server) {
@@ -396,7 +697,8 @@ public class SpellRuntimeController {
             ServerPlayer owner = server.getPlayerList().getPlayer(pending.ownerId);
             Entity source = level == null ? null : level.getEntity(entry.getKey());
             Entity targetEntity = level == null ? null : level.getEntity(pending.targetId);
-            if (owner == null || !(source instanceof PokemonEntity companion) || !companion.isAlive()
+                if (level == null || owner == null || owner.level() != level
+                    || !(source instanceof PokemonEntity companion) || !companion.isAlive()
                     || !(targetEntity instanceof LivingEntity target) || !target.isAlive()) {
                 iterator.remove();
                 continue;
@@ -452,6 +754,88 @@ public class SpellRuntimeController {
             this.ownerId = ownerId;
             this.effectCasterId = effectCasterId;
             this.targetId = targetId;
+            this.definition = definition;
+            this.remainingTicks = remainingTicks;
+        }
+    }
+
+    private static class ActiveChannelBeam {
+        private final ResourceKey<Level> dimension;
+        private final UUID ownerId;
+        private final UUID effectCasterId;
+        private final UUID targetId;
+        private final SpellDefinition definition;
+        private int remainingTicks;
+
+        private ActiveChannelBeam(ResourceKey<Level> dimension, UUID ownerId,
+                                  UUID effectCasterId, UUID targetId,
+                                  SpellDefinition definition, int remainingTicks) {
+            this.dimension = dimension;
+            this.ownerId = ownerId;
+            this.effectCasterId = effectCasterId;
+            this.targetId = targetId;
+            this.definition = definition;
+            this.remainingTicks = remainingTicks;
+        }
+    }
+
+    private static class DelayedArea {
+        private final ResourceKey<Level> dimension;
+        private final UUID ownerId;
+        private final UUID effectCasterId;
+        private final Vec3 center;
+        private final SpellDefinition definition;
+        private int remainingTicks;
+
+        private DelayedArea(ResourceKey<Level> dimension, UUID ownerId,
+                            UUID effectCasterId, Vec3 center,
+                            SpellDefinition definition, int remainingTicks) {
+            this.dimension = dimension;
+            this.ownerId = ownerId;
+            this.effectCasterId = effectCasterId;
+            this.center = center;
+            this.definition = definition;
+            this.remainingTicks = remainingTicks;
+        }
+    }
+
+    private static class MovingZone {
+        private final ResourceKey<Level> dimension;
+        private final UUID ownerId;
+        private final UUID effectCasterId;
+        private final Vec3 direction;
+        private final SpellDefinition definition;
+        private Vec3 center;
+        private int remainingTicks;
+
+        private MovingZone(ResourceKey<Level> dimension, UUID ownerId,
+                           UUID effectCasterId, Vec3 center, Vec3 direction,
+                           SpellDefinition definition, int remainingTicks) {
+            this.dimension = dimension;
+            this.ownerId = ownerId;
+            this.effectCasterId = effectCasterId;
+            this.center = center;
+            Vec3 horizontal = new Vec3(direction.x, 0.0, direction.z);
+            this.direction = horizontal.lengthSqr() > 1.0E-6
+                    ? horizontal.normalize() : Vec3.ZERO;
+            this.definition = definition;
+            this.remainingTicks = remainingTicks;
+        }
+    }
+
+    private static class ProtectiveAura {
+        private final ResourceKey<Level> dimension;
+        private final UUID ownerId;
+        private final UUID effectCasterId;
+        private final SpellDefinition definition;
+        private int remainingTicks;
+
+        private ProtectiveAura(ResourceKey<Level> dimension, UUID ownerId,
+                               UUID effectCasterId, SpellDefinition definition,
+                               int remainingTicks) {
+            this.dimension = dimension;
+            this.ownerId = ownerId;
+            this.effectCasterId = effectCasterId;
             this.definition = definition;
             this.remainingTicks = remainingTicks;
         }

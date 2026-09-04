@@ -1,0 +1,38 @@
+{
+  "pokemon_type": "water",
+  "category": "physical",
+  "power": 10.0,
+  "school": "water",
+  "cooldown_ticks": 120,
+  "targeting": {
+    "type": "aim",
+    "range": 8.0,
+    "width": 1.0,
+    "max_targets": 1
+  },
+  "delivery": {
+    "type": "dash",
+    "speed": 2.5,
+    "distance": 8.0,
+    "duration_ticks": 5,
+    "steerable": true
+  },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 1.0 },
+    {
+      "type": "wet",
+      "duration": 100,
+      "show_particles": true,
+      "show_icon": true
+    }
+  ],
+  "visual": {
+    "cast_animation": "dash_forward",
+    "trail": "water_shell",
+    "impact": "water_burst"
+  },
+  "sound": {
+    "cast": "minecraft:entity.player.splash.high_speed",
+    "impact": "minecraft:entity.player.splash"
+  }
+}

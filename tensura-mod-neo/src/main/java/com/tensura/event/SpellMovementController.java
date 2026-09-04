@@ -3,6 +3,8 @@ package com.tensura.event;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.tensura.engine.SpellDefinition;
 import com.tensura.engine.SpellExecutor;
+import com.tensura.engine.SpellTargetingRules;
+import com.tensura.network.SpellVfxDispatcher;
 import com.tensura.registry.TensuraMobEffects;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -41,30 +43,43 @@ public class SpellMovementController {
                 : Math.max(1, (int) Math.ceil(distance / Math.max(0.1, definition.delivery.speed)));
 
         ACTIVE_DASHES.put(caster.getUUID(),
-            new ActiveDash(caster.getUUID(), definition, caster.position(),
-                direction.normalize(), distance, durationTicks));
-        return true;
+                new ActiveDash(caster.getUUID(), definition, caster.position(),
+                        direction.normalize(), distance, durationTicks));
+        if (caster.level() instanceof ServerLevel level) {
+            SpellVfxDispatcher.send(level, "attachment", definition.visual.trail,
+                definition.school, caster.position(),
+                caster.position().add(direction.normalize().scale(distance)),
+                1.0, durationTicks, caster, false);
         }
+        return true;
+    }
 
-        public static boolean startDash(ServerPlayer owner, PokemonEntity companion,
-                        LivingEntity target, SpellDefinition definition) {
+    public static boolean startDash(ServerPlayer owner, PokemonEntity companion,
+                                    LivingEntity target, SpellDefinition definition) {
         if (companion.isPassenger() || companion.hasEffect(TensuraMobEffects.ASLEEP)
-            || companion.hasEffect(TensuraMobEffects.FROZEN)) return false;
+                || companion.hasEffect(TensuraMobEffects.FROZEN)
+                || !SpellTargetingRules.canHarm(owner, companion, target)) return false;
 
         Vec3 direction = target.position().subtract(companion.position());
         direction = new Vec3(direction.x, 0.0, direction.z);
         if (direction.lengthSqr() < 1.0E-6) return false;
 
         double distance = definition.delivery.distance > 0.0
-            ? definition.delivery.distance
-            : definition.targeting.range;
+                ? definition.delivery.distance
+                : definition.targeting.range;
         int durationTicks = definition.delivery.duration_ticks > 0
-            ? definition.delivery.duration_ticks
-            : Math.max(1, (int) Math.ceil(distance / Math.max(0.1, definition.delivery.speed)));
+                ? definition.delivery.duration_ticks
+                : Math.max(1, (int) Math.ceil(distance / Math.max(0.1, definition.delivery.speed)));
 
         ACTIVE_DASHES.put(companion.getUUID(),
-            new ActiveDash(owner.getUUID(), definition, companion.position(),
-                direction.normalize(), distance, durationTicks));
+                new ActiveDash(owner.getUUID(), definition, companion.position(),
+                        direction.normalize(), distance, durationTicks));
+        if (companion.level() instanceof ServerLevel level) {
+            SpellVfxDispatcher.send(level, "attachment", definition.visual.trail,
+                definition.school, companion.position(),
+                companion.position().add(direction.normalize().scale(distance)),
+                1.0, durationTicks, companion, false);
+        }
         return true;
     }
 
@@ -95,6 +110,13 @@ public class SpellMovementController {
         }
 
         double stepLength = Math.min(dash.remainingDistance, dash.stepLength);
+        if (dash.definition.delivery.steerable && caster instanceof ServerPlayer) {
+            Vec3 look = caster.getLookAngle();
+            Vec3 steeredDirection = new Vec3(look.x, 0.0, look.z);
+            if (steeredDirection.lengthSqr() > 1.0E-6) {
+                dash.direction = steeredDirection.normalize();
+            }
+        }
         Vec3 step = dash.direction.scale(stepLength);
         AABB startBox = caster.getBoundingBox().move(dash.position.subtract(caster.position()));
         AABB destinationBox = startBox.move(step);
@@ -109,10 +131,12 @@ public class SpellMovementController {
         caster.setDeltaMovement(step);
         caster.hurtMarked = true;
 
-        level.sendParticles(ParticleTypes.CLOUD, caster.getX(), caster.getY() + 0.2, caster.getZ(),
+        level.sendParticles("water".equals(dash.definition.school)
+                ? ParticleTypes.SPLASH : ParticleTypes.CLOUD,
+                caster.getX(), caster.getY() + 0.2, caster.getZ(),
                 5, 0.2, 0.1, 0.2, 0.01);
         for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, sweptBox,
-                entity -> entity != caster && entity != owner && entity.isAlive())) {
+            entity -> SpellTargetingRules.canHarm(owner, caster, entity))) {
             if (dash.hitEntities.add(target.getUUID())) {
                 SpellExecutor.applyImpacts(owner, caster, target, dash.definition);
                 int maxTargets = dash.definition.targeting.max_targets;
@@ -152,7 +176,7 @@ public class SpellMovementController {
     private static class ActiveDash {
         private final UUID ownerId;
         private final SpellDefinition definition;
-        private final Vec3 direction;
+        private Vec3 direction;
         private final double stepLength;
         private final Set<UUID> hitEntities = new HashSet<>();
         private Vec3 position;

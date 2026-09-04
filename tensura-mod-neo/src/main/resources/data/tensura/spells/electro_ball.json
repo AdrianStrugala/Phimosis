@@ -1,0 +1,35 @@
+{
+  "pokemon_type": "electric",
+  "category": "special",
+  "power": 8.0,
+  "school": "lightning",
+  "cooldown_ticks": 160,
+  "targeting": {
+    "type": "aim",
+    "range": 20.0,
+    "width": 0.8,
+    "max_targets": 1
+  },
+  "delivery": {
+    "type": "projectile",
+    "speed": 1.6,
+    "homing_strength": 0.12
+  },
+  "impact": [
+    {
+      "type": "speed_scaled_damage",
+      "amount": 18.0,
+      "damage_multiplier": 1.0
+    }
+  ],
+  "visual": {
+    "cast_animation": "cast_point",
+    "projectile": "electro_ball",
+    "trail": "electric_arc",
+    "impact": "electric_burst"
+  },
+  "sound": {
+    "cast": "minecraft:entity.lightning_bolt.thunder",
+    "impact": "minecraft:block.respawn_anchor.charge"
+  }
+}

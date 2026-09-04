@@ -1,10 +1,39 @@
 {
+  "pokemon_type": "ice",
+  "category": "special",
+  "power": 22.0,
   "school": "ice",
-  "cooldown_ticks": 240,
-  "targeting": { "type": "area", "range": 10, "radius": 10 },
-  "delivery": { "type": "cloud", "speed": 1.0 },
+  "cooldown_ticks": 440,
+  "targeting": {
+    "type": "area",
+    "range": 18.0,
+    "radius": 5.0,
+    "max_targets": 12
+  },
+  "delivery": {
+    "type": "moving_zone",
+    "duration_ticks": 120,
+    "tick_interval_ticks": 40,
+    "movement_speed": 0.08
+  },
   "impact": [
-    { "type": "damage", "damage_multiplier": 3.5 },
-    { "type": "status_effect", "effect": "minecraft:slowness", "duration": 200, "amplifier": 3, "chance": 0.7 }
-  ]
+    { "type": "damage", "damage_multiplier": 0.3333333333 },
+    {
+      "type": "freeze_if_wet",
+      "duration": 60,
+      "amplifier": 1,
+      "show_particles": true,
+      "show_icon": true
+    }
+  ],
+  "visual": {
+    "cast_animation": "storm_cast",
+    "telegraph": "snow_zone",
+    "aftermath": "moving_blizzard"
+  },
+  "sound": {
+    "cast": "minecraft:entity.breeze.wind_burst",
+    "loop": "minecraft:weather.rain",
+    "impact": "minecraft:block.powder_snow.break"
+  }
 }
