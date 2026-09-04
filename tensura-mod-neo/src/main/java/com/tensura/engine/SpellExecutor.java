@@ -2,6 +2,7 @@ package com.tensura.engine;
 
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.tensura.entity.SpellProjectile;
+import com.tensura.event.SpellMovementController;
 import com.tensura.event.SpellRuntimeController;
 import com.tensura.network.CooldownSyncPacket;
 import com.tensura.registry.TensuraMobEffects;
