@@ -1,0 +1,166 @@
+// Waliduje drzewka Puffish przeciw schematowi puffish_skills 0.17.3 i kontraktowi
+// drzewka devour. Uzasadnienie kazdej reguly: DEVOUR_TREE_CONTRACT.md
+//
+// Puffish odrzuca CALY namespace przy pojedynczym bledzie - jeden zly plik gasi
+// obie kategorie i gracz widzi puste okno pod K. Dlatego lapiemy to na buildzie,
+// a nie dopiero na serwerze.
+
+import groovy.json.JsonSlurper
+
+tasks.register('validateSkillTrees') {
+    group = 'verification'
+    description = 'Sprawdza drzewka Puffish: schemat 0.17.3 + kontrakt devour'
+
+    def resDir = file('src/main/resources')
+    def javaDir = file('src/main/java')
+    outputs.upToDateWhen { false }
+
+    doLast {
+        def json = new JsonSlurper()
+        def errors = []
+        def puffRoot = new File(resDir, 'data/tensura/puffish_skills')
+
+        def spellFiles = new File(resDir, 'data/tensura/spells').listFiles()
+        def spells = [] as Set
+        spellFiles.each { f -> if (f.name.endsWith('.json')) spells << f.name[0..-6] }
+
+        // Ikony rejestrowane sa petla po SpellItem.CUSTOM_ICON_ORDER, nie literalami
+        // ITEMS.register - grep po literalach dawal falszywy alarm.
+        def registered = ['spell_item', 'predator_codex', 'recall_station'] as Set
+        def spellItemSrc = new File(javaDir, 'com/tensura/item/SpellItem.java').text
+        def orderMatch = spellItemSrc =~ /CUSTOM_ICON_ORDER\s*=\s*(?:java\.util\.)?List\.of\(([\s\S]*?)\);/
+        if (orderMatch.find()) {
+            def names = orderMatch.group(1) =~ /"([a-z0-9_]+)"/
+            while (names.find()) { registered << ('spell_icon_' + names.group(1)) }
+        } else {
+            errors << 'Nie znaleziono CUSTOM_ICON_ORDER w SpellItem.java'
+        }
+
+        def validSources = ['puffish_skills:kill_entity', 'puffish_skills:mine_block',
+                            'puffish_skills:craft_item', 'puffish_skills:eat_food',
+                            'puffish_skills:take_damage', 'puffish_skills:deal_damage']
+
+        def cfg = json.parse(new File(puffRoot, 'config.json'))
+
+        cfg.categories.each { cat ->
+            def dir = new File(puffRoot, 'categories/' + cat)
+            def defs = json.parse(new File(dir, 'definitions.json'))
+            def skls = json.parse(new File(dir, 'skills.json'))
+            def cons = json.parse(new File(dir, 'connections.json'))
+            def catj = json.parse(new File(dir, 'category.json'))
+            def expj = json.parse(new File(dir, 'experience.json'))
+
+            // ---- schemat 0.17.3: te pomylki juz raz wygasily oba drzewka ----
+            if (catj.containsKey('points')) {
+                errors << (cat + '/category.json: pole points nie istnieje w 0.17.3')
+            }
+            if (!expj.containsKey('experience_per_level')) {
+                errors << (cat + '/experience.json: brak experience_per_level (tablica levels to nowszy schemat)')
+            }
+            expj.sources.eachWithIndex { s, i ->
+                if (!validSources.contains(s.type)) {
+                    errors << (cat + '/experience.json: zrodlo[' + i + '] ' + s.type + ' nieznane w 0.17.3')
+                }
+                if (!(s.data instanceof Map)) {
+                    errors << (cat + '/experience.json: zrodlo[' + i + '] musi miec pole data, nie value')
+                }
+            }
+            cons.eachWithIndex { c, i ->
+                if (!(c instanceof List) || c.size() != 2) {
+                    errors << (cat + '/connections.json[' + i + ']: musi byc tablica dwoch stringow, nie obiekt from/to')
+                } else {
+                    c.each { n ->
+                        if (!skls.containsKey(n)) {
+                            errors << (cat + ': polaczenie wskazuje na nieistniejacy wezel ' + n)
+                        }
+                    }
+                }
+            }
+            defs.each { name, node ->
+                ['icon', 'frame'].each { fld ->
+                    def o = node[fld]
+                    if (o != null && !((o.type == 'item' || o.type == 'texture') && o.containsKey('data'))) {
+                        errors << (cat + '/' + name + ': ' + fld + ' musi byc {type:item|texture, data:{...}}')
+                    }
+                }
+                def item = node.icon?.data?.item
+                if (item != null && item.startsWith('tensura:') && !registered.contains(item.split(':')[1])) {
+                    errors << (cat + '/' + name + ': ikona ' + item + ' nie jest zarejestrowana')
+                }
+                node.rewards?.each { r ->
+                    def attr = r.data?.attribute
+                    if (attr != null && attr.startsWith('puffish:')) {
+                        errors << (cat + '/' + name + ': atrybut ' + attr + ' - poprawny namespace to puffish_attributes:')
+                    }
+                    def cmd = r.data?.command
+                    if (cmd != null) {
+                        def m = cmd =~ /(?:givespell|devour_recover)\s+\S+\s+([a-z0-9_]+)/
+                        if (m.find() && !spells.contains(m.group(1))) {
+                            errors << (cat + '/' + name + ': komenda odwoluje sie do nieistniejacego spella ' + m.group(1))
+                        }
+                    }
+                }
+            }
+            skls.each { name, s ->
+                if (!defs.containsKey(s.definition)) {
+                    errors << (cat + ': wezel ' + name + ' -> brak definicji ' + s.definition)
+                }
+            }
+
+            // ---- brak zrodel XP => kazdy koszt > 0 jest nieosiagalny ----
+            if (!expj.sources) {
+                defs.each { name, node ->
+                    def c = node.cost == null ? 0 : node.cost
+                    if (c != 0) {
+                        errors << (cat + '/' + name + ': cost=' + c + ', ale kategoria nie ma zrodel XP (0 punktow) - wezel bylby nieklikalny')
+                    }
+                }
+            }
+
+            // ---- kontrakt drzewka devour ----
+            if (cat == 'devour') {
+                defs.keySet().findAll { it.endsWith('_owned') }.each { o ->
+                    def spell = o[0..-7]
+                    def node = defs[o]
+                    if (!defs.containsKey(spell)) {
+                        errors << ('devour: ' + o + ' nie ma pary-dispensera ' + spell)
+                    }
+                    if (skls[o]?.root != true) {
+                        errors << ('devour/' + o + ': musi byc root:true - kazdy znacznik jest niezalezny')
+                    }
+                    if (node.size != 0.1) {
+                        errors << ('devour/' + o + ': size=' + node.size + ', znacznik ma byc niewidoczny (0.1)')
+                    }
+                    if (node.icon?.data?.texture != 'tensura:textures/gui/blank.png') {
+                        errors << ('devour/' + o + ': ikona znacznika ma byc blank.png')
+                    }
+                    if (node.rewards) {
+                        errors << ('devour/' + o + ': znacznik nie moze dawac nagrod - od tego jest dispenser')
+                    }
+                    if (!cons.any { it[0] == o && it[1] == spell }) {
+                        errors << ('devour: brak polaczenia [' + o + ', ' + spell + ']')
+                    }
+                    def disp = defs[spell]
+                    if (disp != null) {
+                        if (disp.frame?.data?.unlocked != 'tensura:textures/gui/owned.png') {
+                            errors << ('devour/' + spell + ': dispenser musi miec ramke owned.png/unowned.png')
+                        }
+                        def wanted = 'tensura devour_recover @s ' + spell
+                        def cmds = (disp.rewards == null ? [] : disp.rewards).collect { it.data?.command }
+                        if (!cmds.contains(wanted)) {
+                            errors << ('devour/' + spell + ': dispenser musi wywolywac ' + wanted)
+                        }
+                    }
+                }
+            }
+        }
+
+        if (errors) {
+            throw new GradleException('Walidacja drzewek Puffish nie przeszla (' + errors.size() + '):\n  - '
+                    + errors.unique().join('\n  - '))
+        }
+        logger.lifecycle('Drzewka Puffish: schemat 0.17.3 i kontrakt devour OK')
+    }
+}
+
+tasks.named('check') { dependsOn 'validateSkillTrees' }

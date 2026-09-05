@@ -76,6 +76,15 @@ public class TensuraCommands {
                         )
                     )
                 )
+                // Admin/debug: mark every known spell as absorbed and light up the devour tree
+                .then(Commands.literal("absorb_all")
+                    .then(Commands.argument("player", EntityArgument.player())
+                        .executes(ctx -> {
+                            ServerPlayer target = EntityArgument.getPlayer(ctx, "player");
+                            return absorbAll(ctx.getSource(), target);
+                        })
+                    )
+                )
         );
     }
 
@@ -128,6 +137,25 @@ public class TensuraCommands {
      * Hands the player a copy of a spell they have already absorbed. Same guarantee as
      * the Predator Codex — never grants a spell that is not in the absorbed list.
      */
+    private static int absorbAll(CommandSourceStack src, ServerPlayer target) {
+        int newly = 0;
+        for (ResourceLocation id : SpellRegistry.all().keySet()) {
+            if (!PredatorData.hasAbsorbed(target, id)) {
+                PredatorData.markAbsorbed(target, id);
+                newly++;
+            }
+            PredatorAbsorption.unlockOwned(target, id);
+        }
+        int total = SpellRegistry.all().size();
+        int added = newly;
+        src.sendSuccess(() -> Component.literal(
+                "§aOdblokowano §e" + total + "§a spelli dla §f"
+                        + target.getName().getString() + "§7 (nowych: " + added + ")"), true);
+        target.sendSystemMessage(Component.literal(
+                "§a[Predator] Odblokowano wszystkie spelle (§e" + total + "§a)."));
+        return total;
+    }
+
     private static int giveAbsorbedSpell(ServerPlayer target, String spellName) {
         ResourceLocation id = ResourceLocation.tryParse("tensura:" + spellName);
         if (id == null || SpellRegistry.get(id).isEmpty()) return 0;

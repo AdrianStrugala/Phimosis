@@ -8,25 +8,29 @@
         "item": "minecraft:ender_eye"
       }
     },
-    "rewards": [
-
-    ],
+    "rewards": [],
     "cost": 0
   },
   "tackle_owned": {
     "title": "Tackle",
-    "description": "Absorbed Normal-type spell. Instant cast, 3 block range. Weapon-scaled damage. 2s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:iron_sword"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "tackle": {
     "title": "Tackle Dispenser",
@@ -34,10 +38,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:iron_sword"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -46,22 +49,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "quick_attack_owned": {
     "title": "Quick Attack",
-    "description": "Absorbed Normal-type physical spell. Dash, 6 block range, 1 target, 0.2s duration. 8 damage. 5s cooldown, 2 charges, 5s charge recovery.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_quick_attack"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "quick_attack": {
     "title": "Quick Attack Dispenser",
@@ -69,10 +87,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_quick_attack"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -81,22 +98,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "swift_owned": {
     "title": "Swift",
-    "description": "Absorbed Normal-type special spell. Projectile, 20 block range, 1 target, 3 projectiles. 4 damage per hit. 8s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_swift"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "swift": {
     "title": "Swift Dispenser",
@@ -104,10 +136,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_swift"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -116,22 +147,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "tri_attack_owned": {
     "title": "Tri Attack",
-    "description": "Absorbed Normal-type special spell. Projectile, 18 block range, 1 target, 3 projectiles. 5.0 damage per hit; Randomly burns, paralyzes, or freezes. 12s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_tri_attack"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "tri_attack": {
     "title": "Tri Attack Dispenser",
@@ -139,10 +185,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_tri_attack"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -151,22 +196,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "recover_owned": {
     "title": "Recover",
-    "description": "Absorbed Normal-type status spell. Self cast. Heals 50% max HP. 15s cooldown, 1s cast.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_recover"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "recover": {
     "title": "Recover Dispenser",
@@ -174,10 +234,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_recover"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -186,22 +245,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "hyper_voice_owned": {
     "title": "Hyper Voice",
-    "description": "Absorbed Normal-type special spell. Channeled cone, 12 block range, 12 targets, 4 pulses, 0.8s duration. 4.5 damage per hit; Knockback; Interrupts casting. 14s cooldown, 0.4s cast.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_hyper_voice"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "hyper_voice": {
     "title": "Hyper Voice Dispenser",
@@ -209,10 +283,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_hyper_voice"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -221,22 +294,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "hyper_beam_owned": {
     "title": "Hyper Beam",
-    "description": "Absorbed Normal-type spell. Beam, 30 block range. Weapon-scaled damage. 20s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:netherite_sword"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "hyper_beam": {
     "title": "Hyper Beam Dispenser",
@@ -244,10 +332,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:netherite_sword"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -256,22 +343,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "explosion_owned": {
     "title": "EXPLOSION",
-    "description": "Absorbed Normal-type spell. Caster-centered explosion, 9 block range, 9 block radius. Weapon-scaled damage; Burns for 6s; Knockback. 30s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:tnt"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "explosion": {
     "title": "EXPLOSION Dispenser",
@@ -279,10 +381,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:tnt"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -291,22 +392,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "ember_owned": {
     "title": "Ember",
-    "description": "Absorbed Fire-type special spell. Projectile, 14 block range, 1 target. 6 damage; Burns for 3s. 3s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_ember"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "ember": {
     "title": "Ember Dispenser",
@@ -314,10 +430,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_ember"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -326,22 +441,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "will_o_wisp_owned": {
     "title": "Will-O-Wisp",
-    "description": "Absorbed Fire-type spell. Lingering cloud, 16 block range, 3 block radius. Burns for 10s; Weakness 2 for 10s. 9s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:soul_lantern"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "will_o_wisp": {
     "title": "Will-O-Wisp Dispenser",
@@ -349,10 +479,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:soul_lantern"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -361,22 +490,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "flamethrower_owned": {
     "title": "Flamethrower",
-    "description": "Absorbed Fire-type special spell. Channeled cone, 12 block range, 8 targets, 6 pulses, 1.2s duration. 2.3 damage per hit; Burns for 3s. 9s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_flamethrower"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "flamethrower": {
     "title": "Flamethrower Dispenser",
@@ -384,10 +528,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_flamethrower"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -396,22 +539,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "fire_spin_owned": {
     "title": "Fire Spin",
-    "description": "Absorbed Fire-type special spell. Vortex, 16 block range, 3.5 block radius, 8 targets, 5s duration. 2 damage; Burns for 2s. 12s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_fire_spin"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "fire_spin": {
     "title": "Fire Spin Dispenser",
@@ -419,10 +577,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_fire_spin"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -431,22 +588,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "fire_blast_owned": {
     "title": "Fire Blast",
-    "description": "Absorbed Fire-type spell. Instant cast, 6 block range. Weapon-scaled damage; Burns for 6s. 11s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:blaze_powder"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "fire_blast": {
     "title": "Fire Blast Dispenser",
@@ -454,10 +626,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:blaze_powder"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -466,22 +637,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "overheat_owned": {
     "title": "Overheat",
-    "description": "Absorbed Fire-type spell. Instant cast, 10 block range. Weapon-scaled damage; Burns for 8s. 15s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:magma_block"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "overheat": {
     "title": "Overheat Dispenser",
@@ -489,10 +675,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:magma_block"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -501,22 +686,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "sacred_fire_owned": {
     "title": "Sacred Fire",
-    "description": "Absorbed Fire-type spell. Projectile, 18 block range. Weapon-scaled damage; Burns for 6s; Weakness 2 for 5s, 50% chance. 13s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:fire_charge"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "sacred_fire": {
     "title": "Sacred Fire Dispenser",
@@ -524,10 +724,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:fire_charge"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -536,22 +735,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "water_gun_owned": {
     "title": "Water Gun",
-    "description": "Absorbed Water-type spell. Beam, 14 block range. Weapon-scaled damage; Knockback. 3s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:water_bucket"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "water_gun": {
     "title": "Water Gun Dispenser",
@@ -559,10 +773,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:water_bucket"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -571,22 +784,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "aqua_jet_owned": {
     "title": "Aqua Jet",
-    "description": "Absorbed Water-type physical spell. Dash, 8 block range, 1 target, 0.2s duration. 10 damage; Applies Wet for 5s. 6s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_aqua_jet"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "aqua_jet": {
     "title": "Aqua Jet Dispenser",
@@ -594,10 +822,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_aqua_jet"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -606,22 +833,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "bubble_beam_owned": {
     "title": "Bubble Beam",
-    "description": "Absorbed Water-type spell. Projectile, 16 block range. Weapon-scaled damage; Slowness 2 for 6s, 50% chance. 5s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:bubble_coral"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "bubble_beam": {
     "title": "Bubble Beam Dispenser",
@@ -629,10 +871,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:bubble_coral"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -641,22 +882,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "water_pulse_owned": {
     "title": "Water Pulse",
-    "description": "Absorbed Water-type spell. Projectile, 16 block range. Weapon-scaled damage; Slowness for 4s, 30% chance. 6s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:prismarine_shard"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "water_pulse": {
     "title": "Water Pulse Dispenser",
@@ -664,10 +920,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:prismarine_shard"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -676,22 +931,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "whirlpool_owned": {
     "title": "Whirlpool",
-    "description": "Absorbed Water-type special spell. Vortex, 18 block range, 4 block radius, 12 targets, 5s duration. 2.8 damage; Applies Wet for 6s. 15s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_whirlpool"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "whirlpool": {
     "title": "Whirlpool Dispenser",
@@ -699,10 +969,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_whirlpool"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -711,22 +980,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "surf_owned": {
     "title": "Surf",
-    "description": "Absorbed Water-type special spell. Traveling wave, 16 block range, 1.5 block radius, 12 targets, 1s duration. 20 damage; Applies Wet for 5s. 18s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_surf"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "surf": {
     "title": "Surf Dispenser",
@@ -734,10 +1018,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_surf"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -746,22 +1029,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "hydro_pump_owned": {
     "title": "Hydro Pump",
-    "description": "Absorbed Water-type special spell. Channeled beam, 22 block range, 6 targets, 6 pulses, 1.2s duration. 4.2 damage per hit; Knockback; Applies Wet for 5s. 20s cooldown, 0.8s cast.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_hydro_pump"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "hydro_pump": {
     "title": "Hydro Pump Dispenser",
@@ -769,10 +1067,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_hydro_pump"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -781,22 +1078,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "scald_owned": {
     "title": "Scald",
-    "description": "Absorbed Water-type spell. Projectile, 16 block range. Weapon-scaled damage; Burns for 3s; Weakness for 4s, 30% chance. 7s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:magma_cream"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "scald": {
     "title": "Scald Dispenser",
@@ -804,10 +1116,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:magma_cream"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -816,22 +1127,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "thundershock_owned": {
     "title": "Thundershock",
-    "description": "Absorbed Electric-type spell. Projectile, 14 block range. Weapon-scaled damage; Slowness for 2s, 10% chance. 3s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:lightning_rod"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "thundershock": {
     "title": "Thundershock Dispenser",
@@ -839,10 +1165,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:lightning_rod"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -851,22 +1176,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "electro_ball_owned": {
     "title": "Electro Ball",
-    "description": "Absorbed Electric-type special spell. Projectile, 20 block range, 1 target. Speed-scaled damage up to 18. 8s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_electro_ball"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "electro_ball": {
     "title": "Electro Ball Dispenser",
@@ -874,10 +1214,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_electro_ball"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -886,22 +1225,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "thunderbolt_owned": {
     "title": "Thunderbolt",
-    "description": "Absorbed Electric-type spell. Projectile, 20 block range. Weapon-scaled damage; Slowness for 3s, 30% chance. 8s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:lightning_rod"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "thunderbolt": {
     "title": "Thunderbolt Dispenser",
@@ -909,10 +1263,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:lightning_rod"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -921,22 +1274,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "discharge_owned": {
     "title": "Discharge",
-    "description": "Absorbed Electric-type spell. Lingering cloud, 8 block range, 8 block radius. Weapon-scaled damage; Slowness 2 for 4s, 50% chance. 10s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:copper_ingot"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "discharge": {
     "title": "Discharge Dispenser",
@@ -944,10 +1312,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:copper_ingot"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -956,22 +1323,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "thunder_owned": {
     "title": "Thunder",
-    "description": "Absorbed Electric-type special spell. Delayed area, 24 block range, 3 block radius, 8 targets. 26 damage; Paralyzes Wet targets for 5s. 22s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_thunder"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "thunder": {
     "title": "Thunder Dispenser",
@@ -979,10 +1361,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_thunder"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -991,22 +1372,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "volt_tackle_owned": {
     "title": "Volt Tackle",
-    "description": "Absorbed Electric-type physical spell. Dash, 10 block range, 1 target, 0.2s duration. 24 damage; 8 recoil damage; Knockback; Paralysis for 3s, 10% chance. 15s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_volt_tackle"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "volt_tackle": {
     "title": "Volt Tackle Dispenser",
@@ -1014,10 +1410,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_volt_tackle"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1026,22 +1421,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "vine_whip_owned": {
     "title": "Vine Whip",
-    "description": "Absorbed Grass-type physical spell. Instant cast, 10 block range, 1 target. 7 damage; Pulls targets. 4s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_vine_whip"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "vine_whip": {
     "title": "Vine Whip Dispenser",
@@ -1049,10 +1459,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_vine_whip"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1061,22 +1470,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "leech_seed_owned": {
     "title": "Leech Seed",
-    "description": "Absorbed Grass-type spell. Lingering cloud, 14 block range, 4 block radius. Weapon-scaled damage; Heals 6 HP; Poison for 6s, 80% chance. 10s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:wheat_seeds"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "leech_seed": {
     "title": "Leech Seed Dispenser",
@@ -1084,10 +1508,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:wheat_seeds"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1096,22 +1519,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "razor_leaf_owned": {
     "title": "Razor Leaf",
-    "description": "Absorbed Grass-type spell. Projectile, 16 block range. Weapon-scaled damage; Poison for 2s, 30% chance. 5s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:oak_leaves"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "razor_leaf": {
     "title": "Razor Leaf Dispenser",
@@ -1119,10 +1557,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:oak_leaves"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1131,22 +1568,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "leaf_blade_owned": {
     "title": "Leaf Blade",
-    "description": "Absorbed Grass-type spell. Instant cast, 12 block range. Weapon-scaled damage; Weakness for 3s, 20% chance. 7s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:bamboo"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "leaf_blade": {
     "title": "Leaf Blade Dispenser",
@@ -1154,10 +1606,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:bamboo"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1166,22 +1617,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "energy_ball_owned": {
     "title": "Energy Ball",
-    "description": "Absorbed Grass-type spell. Instant cast, 7 block range. Weapon-scaled damage; Weakness 2 for 5s, 50% chance. 8s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:slime_ball"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "energy_ball": {
     "title": "Energy Ball Dispenser",
@@ -1189,10 +1655,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:slime_ball"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1201,22 +1666,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "petal_blizzard_owned": {
     "title": "Petal Blizzard",
-    "description": "Absorbed Grass-type spell. Instant cast, 6 block range. Weapon-scaled damage; Knockback. 9s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:pink_petals"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "petal_blizzard": {
     "title": "Petal Blizzard Dispenser",
@@ -1224,10 +1704,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:pink_petals"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1236,22 +1715,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "solar_beam_owned": {
     "title": "Solar Beam",
-    "description": "Absorbed Grass-type spell. Projectile, 30 block range. Weapon-scaled damage. 13s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:sunflower"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "solar_beam": {
     "title": "Solar Beam Dispenser",
@@ -1259,10 +1753,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:sunflower"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1271,22 +1764,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "nature_burst_owned": {
     "title": "Nature Burst",
-    "description": "Absorbed Grass-type spell. Instant cast, 6 block range. Weapon-scaled damage; Heals 4 HP; Poison for 4s, 40% chance. 8s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:chorus_flower"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "nature_burst": {
     "title": "Nature Burst Dispenser",
@@ -1294,10 +1802,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:chorus_flower"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1306,22 +1813,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "powder_snow_owned": {
     "title": "Powder Snow",
-    "description": "Absorbed Ice-type spell. Instant cast, 5 block range. Weapon-scaled damage; Slowness 2 for 4s. 4s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:snowball"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "powder_snow": {
     "title": "Powder Snow Dispenser",
@@ -1329,10 +1851,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:snowball"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1341,22 +1862,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "ice_shard_owned": {
     "title": "Ice Shard",
-    "description": "Absorbed Ice-type spell. Projectile, 18 block range. Weapon-scaled damage; Slowness for 3s, 40% chance. 4s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:packed_ice"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "ice_shard": {
     "title": "Ice Shard Dispenser",
@@ -1364,10 +1900,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:packed_ice"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1376,22 +1911,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "ice_beam_owned": {
     "title": "Ice Beam",
-    "description": "Absorbed Ice-type special spell. Beam, 20 block range, 6 targets. 15 damage; Chills Wet targets for 3s. 13s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_ice_beam"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "ice_beam": {
     "title": "Ice Beam Dispenser",
@@ -1399,10 +1949,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_ice_beam"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1411,22 +1960,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "frost_nova_owned": {
     "title": "Frost Nova",
-    "description": "Absorbed Ice-type spell. Instant cast, 8 block range. Weapon-scaled damage; Slowness 3 for 10s; Weakness 2 for 6s. 10s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:ice"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "frost_nova": {
     "title": "Frost Nova Dispenser",
@@ -1434,10 +1998,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:ice"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1446,22 +2009,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "aurora_veil_owned": {
     "title": "Aurora Veil",
-    "description": "Absorbed Ice-type status spell. Protective aura, 6 block radius, 8s duration. Reduces damage by 25%. 20s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_aurora_veil"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "aurora_veil": {
     "title": "Aurora Veil Dispenser",
@@ -1469,10 +2047,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_aurora_veil"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1481,22 +2058,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "blizzard_owned": {
     "title": "Blizzard",
-    "description": "Absorbed Ice-type special spell. Moving zone, 18 block range, 5 block radius, 12 targets, 6s duration. 7.3 damage; Chills Wet targets for 3s. 22s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_blizzard"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "blizzard": {
     "title": "Blizzard Dispenser",
@@ -1504,10 +2096,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_blizzard"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1516,22 +2107,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "mach_punch_owned": {
     "title": "Mach Punch",
-    "description": "Absorbed Fighting-type spell. Instant cast, 8 block range. Weapon-scaled damage; Knockback. 2.5s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:iron_sword"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "mach_punch": {
     "title": "Mach Punch Dispenser",
@@ -1539,10 +2145,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:iron_sword"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1551,22 +2156,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "close_combat_owned": {
     "title": "Close Combat",
-    "description": "Absorbed Fighting-type physical spell. Melee combo, 3 block range, 1 target, 3 hits. 8.0 damage per hit; Knockback; Exposed for 4s on self. 16s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_close_combat"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "close_combat": {
     "title": "Close Combat Dispenser",
@@ -1574,10 +2194,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_close_combat"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1586,22 +2205,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "focus_blast_owned": {
     "title": "Focus Blast",
-    "description": "Absorbed Fighting-type spell. Projectile, 20 block range. Weapon-scaled damage; Knockback; Weakness 2 for 5s, 50% chance. 11s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:magma_cream"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "focus_blast": {
     "title": "Focus Blast Dispenser",
@@ -1609,10 +2243,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:magma_cream"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1621,22 +2254,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "seismic_slam_owned": {
     "title": "Seismic Slam",
-    "description": "Absorbed Fighting-type spell. Instant cast, 5 block range. Weapon-scaled damage; Knockback; Slowness 2 for 6s, 70% chance. 9s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:deepslate"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "seismic_slam": {
     "title": "Seismic Slam Dispenser",
@@ -1644,10 +2292,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:deepslate"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1656,22 +2303,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "poison_sting_owned": {
     "title": "Poison Sting",
-    "description": "Absorbed Poison-type spell. Projectile, 14 block range. Weapon-scaled damage; Poison for 6s, 60% chance. 3s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:poisonous_potato"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "poison_sting": {
     "title": "Poison Sting Dispenser",
@@ -1679,10 +2341,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:poisonous_potato"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1691,22 +2352,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "poison_strike_owned": {
     "title": "Poison Strike",
-    "description": "Absorbed Poison-type spell. Projectile, 16 block range. Weapon-scaled damage; Poison 2 for 10s, 90% chance. 7s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:fermented_spider_eye"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "poison_strike": {
     "title": "Poison Strike Dispenser",
@@ -1714,10 +2390,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:fermented_spider_eye"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1726,22 +2401,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "toxic_spikes_owned": {
     "title": "Toxic Spikes",
-    "description": "Absorbed Poison-type status spell. Placed trap, 12 block range, 1.2 block radius, 3 projectiles, 20s duration. Poison on first trigger; Toxic on repeat. 15s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_toxic_spikes"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "toxic_spikes": {
     "title": "Toxic Spikes Dispenser",
@@ -1749,10 +2439,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_toxic_spikes"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1761,22 +2450,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "sludge_bomb_owned": {
     "title": "Sludge Bomb",
-    "description": "Absorbed Poison-type spell. Lingering cloud, 16 block range, 5 block radius. Weapon-scaled damage; Poison 2 for 8s, 30% chance. 8s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:slime_block"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "sludge_bomb": {
     "title": "Sludge Bomb Dispenser",
@@ -1784,10 +2488,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:slime_block"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1796,22 +2499,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "toxic_owned": {
     "title": "Toxic",
-    "description": "Absorbed Poison-type spell. Lingering cloud, 14 block range, 3 block radius. Wither 2 for 10s. 12s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:wither_rose"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "toxic": {
     "title": "Toxic Dispenser",
@@ -1819,10 +2537,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:wither_rose"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1831,22 +2548,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "mud_shot_owned": {
     "title": "Mud Shot",
-    "description": "Absorbed Ground-type special spell. Projectile, 16 block range, 1 target. 7 damage; Slowness for 4s; Exposed for 4s. 4s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_mud_shot"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "mud_shot": {
     "title": "Mud Shot Dispenser",
@@ -1854,10 +2586,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_mud_shot"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1866,22 +2597,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "bulldoze_owned": {
     "title": "Bulldoze",
-    "description": "Absorbed Ground-type physical spell. Traveling wave, 10 block range, 10 targets, 0.6s duration. 11 damage; Slowness for 5s; Knockback. 8s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_bulldoze"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "bulldoze": {
     "title": "Bulldoze Dispenser",
@@ -1889,10 +2635,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_bulldoze"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1901,22 +2646,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "dig_owned": {
     "title": "Dig",
-    "description": "Absorbed Ground-type physical spell. Teleport strike, 14 block range, 1 target. 16 damage; Knockback. 12s cooldown, 0.6s cast.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_dig"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "dig": {
     "title": "Dig Dispenser",
@@ -1924,10 +2684,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_dig"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1936,22 +2695,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "earth_power_owned": {
     "title": "Earth Power",
-    "description": "Absorbed Ground-type special spell. Delayed area, 15 block range, 3 block radius, 8 targets. 18 damage; Exposed for 5s. 14s cooldown, 0.5s cast.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_earth_power"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "earth_power": {
     "title": "Earth Power Dispenser",
@@ -1959,10 +2733,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_earth_power"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1971,22 +2744,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "earthquake_owned": {
     "title": "Earthquake",
-    "description": "Absorbed Ground-type physical spell. Instant cast, 10 block range, 10 block radius, 16 targets. 23 damage; Knockback; Slowness 2 for 4s. 20s cooldown, 0.8s cast.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_earthquake"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "earthquake": {
     "title": "Earthquake Dispenser",
@@ -1994,10 +2782,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_earthquake"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2006,22 +2793,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "gust_owned": {
     "title": "Gust",
-    "description": "Absorbed Flying-type special spell. Channeled cone, 9 block range, 8 targets, 1 pulses, 0.1s duration. 6 damage per hit; Knockback. 3s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_gust"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "gust": {
     "title": "Gust Dispenser",
@@ -2029,10 +2831,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_gust"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2041,22 +2842,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "air_cutter_owned": {
     "title": "Air Cutter",
-    "description": "Absorbed Flying-type special spell. Projectile, 20 block range, 1 target, 3 projectiles. 3.4 damage per hit. 6s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_air_cutter"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "air_cutter": {
     "title": "Air Cutter Dispenser",
@@ -2064,10 +2880,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_air_cutter"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2076,22 +2891,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "aerial_ace_owned": {
     "title": "Aerial Ace",
-    "description": "Absorbed Flying-type physical spell. Teleport strike, 14 block range, 1 target. 12 damage. 7s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_aerial_ace"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "aerial_ace": {
     "title": "Aerial Ace Dispenser",
@@ -2099,10 +2929,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_aerial_ace"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2111,22 +2940,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "tailwind_owned": {
     "title": "Tailwind",
-    "description": "Absorbed Flying-type status spell. Protective aura, 7 block radius, 12 targets, 8s duration. Speed for 2s. 18s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_tailwind"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "tailwind": {
     "title": "Tailwind Dispenser",
@@ -2134,10 +2978,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_tailwind"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2146,22 +2989,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "hurricane_owned": {
     "title": "Hurricane",
-    "description": "Absorbed Flying-type special spell. Vortex, 18 block range, 5 block radius, 12 targets, 5s duration. 4.4 damage; Pulls targets. 20s cooldown, 0.8s cast.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_hurricane"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "hurricane": {
     "title": "Hurricane Dispenser",
@@ -2169,10 +3027,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_hurricane"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2181,22 +3038,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "aerial_strike_owned": {
     "title": "Aerial Strike",
-    "description": "Absorbed Flying-type spell. Projectile, 20 block range. Weapon-scaled damage; Knockback. 6s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:phantom_membrane"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "aerial_strike": {
     "title": "Aerial Strike Dispenser",
@@ -2204,10 +3076,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:phantom_membrane"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2216,22 +3087,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "confusion_owned": {
     "title": "Confusion",
-    "description": "Absorbed Psychic-type spell. Projectile, 14 block range. Weapon-scaled damage; Nausea for 5s, 30% chance. 4s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:amethyst_shard"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "confusion": {
     "title": "Confusion Dispenser",
@@ -2239,10 +3125,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:amethyst_shard"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2251,22 +3136,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "psybeam_owned": {
     "title": "Psybeam",
-    "description": "Absorbed Psychic-type special spell. Ricochet beam, 18 block range, 2 targets. 11 damage; Nausea for 4s, 20% chance. 8s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_psybeam"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "psybeam": {
     "title": "Psybeam Dispenser",
@@ -2274,10 +3174,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_psybeam"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2286,22 +3185,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "psychic_owned": {
     "title": "Psychic",
-    "description": "Absorbed Psychic-type spell. Instant cast, 20 block range. Weapon-scaled damage; Knockback; Weakness for 4s, 40% chance. 8s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:large_amethyst_bud"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "psychic": {
     "title": "Psychic Dispenser",
@@ -2309,10 +3223,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:large_amethyst_bud"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2321,22 +3234,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "rest_owned": {
     "title": "Rest",
-    "description": "Absorbed Psychic-type status spell. Self cast. Removes all harmful effects; Fully heals; Sleep for 5s. 90s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_rest"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "rest": {
     "title": "Rest Dispenser",
@@ -2344,10 +3272,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_rest"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2356,22 +3283,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "psychic_blast_owned": {
     "title": "Psychic Blast",
-    "description": "Absorbed Psychic-type spell. Instant cast, 10 block range. Weapon-scaled damage; Knockback; Weakness 2 for 8s, 60% chance. 11s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:nether_star"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "psychic_blast": {
     "title": "Psychic Blast Dispenser",
@@ -2379,10 +3321,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:nether_star"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2391,22 +3332,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "future_sight_owned": {
     "title": "Future Sight",
-    "description": "Absorbed Psychic-type special spell. Delayed strike, 24 block range, 1 target. 28 damage. 22s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_future_sight"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "future_sight": {
     "title": "Future Sight Dispenser",
@@ -2414,10 +3370,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_future_sight"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2426,22 +3381,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "string_shot_owned": {
     "title": "String Shot",
-    "description": "Absorbed Bug-type status spell. Projectile, 14 block range, 1 target. Slowness 6 for 2s. 5s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_string_shot"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "string_shot": {
     "title": "String Shot Dispenser",
@@ -2449,10 +3419,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_string_shot"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2461,22 +3430,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "pin_missile_owned": {
     "title": "Pin Missile",
-    "description": "Absorbed Bug-type physical spell. Projectile, 18 block range, 1 target, 5 projectiles. 2.4 damage per hit. 7s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_pin_missile"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "pin_missile": {
     "title": "Pin Missile Dispenser",
@@ -2484,10 +3468,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_pin_missile"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2496,22 +3479,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "u_turn_owned": {
     "title": "U Turn",
-    "description": "Absorbed Bug-type physical spell. Dash, 10 block range, 1 target, 0.4s duration. 11 damage. 9s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_u_turn"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "u_turn": {
     "title": "U Turn Dispenser",
@@ -2519,10 +3517,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_u_turn"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2531,22 +3528,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "x_scissor_owned": {
     "title": "X Scissor",
-    "description": "Absorbed Bug-type physical spell. Melee combo, 4.5 block range, 1 target, 2 hits. 6 damage per hit; Exposed for 5s. 11s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_x_scissor"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "x_scissor": {
     "title": "X Scissor Dispenser",
@@ -2554,10 +3566,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_x_scissor"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2566,22 +3577,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "bug_buzz_owned": {
     "title": "Bug Buzz",
-    "description": "Absorbed Bug-type special spell. Channeled cone, 10 block range, 8 targets, 4 pulses, 1s duration. 3 damage per hit; Exposed for 4s; Interrupts casting. 15s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_bug_buzz"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "bug_buzz": {
     "title": "Bug Buzz Dispenser",
@@ -2589,10 +3615,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_bug_buzz"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2601,22 +3626,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "rock_throw_owned": {
     "title": "Rock Throw",
-    "description": "Absorbed Rock-type spell. Projectile, 16 block range. Weapon-scaled damage. 4s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:cobblestone"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "rock_throw": {
     "title": "Rock Throw Dispenser",
@@ -2624,10 +3664,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:cobblestone"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2636,22 +3675,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "rock_slide_owned": {
     "title": "Rock Slide",
-    "description": "Absorbed Rock-type physical spell. Meteor strike, 18 block range, 4 block radius, 8 targets, 5 projectiles. 15 damage per hit; Knockback; Slowness 2 for 2s, 30% chance. 12s cooldown, 0.5s cast.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_rock_slide"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "rock_slide": {
     "title": "Rock Slide Dispenser",
@@ -2659,10 +3713,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_rock_slide"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2671,22 +3724,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "stone_edge_owned": {
     "title": "Stone Edge",
-    "description": "Absorbed Rock-type spell. Instant cast, 16 block range. Weapon-scaled damage. 10s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:smooth_stone"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "stone_edge": {
     "title": "Stone Edge Dispenser",
@@ -2694,10 +3762,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:smooth_stone"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2706,22 +3773,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "night_shade_owned": {
     "title": "Night Shade",
-    "description": "Absorbed Ghost-type spell. Instant cast, 16 block range. Weapon-scaled damage; Darkness for 5s, 80% chance. 6s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:black_dye"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "night_shade": {
     "title": "Night Shade Dispenser",
@@ -2729,10 +3811,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:black_dye"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2741,22 +3822,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "shadow_sneak_owned": {
     "title": "Shadow Sneak",
-    "description": "Absorbed Ghost-type physical spell. Teleport strike, 10 block range, 1 target. 9 damage. 6s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_shadow_sneak"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "shadow_sneak": {
     "title": "Shadow Sneak Dispenser",
@@ -2764,10 +3860,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_shadow_sneak"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2776,22 +3871,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "shadow_ball_owned": {
     "title": "Shadow Ball",
-    "description": "Absorbed Ghost-type spell. Projectile, 20 block range. Weapon-scaled damage; Weakness 2 for 5s, 50% chance. 8s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:black_concrete"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "shadow_ball": {
     "title": "Shadow Ball Dispenser",
@@ -2799,10 +3909,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:black_concrete"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2811,22 +3920,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "hex_owned": {
     "title": "Hex",
-    "description": "Absorbed Ghost-type spell. Instant cast, 16 block range. Weapon-scaled damage; Weakness 2 for 6s, 50% chance. 7s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:wither_skeleton_skull"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "hex": {
     "title": "Hex Dispenser",
@@ -2834,10 +3958,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:wither_skeleton_skull"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2846,22 +3969,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "dragon_breath_owned": {
     "title": "Dragon Breath",
-    "description": "Absorbed Dragon-type spell. Beam, 18 block range. Weapon-scaled damage; Burns for 5s; Poison for 3s, 50% chance. 10s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:dragon_breath"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "dragon_breath": {
     "title": "Dragon Breath Dispenser",
@@ -2869,10 +4007,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:dragon_breath"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2881,22 +4018,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "dragon_pulse_owned": {
     "title": "Dragon Pulse",
-    "description": "Absorbed Dragon-type spell. Projectile, 22 block range. Weapon-scaled damage. 9s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:dragon_head"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "dragon_pulse": {
     "title": "Dragon Pulse Dispenser",
@@ -2904,10 +4056,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:dragon_head"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2916,22 +4067,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "draco_meteor_owned": {
     "title": "Draco Meteor",
-    "description": "Absorbed Dragon-type special spell. Meteor strike, 24 block range, 5 block radius, 12 targets, 7 projectiles. 31 damage per hit; Knockback. 26s cooldown, 1.5s cast.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_draco_meteor"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "draco_meteor": {
     "title": "Draco Meteor Dispenser",
@@ -2939,10 +4105,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_draco_meteor"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2951,22 +4116,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "outrage_owned": {
     "title": "Outrage",
-    "description": "Absorbed Dragon-type spell. Instant cast, 14 block range. Weapon-scaled damage; Knockback; Nausea for 4s. 13s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:nether_star"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "outrage": {
     "title": "Outrage Dispenser",
@@ -2974,10 +4154,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:nether_star"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -2986,22 +4165,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "dark_pulse_owned": {
     "title": "Dark Pulse",
-    "description": "Absorbed Dark-type special spell. Channeled beam, 16 block range, 4 targets, 3 pulses, 0.6s duration. 5.3 damage per hit; Nausea for 2.5s, 10% chance. 10s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_dark_pulse"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "dark_pulse": {
     "title": "Dark Pulse Dispenser",
@@ -3009,10 +4203,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_dark_pulse"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -3021,22 +4214,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "sucker_punch_owned": {
     "title": "Sucker Punch",
-    "description": "Absorbed Dark-type physical spell. Counter stance, 5 block range, 1 target, 1s duration. 14 damage; Knockback. 10s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_sucker_punch"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "sucker_punch": {
     "title": "Sucker Punch Dispenser",
@@ -3044,10 +4252,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_sucker_punch"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -3056,22 +4263,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "foul_play_owned": {
     "title": "Foul Play",
-    "description": "Absorbed Dark-type spell. Instant cast, 12 block range. Weapon-scaled damage; Weakness 3 for 10s. 8s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:netherite_ingot"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "foul_play": {
     "title": "Foul Play Dispenser",
@@ -3079,10 +4301,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:netherite_ingot"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -3091,22 +4312,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "iron_tail_owned": {
     "title": "Iron Tail",
-    "description": "Absorbed Steel-type spell. Instant cast, 10 block range. Weapon-scaled damage; Knockback; Weakness for 5s, 30% chance. 8s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:iron_ingot"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "iron_tail": {
     "title": "Iron Tail Dispenser",
@@ -3114,10 +4350,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:iron_ingot"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -3126,22 +4361,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "iron_defense_owned": {
     "title": "Iron Defense",
-    "description": "Absorbed Steel-type status spell. Self cast. Guards the next hit on self. 18s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_iron_defense"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "iron_defense": {
     "title": "Iron Defense Dispenser",
@@ -3149,10 +4399,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_iron_defense"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -3161,22 +4410,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "iron_strike_owned": {
     "title": "Iron Strike",
-    "description": "Absorbed Steel-type spell. Projectile, 14 block range. Weapon-scaled damage; Knockback. 8s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:iron_block"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "iron_strike": {
     "title": "Iron Strike Dispenser",
@@ -3184,10 +4448,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:iron_block"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -3196,22 +4459,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "flash_cannon_owned": {
     "title": "Flash Cannon",
-    "description": "Absorbed Steel-type spell. Beam, 20 block range. Weapon-scaled damage; Weakness 2 for 5s, 50% chance. 8s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "minecraft:netherite_ingot"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "flash_cannon": {
     "title": "Flash Cannon Dispenser",
@@ -3219,10 +4497,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "minecraft:netherite_ingot"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -3231,22 +4508,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "fairy_wind_owned": {
     "title": "Fairy Wind",
-    "description": "Absorbed Fairy-type special spell. Projectile, 18 block range, 1 target. 6 damage; Knockback. 3s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_fairy_wind"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "fairy_wind": {
     "title": "Fairy Wind Dispenser",
@@ -3254,10 +4546,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_fairy_wind"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -3266,22 +4557,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "draining_kiss_owned": {
     "title": "Draining Kiss",
-    "description": "Absorbed Fairy-type special spell. Projectile, 14 block range, 1 target. 8 damage; Heals 75% of damage dealt on self. 6s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_draining_kiss"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "draining_kiss": {
     "title": "Draining Kiss Dispenser",
@@ -3289,10 +4595,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_draining_kiss"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -3301,22 +4606,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "charm_owned": {
     "title": "Charm",
-    "description": "Absorbed Fairy-type status spell. Channeled cone, 8 block range, 8 targets, 1 pulses, 0.1s duration. Weakness for 6s. 11s cooldown.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_charm"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "charm": {
     "title": "Charm Dispenser",
@@ -3324,10 +4644,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_charm"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -3336,22 +4655,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "dazzling_gleam_owned": {
     "title": "Dazzling Gleam",
-    "description": "Absorbed Fairy-type special spell. Instant cast, 6 block range, 6 block radius, 12 targets. 14 damage; Removes one Poison or Chill effect on self. 12s cooldown, 0.4s cast.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_dazzling_gleam"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "dazzling_gleam": {
     "title": "Dazzling Gleam Dispenser",
@@ -3359,10 +4693,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_dazzling_gleam"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -3371,22 +4704,37 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   },
   "moonblast_owned": {
     "title": "Moonblast",
-    "description": "Absorbed Fairy-type special spell. Projectile, 22 block range, 3 block radius, 6 targets. 23 damage; Weakness for 5s. 18s cooldown, 0.8s cast.",
     "icon": {
-      "type": "item",
+      "type": "texture",
       "data": {
-        "item": "tensura:spell_icon_moonblast"
+        "texture": "tensura:textures/gui/blank.png"
       }
     },
-    "size": 1.3,
-    "rewards": [
-
-    ],
-    "cost": 1
+    "size": 0.1,
+    "rewards": [],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
   },
   "moonblast": {
     "title": "Moonblast Dispenser",
@@ -3394,10 +4742,9 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_moonblast"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -3406,6 +4753,15 @@
         }
       }
     ],
-    "cost": 0
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
   }
 }

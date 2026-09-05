@@ -118,3 +118,6 @@ tasks.named('build').configure {
         println "Version bumped: ${current} → ${next}"
     }
 }
+
+// Walidacja drzewek Puffish - patrz DEVOUR_TREE_CONTRACT.md
+apply from: 'gradle/skill-tree-validation.gradle'
