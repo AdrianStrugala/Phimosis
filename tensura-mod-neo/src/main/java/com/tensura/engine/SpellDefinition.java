@@ -78,12 +78,14 @@ public class SpellDefinition {
         public double damage_multiplier = 1.0;
         // status_effect
         public String effect = "";
+        public List<String> effects = List.of();
         public int duration = 100;
         public int amplifier = 0;
         public double chance = 1.0;
         public boolean ambient = false;
         public boolean show_particles = true;
         public boolean show_icon = true;
+        public boolean final_hit_only = false;
         // fire
         public int seconds = 3;
         // knockback

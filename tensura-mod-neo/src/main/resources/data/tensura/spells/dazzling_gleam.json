@@ -9,7 +9,11 @@
   "delivery": { "type": "instant" },
   "impact": [
     { "type": "damage", "damage_multiplier": 1.0 },
-    { "type": "cleanse", "recipient": "caster" }
+    {
+      "type": "cleanse_one",
+      "recipient": "caster",
+      "effects": ["minecraft:poison", "tensura:frozen"]
+    }
   ],
   "visual": {
     "cast_animation": "gleam_dome_cast",

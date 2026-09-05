@@ -333,8 +333,10 @@ public class SpellExecutor {
         if ("self".equals(def.targeting.type)) {
             applyImpacts(caster, caster, def);
         } else {
+            LivingEntity casterImpactContext = targets.isEmpty() ? caster : targets.get(0);
+            applyImpacts(caster, caster, casterImpactContext, def, true, true);
             for (LivingEntity target : targets) {
-                applyImpacts(caster, target, def);
+                applyImpacts(caster, caster, target, def, true, false);
             }
         }
     }
@@ -945,6 +947,32 @@ public class SpellExecutor {
         applyImpacts(caster, caster, target, def, finalProjectile);
     }
 
+    public static void applyProjectileSplash(ServerPlayer owner, LivingEntity effectCaster,
+                                             LivingEntity directTarget, SpellDefinition def) {
+        double radius = def.targeting.radius;
+        if (radius <= 0.0) {
+            applyImpacts(owner, effectCaster, directTarget, def);
+            return;
+        }
+
+        int maxTargets = def.targeting.max_targets > 0
+                ? def.targeting.max_targets : Integer.MAX_VALUE;
+        List<LivingEntity> targets = directTarget.level().getEntitiesOfClass(
+                LivingEntity.class, directTarget.getBoundingBox().inflate(radius),
+            entity -> entity != directTarget
+                && SpellTargetingRules.canHarm(owner, effectCaster, entity));
+        targets.sort((left, right) -> Double.compare(
+                left.distanceToSqr(directTarget), right.distanceToSqr(directTarget)));
+
+        applyImpacts(owner, effectCaster, directTarget, def, true, true);
+        applyImpacts(owner, effectCaster, directTarget, def, true, false);
+        int affected = 1;
+        for (LivingEntity target : targets) {
+            if (affected++ >= maxTargets) break;
+            applyImpacts(owner, effectCaster, target, def, true, false);
+        }
+    }
+
     public static void applyImpacts(ServerPlayer owner, LivingEntity effectCaster,
                                     LivingEntity target, SpellDefinition def) {
         applyImpacts(owner, effectCaster, target, def, true);
@@ -953,9 +981,19 @@ public class SpellExecutor {
     public static void applyImpacts(ServerPlayer owner, LivingEntity effectCaster,
                                     LivingEntity target, SpellDefinition def,
                                     boolean finalProjectile) {
+        applyImpacts(owner, effectCaster, target, def, finalProjectile, null);
+    }
+
+    private static void applyImpacts(ServerPlayer owner, LivingEntity effectCaster,
+                                     LivingEntity target, SpellDefinition def,
+                                     boolean finalProjectile, Boolean casterOnly) {
         boolean canHarm = SpellTargetingRules.canHarm(owner, effectCaster, target);
+                        float damageDealt = 0.0F;
         for (SpellDefinition.Impact impact : def.impact) {
-            LivingEntity recipient = "caster".equals(impact.recipient) ? effectCaster : target;
+            if (impact.final_hit_only && !finalProjectile) continue;
+            boolean casterRecipient = "caster".equals(impact.recipient);
+            if (casterOnly != null && casterRecipient != casterOnly) continue;
+            LivingEntity recipient = casterRecipient ? effectCaster : target;
             switch (impact.type) {
                 case "damage" -> {
                     if (!canHarm) continue;
@@ -964,7 +1002,9 @@ public class SpellExecutor {
                             : owner.getAttackStrengthScale(0) * 6.0;
                     float dmg = (float) (applyExposedModifier(baseDamage,
                         target, def) * impact.damage_multiplier);
+                    float healthBefore = target.getHealth();
                     target.hurt(owner.damageSources().playerAttack(owner), Math.max(1, dmg));
+                    damageDealt += Math.max(0.0F, healthBefore - target.getHealth());
                 }
                 case "speed_scaled_damage" -> {
                     if (!canHarm) continue;
@@ -981,7 +1021,9 @@ public class SpellExecutor {
                             + (maximumPower - def.power) * advantage;
                         float damage = (float) (applyExposedModifier(scaledPower,
                             target, def) * impact.damage_multiplier);
+                    float healthBefore = target.getHealth();
                     target.hurt(owner.damageSources().playerAttack(owner), Math.max(1, damage));
+                    damageDealt += Math.max(0.0F, healthBefore - target.getHealth());
                 }
                 case "status_effect" -> {
                     if (Math.random() <= impact.chance && !impact.effect.isEmpty()) {
@@ -1013,6 +1055,8 @@ public class SpellExecutor {
                     }
                 }
                 case "heal"     -> recipient.heal((float) impact.amount);
+                case "heal_damage_fraction" -> recipient.heal(
+                    damageDealt * (float) Math.max(0.0, impact.amount));
                 case "heal_fraction" -> recipient.heal((float) (recipient.getMaxHealth()
                         * Math.max(0.0, Math.min(1.0, impact.amount))));
                 case "full_heal" -> recipient.setHealth(recipient.getMaxHealth());
@@ -1028,6 +1072,18 @@ public class SpellExecutor {
                             .map(MobEffectInstance::getEffect)
                             .toList();
                     harmfulEffects.forEach(recipient::removeEffect);
+                }
+                case "cleanse_one" -> {
+                    for (String effectId : impact.effects) {
+                        Holder<MobEffect> effect = BuiltInRegistries.MOB_EFFECT
+                                .getHolder(ResourceLocation.parse(effectId)).orElse(null);
+                        if (effect != null && recipient.removeEffect(effect)) {
+                            break;
+                        }
+                    }
+                }
+                case "interrupt_cast" -> {
+                    if (canHarm) SpellRuntimeController.interruptPendingCast(recipient);
                 }
                 case "wet" -> {
                     if (canHarm) {

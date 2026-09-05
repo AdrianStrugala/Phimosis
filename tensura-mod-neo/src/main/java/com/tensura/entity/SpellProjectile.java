@@ -208,9 +208,16 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
                         return;
                     }
                     finalImpact = impact.firstHit();
+                    if (!impact.firstHit()) {
+                        target.invulnerableTime = 0;
+                    }
                 }
-                SpellExecutor.applyImpacts(caster, effectCaster, target, def,
-                        finalImpact);
+                if (def.targeting.radius > 0.0) {
+                    SpellExecutor.applyProjectileSplash(caster, effectCaster, target, def);
+                } else {
+                    SpellExecutor.applyImpacts(caster, effectCaster, target, def,
+                            finalImpact);
+                }
             }
         }
         this.discard();

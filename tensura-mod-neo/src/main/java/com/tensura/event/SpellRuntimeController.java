@@ -62,6 +62,10 @@ public class SpellRuntimeController {
         return PENDING_CASTS.containsKey(caster.getUUID());
     }
 
+    public static void interruptPendingCast(LivingEntity target) {
+        PENDING_CASTS.remove(target.getUUID());
+    }
+
     public static boolean startCast(ServerPlayer caster, ResourceLocation spellId,
                                     SpellDefinition definition) {
         if (PENDING_CASTS.containsKey(caster.getUUID())) return false;
@@ -832,8 +836,6 @@ public class SpellRuntimeController {
                 finalHit ? 4 : 12, 0.35, 0.4, 0.35, 0.08);
             combo.remainingHits--;
             if (combo.remainingHits <= 0) {
-            effectCaster.addEffect(new MobEffectInstance(TensuraMobEffects.EXPOSED,
-                80, 0, false, true, true));
             iterator.remove();
             } else {
             combo.ticksUntilHit = Math.max(1,

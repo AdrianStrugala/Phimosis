@@ -25,6 +25,9 @@
       "type": "expose",
       "duration": 80,
       "amplifier": 0
+    },
+    {
+      "type": "interrupt_cast"
     }
   ],
   "visual": {

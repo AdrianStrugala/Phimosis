@@ -18,6 +18,13 @@
   "impact": [
     { "type": "damage", "damage_multiplier": 0.3333333333 },
     { "type": "knockback", "strength": 0.15 }
+    ,{
+      "type": "expose",
+      "recipient": "caster",
+      "duration": 80,
+      "amplifier": 0,
+      "final_hit_only": true
+    }
   ],
   "visual": {
     "cast_animation": "melee_left",

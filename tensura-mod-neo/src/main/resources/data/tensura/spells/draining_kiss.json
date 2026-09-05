@@ -8,7 +8,7 @@
   "delivery": { "type": "projectile", "speed": 1.5, "homing_strength": 0.18 },
   "impact": [
     { "type": "damage", "damage_multiplier": 1.0 },
-    { "type": "heal", "recipient": "caster", "amount": 6.0 }
+    { "type": "heal_damage_fraction", "recipient": "caster", "amount": 0.75 }
   ],
   "visual": {
     "cast_animation": "draining_kiss_cast",

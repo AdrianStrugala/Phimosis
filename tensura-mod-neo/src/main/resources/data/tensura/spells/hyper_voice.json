@@ -9,7 +9,8 @@
   "delivery": { "type": "channel_cone", "duration_ticks": 16, "tick_interval_ticks": 4, "cone_angle": 48.0 },
   "impact": [
     { "type": "damage", "damage_multiplier": 1.0 },
-    { "type": "knockback", "strength": 0.45 }
+    { "type": "knockback", "strength": 0.45 },
+    { "type": "interrupt_cast" }
   ],
   "visual": {
     "cast_animation": "hyper_voice_cast",

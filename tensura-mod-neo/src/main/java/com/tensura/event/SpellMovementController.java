@@ -141,10 +141,18 @@ public class SpellMovementController {
                 5, 0.2, 0.1, 0.2, 0.01);
         for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, sweptBox,
             entity -> SpellTargetingRules.canHarm(owner, caster, entity))) {
-            if (dash.hitEntities.add(target.getUUID())) {
-                SpellExecutor.applyImpacts(owner, caster, target, dash.definition);
-                int maxTargets = dash.definition.targeting.max_targets;
-                if (maxTargets > 0 && dash.hitEntities.size() >= maxTargets) {
+            if (dash.hitEntities.contains(target.getUUID())) continue;
+            int maxTargets = dash.definition.targeting.max_targets;
+            if (maxTargets > 0 && dash.hitEntities.size() >= maxTargets) continue;
+
+            dash.hitEntities.add(target.getUUID());
+            SpellExecutor.applyImpacts(owner, caster, target, dash.definition);
+            if (maxTargets > 0 && dash.hitEntities.size() >= maxTargets) {
+                if (dash.definition.delivery.return_to_origin && !dash.returning
+                        && beginReturn(dash)) {
+                    return;
+                }
+                if (!dash.returning) {
                     stopDash(caster);
                     return;
                 }
@@ -154,20 +162,22 @@ public class SpellMovementController {
         dash.remainingDistance -= stepLength;
         dash.remainingTicks--;
         if (dash.remainingDistance <= 0.01 || dash.remainingTicks <= 0) {
-            if (dash.definition.delivery.return_to_origin && !dash.returning) {
-                Vec3 returnDirection = dash.origin.subtract(dash.position);
-                returnDirection = new Vec3(returnDirection.x, 0.0, returnDirection.z);
-                if (returnDirection.lengthSqr() > 1.0E-6) {
-                    dash.direction = returnDirection.normalize();
-                    dash.remainingDistance = returnDirection.length();
-                    dash.remainingTicks = Math.max(1, durationForDistance(
-                            dash.remainingDistance, dash.stepLength));
-                    dash.returning = true;
-                    return;
-                }
-            }
+            if (dash.definition.delivery.return_to_origin && !dash.returning
+                    && beginReturn(dash)) return;
             stopDash(caster);
         }
+    }
+
+    private static boolean beginReturn(ActiveDash dash) {
+        Vec3 returnDirection = dash.origin.subtract(dash.position);
+        returnDirection = new Vec3(returnDirection.x, 0.0, returnDirection.z);
+        if (returnDirection.lengthSqr() <= 1.0E-6) return false;
+
+        dash.direction = returnDirection.normalize();
+        dash.remainingDistance = returnDirection.length();
+        dash.remainingTicks = durationForDistance(dash.remainingDistance, dash.stepLength);
+        dash.returning = true;
+        return true;
     }
 
     private static int durationForDistance(double distance, double stepLength) {
