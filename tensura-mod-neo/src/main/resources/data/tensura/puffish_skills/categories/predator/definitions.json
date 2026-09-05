@@ -398,7 +398,7 @@
   "close_combat": {
     "title": "Close Combat",
     "description": "Total physical commitment. Maximum damage at point-blank range.",
-    "icon": {"type": "puffish_skills:item", "item": "minecraft:diamond_sword"},
+    "icon": {"type": "puffish_skills:item", "item": "tensura:spell_icon_close_combat"},
     "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s close_combat"}}],
     "cost": 4
   },
@@ -433,9 +433,16 @@
   "flamethrower": {
     "title": "Flamethrower",
     "description": "A sustained stream of scorching fire.",
-    "icon": {"type": "puffish_skills:item", "item": "minecraft:blaze_rod"},
+    "icon": {"type": "puffish_skills:item", "item": "tensura:spell_icon_flamethrower"},
     "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s flamethrower"}}],
     "cost": 3
+  },
+  "fire_spin": {
+    "title": "Fire Spin",
+    "description": "Trap nearby foes in a pulling vortex of persistent flame.",
+    "icon": {"type": "puffish_skills:item", "item": "tensura:spell_icon_fire_spin"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s fire_spin"}}],
+    "cost": 4
   },
   "fire_blast": {
     "title": "Fire Blast",
@@ -496,7 +503,7 @@
   "volt_tackle": {
     "title": "Volt Tackle",
     "description": "Wrap yourself in electricity and charge with catastrophic force.",
-    "icon": {"type": "puffish_skills:item", "item": "minecraft:nether_star"},
+    "icon": {"type": "puffish_skills:item", "item": "tensura:spell_icon_volt_tackle"},
     "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s volt_tackle"}}],
     "cost": 7
   },
@@ -524,7 +531,7 @@
   "surf": {
     "title": "Surf",
     "description": "Summon a massive wave that sweeps away all nearby foes.",
-    "icon": {"type": "puffish_skills:item", "item": "minecraft:blue_ice"},
+    "icon": {"type": "puffish_skills:item", "item": "tensura:spell_icon_surf"},
     "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s surf"}}],
     "cost": 4
   },
@@ -591,6 +598,13 @@
     "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s leech_seed"}}],
     "cost": 3
   },
+  "recover": {
+    "title": "Recover",
+    "description": "Focus your magicules to restore half of your maximum health.",
+    "icon": {"type": "puffish_skills:item", "item": "tensura:spell_icon_recover"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s recover"}}],
+    "cost": 5
+  },
   "razor_leaf": {
     "title": "Razor Leaf",
     "description": "Sharp leaves slice through targets with poison's touch.",
@@ -643,7 +657,7 @@
   "psybeam": {
     "title": "Psybeam",
     "description": "A beam of psychic energy that bends reality.",
-    "icon": {"type": "puffish_skills:item", "item": "minecraft:amethyst_block"},
+    "icon": {"type": "puffish_skills:item", "item": "tensura:spell_icon_psybeam"},
     "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s psybeam"}}],
     "cost": 3
   },
@@ -675,6 +689,13 @@
     "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s night_shade"}}],
     "cost": 2
   },
+  "shadow_sneak": {
+    "title": "Shadow Sneak",
+    "description": "Slip through shadow and strike a nearby target instantly.",
+    "icon": {"type": "puffish_skills:item", "item": "tensura:spell_icon_shadow_sneak"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s shadow_sneak"}}],
+    "cost": 3
+  },
   "shadow_ball": {
     "title": "Shadow Ball",
     "description": "A ball of compressed shadow energy that weakens on impact.",
@@ -685,7 +706,7 @@
   "dark_pulse": {
     "title": "Dark Pulse",
     "description": "A pulse of dark energy that may cause flinching.",
-    "icon": {"type": "puffish_skills:item", "item": "minecraft:obsidian"},
+    "icon": {"type": "puffish_skills:item", "item": "tensura:spell_icon_dark_pulse"},
     "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s dark_pulse"}}],
     "cost": 4
   },
@@ -745,6 +766,13 @@
     "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s poison_strike"}}],
     "cost": 3
   },
+  "toxic_spikes": {
+    "title": "Toxic Spikes",
+    "description": "Scatter three long-lived venomous traps across the battlefield.",
+    "icon": {"type": "puffish_skills:item", "item": "tensura:spell_icon_toxic_spikes"},
+    "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s toxic_spikes"}}],
+    "cost": 4
+  },
   "sludge_bomb": {
     "title": "Sludge Bomb",
     "description": "A cloud of toxic sludge poisons all nearby.",
@@ -769,7 +797,7 @@
   "rock_slide": {
     "title": "Rock Slide",
     "description": "Avalanche of stones that may cause flinching.",
-    "icon": {"type": "puffish_skills:item", "item": "minecraft:stone"},
+    "icon": {"type": "puffish_skills:item", "item": "tensura:spell_icon_rock_slide"},
     "rewards": [{"type": "puffish_skills:command", "data": {"command": "tensura givespell @s rock_slide"}}],
     "cost": 3
   },

@@ -89,6 +89,8 @@
   {"from": "ember",         "to": "will_o_wisp"},
   {"from": "ember",         "to": "flamethrower"},
   {"from": "flamethrower",  "to": "fire_blast"},
+  {"from": "flamethrower",  "to": "fire_spin"},
+  {"from": "fire_spin",     "to": "overheat"},
   {"from": "fire_blast",    "to": "overheat"},
   {"from": "overheat",      "to": "sacred_fire"},
   {"from": "sacred_fire",   "to": "explosion"},
@@ -110,6 +112,7 @@
   {"from": "frost_nova",    "to": "blizzard"},
 
   {"from": "vine_whip",     "to": "leech_seed"},
+  {"from": "leech_seed",    "to": "recover"},
   {"from": "vine_whip",     "to": "razor_leaf"},
   {"from": "razor_leaf",    "to": "leaf_blade"},
   {"from": "leaf_blade",    "to": "energy_ball"},
@@ -123,6 +126,8 @@
   {"from": "psychic_blast", "to": "future_sight"},
 
   {"from": "night_shade",   "to": "shadow_ball"},
+  {"from": "night_shade",   "to": "shadow_sneak"},
+  {"from": "shadow_sneak",  "to": "dark_pulse"},
   {"from": "shadow_ball",   "to": "dark_pulse"},
   {"from": "dark_pulse",    "to": "hex"},
   {"from": "hex",           "to": "foul_play"},
@@ -133,7 +138,9 @@
 
   {"from": "poison_sting",  "to": "poison_strike"},
   {"from": "poison_strike", "to": "sludge_bomb"},
+  {"from": "poison_strike", "to": "toxic_spikes"},
   {"from": "sludge_bomb",   "to": "toxic"},
+  {"from": "toxic_spikes",  "to": "toxic"},
 
   {"from": "rock_throw",    "to": "rock_slide"},
   {"from": "rock_slide",    "to": "stone_edge"},
