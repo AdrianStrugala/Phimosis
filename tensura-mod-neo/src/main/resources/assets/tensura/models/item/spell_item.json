@@ -16,6 +16,17 @@
     { "predicate": { "tensura:school": 10 }, "model": "tensura:item/spell_earth"     },
     { "predicate": { "tensura:school": 11 }, "model": "tensura:item/spell_wind"      },
     { "predicate": { "tensura:school": 12 }, "model": "tensura:item/spell_fairy"     },
-    { "predicate": { "tensura:school": 13 }, "model": "tensura:item/spell_steel"     }
+    { "predicate": { "tensura:school": 13 }, "model": "tensura:item/spell_steel"     },
+    { "predicate": { "tensura:icon":  1 }, "model": "tensura:item/spell_flamethrower" },
+    { "predicate": { "tensura:icon":  2 }, "model": "tensura:item/spell_surf" },
+    { "predicate": { "tensura:icon":  3 }, "model": "tensura:item/spell_toxic_spikes" },
+    { "predicate": { "tensura:icon":  4 }, "model": "tensura:item/spell_close_combat" },
+    { "predicate": { "tensura:icon":  5 }, "model": "tensura:item/spell_shadow_sneak" },
+    { "predicate": { "tensura:icon":  6 }, "model": "tensura:item/spell_psybeam" },
+    { "predicate": { "tensura:icon":  7 }, "model": "tensura:item/spell_volt_tackle" },
+    { "predicate": { "tensura:icon":  8 }, "model": "tensura:item/spell_fire_spin" },
+    { "predicate": { "tensura:icon":  9 }, "model": "tensura:item/spell_rock_slide" },
+    { "predicate": { "tensura:icon": 10 }, "model": "tensura:item/spell_recover" },
+    { "predicate": { "tensura:icon": 11 }, "model": "tensura:item/spell_dark_pulse" }
   ]
 }

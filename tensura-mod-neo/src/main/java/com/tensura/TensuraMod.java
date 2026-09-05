@@ -103,6 +103,11 @@ public class TensuraMod {
                         ResourceLocation.fromNamespaceAndPath(MOD_ID, "school"),
                         (stack, level, entity, seed) -> SpellItem.getSchoolIndex(stack)
                 );
+                ItemProperties.register(
+                    TensuraItemRegistry.SPELL_ITEM.get(),
+                    ResourceLocation.fromNamespaceAndPath(MOD_ID, "icon"),
+                    (stack, level, entity, seed) -> SpellItem.getIconIndex(stack)
+                );
             });
         }
 

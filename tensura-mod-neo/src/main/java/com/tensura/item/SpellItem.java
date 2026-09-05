@@ -61,6 +61,26 @@ public class SpellItem extends Item {
         return idx < 0 ? 0f : (float) idx;
     }
 
+    public static float getIconIndex(ItemStack stack) {
+        ResourceLocation spellId = getSpellId(stack);
+        if (spellId == null) return 0f;
+
+        return switch (spellId.getPath()) {
+            case "flamethrower" -> 1f;
+            case "surf" -> 2f;
+            case "toxic_spikes" -> 3f;
+            case "close_combat" -> 4f;
+            case "shadow_sneak" -> 5f;
+            case "psybeam" -> 6f;
+            case "volt_tackle" -> 7f;
+            case "fire_spin" -> 8f;
+            case "rock_slide" -> 9f;
+            case "recover" -> 10f;
+            case "dark_pulse" -> 11f;
+            default -> 0f;
+        };
+    }
+
     @Override
     public Component getName(ItemStack stack) {
         ResourceLocation id = getSpellId(stack);
