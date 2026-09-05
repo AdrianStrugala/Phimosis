@@ -52,6 +52,15 @@ public class SpellExecutor {
     }
 
     public static boolean cast(ServerPlayer caster, ResourceLocation spellId) {
+        return cast(caster, spellId, false);
+    }
+
+    public static boolean castPrepared(ServerPlayer caster, ResourceLocation spellId) {
+        return cast(caster, spellId, true);
+    }
+
+    private static boolean cast(ServerPlayer caster, ResourceLocation spellId,
+                                boolean skipCastTime) {
         if (caster.hasEffect(TensuraMobEffects.ASLEEP)
             || caster.hasEffect(TensuraMobEffects.FROZEN)
             || caster.hasEffect(TensuraMobEffects.EXHAUSTED)) {
@@ -93,7 +102,7 @@ public class SpellExecutor {
                 return false;
             }
         }
-        boolean started = def.cast_time_ticks > 0
+        boolean started = def.cast_time_ticks > 0 && !skipCastTime
                 ? SpellRuntimeController.startCast(caster, spellId, def)
                 : executeDelivery(caster, spellId, def);
         if (!started) return false;

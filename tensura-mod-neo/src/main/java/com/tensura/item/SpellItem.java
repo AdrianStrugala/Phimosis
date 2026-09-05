@@ -9,10 +9,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -23,6 +25,8 @@ public class SpellItem extends Item {
 
     public static final String NBT_SPELL_ID = "SpellId";
     public static final String NBT_SCHOOL   = "School";
+    public static final String NBT_CHANNEL_WINDUP = "ChannelWindup";
+    public static final String NBT_CHANNEL_DURATION = "ChannelDuration";
 
     private static final java.util.List<String> SCHOOL_ORDER = java.util.List.of(
         "physical", "lightning", "fire", "water", "ice",
@@ -39,7 +43,13 @@ public class SpellItem extends Item {
         CompoundTag tag = new CompoundTag();
         tag.putString(NBT_SPELL_ID, spellId.toString());
         // Store school for client-side model selection (SpellRegistry is server-side only)
-        SpellRegistry.get(spellId).ifPresent(def -> tag.putString(NBT_SCHOOL, def.school));
+        SpellRegistry.get(spellId).ifPresent(def -> {
+            tag.putString(NBT_SCHOOL, def.school);
+            if ("channel_beam".equals(def.delivery.type) && def.cast_time_ticks > 0) {
+                tag.putInt(NBT_CHANNEL_WINDUP, def.cast_time_ticks);
+                tag.putInt(NBT_CHANNEL_DURATION, def.delivery.duration_ticks);
+            }
+        });
         stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
         return stack;
     }
@@ -130,15 +140,71 @@ public class SpellItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (level.isClientSide) return InteractionResultHolder.success(stack);
-
         ResourceLocation id = getSpellId(stack);
         if (id == null) return InteractionResultHolder.fail(stack);
+
+        if (getChannelWindup(stack) > 0) {
+            player.startUsingItem(hand);
+            return InteractionResultHolder.consume(stack);
+        }
+
+        if (level.isClientSide) return InteractionResultHolder.success(stack);
 
         if (player instanceof ServerPlayer sp) {
             SpellExecutor.cast(sp, id);
         }
         return InteractionResultHolder.success(stack);
+    }
+
+    @Override
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
+        int windup = getChannelWindup(stack);
+        return windup > 0 ? windup + getChannelDuration(stack) : 0;
+    }
+
+    @Override
+    public UseAnim getUseAnimation(ItemStack stack) {
+        return getChannelWindup(stack) > 0 ? UseAnim.BOW : UseAnim.NONE;
+    }
+
+    @Override
+    public void onUseTick(Level level, LivingEntity entity, ItemStack stack,
+                          int remainingUseDuration) {
+        if (level.isClientSide || !(entity instanceof ServerPlayer player)) return;
+
+        int windup = getChannelWindup(stack);
+        int elapsed = getUseDuration(stack, entity) - remainingUseDuration;
+        if (windup > 0 && elapsed == windup) {
+            ResourceLocation spellId = getSpellId(stack);
+            if (spellId == null || !SpellExecutor.castPrepared(player, spellId)) {
+                player.stopUsingItem();
+            }
+        }
+    }
+
+    @Override
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity,
+                             int timeCharged) {
+        if (!level.isClientSide && entity instanceof ServerPlayer player) {
+            com.tensura.event.SpellRuntimeController.stopPlayerChannelBeam(player.getUUID());
+        }
+    }
+
+    private static int getChannelWindup(ItemStack stack) {
+        CustomData data = stack.get(DataComponents.CUSTOM_DATA);
+        if (data == null) return 0;
+        CompoundTag tag = data.copyTag();
+        int configured = tag.getInt(NBT_CHANNEL_WINDUP);
+        ResourceLocation spellId = getSpellId(stack);
+        return configured > 0 || spellId == null || !"hydro_pump".equals(spellId.getPath())
+                ? configured : 16;
+    }
+
+    private static int getChannelDuration(ItemStack stack) {
+        CustomData data = stack.get(DataComponents.CUSTOM_DATA);
+        if (data == null) return 1;
+        int configured = data.copyTag().getInt(NBT_CHANNEL_DURATION);
+        return Math.max(1, configured > 0 ? configured : 24);
     }
 
     private static String formatName(String path) {

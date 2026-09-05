@@ -136,6 +136,11 @@ public class SpellRuntimeController {
         return true;
     }
 
+    public static void stopPlayerChannelBeam(UUID playerId) {
+        CHANNEL_BEAMS.removeIf(beam -> beam.ownerId.equals(playerId)
+                && beam.effectCasterId.equals(playerId));
+    }
+
     public static boolean startChannelCone(ServerPlayer owner, LivingEntity effectCaster,
                                            SpellDefinition definition) {
         int duration = Math.max(1, definition.delivery.duration_ticks);
@@ -808,7 +813,7 @@ public class SpellRuntimeController {
                 || !(source instanceof LivingEntity effectCaster) || !effectCaster.isAlive()
                 || !(targetEntity instanceof LivingEntity target) || !target.isAlive()
                 || !SpellTargetingRules.canHarm(owner, effectCaster, target)
-                || target.distanceTo(effectCaster) > combo.definition.targeting.range) {
+                || target.distanceTo(effectCaster) > combo.definition.targeting.range + 2.0) {
             iterator.remove();
             continue;
             }
@@ -817,6 +822,9 @@ public class SpellRuntimeController {
             boolean finalHit = combo.remainingHits == 1;
             effectCaster.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES,
                 target.getBoundingBox().getCenter());
+            if (combo.remainingHits < Math.max(1, combo.definition.delivery.combo_hits)) {
+                target.invulnerableTime = 0;
+            }
             SpellExecutor.applyImpacts(owner, effectCaster, target,
                 combo.definition, finalHit);
             level.sendParticles(finalHit ? ParticleTypes.EXPLOSION : ParticleTypes.CRIT,
