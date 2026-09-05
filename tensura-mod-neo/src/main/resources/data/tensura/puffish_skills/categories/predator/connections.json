@@ -1,157 +1,518 @@
 [
-  {"from": "predator_root",    "to": "tough_hide"},
-  {"from": "predator_root",    "to": "diggers_instinct"},
-  {"from": "predator_root",    "to": "tackle"},
-
-  {"from": "tough_hide",        "to": "vital_core_1"},
-  {"from": "tough_hide",        "to": "iron_skin_1"},
-  {"from": "tough_hide",        "to": "predator_fist"},
-
-  {"from": "vital_core_1",      "to": "vital_core_2"},
-  {"from": "vital_core_1",      "to": "drain_essence"},
-  {"from": "vital_core_2",      "to": "vital_core_3"},
-  {"from": "vital_core_3",      "to": "titan_heart"},
-  {"from": "titan_heart",       "to": "undying_will"},
-  {"from": "titan_heart",       "to": "immortal_flesh"},
-  {"from": "drain_essence",     "to": "vampiric"},
-  {"from": "vampiric",          "to": "immortal_flesh"},
-
-  {"from": "iron_skin_1",       "to": "iron_skin_2"},
-  {"from": "iron_skin_2",       "to": "iron_skin_3"},
-  {"from": "iron_skin_2",       "to": "endurance"},
-  {"from": "iron_skin_3",       "to": "diamond_hide"},
-  {"from": "diamond_hide",      "to": "fortress_body"},
-  {"from": "endurance",         "to": "magic_ward"},
-  {"from": "magic_ward",        "to": "iron_will"},
-  {"from": "iron_will",         "to": "bulwark"},
-
-  {"from": "predator_fist",     "to": "predator_strength"},
-  {"from": "predator_fist",     "to": "swift_predator"},
-  {"from": "swift_predator",    "to": "hunter_step"},
-  {"from": "hunter_step",       "to": "apex_speed"},
-  {"from": "predator_strength", "to": "battle_hardened"},
-  {"from": "battle_hardened",   "to": "alpha_predator"},
-
-  {"from": "fortress_body",     "to": "apex_predator"},
-  {"from": "undying_will",      "to": "apex_predator"},
-  {"from": "bulwark",           "to": "apex_predator"},
-  {"from": "alpha_predator",    "to": "apex_predator"},
-  {"from": "apex_speed",        "to": "apex_predator"},
-  {"from": "immortal_flesh",    "to": "apex_predator"},
-
-  {"from": "diggers_instinct",  "to": "stone_sense"},
-  {"from": "diggers_instinct",  "to": "woodcutter"},
-  {"from": "diggers_instinct",  "to": "swift_hands"},
-
-  {"from": "stone_sense",       "to": "deep_miner_1"},
-  {"from": "stone_sense",       "to": "ore_eye"},
-  {"from": "swift_hands",       "to": "nimble_fingers"},
-  {"from": "woodcutter",        "to": "lumberjack"},
-
-  {"from": "deep_miner_1",      "to": "deep_miner_2"},
-  {"from": "ore_eye",           "to": "fortune_seeker"},
-  {"from": "nimble_fingers",    "to": "foreman"},
-  {"from": "lumberjack",        "to": "forest_fury"},
-  {"from": "lumberjack",        "to": "foreman"},
-
-  {"from": "deep_miner_2",      "to": "vein_hunter"},
-  {"from": "fortune_seeker",    "to": "gem_sense"},
-  {"from": "foreman",           "to": "efficiency_master"},
-  {"from": "forest_fury",       "to": "master_carpenter"},
-
-  {"from": "vein_hunter",       "to": "grand_excavator"},
-  {"from": "gem_sense",         "to": "grand_excavator"},
-  {"from": "efficiency_master", "to": "grand_excavator"},
-  {"from": "master_carpenter",  "to": "master_builder"},
-
-  {"from": "grand_excavator",   "to": "grand_architect"},
-  {"from": "master_builder",    "to": "grand_architect"},
-
-  {"from": "tackle", "to": "mach_punch"},
-  {"from": "tackle", "to": "ember"},
-  {"from": "tackle", "to": "thundershock"},
-  {"from": "tackle", "to": "water_gun"},
-  {"from": "tackle", "to": "powder_snow"},
-  {"from": "tackle", "to": "vine_whip"},
-  {"from": "tackle", "to": "confusion"},
-  {"from": "tackle", "to": "night_shade"},
-  {"from": "tackle", "to": "dragon_breath"},
-  {"from": "tackle", "to": "poison_sting"},
-  {"from": "tackle", "to": "rock_throw"},
-  {"from": "tackle", "to": "gust"},
-  {"from": "tackle", "to": "iron_tail"},
-  {"from": "tackle", "to": "dazzling_gleam"},
-
-  {"from": "mach_punch",    "to": "close_combat"},
-  {"from": "close_combat",  "to": "focus_blast"},
-  {"from": "focus_blast",   "to": "hyper_beam"},
-
-  {"from": "ember",         "to": "will_o_wisp"},
-  {"from": "ember",         "to": "flamethrower"},
-  {"from": "flamethrower",  "to": "fire_blast"},
-  {"from": "flamethrower",  "to": "fire_spin"},
-  {"from": "fire_spin",     "to": "overheat"},
-  {"from": "fire_blast",    "to": "overheat"},
-  {"from": "overheat",      "to": "sacred_fire"},
-  {"from": "sacred_fire",   "to": "explosion"},
-
-  {"from": "thundershock",  "to": "thunderbolt"},
-  {"from": "thunderbolt",   "to": "thunder"},
-  {"from": "thunder",       "to": "discharge"},
-  {"from": "discharge",     "to": "volt_tackle"},
-
-  {"from": "water_gun",     "to": "bubble_beam"},
-  {"from": "bubble_beam",   "to": "water_pulse"},
-  {"from": "water_pulse",   "to": "surf"},
-  {"from": "surf",          "to": "hydro_pump"},
-  {"from": "hydro_pump",    "to": "scald"},
-
-  {"from": "powder_snow",   "to": "ice_shard"},
-  {"from": "ice_shard",     "to": "ice_beam"},
-  {"from": "ice_beam",      "to": "frost_nova"},
-  {"from": "frost_nova",    "to": "blizzard"},
-
-  {"from": "vine_whip",     "to": "leech_seed"},
-  {"from": "leech_seed",    "to": "recover"},
-  {"from": "vine_whip",     "to": "razor_leaf"},
-  {"from": "razor_leaf",    "to": "leaf_blade"},
-  {"from": "leaf_blade",    "to": "energy_ball"},
-  {"from": "energy_ball",   "to": "petal_blizzard"},
-  {"from": "petal_blizzard","to": "solar_beam"},
-  {"from": "solar_beam",    "to": "nature_burst"},
-
-  {"from": "confusion",     "to": "psybeam"},
-  {"from": "psybeam",       "to": "psychic"},
-  {"from": "psychic",       "to": "psychic_blast"},
-  {"from": "psychic_blast", "to": "future_sight"},
-
-  {"from": "night_shade",   "to": "shadow_ball"},
-  {"from": "night_shade",   "to": "shadow_sneak"},
-  {"from": "shadow_sneak",  "to": "dark_pulse"},
-  {"from": "shadow_ball",   "to": "dark_pulse"},
-  {"from": "dark_pulse",    "to": "hex"},
-  {"from": "hex",           "to": "foul_play"},
-
-  {"from": "dragon_breath", "to": "dragon_pulse"},
-  {"from": "dragon_pulse",  "to": "draco_meteor"},
-  {"from": "draco_meteor",  "to": "outrage"},
-
-  {"from": "poison_sting",  "to": "poison_strike"},
-  {"from": "poison_strike", "to": "sludge_bomb"},
-  {"from": "poison_strike", "to": "toxic_spikes"},
-  {"from": "sludge_bomb",   "to": "toxic"},
-  {"from": "toxic_spikes",  "to": "toxic"},
-
-  {"from": "rock_throw",    "to": "rock_slide"},
-  {"from": "rock_slide",    "to": "stone_edge"},
-  {"from": "stone_edge",    "to": "seismic_slam"},
-  {"from": "seismic_slam",  "to": "earthquake"},
-
-  {"from": "gust",          "to": "aerial_ace"},
-  {"from": "aerial_ace",    "to": "aerial_strike"},
-
-  {"from": "iron_tail",     "to": "iron_strike"},
-  {"from": "iron_strike",   "to": "flash_cannon"},
-
-  {"from": "dazzling_gleam","to": "moonblast"}
+  [
+    "predator_root",
+    "tough_hide"
+  ],
+  [
+    "predator_root",
+    "diggers_instinct"
+  ],
+  [
+    "predator_root",
+    "tackle"
+  ],
+  [
+    "tough_hide",
+    "vital_core_1"
+  ],
+  [
+    "tough_hide",
+    "iron_skin_1"
+  ],
+  [
+    "tough_hide",
+    "predator_fist"
+  ],
+  [
+    "vital_core_1",
+    "vital_core_2"
+  ],
+  [
+    "vital_core_1",
+    "drain_essence"
+  ],
+  [
+    "vital_core_2",
+    "vital_core_3"
+  ],
+  [
+    "vital_core_3",
+    "titan_heart"
+  ],
+  [
+    "titan_heart",
+    "undying_will"
+  ],
+  [
+    "titan_heart",
+    "immortal_flesh"
+  ],
+  [
+    "drain_essence",
+    "vampiric"
+  ],
+  [
+    "vampiric",
+    "immortal_flesh"
+  ],
+  [
+    "iron_skin_1",
+    "iron_skin_2"
+  ],
+  [
+    "iron_skin_2",
+    "iron_skin_3"
+  ],
+  [
+    "iron_skin_2",
+    "endurance"
+  ],
+  [
+    "iron_skin_3",
+    "diamond_hide"
+  ],
+  [
+    "diamond_hide",
+    "fortress_body"
+  ],
+  [
+    "endurance",
+    "magic_ward"
+  ],
+  [
+    "magic_ward",
+    "iron_will"
+  ],
+  [
+    "iron_will",
+    "bulwark"
+  ],
+  [
+    "predator_fist",
+    "predator_strength"
+  ],
+  [
+    "predator_fist",
+    "swift_predator"
+  ],
+  [
+    "swift_predator",
+    "hunter_step"
+  ],
+  [
+    "hunter_step",
+    "apex_speed"
+  ],
+  [
+    "predator_strength",
+    "battle_hardened"
+  ],
+  [
+    "battle_hardened",
+    "alpha_predator"
+  ],
+  [
+    "fortress_body",
+    "apex_predator"
+  ],
+  [
+    "undying_will",
+    "apex_predator"
+  ],
+  [
+    "bulwark",
+    "apex_predator"
+  ],
+  [
+    "alpha_predator",
+    "apex_predator"
+  ],
+  [
+    "apex_speed",
+    "apex_predator"
+  ],
+  [
+    "immortal_flesh",
+    "apex_predator"
+  ],
+  [
+    "diggers_instinct",
+    "stone_sense"
+  ],
+  [
+    "diggers_instinct",
+    "woodcutter"
+  ],
+  [
+    "diggers_instinct",
+    "swift_hands"
+  ],
+  [
+    "stone_sense",
+    "deep_miner_1"
+  ],
+  [
+    "stone_sense",
+    "ore_eye"
+  ],
+  [
+    "swift_hands",
+    "nimble_fingers"
+  ],
+  [
+    "woodcutter",
+    "lumberjack"
+  ],
+  [
+    "deep_miner_1",
+    "deep_miner_2"
+  ],
+  [
+    "ore_eye",
+    "fortune_seeker"
+  ],
+  [
+    "nimble_fingers",
+    "foreman"
+  ],
+  [
+    "lumberjack",
+    "forest_fury"
+  ],
+  [
+    "lumberjack",
+    "foreman"
+  ],
+  [
+    "deep_miner_2",
+    "vein_hunter"
+  ],
+  [
+    "fortune_seeker",
+    "gem_sense"
+  ],
+  [
+    "foreman",
+    "efficiency_master"
+  ],
+  [
+    "forest_fury",
+    "master_carpenter"
+  ],
+  [
+    "vein_hunter",
+    "grand_excavator"
+  ],
+  [
+    "gem_sense",
+    "grand_excavator"
+  ],
+  [
+    "efficiency_master",
+    "grand_excavator"
+  ],
+  [
+    "master_carpenter",
+    "master_builder"
+  ],
+  [
+    "grand_excavator",
+    "grand_architect"
+  ],
+  [
+    "master_builder",
+    "grand_architect"
+  ],
+  [
+    "tackle",
+    "mach_punch"
+  ],
+  [
+    "tackle",
+    "ember"
+  ],
+  [
+    "tackle",
+    "thundershock"
+  ],
+  [
+    "tackle",
+    "water_gun"
+  ],
+  [
+    "tackle",
+    "powder_snow"
+  ],
+  [
+    "tackle",
+    "vine_whip"
+  ],
+  [
+    "tackle",
+    "confusion"
+  ],
+  [
+    "tackle",
+    "night_shade"
+  ],
+  [
+    "tackle",
+    "dragon_breath"
+  ],
+  [
+    "tackle",
+    "poison_sting"
+  ],
+  [
+    "tackle",
+    "rock_throw"
+  ],
+  [
+    "tackle",
+    "gust"
+  ],
+  [
+    "tackle",
+    "iron_tail"
+  ],
+  [
+    "tackle",
+    "dazzling_gleam"
+  ],
+  [
+    "mach_punch",
+    "close_combat"
+  ],
+  [
+    "close_combat",
+    "focus_blast"
+  ],
+  [
+    "focus_blast",
+    "hyper_beam"
+  ],
+  [
+    "ember",
+    "will_o_wisp"
+  ],
+  [
+    "ember",
+    "flamethrower"
+  ],
+  [
+    "flamethrower",
+    "fire_blast"
+  ],
+  [
+    "flamethrower",
+    "fire_spin"
+  ],
+  [
+    "fire_spin",
+    "overheat"
+  ],
+  [
+    "fire_blast",
+    "overheat"
+  ],
+  [
+    "overheat",
+    "sacred_fire"
+  ],
+  [
+    "sacred_fire",
+    "explosion"
+  ],
+  [
+    "thundershock",
+    "thunderbolt"
+  ],
+  [
+    "thunderbolt",
+    "thunder"
+  ],
+  [
+    "thunder",
+    "discharge"
+  ],
+  [
+    "discharge",
+    "volt_tackle"
+  ],
+  [
+    "water_gun",
+    "bubble_beam"
+  ],
+  [
+    "bubble_beam",
+    "water_pulse"
+  ],
+  [
+    "water_pulse",
+    "surf"
+  ],
+  [
+    "surf",
+    "hydro_pump"
+  ],
+  [
+    "hydro_pump",
+    "scald"
+  ],
+  [
+    "powder_snow",
+    "ice_shard"
+  ],
+  [
+    "ice_shard",
+    "ice_beam"
+  ],
+  [
+    "ice_beam",
+    "frost_nova"
+  ],
+  [
+    "frost_nova",
+    "blizzard"
+  ],
+  [
+    "vine_whip",
+    "leech_seed"
+  ],
+  [
+    "leech_seed",
+    "recover"
+  ],
+  [
+    "vine_whip",
+    "razor_leaf"
+  ],
+  [
+    "razor_leaf",
+    "leaf_blade"
+  ],
+  [
+    "leaf_blade",
+    "energy_ball"
+  ],
+  [
+    "energy_ball",
+    "petal_blizzard"
+  ],
+  [
+    "petal_blizzard",
+    "solar_beam"
+  ],
+  [
+    "solar_beam",
+    "nature_burst"
+  ],
+  [
+    "confusion",
+    "psybeam"
+  ],
+  [
+    "psybeam",
+    "psychic"
+  ],
+  [
+    "psychic",
+    "psychic_blast"
+  ],
+  [
+    "psychic_blast",
+    "future_sight"
+  ],
+  [
+    "night_shade",
+    "shadow_ball"
+  ],
+  [
+    "night_shade",
+    "shadow_sneak"
+  ],
+  [
+    "shadow_sneak",
+    "dark_pulse"
+  ],
+  [
+    "shadow_ball",
+    "dark_pulse"
+  ],
+  [
+    "dark_pulse",
+    "hex"
+  ],
+  [
+    "hex",
+    "foul_play"
+  ],
+  [
+    "dragon_breath",
+    "dragon_pulse"
+  ],
+  [
+    "dragon_pulse",
+    "draco_meteor"
+  ],
+  [
+    "draco_meteor",
+    "outrage"
+  ],
+  [
+    "poison_sting",
+    "poison_strike"
+  ],
+  [
+    "poison_strike",
+    "sludge_bomb"
+  ],
+  [
+    "poison_strike",
+    "toxic_spikes"
+  ],
+  [
+    "sludge_bomb",
+    "toxic"
+  ],
+  [
+    "toxic_spikes",
+    "toxic"
+  ],
+  [
+    "rock_throw",
+    "rock_slide"
+  ],
+  [
+    "rock_slide",
+    "stone_edge"
+  ],
+  [
+    "stone_edge",
+    "seismic_slam"
+  ],
+  [
+    "seismic_slam",
+    "earthquake"
+  ],
+  [
+    "gust",
+    "aerial_ace"
+  ],
+  [
+    "aerial_ace",
+    "aerial_strike"
+  ],
+  [
+    "iron_tail",
+    "iron_strike"
+  ],
+  [
+    "iron_strike",
+    "flash_cannon"
+  ],
+  [
+    "dazzling_gleam",
+    "moonblast"
+  ]
 ]

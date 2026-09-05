@@ -2,9 +2,10 @@
   "title": "Predator",
   "description": "The Predator evolves through combat, labor, and devouring. Three paths diverge from one awakening — Body, Craft, Devour.",
   "background": "minecraft:textures/block/crying_obsidian.png",
-  "icon": {"type": "puffish_skills:item", "item": "minecraft:nether_star"},
-  "points": {
-    "title": "Predator Points",
-    "icon": {"type": "puffish_skills:item", "item": "minecraft:experience_bottle"}
+  "icon": {
+    "type": "item",
+    "data": {
+      "item": "minecraft:nether_star"
+    }
   }
 }
