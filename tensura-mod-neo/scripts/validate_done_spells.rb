@@ -166,10 +166,24 @@ fail_validation("Draining Kiss does not heal 75% of actual damage") unless
 ray_count = connections.count { |edge| edge.first == "devour_core" }
 fail_validation("expected 18 Devour rays, got #{ray_count}") unless ray_count == 18
 
+spell_files = Dir[File.join(SPELL_DIR, "*.json")]
+spell_files.each do |path|
+  spell = File.basename(path, ".json")
+  owned_description = definitions.dig("#{spell}_owned", "description").to_s
+  dispenser_description = definitions.dig(spell, "description").to_s
+  fail_validation("#{spell} owned node lacks a detailed description") unless
+    owned_description.start_with?("Absorbed ") && owned_description.include?("cooldown") &&
+      owned_description.length >= 70 && !owned_description.match?(/\s{2,}/)
+  fail_validation("#{spell} dispenser lacks spell details") unless
+    dispenser_description.start_with?("Dispenses another copy") &&
+      dispenser_description.include?("cooldown") && dispenser_description.length >= 60
+end
+
 puts "Done spells: #{spells.size}"
 puts "Unique casts: #{casts.size}"
 puts "Unique cast geometry profiles: #{profile_signatures.values.uniq.size}"
 puts "Cast geometry families: #{families.size}"
 puts "Unique 32x32 icons: #{texture_hashes.size}"
 puts "Devour rays: #{ray_count}"
+puts "Detailed Devour descriptions: #{spell_files.size}"
 puts "All done-done checks passed."

@@ -15,7 +15,7 @@
   },
   "tackle_owned": {
     "title": "Tackle",
-    "description": "Absorbed. The most basic of physical strikes. You have taken your first step.",
+    "description": "Absorbed Normal-type spell. Instant cast, 3 block range. Weapon-scaled damage. 2s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -30,7 +30,7 @@
   },
   "tackle": {
     "title": "Tackle Dispenser",
-    "description": "Dispenses another copy of the absorbed Tackle spell.",
+    "description": "Dispenses another copy of Tackle. Instant cast, 3 block range. Weapon-scaled damage. 2s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -50,7 +50,7 @@
   },
   "quick_attack_owned": {
     "title": "Quick Attack",
-    "description": "Absorbed. An absorbed Normal-type Pokemon ability.",
+    "description": "Absorbed Normal-type physical spell. Dash, 6 block range, 1 target, 0.2s duration. 8 damage. 5s cooldown, 2 charges, 5s charge recovery.",
     "icon": {
       "type": "item",
       "data": {
@@ -65,7 +65,7 @@
   },
   "quick_attack": {
     "title": "Quick Attack Dispenser",
-    "description": "Dispenses another copy of the absorbed Quick Attack spell.",
+    "description": "Dispenses another copy of Quick Attack. Dash, 6 block range, 1 target, 0.2s duration. 8 damage. 5s cooldown, 2 charges, 5s charge recovery.",
     "icon": {
       "type": "item",
       "data": {
@@ -85,7 +85,7 @@
   },
   "swift_owned": {
     "title": "Swift",
-    "description": "Absorbed. An absorbed Normal-type Pokemon ability.",
+    "description": "Absorbed Normal-type special spell. Projectile, 20 block range, 1 target, 3 projectiles. 4 damage per hit. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -100,7 +100,7 @@
   },
   "swift": {
     "title": "Swift Dispenser",
-    "description": "Dispenses another copy of the absorbed Swift spell.",
+    "description": "Dispenses another copy of Swift. Projectile, 20 block range, 1 target, 3 projectiles. 4 damage per hit. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -120,7 +120,7 @@
   },
   "tri_attack_owned": {
     "title": "Tri Attack",
-    "description": "Absorbed. An absorbed Normal-type Pokemon ability.",
+    "description": "Absorbed Normal-type special spell. Projectile, 18 block range, 1 target, 3 projectiles. 5.0 damage per hit; Randomly burns, paralyzes, or freezes. 12s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -135,7 +135,7 @@
   },
   "tri_attack": {
     "title": "Tri Attack Dispenser",
-    "description": "Dispenses another copy of the absorbed Tri Attack spell.",
+    "description": "Dispenses another copy of Tri Attack. Projectile, 18 block range, 1 target, 3 projectiles. 5.0 damage per hit; Randomly burns, paralyzes, or freezes. 12s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -155,7 +155,7 @@
   },
   "recover_owned": {
     "title": "Recover",
-    "description": "Absorbed. Focus your magicules to restore half of your maximum health.",
+    "description": "Absorbed Normal-type status spell. Self cast. Heals 50% max HP. 15s cooldown, 1s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -170,7 +170,7 @@
   },
   "recover": {
     "title": "Recover Dispenser",
-    "description": "Dispenses another copy of the absorbed Recover spell.",
+    "description": "Dispenses another copy of Recover. Self cast. Heals 50% max HP. 15s cooldown, 1s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -190,7 +190,7 @@
   },
   "hyper_voice_owned": {
     "title": "Hyper Voice",
-    "description": "Absorbed. An absorbed Normal-type Pokemon ability.",
+    "description": "Absorbed Normal-type special spell. Channeled cone, 12 block range, 12 targets, 4 pulses, 0.8s duration. 4.5 damage per hit; Knockback; Interrupts casting. 14s cooldown, 0.4s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -205,7 +205,7 @@
   },
   "hyper_voice": {
     "title": "Hyper Voice Dispenser",
-    "description": "Dispenses another copy of the absorbed Hyper Voice spell.",
+    "description": "Dispenses another copy of Hyper Voice. Channeled cone, 12 block range, 12 targets, 4 pulses, 0.8s duration. 4.5 damage per hit; Knockback; Interrupts casting. 14s cooldown, 0.4s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -225,7 +225,7 @@
   },
   "hyper_beam_owned": {
     "title": "Hyper Beam",
-    "description": "Absorbed. The pinnacle of physical power — a beam of pure destructive energy.",
+    "description": "Absorbed Normal-type spell. Beam, 30 block range. Weapon-scaled damage. 20s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -240,7 +240,7 @@
   },
   "hyper_beam": {
     "title": "Hyper Beam Dispenser",
-    "description": "Dispenses another copy of the absorbed Hyper Beam spell.",
+    "description": "Dispenses another copy of Hyper Beam. Beam, 30 block range. Weapon-scaled damage. 20s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -260,7 +260,7 @@
   },
   "explosion_owned": {
     "title": "EXPLOSION",
-    "description": "Absorbed. The ultimate sacrifice. An earth-shattering detonation that obliterates everything nearby.",
+    "description": "Absorbed Normal-type spell. Caster-centered explosion, 9 block range, 9 block radius. Weapon-scaled damage; Burns for 6s; Knockback. 30s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -275,7 +275,7 @@
   },
   "explosion": {
     "title": "EXPLOSION Dispenser",
-    "description": "Dispenses another copy of the absorbed EXPLOSION spell.",
+    "description": "Dispenses another copy of Explosion. Caster-centered explosion, 9 block range, 9 block radius. Weapon-scaled damage; Burns for 6s; Knockback. 30s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -295,7 +295,7 @@
   },
   "ember_owned": {
     "title": "Ember",
-    "description": "Absorbed. A weak flame, but it sets the foundation for greater fire.",
+    "description": "Absorbed Fire-type special spell. Projectile, 14 block range, 1 target. 6 damage; Burns for 3s. 3s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -310,7 +310,7 @@
   },
   "ember": {
     "title": "Ember Dispenser",
-    "description": "Dispenses another copy of the absorbed Ember spell.",
+    "description": "Dispenses another copy of Ember. Projectile, 14 block range, 1 target. 6 damage; Burns for 3s. 3s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -330,7 +330,7 @@
   },
   "will_o_wisp_owned": {
     "title": "Will-O-Wisp",
-    "description": "Absorbed. A ghostly fire that burns without dealing direct harm, leaving lasting burns.",
+    "description": "Absorbed Fire-type spell. Lingering cloud, 16 block range, 3 block radius. Burns for 10s; Weakness 2 for 10s. 9s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -345,7 +345,7 @@
   },
   "will_o_wisp": {
     "title": "Will-O-Wisp Dispenser",
-    "description": "Dispenses another copy of the absorbed Will-O-Wisp spell.",
+    "description": "Dispenses another copy of Will O Wisp. Lingering cloud, 16 block range, 3 block radius. Burns for 10s; Weakness 2 for 10s. 9s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -365,7 +365,7 @@
   },
   "flamethrower_owned": {
     "title": "Flamethrower",
-    "description": "Absorbed. A sustained stream of scorching fire.",
+    "description": "Absorbed Fire-type special spell. Channeled cone, 12 block range, 8 targets, 6 pulses, 1.2s duration. 2.3 damage per hit; Burns for 3s. 9s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -380,7 +380,7 @@
   },
   "flamethrower": {
     "title": "Flamethrower Dispenser",
-    "description": "Dispenses another copy of the absorbed Flamethrower spell.",
+    "description": "Dispenses another copy of Flamethrower. Channeled cone, 12 block range, 8 targets, 6 pulses, 1.2s duration. 2.3 damage per hit; Burns for 3s. 9s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -400,7 +400,7 @@
   },
   "fire_spin_owned": {
     "title": "Fire Spin",
-    "description": "Absorbed. Trap nearby foes in a pulling vortex of persistent flame.",
+    "description": "Absorbed Fire-type special spell. Vortex, 16 block range, 3.5 block radius, 8 targets, 5s duration. 2 damage; Burns for 2s. 12s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -415,7 +415,7 @@
   },
   "fire_spin": {
     "title": "Fire Spin Dispenser",
-    "description": "Dispenses another copy of the absorbed Fire Spin spell.",
+    "description": "Dispenses another copy of Fire Spin. Vortex, 16 block range, 3.5 block radius, 8 targets, 5s duration. 2 damage; Burns for 2s. 12s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -435,7 +435,7 @@
   },
   "fire_blast_owned": {
     "title": "Fire Blast",
-    "description": "Absorbed. A massive cross-shaped inferno that sears everything nearby.",
+    "description": "Absorbed Fire-type spell. Instant cast, 6 block range. Weapon-scaled damage; Burns for 6s. 11s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -450,7 +450,7 @@
   },
   "fire_blast": {
     "title": "Fire Blast Dispenser",
-    "description": "Dispenses another copy of the absorbed Fire Blast spell.",
+    "description": "Dispenses another copy of Fire Blast. Instant cast, 6 block range. Weapon-scaled damage; Burns for 6s. 11s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -470,7 +470,7 @@
   },
   "overheat_owned": {
     "title": "Overheat",
-    "description": "Absorbed. Release all fire energy in one catastrophic burst.",
+    "description": "Absorbed Fire-type spell. Instant cast, 10 block range. Weapon-scaled damage; Burns for 8s. 15s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -485,7 +485,7 @@
   },
   "overheat": {
     "title": "Overheat Dispenser",
-    "description": "Dispenses another copy of the absorbed Overheat spell.",
+    "description": "Dispenses another copy of Overheat. Instant cast, 10 block range. Weapon-scaled damage; Burns for 8s. 15s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -505,7 +505,7 @@
   },
   "sacred_fire_owned": {
     "title": "Sacred Fire",
-    "description": "Absorbed. A divine flame of sacred intensity.",
+    "description": "Absorbed Fire-type spell. Projectile, 18 block range. Weapon-scaled damage; Burns for 6s; Weakness 2 for 5s, 50% chance. 13s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -520,7 +520,7 @@
   },
   "sacred_fire": {
     "title": "Sacred Fire Dispenser",
-    "description": "Dispenses another copy of the absorbed Sacred Fire spell.",
+    "description": "Dispenses another copy of Sacred Fire. Projectile, 18 block range. Weapon-scaled damage; Burns for 6s; Weakness 2 for 5s, 50% chance. 13s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -540,7 +540,7 @@
   },
   "water_gun_owned": {
     "title": "Water Gun",
-    "description": "Absorbed. A pressurized stream of water that knocks foes back.",
+    "description": "Absorbed Water-type spell. Beam, 14 block range. Weapon-scaled damage; Knockback. 3s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -555,7 +555,7 @@
   },
   "water_gun": {
     "title": "Water Gun Dispenser",
-    "description": "Dispenses another copy of the absorbed Water Gun spell.",
+    "description": "Dispenses another copy of Water Gun. Beam, 14 block range. Weapon-scaled damage; Knockback. 3s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -575,7 +575,7 @@
   },
   "aqua_jet_owned": {
     "title": "Aqua Jet",
-    "description": "Absorbed. An absorbed Water-type Pokemon ability.",
+    "description": "Absorbed Water-type physical spell. Dash, 8 block range, 1 target, 0.2s duration. 10 damage; Applies Wet for 5s. 6s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -590,7 +590,7 @@
   },
   "aqua_jet": {
     "title": "Aqua Jet Dispenser",
-    "description": "Dispenses another copy of the absorbed Aqua Jet spell.",
+    "description": "Dispenses another copy of Aqua Jet. Dash, 8 block range, 1 target, 0.2s duration. 10 damage; Applies Wet for 5s. 6s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -610,7 +610,7 @@
   },
   "bubble_beam_owned": {
     "title": "Bubble Beam",
-    "description": "Absorbed. A stream of fast-moving bubbles that slow the target.",
+    "description": "Absorbed Water-type spell. Projectile, 16 block range. Weapon-scaled damage; Slowness 2 for 6s, 50% chance. 5s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -625,7 +625,7 @@
   },
   "bubble_beam": {
     "title": "Bubble Beam Dispenser",
-    "description": "Dispenses another copy of the absorbed Bubble Beam spell.",
+    "description": "Dispenses another copy of Bubble Beam. Projectile, 16 block range. Weapon-scaled damage; Slowness 2 for 6s, 50% chance. 5s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -645,7 +645,7 @@
   },
   "water_pulse_owned": {
     "title": "Water Pulse",
-    "description": "Absorbed. A pulsing wave of water that disorients the target.",
+    "description": "Absorbed Water-type spell. Projectile, 16 block range. Weapon-scaled damage; Slowness for 4s, 30% chance. 6s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -660,7 +660,7 @@
   },
   "water_pulse": {
     "title": "Water Pulse Dispenser",
-    "description": "Dispenses another copy of the absorbed Water Pulse spell.",
+    "description": "Dispenses another copy of Water Pulse. Projectile, 16 block range. Weapon-scaled damage; Slowness for 4s, 30% chance. 6s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -680,7 +680,7 @@
   },
   "whirlpool_owned": {
     "title": "Whirlpool",
-    "description": "Absorbed. An absorbed Water-type Pokemon ability.",
+    "description": "Absorbed Water-type special spell. Vortex, 18 block range, 4 block radius, 12 targets, 5s duration. 2.8 damage; Applies Wet for 6s. 15s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -695,7 +695,7 @@
   },
   "whirlpool": {
     "title": "Whirlpool Dispenser",
-    "description": "Dispenses another copy of the absorbed Whirlpool spell.",
+    "description": "Dispenses another copy of Whirlpool. Vortex, 18 block range, 4 block radius, 12 targets, 5s duration. 2.8 damage; Applies Wet for 6s. 15s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -715,7 +715,7 @@
   },
   "surf_owned": {
     "title": "Surf",
-    "description": "Absorbed. Summon a massive wave that sweeps away all nearby foes.",
+    "description": "Absorbed Water-type special spell. Traveling wave, 16 block range, 1.5 block radius, 12 targets, 1s duration. 20 damage; Applies Wet for 5s. 18s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -730,7 +730,7 @@
   },
   "surf": {
     "title": "Surf Dispenser",
-    "description": "Dispenses another copy of the absorbed Surf spell.",
+    "description": "Dispenses another copy of Surf. Traveling wave, 16 block range, 1.5 block radius, 12 targets, 1s duration. 20 damage; Applies Wet for 5s. 18s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -750,7 +750,7 @@
   },
   "hydro_pump_owned": {
     "title": "Hydro Pump",
-    "description": "Absorbed. An explosive blast of water at maximum pressure.",
+    "description": "Absorbed Water-type special spell. Channeled beam, 22 block range, 6 targets, 6 pulses, 1.2s duration. 4.2 damage per hit; Knockback; Applies Wet for 5s. 20s cooldown, 0.8s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -765,7 +765,7 @@
   },
   "hydro_pump": {
     "title": "Hydro Pump Dispenser",
-    "description": "Dispenses another copy of the absorbed Hydro Pump spell.",
+    "description": "Dispenses another copy of Hydro Pump. Channeled beam, 22 block range, 6 targets, 6 pulses, 1.2s duration. 4.2 damage per hit; Knockback; Applies Wet for 5s. 20s cooldown, 0.8s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -785,7 +785,7 @@
   },
   "scald_owned": {
     "title": "Scald",
-    "description": "Absorbed. Superheated water that burns and weakens on contact.",
+    "description": "Absorbed Water-type spell. Projectile, 16 block range. Weapon-scaled damage; Burns for 3s; Weakness for 4s, 30% chance. 7s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -800,7 +800,7 @@
   },
   "scald": {
     "title": "Scald Dispenser",
-    "description": "Dispenses another copy of the absorbed Scald spell.",
+    "description": "Dispenses another copy of Scald. Projectile, 16 block range. Weapon-scaled damage; Burns for 3s; Weakness for 4s, 30% chance. 7s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -820,7 +820,7 @@
   },
   "thundershock_owned": {
     "title": "Thundershock",
-    "description": "Absorbed. A small jolt of electricity — the first spark of lightning mastery.",
+    "description": "Absorbed Electric-type spell. Projectile, 14 block range. Weapon-scaled damage; Slowness for 2s, 10% chance. 3s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -835,7 +835,7 @@
   },
   "thundershock": {
     "title": "Thundershock Dispenser",
-    "description": "Dispenses another copy of the absorbed Thundershock spell.",
+    "description": "Dispenses another copy of Thundershock. Projectile, 14 block range. Weapon-scaled damage; Slowness for 2s, 10% chance. 3s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -855,7 +855,7 @@
   },
   "electro_ball_owned": {
     "title": "Electro Ball",
-    "description": "Absorbed. An absorbed Electric-type Pokemon ability.",
+    "description": "Absorbed Electric-type special spell. Projectile, 20 block range, 1 target. Speed-scaled damage up to 18. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -870,7 +870,7 @@
   },
   "electro_ball": {
     "title": "Electro Ball Dispenser",
-    "description": "Dispenses another copy of the absorbed Electro Ball spell.",
+    "description": "Dispenses another copy of Electro Ball. Projectile, 20 block range, 1 target. Speed-scaled damage up to 18. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -890,7 +890,7 @@
   },
   "thunderbolt_owned": {
     "title": "Thunderbolt",
-    "description": "Absorbed. A focused lightning bolt of tremendous power.",
+    "description": "Absorbed Electric-type spell. Projectile, 20 block range. Weapon-scaled damage; Slowness for 3s, 30% chance. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -905,7 +905,7 @@
   },
   "thunderbolt": {
     "title": "Thunderbolt Dispenser",
-    "description": "Dispenses another copy of the absorbed Thunderbolt spell.",
+    "description": "Dispenses another copy of Thunderbolt. Projectile, 20 block range. Weapon-scaled damage; Slowness for 3s, 30% chance. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -925,7 +925,7 @@
   },
   "discharge_owned": {
     "title": "Discharge",
-    "description": "Absorbed. A massive electrical discharge that paralyzes all nearby.",
+    "description": "Absorbed Electric-type spell. Lingering cloud, 8 block range, 8 block radius. Weapon-scaled damage; Slowness 2 for 4s, 50% chance. 10s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -940,7 +940,7 @@
   },
   "discharge": {
     "title": "Discharge Dispenser",
-    "description": "Dispenses another copy of the absorbed Discharge spell.",
+    "description": "Dispenses another copy of Discharge. Lingering cloud, 8 block range, 8 block radius. Weapon-scaled damage; Slowness 2 for 4s, 50% chance. 10s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -960,7 +960,7 @@
   },
   "thunder_owned": {
     "title": "Thunder",
-    "description": "Absorbed. A deafening thunderclap that calls down a real lightning bolt.",
+    "description": "Absorbed Electric-type special spell. Delayed area, 24 block range, 3 block radius, 8 targets. 26 damage; Paralyzes Wet targets for 5s. 22s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -975,7 +975,7 @@
   },
   "thunder": {
     "title": "Thunder Dispenser",
-    "description": "Dispenses another copy of the absorbed Thunder spell.",
+    "description": "Dispenses another copy of Thunder. Delayed area, 24 block range, 3 block radius, 8 targets. 26 damage; Paralyzes Wet targets for 5s. 22s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -995,7 +995,7 @@
   },
   "volt_tackle_owned": {
     "title": "Volt Tackle",
-    "description": "Absorbed. Wrap yourself in electricity and charge with catastrophic force.",
+    "description": "Absorbed Electric-type physical spell. Dash, 10 block range, 1 target, 0.2s duration. 24 damage; 8 recoil damage; Knockback; Paralysis for 3s, 10% chance. 15s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1010,7 +1010,7 @@
   },
   "volt_tackle": {
     "title": "Volt Tackle Dispenser",
-    "description": "Dispenses another copy of the absorbed Volt Tackle spell.",
+    "description": "Dispenses another copy of Volt Tackle. Dash, 10 block range, 1 target, 0.2s duration. 24 damage; 8 recoil damage; Knockback; Paralysis for 3s, 10% chance. 15s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1030,7 +1030,7 @@
   },
   "vine_whip_owned": {
     "title": "Vine Whip",
-    "description": "Absorbed. A lashing strike of living vines.",
+    "description": "Absorbed Grass-type physical spell. Instant cast, 10 block range, 1 target. 7 damage; Pulls targets. 4s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1045,7 +1045,7 @@
   },
   "vine_whip": {
     "title": "Vine Whip Dispenser",
-    "description": "Dispenses another copy of the absorbed Vine Whip spell.",
+    "description": "Dispenses another copy of Vine Whip. Instant cast, 10 block range, 1 target. 7 damage; Pulls targets. 4s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1065,7 +1065,7 @@
   },
   "leech_seed_owned": {
     "title": "Leech Seed",
-    "description": "Absorbed. Plant a parasitic seed that drains life from your foe.",
+    "description": "Absorbed Grass-type spell. Lingering cloud, 14 block range, 4 block radius. Weapon-scaled damage; Heals 6 HP; Poison for 6s, 80% chance. 10s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1080,7 +1080,7 @@
   },
   "leech_seed": {
     "title": "Leech Seed Dispenser",
-    "description": "Dispenses another copy of the absorbed Leech Seed spell.",
+    "description": "Dispenses another copy of Leech Seed. Lingering cloud, 14 block range, 4 block radius. Weapon-scaled damage; Heals 6 HP; Poison for 6s, 80% chance. 10s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1100,7 +1100,7 @@
   },
   "razor_leaf_owned": {
     "title": "Razor Leaf",
-    "description": "Absorbed. Sharp leaves slice through targets with poison's touch.",
+    "description": "Absorbed Grass-type spell. Projectile, 16 block range. Weapon-scaled damage; Poison for 2s, 30% chance. 5s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1115,7 +1115,7 @@
   },
   "razor_leaf": {
     "title": "Razor Leaf Dispenser",
-    "description": "Dispenses another copy of the absorbed Razor Leaf spell.",
+    "description": "Dispenses another copy of Razor Leaf. Projectile, 16 block range. Weapon-scaled damage; Poison for 2s, 30% chance. 5s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1135,7 +1135,7 @@
   },
   "leaf_blade_owned": {
     "title": "Leaf Blade",
-    "description": "Absorbed. A leaf blade sharp enough to cut steel.",
+    "description": "Absorbed Grass-type spell. Instant cast, 12 block range. Weapon-scaled damage; Weakness for 3s, 20% chance. 7s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1150,7 +1150,7 @@
   },
   "leaf_blade": {
     "title": "Leaf Blade Dispenser",
-    "description": "Dispenses another copy of the absorbed Leaf Blade spell.",
+    "description": "Dispenses another copy of Leaf Blade. Instant cast, 12 block range. Weapon-scaled damage; Weakness for 3s, 20% chance. 7s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1170,7 +1170,7 @@
   },
   "energy_ball_owned": {
     "title": "Energy Ball",
-    "description": "Absorbed. A concentrated orb of natural energy.",
+    "description": "Absorbed Grass-type spell. Instant cast, 7 block range. Weapon-scaled damage; Weakness 2 for 5s, 50% chance. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1185,7 +1185,7 @@
   },
   "energy_ball": {
     "title": "Energy Ball Dispenser",
-    "description": "Dispenses another copy of the absorbed Energy Ball spell.",
+    "description": "Dispenses another copy of Energy Ball. Instant cast, 7 block range. Weapon-scaled damage; Weakness 2 for 5s, 50% chance. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1205,7 +1205,7 @@
   },
   "petal_blizzard_owned": {
     "title": "Petal Blizzard",
-    "description": "Absorbed. A storm of razor petals that shreds everything in range.",
+    "description": "Absorbed Grass-type spell. Instant cast, 6 block range. Weapon-scaled damage; Knockback. 9s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1220,7 +1220,7 @@
   },
   "petal_blizzard": {
     "title": "Petal Blizzard Dispenser",
-    "description": "Dispenses another copy of the absorbed Petal Blizzard spell.",
+    "description": "Dispenses another copy of Petal Blizzard. Instant cast, 6 block range. Weapon-scaled damage; Knockback. 9s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1240,7 +1240,7 @@
   },
   "solar_beam_owned": {
     "title": "Solar Beam",
-    "description": "Absorbed. Harness the sun's full power in a devastating beam.",
+    "description": "Absorbed Grass-type spell. Projectile, 30 block range. Weapon-scaled damage. 13s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1255,7 +1255,7 @@
   },
   "solar_beam": {
     "title": "Solar Beam Dispenser",
-    "description": "Dispenses another copy of the absorbed Solar Beam spell.",
+    "description": "Dispenses another copy of Solar Beam. Projectile, 30 block range. Weapon-scaled damage. 13s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1275,7 +1275,7 @@
   },
   "nature_burst_owned": {
     "title": "Nature Burst",
-    "description": "Absorbed. Unleash the raw force of nature in a healing explosion.",
+    "description": "Absorbed Grass-type spell. Instant cast, 6 block range. Weapon-scaled damage; Heals 4 HP; Poison for 4s, 40% chance. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1290,7 +1290,7 @@
   },
   "nature_burst": {
     "title": "Nature Burst Dispenser",
-    "description": "Dispenses another copy of the absorbed Nature Burst spell.",
+    "description": "Dispenses another copy of Nature Burst. Instant cast, 6 block range. Weapon-scaled damage; Heals 4 HP; Poison for 4s, 40% chance. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1310,7 +1310,7 @@
   },
   "powder_snow_owned": {
     "title": "Powder Snow",
-    "description": "Absorbed. A freezing cloud of powder snow that slows all caught within.",
+    "description": "Absorbed Ice-type spell. Instant cast, 5 block range. Weapon-scaled damage; Slowness 2 for 4s. 4s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1325,7 +1325,7 @@
   },
   "powder_snow": {
     "title": "Powder Snow Dispenser",
-    "description": "Dispenses another copy of the absorbed Powder Snow spell.",
+    "description": "Dispenses another copy of Powder Snow. Instant cast, 5 block range. Weapon-scaled damage; Slowness 2 for 4s. 4s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1345,7 +1345,7 @@
   },
   "ice_shard_owned": {
     "title": "Ice Shard",
-    "description": "Absorbed. A razor-sharp shard of ice launched at blinding speed.",
+    "description": "Absorbed Ice-type spell. Projectile, 18 block range. Weapon-scaled damage; Slowness for 3s, 40% chance. 4s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1360,7 +1360,7 @@
   },
   "ice_shard": {
     "title": "Ice Shard Dispenser",
-    "description": "Dispenses another copy of the absorbed Ice Shard spell.",
+    "description": "Dispenses another copy of Ice Shard. Projectile, 18 block range. Weapon-scaled damage; Slowness for 3s, 40% chance. 4s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1380,7 +1380,7 @@
   },
   "ice_beam_owned": {
     "title": "Ice Beam",
-    "description": "Absorbed. A sustained beam of absolute zero temperature.",
+    "description": "Absorbed Ice-type special spell. Beam, 20 block range, 6 targets. 15 damage; Chills Wet targets for 3s. 13s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1395,7 +1395,7 @@
   },
   "ice_beam": {
     "title": "Ice Beam Dispenser",
-    "description": "Dispenses another copy of the absorbed Ice Beam spell.",
+    "description": "Dispenses another copy of Ice Beam. Beam, 20 block range, 6 targets. 15 damage; Chills Wet targets for 3s. 13s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1415,7 +1415,7 @@
   },
   "frost_nova_owned": {
     "title": "Frost Nova",
-    "description": "Absorbed. Freeze everything around you in an instant.",
+    "description": "Absorbed Ice-type spell. Instant cast, 8 block range. Weapon-scaled damage; Slowness 3 for 10s; Weakness 2 for 6s. 10s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1430,7 +1430,7 @@
   },
   "frost_nova": {
     "title": "Frost Nova Dispenser",
-    "description": "Dispenses another copy of the absorbed Frost Nova spell.",
+    "description": "Dispenses another copy of Frost Nova. Instant cast, 8 block range. Weapon-scaled damage; Slowness 3 for 10s; Weakness 2 for 6s. 10s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1450,7 +1450,7 @@
   },
   "aurora_veil_owned": {
     "title": "Aurora Veil",
-    "description": "Absorbed. An absorbed Ice-type Pokemon ability.",
+    "description": "Absorbed Ice-type status spell. Protective aura, 6 block radius, 8s duration. Reduces damage by 25%. 20s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1465,7 +1465,7 @@
   },
   "aurora_veil": {
     "title": "Aurora Veil Dispenser",
-    "description": "Dispenses another copy of the absorbed Aurora Veil spell.",
+    "description": "Dispenses another copy of Aurora Veil. Protective aura, 6 block radius, 8s duration. Reduces damage by 25%. 20s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1485,7 +1485,7 @@
   },
   "blizzard_owned": {
     "title": "Blizzard",
-    "description": "Absorbed. Summon a raging blizzard. None survive the cold.",
+    "description": "Absorbed Ice-type special spell. Moving zone, 18 block range, 5 block radius, 12 targets, 6s duration. 7.3 damage; Chills Wet targets for 3s. 22s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1500,7 +1500,7 @@
   },
   "blizzard": {
     "title": "Blizzard Dispenser",
-    "description": "Dispenses another copy of the absorbed Blizzard spell.",
+    "description": "Dispenses another copy of Blizzard. Moving zone, 18 block range, 5 block radius, 12 targets, 6s duration. 7.3 damage; Chills Wet targets for 3s. 22s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1520,7 +1520,7 @@
   },
   "mach_punch_owned": {
     "title": "Mach Punch",
-    "description": "Absorbed. A lightning-fast punch that blurs through the air.",
+    "description": "Absorbed Fighting-type spell. Instant cast, 8 block range. Weapon-scaled damage; Knockback. 2.5s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1535,7 +1535,7 @@
   },
   "mach_punch": {
     "title": "Mach Punch Dispenser",
-    "description": "Dispenses another copy of the absorbed Mach Punch spell.",
+    "description": "Dispenses another copy of Mach Punch. Instant cast, 8 block range. Weapon-scaled damage; Knockback. 2.5s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1555,7 +1555,7 @@
   },
   "close_combat_owned": {
     "title": "Close Combat",
-    "description": "Absorbed. Total physical commitment. Maximum damage at point-blank range.",
+    "description": "Absorbed Fighting-type physical spell. Melee combo, 3 block range, 1 target, 3 hits. 8.0 damage per hit; Knockback; Exposed for 4s on self. 16s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1570,7 +1570,7 @@
   },
   "close_combat": {
     "title": "Close Combat Dispenser",
-    "description": "Dispenses another copy of the absorbed Close Combat spell.",
+    "description": "Dispenses another copy of Close Combat. Melee combo, 3 block range, 1 target, 3 hits. 8.0 damage per hit; Knockback; Exposed for 4s on self. 16s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1590,7 +1590,7 @@
   },
   "focus_blast_owned": {
     "title": "Focus Blast",
-    "description": "Absorbed. A sphere of pure focused energy launched with devastating force.",
+    "description": "Absorbed Fighting-type spell. Projectile, 20 block range. Weapon-scaled damage; Knockback; Weakness 2 for 5s, 50% chance. 11s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1605,7 +1605,7 @@
   },
   "focus_blast": {
     "title": "Focus Blast Dispenser",
-    "description": "Dispenses another copy of the absorbed Focus Blast spell.",
+    "description": "Dispenses another copy of Focus Blast. Projectile, 20 block range. Weapon-scaled damage; Knockback; Weakness 2 for 5s, 50% chance. 11s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1625,7 +1625,7 @@
   },
   "seismic_slam_owned": {
     "title": "Seismic Slam",
-    "description": "Absorbed. Slam the earth to send shockwaves outward.",
+    "description": "Absorbed Fighting-type spell. Instant cast, 5 block range. Weapon-scaled damage; Knockback; Slowness 2 for 6s, 70% chance. 9s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1640,7 +1640,7 @@
   },
   "seismic_slam": {
     "title": "Seismic Slam Dispenser",
-    "description": "Dispenses another copy of the absorbed Seismic Slam spell.",
+    "description": "Dispenses another copy of Seismic Slam. Instant cast, 5 block range. Weapon-scaled damage; Knockback; Slowness 2 for 6s, 70% chance. 9s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1660,7 +1660,7 @@
   },
   "poison_sting_owned": {
     "title": "Poison Sting",
-    "description": "Absorbed. A venomous strike with chance to poison.",
+    "description": "Absorbed Poison-type spell. Projectile, 14 block range. Weapon-scaled damage; Poison for 6s, 60% chance. 3s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1675,7 +1675,7 @@
   },
   "poison_sting": {
     "title": "Poison Sting Dispenser",
-    "description": "Dispenses another copy of the absorbed Poison Sting spell.",
+    "description": "Dispenses another copy of Poison Sting. Projectile, 14 block range. Weapon-scaled damage; Poison for 6s, 60% chance. 3s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1695,7 +1695,7 @@
   },
   "poison_strike_owned": {
     "title": "Poison Strike",
-    "description": "Absorbed. A reliable poison attack.",
+    "description": "Absorbed Poison-type spell. Projectile, 16 block range. Weapon-scaled damage; Poison 2 for 10s, 90% chance. 7s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1710,7 +1710,7 @@
   },
   "poison_strike": {
     "title": "Poison Strike Dispenser",
-    "description": "Dispenses another copy of the absorbed Poison Strike spell.",
+    "description": "Dispenses another copy of Poison Strike. Projectile, 16 block range. Weapon-scaled damage; Poison 2 for 10s, 90% chance. 7s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1730,7 +1730,7 @@
   },
   "toxic_spikes_owned": {
     "title": "Toxic Spikes",
-    "description": "Absorbed. Scatter three long-lived venomous traps across the battlefield.",
+    "description": "Absorbed Poison-type status spell. Placed trap, 12 block range, 1.2 block radius, 3 projectiles, 20s duration. Poison on first trigger; Toxic on repeat. 15s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1745,7 +1745,7 @@
   },
   "toxic_spikes": {
     "title": "Toxic Spikes Dispenser",
-    "description": "Dispenses another copy of the absorbed Toxic Spikes spell.",
+    "description": "Dispenses another copy of Toxic Spikes. Placed trap, 12 block range, 1.2 block radius, 3 projectiles, 20s duration. Poison on first trigger; Toxic on repeat. 15s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1765,7 +1765,7 @@
   },
   "sludge_bomb_owned": {
     "title": "Sludge Bomb",
-    "description": "Absorbed. A cloud of toxic sludge poisons all nearby.",
+    "description": "Absorbed Poison-type spell. Lingering cloud, 16 block range, 5 block radius. Weapon-scaled damage; Poison 2 for 8s, 30% chance. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1780,7 +1780,7 @@
   },
   "sludge_bomb": {
     "title": "Sludge Bomb Dispenser",
-    "description": "Dispenses another copy of the absorbed Sludge Bomb spell.",
+    "description": "Dispenses another copy of Sludge Bomb. Lingering cloud, 16 block range, 5 block radius. Weapon-scaled damage; Poison 2 for 8s, 30% chance. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1800,7 +1800,7 @@
   },
   "toxic_owned": {
     "title": "Toxic",
-    "description": "Absorbed. Inflicts deadly poison that withers the soul.",
+    "description": "Absorbed Poison-type spell. Lingering cloud, 14 block range, 3 block radius. Wither 2 for 10s. 12s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1815,7 +1815,7 @@
   },
   "toxic": {
     "title": "Toxic Dispenser",
-    "description": "Dispenses another copy of the absorbed Toxic spell.",
+    "description": "Dispenses another copy of Toxic. Lingering cloud, 14 block range, 3 block radius. Wither 2 for 10s. 12s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1835,7 +1835,7 @@
   },
   "mud_shot_owned": {
     "title": "Mud Shot",
-    "description": "Absorbed. An absorbed Ground-type Pokemon ability.",
+    "description": "Absorbed Ground-type special spell. Projectile, 16 block range, 1 target. 7 damage; Slowness for 4s; Exposed for 4s. 4s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1850,7 +1850,7 @@
   },
   "mud_shot": {
     "title": "Mud Shot Dispenser",
-    "description": "Dispenses another copy of the absorbed Mud Shot spell.",
+    "description": "Dispenses another copy of Mud Shot. Projectile, 16 block range, 1 target. 7 damage; Slowness for 4s; Exposed for 4s. 4s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1870,7 +1870,7 @@
   },
   "bulldoze_owned": {
     "title": "Bulldoze",
-    "description": "Absorbed. An absorbed Ground-type Pokemon ability.",
+    "description": "Absorbed Ground-type physical spell. Traveling wave, 10 block range, 10 targets, 0.6s duration. 11 damage; Slowness for 5s; Knockback. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1885,7 +1885,7 @@
   },
   "bulldoze": {
     "title": "Bulldoze Dispenser",
-    "description": "Dispenses another copy of the absorbed Bulldoze spell.",
+    "description": "Dispenses another copy of Bulldoze. Traveling wave, 10 block range, 10 targets, 0.6s duration. 11 damage; Slowness for 5s; Knockback. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -1905,7 +1905,7 @@
   },
   "dig_owned": {
     "title": "Dig",
-    "description": "Absorbed. An absorbed Ground-type Pokemon ability.",
+    "description": "Absorbed Ground-type physical spell. Teleport strike, 14 block range, 1 target. 16 damage; Knockback. 12s cooldown, 0.6s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -1920,7 +1920,7 @@
   },
   "dig": {
     "title": "Dig Dispenser",
-    "description": "Dispenses another copy of the absorbed Dig spell.",
+    "description": "Dispenses another copy of Dig. Teleport strike, 14 block range, 1 target. 16 damage; Knockback. 12s cooldown, 0.6s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -1940,7 +1940,7 @@
   },
   "earth_power_owned": {
     "title": "Earth Power",
-    "description": "Absorbed. An absorbed Ground-type Pokemon ability.",
+    "description": "Absorbed Ground-type special spell. Delayed area, 15 block range, 3 block radius, 8 targets. 18 damage; Exposed for 5s. 14s cooldown, 0.5s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -1955,7 +1955,7 @@
   },
   "earth_power": {
     "title": "Earth Power Dispenser",
-    "description": "Dispenses another copy of the absorbed Earth Power spell.",
+    "description": "Dispenses another copy of Earth Power. Delayed area, 15 block range, 3 block radius, 8 targets. 18 damage; Exposed for 5s. 14s cooldown, 0.5s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -1975,7 +1975,7 @@
   },
   "earthquake_owned": {
     "title": "Earthquake",
-    "description": "Absorbed. The earth itself convulses, swallowing all in range.",
+    "description": "Absorbed Ground-type physical spell. Instant cast, 10 block range, 10 block radius, 16 targets. 23 damage; Knockback; Slowness 2 for 4s. 20s cooldown, 0.8s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -1990,7 +1990,7 @@
   },
   "earthquake": {
     "title": "Earthquake Dispenser",
-    "description": "Dispenses another copy of the absorbed Earthquake spell.",
+    "description": "Dispenses another copy of Earthquake. Instant cast, 10 block range, 10 block radius, 16 targets. 23 damage; Knockback; Slowness 2 for 4s. 20s cooldown, 0.8s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -2010,7 +2010,7 @@
   },
   "gust_owned": {
     "title": "Gust",
-    "description": "Absorbed. A burst of wind that knocks targets away.",
+    "description": "Absorbed Flying-type special spell. Channeled cone, 9 block range, 8 targets, 1 pulses, 0.1s duration. 6 damage per hit; Knockback. 3s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2025,7 +2025,7 @@
   },
   "gust": {
     "title": "Gust Dispenser",
-    "description": "Dispenses another copy of the absorbed Gust spell.",
+    "description": "Dispenses another copy of Gust. Channeled cone, 9 block range, 8 targets, 1 pulses, 0.1s duration. 6 damage per hit; Knockback. 3s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2045,7 +2045,7 @@
   },
   "air_cutter_owned": {
     "title": "Air Cutter",
-    "description": "Absorbed. An absorbed Flying-type Pokemon ability.",
+    "description": "Absorbed Flying-type special spell. Projectile, 20 block range, 1 target, 3 projectiles. 3.4 damage per hit. 6s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2060,7 +2060,7 @@
   },
   "air_cutter": {
     "title": "Air Cutter Dispenser",
-    "description": "Dispenses another copy of the absorbed Air Cutter spell.",
+    "description": "Dispenses another copy of Air Cutter. Projectile, 20 block range, 1 target, 3 projectiles. 3.4 damage per hit. 6s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2080,7 +2080,7 @@
   },
   "aerial_ace_owned": {
     "title": "Aerial Ace",
-    "description": "Absorbed. A precision strike that never misses.",
+    "description": "Absorbed Flying-type physical spell. Teleport strike, 14 block range, 1 target. 12 damage. 7s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2095,7 +2095,7 @@
   },
   "aerial_ace": {
     "title": "Aerial Ace Dispenser",
-    "description": "Dispenses another copy of the absorbed Aerial Ace spell.",
+    "description": "Dispenses another copy of Aerial Ace. Teleport strike, 14 block range, 1 target. 12 damage. 7s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2115,7 +2115,7 @@
   },
   "tailwind_owned": {
     "title": "Tailwind",
-    "description": "Absorbed. An absorbed Flying-type Pokemon ability.",
+    "description": "Absorbed Flying-type status spell. Protective aura, 7 block radius, 12 targets, 8s duration. Speed for 2s. 18s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2130,7 +2130,7 @@
   },
   "tailwind": {
     "title": "Tailwind Dispenser",
-    "description": "Dispenses another copy of the absorbed Tailwind spell.",
+    "description": "Dispenses another copy of Tailwind. Protective aura, 7 block radius, 12 targets, 8s duration. Speed for 2s. 18s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2150,7 +2150,7 @@
   },
   "hurricane_owned": {
     "title": "Hurricane",
-    "description": "Absorbed. An absorbed Flying-type Pokemon ability.",
+    "description": "Absorbed Flying-type special spell. Vortex, 18 block range, 5 block radius, 12 targets, 5s duration. 4.4 damage; Pulls targets. 20s cooldown, 0.8s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -2165,7 +2165,7 @@
   },
   "hurricane": {
     "title": "Hurricane Dispenser",
-    "description": "Dispenses another copy of the absorbed Hurricane spell.",
+    "description": "Dispenses another copy of Hurricane. Vortex, 18 block range, 5 block radius, 12 targets, 5s duration. 4.4 damage; Pulls targets. 20s cooldown, 0.8s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -2185,7 +2185,7 @@
   },
   "aerial_strike_owned": {
     "title": "Aerial Strike",
-    "description": "Absorbed. Dive from above for a devastating area strike.",
+    "description": "Absorbed Flying-type spell. Projectile, 20 block range. Weapon-scaled damage; Knockback. 6s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2200,7 +2200,7 @@
   },
   "aerial_strike": {
     "title": "Aerial Strike Dispenser",
-    "description": "Dispenses another copy of the absorbed Aerial Strike spell.",
+    "description": "Dispenses another copy of Aerial Strike. Projectile, 20 block range. Weapon-scaled damage; Knockback. 6s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2220,7 +2220,7 @@
   },
   "confusion_owned": {
     "title": "Confusion",
-    "description": "Absorbed. A weak psychic wave that muddles the mind.",
+    "description": "Absorbed Psychic-type spell. Projectile, 14 block range. Weapon-scaled damage; Nausea for 5s, 30% chance. 4s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2235,7 +2235,7 @@
   },
   "confusion": {
     "title": "Confusion Dispenser",
-    "description": "Dispenses another copy of the absorbed Confusion spell.",
+    "description": "Dispenses another copy of Confusion. Projectile, 14 block range. Weapon-scaled damage; Nausea for 5s, 30% chance. 4s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2255,7 +2255,7 @@
   },
   "psybeam_owned": {
     "title": "Psybeam",
-    "description": "Absorbed. A beam of psychic energy that bends reality.",
+    "description": "Absorbed Psychic-type special spell. Ricochet beam, 18 block range, 2 targets. 11 damage; Nausea for 4s, 20% chance. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2270,7 +2270,7 @@
   },
   "psybeam": {
     "title": "Psybeam Dispenser",
-    "description": "Dispenses another copy of the absorbed Psybeam spell.",
+    "description": "Dispenses another copy of Psybeam. Ricochet beam, 18 block range, 2 targets. 11 damage; Nausea for 4s, 20% chance. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2290,7 +2290,7 @@
   },
   "psychic_owned": {
     "title": "Psychic",
-    "description": "Absorbed. Telekinetic force launches foes through the air.",
+    "description": "Absorbed Psychic-type spell. Instant cast, 20 block range. Weapon-scaled damage; Knockback; Weakness for 4s, 40% chance. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2305,7 +2305,7 @@
   },
   "psychic": {
     "title": "Psychic Dispenser",
-    "description": "Dispenses another copy of the absorbed Psychic spell.",
+    "description": "Dispenses another copy of Psychic. Instant cast, 20 block range. Weapon-scaled damage; Knockback; Weakness for 4s, 40% chance. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2325,7 +2325,7 @@
   },
   "rest_owned": {
     "title": "Rest",
-    "description": "Absorbed. An absorbed Psychic-type Pokemon ability.",
+    "description": "Absorbed Psychic-type status spell. Self cast. Removes all harmful effects; Fully heals; Sleep for 5s. 90s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2340,7 +2340,7 @@
   },
   "rest": {
     "title": "Rest Dispenser",
-    "description": "Dispenses another copy of the absorbed Rest spell.",
+    "description": "Dispenses another copy of Rest. Self cast. Removes all harmful effects; Fully heals; Sleep for 5s. 90s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2360,7 +2360,7 @@
   },
   "psychic_blast_owned": {
     "title": "Psychic Blast",
-    "description": "Absorbed. A focused psychic shockwave of terrifying power.",
+    "description": "Absorbed Psychic-type spell. Instant cast, 10 block range. Weapon-scaled damage; Knockback; Weakness 2 for 8s, 60% chance. 11s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2375,7 +2375,7 @@
   },
   "psychic_blast": {
     "title": "Psychic Blast Dispenser",
-    "description": "Dispenses another copy of the absorbed Psychic Blast spell.",
+    "description": "Dispenses another copy of Psychic Blast. Instant cast, 10 block range. Weapon-scaled damage; Knockback; Weakness 2 for 8s, 60% chance. 11s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2395,7 +2395,7 @@
   },
   "future_sight_owned": {
     "title": "Future Sight",
-    "description": "Absorbed. See the threads of fate. Heal yourself and resist harm.",
+    "description": "Absorbed Psychic-type special spell. Delayed strike, 24 block range, 1 target. 28 damage. 22s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2410,7 +2410,7 @@
   },
   "future_sight": {
     "title": "Future Sight Dispenser",
-    "description": "Dispenses another copy of the absorbed Future Sight spell.",
+    "description": "Dispenses another copy of Future Sight. Delayed strike, 24 block range, 1 target. 28 damage. 22s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2430,7 +2430,7 @@
   },
   "string_shot_owned": {
     "title": "String Shot",
-    "description": "Absorbed. Sticky silk binds the target and sharply reduces movement for 2 seconds.",
+    "description": "Absorbed Bug-type status spell. Projectile, 14 block range, 1 target. Slowness 6 for 2s. 5s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2445,7 +2445,7 @@
   },
   "string_shot": {
     "title": "String Shot Dispenser",
-    "description": "Dispenses another copy of the absorbed String Shot spell.",
+    "description": "Dispenses another copy of String Shot. Projectile, 14 block range, 1 target. Slowness 6 for 2s. 5s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2465,7 +2465,7 @@
   },
   "pin_missile_owned": {
     "title": "Pin Missile",
-    "description": "Absorbed. An absorbed Bug-type Pokemon ability.",
+    "description": "Absorbed Bug-type physical spell. Projectile, 18 block range, 1 target, 5 projectiles. 2.4 damage per hit. 7s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2480,7 +2480,7 @@
   },
   "pin_missile": {
     "title": "Pin Missile Dispenser",
-    "description": "Dispenses another copy of the absorbed Pin Missile spell.",
+    "description": "Dispenses another copy of Pin Missile. Projectile, 18 block range, 1 target, 5 projectiles. 2.4 damage per hit. 7s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2500,7 +2500,7 @@
   },
   "u_turn_owned": {
     "title": "U Turn",
-    "description": "Absorbed. An absorbed Bug-type Pokemon ability.",
+    "description": "Absorbed Bug-type physical spell. Dash, 10 block range, 1 target, 0.4s duration. 11 damage. 9s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2515,7 +2515,7 @@
   },
   "u_turn": {
     "title": "U Turn Dispenser",
-    "description": "Dispenses another copy of the absorbed U Turn spell.",
+    "description": "Dispenses another copy of U Turn. Dash, 10 block range, 1 target, 0.4s duration. 11 damage. 9s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2535,7 +2535,7 @@
   },
   "x_scissor_owned": {
     "title": "X Scissor",
-    "description": "Absorbed. An absorbed Bug-type Pokemon ability.",
+    "description": "Absorbed Bug-type physical spell. Melee combo, 4.5 block range, 1 target, 2 hits. 6 damage per hit; Exposed for 5s. 11s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2550,7 +2550,7 @@
   },
   "x_scissor": {
     "title": "X Scissor Dispenser",
-    "description": "Dispenses another copy of the absorbed X Scissor spell.",
+    "description": "Dispenses another copy of X Scissor. Melee combo, 4.5 block range, 1 target, 2 hits. 6 damage per hit; Exposed for 5s. 11s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2570,7 +2570,7 @@
   },
   "bug_buzz_owned": {
     "title": "Bug Buzz",
-    "description": "Absorbed. An absorbed Bug-type Pokemon ability.",
+    "description": "Absorbed Bug-type special spell. Channeled cone, 10 block range, 8 targets, 4 pulses, 1s duration. 3 damage per hit; Exposed for 4s; Interrupts casting. 15s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2585,7 +2585,7 @@
   },
   "bug_buzz": {
     "title": "Bug Buzz Dispenser",
-    "description": "Dispenses another copy of the absorbed Bug Buzz spell.",
+    "description": "Dispenses another copy of Bug Buzz. Channeled cone, 10 block range, 8 targets, 4 pulses, 1s duration. 3 damage per hit; Exposed for 4s; Interrupts casting. 15s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2605,7 +2605,7 @@
   },
   "rock_throw_owned": {
     "title": "Rock Throw",
-    "description": "Absorbed. Hurl a heavy stone at your target.",
+    "description": "Absorbed Rock-type spell. Projectile, 16 block range. Weapon-scaled damage. 4s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2620,7 +2620,7 @@
   },
   "rock_throw": {
     "title": "Rock Throw Dispenser",
-    "description": "Dispenses another copy of the absorbed Rock Throw spell.",
+    "description": "Dispenses another copy of Rock Throw. Projectile, 16 block range. Weapon-scaled damage. 4s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2640,7 +2640,7 @@
   },
   "rock_slide_owned": {
     "title": "Rock Slide",
-    "description": "Absorbed. Avalanche of stones that may cause flinching.",
+    "description": "Absorbed Rock-type physical spell. Meteor strike, 18 block range, 4 block radius, 8 targets, 5 projectiles. 15 damage per hit; Knockback; Slowness 2 for 2s, 30% chance. 12s cooldown, 0.5s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -2655,7 +2655,7 @@
   },
   "rock_slide": {
     "title": "Rock Slide Dispenser",
-    "description": "Dispenses another copy of the absorbed Rock Slide spell.",
+    "description": "Dispenses another copy of Rock Slide. Meteor strike, 18 block range, 4 block radius, 8 targets, 5 projectiles. 15 damage per hit; Knockback; Slowness 2 for 2s, 30% chance. 12s cooldown, 0.5s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -2675,7 +2675,7 @@
   },
   "stone_edge_owned": {
     "title": "Stone Edge",
-    "description": "Absorbed. Razor-sharp stone spikes erupt with critical force.",
+    "description": "Absorbed Rock-type spell. Instant cast, 16 block range. Weapon-scaled damage. 10s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2690,7 +2690,7 @@
   },
   "stone_edge": {
     "title": "Stone Edge Dispenser",
-    "description": "Dispenses another copy of the absorbed Stone Edge spell.",
+    "description": "Dispenses another copy of Stone Edge. Instant cast, 16 block range. Weapon-scaled damage. 10s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2710,7 +2710,7 @@
   },
   "night_shade_owned": {
     "title": "Night Shade",
-    "description": "Absorbed. Shadow energy that blinds and haunts the target.",
+    "description": "Absorbed Ghost-type spell. Instant cast, 16 block range. Weapon-scaled damage; Darkness for 5s, 80% chance. 6s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2725,7 +2725,7 @@
   },
   "night_shade": {
     "title": "Night Shade Dispenser",
-    "description": "Dispenses another copy of the absorbed Night Shade spell.",
+    "description": "Dispenses another copy of Night Shade. Instant cast, 16 block range. Weapon-scaled damage; Darkness for 5s, 80% chance. 6s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2745,7 +2745,7 @@
   },
   "shadow_sneak_owned": {
     "title": "Shadow Sneak",
-    "description": "Absorbed. Slip through shadow and strike a nearby target instantly.",
+    "description": "Absorbed Ghost-type physical spell. Teleport strike, 10 block range, 1 target. 9 damage. 6s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2760,7 +2760,7 @@
   },
   "shadow_sneak": {
     "title": "Shadow Sneak Dispenser",
-    "description": "Dispenses another copy of the absorbed Shadow Sneak spell.",
+    "description": "Dispenses another copy of Shadow Sneak. Teleport strike, 10 block range, 1 target. 9 damage. 6s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2780,7 +2780,7 @@
   },
   "shadow_ball_owned": {
     "title": "Shadow Ball",
-    "description": "Absorbed. A ball of compressed shadow energy that weakens on impact.",
+    "description": "Absorbed Ghost-type spell. Projectile, 20 block range. Weapon-scaled damage; Weakness 2 for 5s, 50% chance. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2795,7 +2795,7 @@
   },
   "shadow_ball": {
     "title": "Shadow Ball Dispenser",
-    "description": "Dispenses another copy of the absorbed Shadow Ball spell.",
+    "description": "Dispenses another copy of Shadow Ball. Projectile, 20 block range. Weapon-scaled damage; Weakness 2 for 5s, 50% chance. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2815,7 +2815,7 @@
   },
   "hex_owned": {
     "title": "Hex",
-    "description": "Absorbed. Deals massive damage to weakened targets.",
+    "description": "Absorbed Ghost-type spell. Instant cast, 16 block range. Weapon-scaled damage; Weakness 2 for 6s, 50% chance. 7s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2830,7 +2830,7 @@
   },
   "hex": {
     "title": "Hex Dispenser",
-    "description": "Dispenses another copy of the absorbed Hex spell.",
+    "description": "Dispenses another copy of Hex. Instant cast, 16 block range. Weapon-scaled damage; Weakness 2 for 6s, 50% chance. 7s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2850,7 +2850,7 @@
   },
   "dragon_breath_owned": {
     "title": "Dragon Breath",
-    "description": "Absorbed. A breath of toxic dragonfire.",
+    "description": "Absorbed Dragon-type spell. Beam, 18 block range. Weapon-scaled damage; Burns for 5s; Poison for 3s, 50% chance. 10s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2865,7 +2865,7 @@
   },
   "dragon_breath": {
     "title": "Dragon Breath Dispenser",
-    "description": "Dispenses another copy of the absorbed Dragon Breath spell.",
+    "description": "Dispenses another copy of Dragon Breath. Beam, 18 block range. Weapon-scaled damage; Burns for 5s; Poison for 3s, 50% chance. 10s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2885,7 +2885,7 @@
   },
   "dragon_pulse_owned": {
     "title": "Dragon Pulse",
-    "description": "Absorbed. A condensed sphere of dragon energy.",
+    "description": "Absorbed Dragon-type spell. Projectile, 22 block range. Weapon-scaled damage. 9s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2900,7 +2900,7 @@
   },
   "dragon_pulse": {
     "title": "Dragon Pulse Dispenser",
-    "description": "Dispenses another copy of the absorbed Dragon Pulse spell.",
+    "description": "Dispenses another copy of Dragon Pulse. Projectile, 22 block range. Weapon-scaled damage. 9s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2920,7 +2920,7 @@
   },
   "draco_meteor_owned": {
     "title": "Draco Meteor",
-    "description": "Absorbed. Call down a meteor of pure dragon power from the sky.",
+    "description": "Absorbed Dragon-type special spell. Meteor strike, 24 block range, 5 block radius, 12 targets, 7 projectiles. 31 damage per hit; Knockback. 26s cooldown, 1.5s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -2935,7 +2935,7 @@
   },
   "draco_meteor": {
     "title": "Draco Meteor Dispenser",
-    "description": "Dispenses another copy of the absorbed Draco Meteor spell.",
+    "description": "Dispenses another copy of Draco Meteor. Meteor strike, 24 block range, 5 block radius, 12 targets, 7 projectiles. 31 damage per hit; Knockback. 26s cooldown, 1.5s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -2955,7 +2955,7 @@
   },
   "outrage_owned": {
     "title": "Outrage",
-    "description": "Absorbed. Unleash uncontrollable draconic rage. Devastating but disorienting.",
+    "description": "Absorbed Dragon-type spell. Instant cast, 14 block range. Weapon-scaled damage; Knockback; Nausea for 4s. 13s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2970,7 +2970,7 @@
   },
   "outrage": {
     "title": "Outrage Dispenser",
-    "description": "Dispenses another copy of the absorbed Outrage spell.",
+    "description": "Dispenses another copy of Outrage. Instant cast, 14 block range. Weapon-scaled damage; Knockback; Nausea for 4s. 13s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -2990,7 +2990,7 @@
   },
   "dark_pulse_owned": {
     "title": "Dark Pulse",
-    "description": "Absorbed. A pulse of dark energy that may cause flinching.",
+    "description": "Absorbed Dark-type special spell. Channeled beam, 16 block range, 4 targets, 3 pulses, 0.6s duration. 5.3 damage per hit; Nausea for 2.5s, 10% chance. 10s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -3005,7 +3005,7 @@
   },
   "dark_pulse": {
     "title": "Dark Pulse Dispenser",
-    "description": "Dispenses another copy of the absorbed Dark Pulse spell.",
+    "description": "Dispenses another copy of Dark Pulse. Channeled beam, 16 block range, 4 targets, 3 pulses, 0.6s duration. 5.3 damage per hit; Nausea for 2.5s, 10% chance. 10s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -3025,7 +3025,7 @@
   },
   "sucker_punch_owned": {
     "title": "Sucker Punch",
-    "description": "Absorbed. An absorbed Dark-type Pokemon ability.",
+    "description": "Absorbed Dark-type physical spell. Counter stance, 5 block range, 1 target, 1s duration. 14 damage; Knockback. 10s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -3040,7 +3040,7 @@
   },
   "sucker_punch": {
     "title": "Sucker Punch Dispenser",
-    "description": "Dispenses another copy of the absorbed Sucker Punch spell.",
+    "description": "Dispenses another copy of Sucker Punch. Counter stance, 5 block range, 1 target, 1s duration. 14 damage; Knockback. 10s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -3060,7 +3060,7 @@
   },
   "foul_play_owned": {
     "title": "Foul Play",
-    "description": "Absorbed. Turn your enemy's strength against them.",
+    "description": "Absorbed Dark-type spell. Instant cast, 12 block range. Weapon-scaled damage; Weakness 3 for 10s. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -3075,7 +3075,7 @@
   },
   "foul_play": {
     "title": "Foul Play Dispenser",
-    "description": "Dispenses another copy of the absorbed Foul Play spell.",
+    "description": "Dispenses another copy of Foul Play. Instant cast, 12 block range. Weapon-scaled damage; Weakness 3 for 10s. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -3095,7 +3095,7 @@
   },
   "iron_tail_owned": {
     "title": "Iron Tail",
-    "description": "Absorbed. A metallic strike that weakens the target's defenses.",
+    "description": "Absorbed Steel-type spell. Instant cast, 10 block range. Weapon-scaled damage; Knockback; Weakness for 5s, 30% chance. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -3110,7 +3110,7 @@
   },
   "iron_tail": {
     "title": "Iron Tail Dispenser",
-    "description": "Dispenses another copy of the absorbed Iron Tail spell.",
+    "description": "Dispenses another copy of Iron Tail. Instant cast, 10 block range. Weapon-scaled damage; Knockback; Weakness for 5s, 30% chance. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -3130,7 +3130,7 @@
   },
   "iron_defense_owned": {
     "title": "Iron Defense",
-    "description": "Absorbed. An absorbed Steel-type Pokemon ability.",
+    "description": "Absorbed Steel-type status spell. Self cast. Guards the next hit on self. 18s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -3145,7 +3145,7 @@
   },
   "iron_defense": {
     "title": "Iron Defense Dispenser",
-    "description": "Dispenses another copy of the absorbed Iron Defense spell.",
+    "description": "Dispenses another copy of Iron Defense. Self cast. Guards the next hit on self. 18s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -3165,7 +3165,7 @@
   },
   "iron_strike_owned": {
     "title": "Iron Strike",
-    "description": "Absorbed. A heavy steel projectile with knockback.",
+    "description": "Absorbed Steel-type spell. Projectile, 14 block range. Weapon-scaled damage; Knockback. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -3180,7 +3180,7 @@
   },
   "iron_strike": {
     "title": "Iron Strike Dispenser",
-    "description": "Dispenses another copy of the absorbed Iron Strike spell.",
+    "description": "Dispenses another copy of Iron Strike. Projectile, 14 block range. Weapon-scaled damage; Knockback. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -3200,7 +3200,7 @@
   },
   "flash_cannon_owned": {
     "title": "Flash Cannon",
-    "description": "Absorbed. A beam of blinding steel energy that weakens on impact.",
+    "description": "Absorbed Steel-type spell. Beam, 20 block range. Weapon-scaled damage; Weakness 2 for 5s, 50% chance. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -3215,7 +3215,7 @@
   },
   "flash_cannon": {
     "title": "Flash Cannon Dispenser",
-    "description": "Dispenses another copy of the absorbed Flash Cannon spell.",
+    "description": "Dispenses another copy of Flash Cannon. Beam, 20 block range. Weapon-scaled damage; Weakness 2 for 5s, 50% chance. 8s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -3235,7 +3235,7 @@
   },
   "fairy_wind_owned": {
     "title": "Fairy Wind",
-    "description": "Absorbed. An absorbed Fairy-type Pokemon ability.",
+    "description": "Absorbed Fairy-type special spell. Projectile, 18 block range, 1 target. 6 damage; Knockback. 3s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -3250,7 +3250,7 @@
   },
   "fairy_wind": {
     "title": "Fairy Wind Dispenser",
-    "description": "Dispenses another copy of the absorbed Fairy Wind spell.",
+    "description": "Dispenses another copy of Fairy Wind. Projectile, 18 block range, 1 target. 6 damage; Knockback. 3s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -3270,7 +3270,7 @@
   },
   "draining_kiss_owned": {
     "title": "Draining Kiss",
-    "description": "Absorbed. An absorbed Fairy-type Pokemon ability.",
+    "description": "Absorbed Fairy-type special spell. Projectile, 14 block range, 1 target. 8 damage; Heals 75% of damage dealt on self. 6s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -3285,7 +3285,7 @@
   },
   "draining_kiss": {
     "title": "Draining Kiss Dispenser",
-    "description": "Dispenses another copy of the absorbed Draining Kiss spell.",
+    "description": "Dispenses another copy of Draining Kiss. Projectile, 14 block range, 1 target. 8 damage; Heals 75% of damage dealt on self. 6s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -3305,7 +3305,7 @@
   },
   "charm_owned": {
     "title": "Charm",
-    "description": "Absorbed. An absorbed Fairy-type Pokemon ability.",
+    "description": "Absorbed Fairy-type status spell. Channeled cone, 8 block range, 8 targets, 1 pulses, 0.1s duration. Weakness for 6s. 11s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -3320,7 +3320,7 @@
   },
   "charm": {
     "title": "Charm Dispenser",
-    "description": "Dispenses another copy of the absorbed Charm spell.",
+    "description": "Dispenses another copy of Charm. Channeled cone, 8 block range, 8 targets, 1 pulses, 0.1s duration. Weakness for 6s. 11s cooldown.",
     "icon": {
       "type": "item",
       "data": {
@@ -3340,7 +3340,7 @@
   },
   "dazzling_gleam_owned": {
     "title": "Dazzling Gleam",
-    "description": "Absorbed. A burst of blinding fairy light.",
+    "description": "Absorbed Fairy-type special spell. Instant cast, 6 block range, 6 block radius, 12 targets. 14 damage; Removes one Poison or Chill effect on self. 12s cooldown, 0.4s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -3355,7 +3355,7 @@
   },
   "dazzling_gleam": {
     "title": "Dazzling Gleam Dispenser",
-    "description": "Dispenses another copy of the absorbed Dazzling Gleam spell.",
+    "description": "Dispenses another copy of Dazzling Gleam. Instant cast, 6 block range, 6 block radius, 12 targets. 14 damage; Removes one Poison or Chill effect on self. 12s cooldown, 0.4s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -3375,7 +3375,7 @@
   },
   "moonblast_owned": {
     "title": "Moonblast",
-    "description": "Absorbed. Channel the power of the moon in a devastating area blast.",
+    "description": "Absorbed Fairy-type special spell. Projectile, 22 block range, 3 block radius, 6 targets. 23 damage; Weakness for 5s. 18s cooldown, 0.8s cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -3390,7 +3390,7 @@
   },
   "moonblast": {
     "title": "Moonblast Dispenser",
-    "description": "Dispenses another copy of the absorbed Moonblast spell.",
+    "description": "Dispenses another copy of Moonblast. Projectile, 22 block range, 3 block radius, 6 targets. 23 damage; Weakness for 5s. 18s cooldown, 0.8s cast.",
     "icon": {
       "type": "item",
       "data": {
