@@ -25,7 +25,7 @@
     }
   ],
   "visual": {
-    "cast_animation": "cast_point",
+    "cast_animation": "psybeam_focus",
     "trail": "prismatic_beam",
     "impact": "psychic_burst",
     "aftermath": "ricochet_arc"

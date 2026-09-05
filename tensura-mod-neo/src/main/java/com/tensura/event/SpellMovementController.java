@@ -154,8 +154,24 @@ public class SpellMovementController {
         dash.remainingDistance -= stepLength;
         dash.remainingTicks--;
         if (dash.remainingDistance <= 0.01 || dash.remainingTicks <= 0) {
+            if (dash.definition.delivery.return_to_origin && !dash.returning) {
+                Vec3 returnDirection = dash.origin.subtract(dash.position);
+                returnDirection = new Vec3(returnDirection.x, 0.0, returnDirection.z);
+                if (returnDirection.lengthSqr() > 1.0E-6) {
+                    dash.direction = returnDirection.normalize();
+                    dash.remainingDistance = returnDirection.length();
+                    dash.remainingTicks = Math.max(1, durationForDistance(
+                            dash.remainingDistance, dash.stepLength));
+                    dash.returning = true;
+                    return;
+                }
+            }
             stopDash(caster);
         }
+    }
+
+    private static int durationForDistance(double distance, double stepLength) {
+        return Math.max(1, (int) Math.ceil(distance / Math.max(0.1, stepLength)));
     }
 
     @SubscribeEvent
@@ -180,17 +196,20 @@ public class SpellMovementController {
     private static class ActiveDash {
         private final UUID ownerId;
         private final SpellDefinition definition;
+        private final Vec3 origin;
         private Vec3 direction;
         private final double stepLength;
         private final Set<UUID> hitEntities = new HashSet<>();
         private Vec3 position;
         private double remainingDistance;
         private int remainingTicks;
+        private boolean returning;
 
         private ActiveDash(UUID ownerId, SpellDefinition definition, Vec3 position, Vec3 direction,
                            double distance, int durationTicks) {
             this.ownerId = ownerId;
             this.definition = definition;
+            this.origin = position;
             this.position = position;
             this.direction = direction;
             this.remainingDistance = distance;

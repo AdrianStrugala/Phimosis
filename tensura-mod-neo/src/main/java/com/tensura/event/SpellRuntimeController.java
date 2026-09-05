@@ -873,6 +873,16 @@ public class SpellRuntimeController {
             if (aura.remainingTicks > 0 && aura.remainingTicks % 20 == 0) {
                 SpellExecutor.playLoopSound(effectCaster, aura.definition);
             }
+            int impactInterval = Math.max(1, aura.definition.delivery.tick_interval_ticks);
+            if (aura.remainingTicks > 0 && aura.remainingTicks % impactInterval == 0) {
+                double radius = aura.definition.targeting.radius > 0.0
+                        ? aura.definition.targeting.radius : 5.0;
+                for (LivingEntity ally : level.getEntitiesOfClass(LivingEntity.class,
+                        effectCaster.getBoundingBox().inflate(radius),
+                        entity -> SpellTargetingRules.isProtectedAlly(owner, effectCaster, entity))) {
+                    SpellExecutor.applyImpacts(owner, effectCaster, ally, aura.definition);
+                }
+            }
             if (aura.remainingTicks == 0) iterator.remove();
         }
     }

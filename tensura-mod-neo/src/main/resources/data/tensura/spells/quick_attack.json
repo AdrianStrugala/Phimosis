@@ -25,7 +25,7 @@
     }
   ],
   "visual": {
-    "cast_animation": "dash_forward",
+    "cast_animation": "quick_attack_dash",
     "trail": "normal_speed_lines",
     "impact": "normal_slash"
   },

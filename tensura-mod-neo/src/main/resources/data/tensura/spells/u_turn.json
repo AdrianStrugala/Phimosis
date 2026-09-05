@@ -1,0 +1,36 @@
+{
+  "pokemon_type": "bug",
+  "category": "physical",
+  "power": 11.0,
+  "school": "bug",
+  "cooldown_ticks": 180,
+  "targeting": {
+    "type": "aim",
+    "range": 10.0,
+    "width": 1.2,
+    "max_targets": 1
+  },
+  "delivery": {
+    "type": "dash",
+    "distance": 10.0,
+    "duration_ticks": 7,
+    "return_to_origin": true
+  },
+  "impact": [
+    {
+      "type": "damage",
+      "damage_multiplier": 1.0
+    }
+  ],
+  "visual": {
+    "cast_animation": "bug_dash_cast",
+    "trail": "u_turn_wing_trail",
+    "impact": "u_turn_cross_cut",
+    "aftermath": "u_turn_afterimage"
+  },
+  "sound": {
+    "cast": "minecraft:entity.player.attack.sweep",
+    "travel": "minecraft:entity.ender_dragon.flap",
+    "impact": "minecraft:entity.player.attack.strong"
+  }
+}

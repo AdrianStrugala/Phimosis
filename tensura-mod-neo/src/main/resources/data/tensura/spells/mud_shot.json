@@ -1,0 +1,26 @@
+{
+  "pokemon_type": "ground",
+  "category": "special",
+  "power": 7.0,
+  "school": "earth",
+  "cooldown_ticks": 80,
+  "targeting": { "type": "aim", "range": 16.0, "width": 0.8, "max_targets": 1 },
+  "delivery": { "type": "projectile", "speed": 1.7 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 1.0 },
+    { "type": "status_effect", "effect": "minecraft:slowness", "duration": 80, "amplifier": 0 },
+    { "type": "expose", "duration": 80, "amplifier": 0 }
+  ],
+  "visual": {
+    "cast_animation": "earth_bolt_cast",
+    "projectile": "mud_shot_clod",
+    "trail": "mud_droplet_trail",
+    "impact": "mud_splat",
+    "aftermath": "mud_puddle"
+  },
+  "sound": {
+    "cast": "minecraft:block.mud.place",
+    "travel": "minecraft:entity.snowball.throw",
+    "impact": "minecraft:block.mud.break"
+  }
+}

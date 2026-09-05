@@ -20,7 +20,7 @@
     }
   ],
   "visual": {
-    "cast_animation": "guard_stance",
+    "cast_animation": "iron_defense_stance",
     "impact": "steel_plates",
     "aftermath": "guard_shell"
   },

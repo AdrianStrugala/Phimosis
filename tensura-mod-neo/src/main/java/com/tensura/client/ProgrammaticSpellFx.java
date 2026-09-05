@@ -27,12 +27,13 @@ public final class ProgrammaticSpellFx {
 
     public static FX get(ResourceLocation id, SpellVfxPacket packet) {
         int duration = effectiveDuration(packet);
-        CacheKey key = new CacheKey(id, packet.shape(), duration);
-        return CACHE.computeIfAbsent(key, ignored -> create(id, packet.shape(), duration));
+        CacheKey key = new CacheKey(id, packet.shape(), packet.school(), duration);
+        return CACHE.computeIfAbsent(key,
+                ignored -> create(id, packet.shape(), packet.school(), duration));
     }
 
-    private static FX create(ResourceLocation id, String shape, int duration) {
-        Palette palette = palette(id.getPath());
+    private static FX create(ResourceLocation id, String shape, String school, int duration) {
+        Palette palette = palette(id.getPath(), school);
         FX effect = new FX();
         effect.setFxLocation(id);
 
@@ -160,7 +161,7 @@ public final class ProgrammaticSpellFx {
         };
     }
 
-    private static Palette palette(String style) {
+    private static Palette palette(String style, String school) {
         return switch (style) {
             case "electric_ground_ring", "electric_arc" ->
                     new Palette(0xFFFDE047, 0xAA60A5FA);
@@ -199,11 +200,32 @@ public final class ProgrammaticSpellFx {
                     case "dark_focus", "dark_pulse_beam", "dark_pulse_impact",
                         "dark_residue" ->
                         new Palette(0xFFC084FC, 0xCC1F2937);
+            default -> schoolPalette(school);
+        };
+    }
+
+    private static Palette schoolPalette(String school) {
+        return switch (school) {
+            case "fire" -> new Palette(0xFFFF662D, 0xCCFFCA4A);
+            case "water" -> new Palette(0xFF2DA9FF, 0xCC5BEBEE);
+            case "lightning" -> new Palette(0xFFFFE034, 0xCCFFFFBC);
+            case "nature" -> new Palette(0xFF59D65B, 0xCCBCFF78);
+            case "ice" -> new Palette(0xFF82E8FF, 0xCCE7FFFF);
+            case "poison" -> new Palette(0xFFC55BDE, 0xCC8EF575);
+            case "earth" -> new Palette(0xFFD3944C, 0xCCFFD67E);
+            case "wind" -> new Palette(0xFF97D5FF, 0xCCF5FCFF);
+            case "psychic" -> new Palette(0xFFF55EB8, 0xCC70E8FF);
+            case "bug" -> new Palette(0xFF9DD33B, 0xCCE7FF8A);
+            case "shadow" -> new Palette(0xFF7E65CA, 0xCCD2AAFF);
+            case "dragon" -> new Palette(0xFF745BFF, 0xCCFF5B62);
+            case "fairy" -> new Palette(0xFFFF87CF, 0xCCFFEBFA);
+            case "steel" -> new Palette(0xFFA4BECD, 0xCCEEFAFF);
+            case "physical" -> new Palette(0xFFF2F0E6, 0xCC9B978B);
             default -> new Palette(0xFFE2E8F0, 0x888B5CF6);
         };
     }
 
-    private record CacheKey(ResourceLocation id, String shape, int duration) {
+    private record CacheKey(ResourceLocation id, String shape, String school, int duration) {
     }
 
     private record Palette(int primary, int secondary) {

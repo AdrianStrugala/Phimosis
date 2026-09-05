@@ -1,0 +1,11 @@
+{
+  "title": "Devour",
+  "description": "Absorbed Pokemon abilities arranged across all 18 types. Each sigil shows a collected spell and dispenses replacement copies.",
+  "background": "minecraft:textures/block/crying_obsidian.png",
+  "icon": {
+    "type": "item",
+    "data": {
+      "item": "minecraft:ender_eye"
+    }
+  }
+}

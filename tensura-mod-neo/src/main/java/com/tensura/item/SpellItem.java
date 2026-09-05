@@ -34,6 +34,19 @@ public class SpellItem extends Item {
         "earth", "wind", "fairy", "steel"
     );
 
+    public static final java.util.List<String> CUSTOM_ICON_ORDER = java.util.List.of(
+        "flamethrower", "surf", "toxic_spikes", "close_combat", "shadow_sneak",
+        "psybeam", "volt_tackle", "fire_spin", "rock_slide", "recover", "dark_pulse",
+        "aqua_jet", "aurora_veil", "blizzard", "draco_meteor", "electro_ball",
+        "ember", "future_sight", "hydro_pump", "ice_beam", "iron_defense",
+        "quick_attack", "rest", "string_shot", "sucker_punch", "thunder",
+        "tri_attack", "vine_whip", "whirlpool", "pin_missile", "u_turn",
+        "x_scissor", "bug_buzz", "mud_shot", "bulldoze", "dig", "earth_power",
+        "earthquake", "fairy_wind", "draining_kiss", "charm", "dazzling_gleam",
+        "moonblast", "gust", "air_cutter", "aerial_ace", "tailwind", "hurricane",
+        "swift", "hyper_voice"
+    );
+
     public SpellItem(Properties props) {
         super(props);
     }
@@ -75,20 +88,8 @@ public class SpellItem extends Item {
         ResourceLocation spellId = getSpellId(stack);
         if (spellId == null) return 0f;
 
-        return switch (spellId.getPath()) {
-            case "flamethrower" -> 1f;
-            case "surf" -> 2f;
-            case "toxic_spikes" -> 3f;
-            case "close_combat" -> 4f;
-            case "shadow_sneak" -> 5f;
-            case "psybeam" -> 6f;
-            case "volt_tackle" -> 7f;
-            case "fire_spin" -> 8f;
-            case "rock_slide" -> 9f;
-            case "recover" -> 10f;
-            case "dark_pulse" -> 11f;
-            default -> 0f;
-        };
+        int index = CUSTOM_ICON_ORDER.indexOf(spellId.getPath());
+        return index < 0 ? 0f : index + 1f;
     }
 
     @Override

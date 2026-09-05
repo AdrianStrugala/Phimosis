@@ -1,0 +1,40 @@
+{
+  "pokemon_type": "bug",
+  "category": "physical",
+  "power": 6.0,
+  "school": "bug",
+  "cooldown_ticks": 220,
+  "targeting": {
+    "type": "aim",
+    "range": 4.5,
+    "width": 2.0,
+    "max_targets": 1
+  },
+  "delivery": {
+    "type": "melee_combo",
+    "combo_hits": 2,
+    "combo_interval_ticks": 5,
+    "recovery_ticks": 6
+  },
+  "impact": [
+    {
+      "type": "damage",
+      "damage_multiplier": 1.0
+    },
+    {
+      "type": "expose",
+      "duration": 100,
+      "amplifier": 0
+    }
+  ],
+  "visual": {
+    "cast_animation": "x_scissor_cast",
+    "trail": "x_scissor_blades",
+    "impact": "x_scissor_impact",
+    "aftermath": "bug_exposed_mark"
+  },
+  "sound": {
+    "cast": "minecraft:entity.player.attack.sweep",
+    "impact": "minecraft:entity.player.attack.crit"
+  }
+}

@@ -1,0 +1,3411 @@
+{
+  "devour_core": {
+    "title": "Devour Core",
+    "description": "Absorbed abilities radiate outward by Pokemon type.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:ender_eye"
+      }
+    },
+    "rewards": [
+
+    ],
+    "cost": 0
+  },
+  "tackle_owned": {
+    "title": "Tackle",
+    "description": "Absorbed. The most basic of physical strikes. You have taken your first step.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:iron_sword"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "tackle": {
+    "title": "Tackle Dispenser",
+    "description": "Dispenses another copy of the absorbed Tackle spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s tackle"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "quick_attack_owned": {
+    "title": "Quick Attack",
+    "description": "Absorbed. An absorbed Normal-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_quick_attack"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "quick_attack": {
+    "title": "Quick Attack Dispenser",
+    "description": "Dispenses another copy of the absorbed Quick Attack spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s quick_attack"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "swift_owned": {
+    "title": "Swift",
+    "description": "Absorbed. An absorbed Normal-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_swift"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "swift": {
+    "title": "Swift Dispenser",
+    "description": "Dispenses another copy of the absorbed Swift spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s swift"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "tri_attack_owned": {
+    "title": "Tri Attack",
+    "description": "Absorbed. An absorbed Normal-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_tri_attack"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "tri_attack": {
+    "title": "Tri Attack Dispenser",
+    "description": "Dispenses another copy of the absorbed Tri Attack spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s tri_attack"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "recover_owned": {
+    "title": "Recover",
+    "description": "Absorbed. Focus your magicules to restore half of your maximum health.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_recover"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "recover": {
+    "title": "Recover Dispenser",
+    "description": "Dispenses another copy of the absorbed Recover spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s recover"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "hyper_voice_owned": {
+    "title": "Hyper Voice",
+    "description": "Absorbed. An absorbed Normal-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_hyper_voice"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "hyper_voice": {
+    "title": "Hyper Voice Dispenser",
+    "description": "Dispenses another copy of the absorbed Hyper Voice spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s hyper_voice"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "hyper_beam_owned": {
+    "title": "Hyper Beam",
+    "description": "Absorbed. The pinnacle of physical power — a beam of pure destructive energy.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:netherite_sword"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "hyper_beam": {
+    "title": "Hyper Beam Dispenser",
+    "description": "Dispenses another copy of the absorbed Hyper Beam spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s hyper_beam"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "explosion_owned": {
+    "title": "EXPLOSION",
+    "description": "Absorbed. The ultimate sacrifice. An earth-shattering detonation that obliterates everything nearby.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:tnt"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "explosion": {
+    "title": "EXPLOSION Dispenser",
+    "description": "Dispenses another copy of the absorbed EXPLOSION spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s explosion"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "ember_owned": {
+    "title": "Ember",
+    "description": "Absorbed. A weak flame, but it sets the foundation for greater fire.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_ember"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "ember": {
+    "title": "Ember Dispenser",
+    "description": "Dispenses another copy of the absorbed Ember spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s ember"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "will_o_wisp_owned": {
+    "title": "Will-O-Wisp",
+    "description": "Absorbed. A ghostly fire that burns without dealing direct harm, leaving lasting burns.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:soul_lantern"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "will_o_wisp": {
+    "title": "Will-O-Wisp Dispenser",
+    "description": "Dispenses another copy of the absorbed Will-O-Wisp spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s will_o_wisp"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "flamethrower_owned": {
+    "title": "Flamethrower",
+    "description": "Absorbed. A sustained stream of scorching fire.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_flamethrower"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "flamethrower": {
+    "title": "Flamethrower Dispenser",
+    "description": "Dispenses another copy of the absorbed Flamethrower spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s flamethrower"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "fire_spin_owned": {
+    "title": "Fire Spin",
+    "description": "Absorbed. Trap nearby foes in a pulling vortex of persistent flame.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_fire_spin"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "fire_spin": {
+    "title": "Fire Spin Dispenser",
+    "description": "Dispenses another copy of the absorbed Fire Spin spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s fire_spin"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "fire_blast_owned": {
+    "title": "Fire Blast",
+    "description": "Absorbed. A massive cross-shaped inferno that sears everything nearby.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:blaze_powder"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "fire_blast": {
+    "title": "Fire Blast Dispenser",
+    "description": "Dispenses another copy of the absorbed Fire Blast spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s fire_blast"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "overheat_owned": {
+    "title": "Overheat",
+    "description": "Absorbed. Release all fire energy in one catastrophic burst.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:magma_block"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "overheat": {
+    "title": "Overheat Dispenser",
+    "description": "Dispenses another copy of the absorbed Overheat spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s overheat"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "sacred_fire_owned": {
+    "title": "Sacred Fire",
+    "description": "Absorbed. A divine flame of sacred intensity.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:fire_charge"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "sacred_fire": {
+    "title": "Sacred Fire Dispenser",
+    "description": "Dispenses another copy of the absorbed Sacred Fire spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s sacred_fire"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "water_gun_owned": {
+    "title": "Water Gun",
+    "description": "Absorbed. A pressurized stream of water that knocks foes back.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:water_bucket"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "water_gun": {
+    "title": "Water Gun Dispenser",
+    "description": "Dispenses another copy of the absorbed Water Gun spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s water_gun"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "aqua_jet_owned": {
+    "title": "Aqua Jet",
+    "description": "Absorbed. An absorbed Water-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_aqua_jet"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "aqua_jet": {
+    "title": "Aqua Jet Dispenser",
+    "description": "Dispenses another copy of the absorbed Aqua Jet spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s aqua_jet"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "bubble_beam_owned": {
+    "title": "Bubble Beam",
+    "description": "Absorbed. A stream of fast-moving bubbles that slow the target.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bubble_coral"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "bubble_beam": {
+    "title": "Bubble Beam Dispenser",
+    "description": "Dispenses another copy of the absorbed Bubble Beam spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s bubble_beam"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "water_pulse_owned": {
+    "title": "Water Pulse",
+    "description": "Absorbed. A pulsing wave of water that disorients the target.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:prismarine_shard"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "water_pulse": {
+    "title": "Water Pulse Dispenser",
+    "description": "Dispenses another copy of the absorbed Water Pulse spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s water_pulse"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "whirlpool_owned": {
+    "title": "Whirlpool",
+    "description": "Absorbed. An absorbed Water-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_whirlpool"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "whirlpool": {
+    "title": "Whirlpool Dispenser",
+    "description": "Dispenses another copy of the absorbed Whirlpool spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s whirlpool"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "surf_owned": {
+    "title": "Surf",
+    "description": "Absorbed. Summon a massive wave that sweeps away all nearby foes.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_surf"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "surf": {
+    "title": "Surf Dispenser",
+    "description": "Dispenses another copy of the absorbed Surf spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s surf"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "hydro_pump_owned": {
+    "title": "Hydro Pump",
+    "description": "Absorbed. An explosive blast of water at maximum pressure.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_hydro_pump"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "hydro_pump": {
+    "title": "Hydro Pump Dispenser",
+    "description": "Dispenses another copy of the absorbed Hydro Pump spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s hydro_pump"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "scald_owned": {
+    "title": "Scald",
+    "description": "Absorbed. Superheated water that burns and weakens on contact.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:magma_cream"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "scald": {
+    "title": "Scald Dispenser",
+    "description": "Dispenses another copy of the absorbed Scald spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s scald"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "thundershock_owned": {
+    "title": "Thundershock",
+    "description": "Absorbed. A small jolt of electricity — the first spark of lightning mastery.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:lightning_rod"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "thundershock": {
+    "title": "Thundershock Dispenser",
+    "description": "Dispenses another copy of the absorbed Thundershock spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s thundershock"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "electro_ball_owned": {
+    "title": "Electro Ball",
+    "description": "Absorbed. An absorbed Electric-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_electro_ball"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "electro_ball": {
+    "title": "Electro Ball Dispenser",
+    "description": "Dispenses another copy of the absorbed Electro Ball spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s electro_ball"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "thunderbolt_owned": {
+    "title": "Thunderbolt",
+    "description": "Absorbed. A focused lightning bolt of tremendous power.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:lightning_rod"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "thunderbolt": {
+    "title": "Thunderbolt Dispenser",
+    "description": "Dispenses another copy of the absorbed Thunderbolt spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s thunderbolt"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "discharge_owned": {
+    "title": "Discharge",
+    "description": "Absorbed. A massive electrical discharge that paralyzes all nearby.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:copper_ingot"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "discharge": {
+    "title": "Discharge Dispenser",
+    "description": "Dispenses another copy of the absorbed Discharge spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s discharge"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "thunder_owned": {
+    "title": "Thunder",
+    "description": "Absorbed. A deafening thunderclap that calls down a real lightning bolt.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_thunder"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "thunder": {
+    "title": "Thunder Dispenser",
+    "description": "Dispenses another copy of the absorbed Thunder spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s thunder"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "volt_tackle_owned": {
+    "title": "Volt Tackle",
+    "description": "Absorbed. Wrap yourself in electricity and charge with catastrophic force.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_volt_tackle"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "volt_tackle": {
+    "title": "Volt Tackle Dispenser",
+    "description": "Dispenses another copy of the absorbed Volt Tackle spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s volt_tackle"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "vine_whip_owned": {
+    "title": "Vine Whip",
+    "description": "Absorbed. A lashing strike of living vines.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_vine_whip"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "vine_whip": {
+    "title": "Vine Whip Dispenser",
+    "description": "Dispenses another copy of the absorbed Vine Whip spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s vine_whip"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "leech_seed_owned": {
+    "title": "Leech Seed",
+    "description": "Absorbed. Plant a parasitic seed that drains life from your foe.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:wheat_seeds"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "leech_seed": {
+    "title": "Leech Seed Dispenser",
+    "description": "Dispenses another copy of the absorbed Leech Seed spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s leech_seed"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "razor_leaf_owned": {
+    "title": "Razor Leaf",
+    "description": "Absorbed. Sharp leaves slice through targets with poison's touch.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:oak_leaves"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "razor_leaf": {
+    "title": "Razor Leaf Dispenser",
+    "description": "Dispenses another copy of the absorbed Razor Leaf spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s razor_leaf"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "leaf_blade_owned": {
+    "title": "Leaf Blade",
+    "description": "Absorbed. A leaf blade sharp enough to cut steel.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bamboo"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "leaf_blade": {
+    "title": "Leaf Blade Dispenser",
+    "description": "Dispenses another copy of the absorbed Leaf Blade spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s leaf_blade"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "energy_ball_owned": {
+    "title": "Energy Ball",
+    "description": "Absorbed. A concentrated orb of natural energy.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:slime_ball"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "energy_ball": {
+    "title": "Energy Ball Dispenser",
+    "description": "Dispenses another copy of the absorbed Energy Ball spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s energy_ball"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "petal_blizzard_owned": {
+    "title": "Petal Blizzard",
+    "description": "Absorbed. A storm of razor petals that shreds everything in range.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:pink_petals"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "petal_blizzard": {
+    "title": "Petal Blizzard Dispenser",
+    "description": "Dispenses another copy of the absorbed Petal Blizzard spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s petal_blizzard"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "solar_beam_owned": {
+    "title": "Solar Beam",
+    "description": "Absorbed. Harness the sun's full power in a devastating beam.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:sunflower"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "solar_beam": {
+    "title": "Solar Beam Dispenser",
+    "description": "Dispenses another copy of the absorbed Solar Beam spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s solar_beam"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "nature_burst_owned": {
+    "title": "Nature Burst",
+    "description": "Absorbed. Unleash the raw force of nature in a healing explosion.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:chorus_flower"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "nature_burst": {
+    "title": "Nature Burst Dispenser",
+    "description": "Dispenses another copy of the absorbed Nature Burst spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s nature_burst"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "powder_snow_owned": {
+    "title": "Powder Snow",
+    "description": "Absorbed. A freezing cloud of powder snow that slows all caught within.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:snowball"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "powder_snow": {
+    "title": "Powder Snow Dispenser",
+    "description": "Dispenses another copy of the absorbed Powder Snow spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s powder_snow"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "ice_shard_owned": {
+    "title": "Ice Shard",
+    "description": "Absorbed. A razor-sharp shard of ice launched at blinding speed.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:packed_ice"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "ice_shard": {
+    "title": "Ice Shard Dispenser",
+    "description": "Dispenses another copy of the absorbed Ice Shard spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s ice_shard"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "ice_beam_owned": {
+    "title": "Ice Beam",
+    "description": "Absorbed. A sustained beam of absolute zero temperature.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_ice_beam"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "ice_beam": {
+    "title": "Ice Beam Dispenser",
+    "description": "Dispenses another copy of the absorbed Ice Beam spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s ice_beam"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "frost_nova_owned": {
+    "title": "Frost Nova",
+    "description": "Absorbed. Freeze everything around you in an instant.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:ice"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "frost_nova": {
+    "title": "Frost Nova Dispenser",
+    "description": "Dispenses another copy of the absorbed Frost Nova spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s frost_nova"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "aurora_veil_owned": {
+    "title": "Aurora Veil",
+    "description": "Absorbed. An absorbed Ice-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_aurora_veil"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "aurora_veil": {
+    "title": "Aurora Veil Dispenser",
+    "description": "Dispenses another copy of the absorbed Aurora Veil spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s aurora_veil"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "blizzard_owned": {
+    "title": "Blizzard",
+    "description": "Absorbed. Summon a raging blizzard. None survive the cold.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_blizzard"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "blizzard": {
+    "title": "Blizzard Dispenser",
+    "description": "Dispenses another copy of the absorbed Blizzard spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s blizzard"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "mach_punch_owned": {
+    "title": "Mach Punch",
+    "description": "Absorbed. A lightning-fast punch that blurs through the air.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:iron_sword"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "mach_punch": {
+    "title": "Mach Punch Dispenser",
+    "description": "Dispenses another copy of the absorbed Mach Punch spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s mach_punch"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "close_combat_owned": {
+    "title": "Close Combat",
+    "description": "Absorbed. Total physical commitment. Maximum damage at point-blank range.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_close_combat"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "close_combat": {
+    "title": "Close Combat Dispenser",
+    "description": "Dispenses another copy of the absorbed Close Combat spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s close_combat"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "focus_blast_owned": {
+    "title": "Focus Blast",
+    "description": "Absorbed. A sphere of pure focused energy launched with devastating force.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:magma_cream"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "focus_blast": {
+    "title": "Focus Blast Dispenser",
+    "description": "Dispenses another copy of the absorbed Focus Blast spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s focus_blast"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "seismic_slam_owned": {
+    "title": "Seismic Slam",
+    "description": "Absorbed. Slam the earth to send shockwaves outward.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:deepslate"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "seismic_slam": {
+    "title": "Seismic Slam Dispenser",
+    "description": "Dispenses another copy of the absorbed Seismic Slam spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s seismic_slam"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "poison_sting_owned": {
+    "title": "Poison Sting",
+    "description": "Absorbed. A venomous strike with chance to poison.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:poisonous_potato"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "poison_sting": {
+    "title": "Poison Sting Dispenser",
+    "description": "Dispenses another copy of the absorbed Poison Sting spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s poison_sting"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "poison_strike_owned": {
+    "title": "Poison Strike",
+    "description": "Absorbed. A reliable poison attack.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:fermented_spider_eye"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "poison_strike": {
+    "title": "Poison Strike Dispenser",
+    "description": "Dispenses another copy of the absorbed Poison Strike spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s poison_strike"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "toxic_spikes_owned": {
+    "title": "Toxic Spikes",
+    "description": "Absorbed. Scatter three long-lived venomous traps across the battlefield.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_toxic_spikes"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "toxic_spikes": {
+    "title": "Toxic Spikes Dispenser",
+    "description": "Dispenses another copy of the absorbed Toxic Spikes spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s toxic_spikes"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "sludge_bomb_owned": {
+    "title": "Sludge Bomb",
+    "description": "Absorbed. A cloud of toxic sludge poisons all nearby.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:slime_block"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "sludge_bomb": {
+    "title": "Sludge Bomb Dispenser",
+    "description": "Dispenses another copy of the absorbed Sludge Bomb spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s sludge_bomb"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "toxic_owned": {
+    "title": "Toxic",
+    "description": "Absorbed. Inflicts deadly poison that withers the soul.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:wither_rose"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "toxic": {
+    "title": "Toxic Dispenser",
+    "description": "Dispenses another copy of the absorbed Toxic spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s toxic"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "mud_shot_owned": {
+    "title": "Mud Shot",
+    "description": "Absorbed. An absorbed Ground-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_mud_shot"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "mud_shot": {
+    "title": "Mud Shot Dispenser",
+    "description": "Dispenses another copy of the absorbed Mud Shot spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s mud_shot"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "bulldoze_owned": {
+    "title": "Bulldoze",
+    "description": "Absorbed. An absorbed Ground-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_bulldoze"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "bulldoze": {
+    "title": "Bulldoze Dispenser",
+    "description": "Dispenses another copy of the absorbed Bulldoze spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s bulldoze"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "dig_owned": {
+    "title": "Dig",
+    "description": "Absorbed. An absorbed Ground-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_dig"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "dig": {
+    "title": "Dig Dispenser",
+    "description": "Dispenses another copy of the absorbed Dig spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s dig"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "earth_power_owned": {
+    "title": "Earth Power",
+    "description": "Absorbed. An absorbed Ground-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_earth_power"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "earth_power": {
+    "title": "Earth Power Dispenser",
+    "description": "Dispenses another copy of the absorbed Earth Power spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s earth_power"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "earthquake_owned": {
+    "title": "Earthquake",
+    "description": "Absorbed. The earth itself convulses, swallowing all in range.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_earthquake"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "earthquake": {
+    "title": "Earthquake Dispenser",
+    "description": "Dispenses another copy of the absorbed Earthquake spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s earthquake"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "gust_owned": {
+    "title": "Gust",
+    "description": "Absorbed. A burst of wind that knocks targets away.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_gust"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "gust": {
+    "title": "Gust Dispenser",
+    "description": "Dispenses another copy of the absorbed Gust spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s gust"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "air_cutter_owned": {
+    "title": "Air Cutter",
+    "description": "Absorbed. An absorbed Flying-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_air_cutter"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "air_cutter": {
+    "title": "Air Cutter Dispenser",
+    "description": "Dispenses another copy of the absorbed Air Cutter spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s air_cutter"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "aerial_ace_owned": {
+    "title": "Aerial Ace",
+    "description": "Absorbed. A precision strike that never misses.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_aerial_ace"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "aerial_ace": {
+    "title": "Aerial Ace Dispenser",
+    "description": "Dispenses another copy of the absorbed Aerial Ace spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s aerial_ace"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "tailwind_owned": {
+    "title": "Tailwind",
+    "description": "Absorbed. An absorbed Flying-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_tailwind"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "tailwind": {
+    "title": "Tailwind Dispenser",
+    "description": "Dispenses another copy of the absorbed Tailwind spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s tailwind"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "hurricane_owned": {
+    "title": "Hurricane",
+    "description": "Absorbed. An absorbed Flying-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_hurricane"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "hurricane": {
+    "title": "Hurricane Dispenser",
+    "description": "Dispenses another copy of the absorbed Hurricane spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s hurricane"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "aerial_strike_owned": {
+    "title": "Aerial Strike",
+    "description": "Absorbed. Dive from above for a devastating area strike.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:phantom_membrane"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "aerial_strike": {
+    "title": "Aerial Strike Dispenser",
+    "description": "Dispenses another copy of the absorbed Aerial Strike spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s aerial_strike"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "confusion_owned": {
+    "title": "Confusion",
+    "description": "Absorbed. A weak psychic wave that muddles the mind.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:amethyst_shard"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "confusion": {
+    "title": "Confusion Dispenser",
+    "description": "Dispenses another copy of the absorbed Confusion spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s confusion"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "psybeam_owned": {
+    "title": "Psybeam",
+    "description": "Absorbed. A beam of psychic energy that bends reality.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_psybeam"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "psybeam": {
+    "title": "Psybeam Dispenser",
+    "description": "Dispenses another copy of the absorbed Psybeam spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s psybeam"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "psychic_owned": {
+    "title": "Psychic",
+    "description": "Absorbed. Telekinetic force launches foes through the air.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:large_amethyst_bud"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "psychic": {
+    "title": "Psychic Dispenser",
+    "description": "Dispenses another copy of the absorbed Psychic spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s psychic"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "rest_owned": {
+    "title": "Rest",
+    "description": "Absorbed. An absorbed Psychic-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_rest"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "rest": {
+    "title": "Rest Dispenser",
+    "description": "Dispenses another copy of the absorbed Rest spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s rest"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "psychic_blast_owned": {
+    "title": "Psychic Blast",
+    "description": "Absorbed. A focused psychic shockwave of terrifying power.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:nether_star"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "psychic_blast": {
+    "title": "Psychic Blast Dispenser",
+    "description": "Dispenses another copy of the absorbed Psychic Blast spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s psychic_blast"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "future_sight_owned": {
+    "title": "Future Sight",
+    "description": "Absorbed. See the threads of fate. Heal yourself and resist harm.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_future_sight"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "future_sight": {
+    "title": "Future Sight Dispenser",
+    "description": "Dispenses another copy of the absorbed Future Sight spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s future_sight"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "string_shot_owned": {
+    "title": "String Shot",
+    "description": "Absorbed. Sticky silk binds the target and sharply reduces movement for 2 seconds.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_string_shot"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "string_shot": {
+    "title": "String Shot Dispenser",
+    "description": "Dispenses another copy of the absorbed String Shot spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s string_shot"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "pin_missile_owned": {
+    "title": "Pin Missile",
+    "description": "Absorbed. An absorbed Bug-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_pin_missile"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "pin_missile": {
+    "title": "Pin Missile Dispenser",
+    "description": "Dispenses another copy of the absorbed Pin Missile spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s pin_missile"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "u_turn_owned": {
+    "title": "U Turn",
+    "description": "Absorbed. An absorbed Bug-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_u_turn"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "u_turn": {
+    "title": "U Turn Dispenser",
+    "description": "Dispenses another copy of the absorbed U Turn spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s u_turn"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "x_scissor_owned": {
+    "title": "X Scissor",
+    "description": "Absorbed. An absorbed Bug-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_x_scissor"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "x_scissor": {
+    "title": "X Scissor Dispenser",
+    "description": "Dispenses another copy of the absorbed X Scissor spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s x_scissor"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "bug_buzz_owned": {
+    "title": "Bug Buzz",
+    "description": "Absorbed. An absorbed Bug-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_bug_buzz"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "bug_buzz": {
+    "title": "Bug Buzz Dispenser",
+    "description": "Dispenses another copy of the absorbed Bug Buzz spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s bug_buzz"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "rock_throw_owned": {
+    "title": "Rock Throw",
+    "description": "Absorbed. Hurl a heavy stone at your target.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:cobblestone"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "rock_throw": {
+    "title": "Rock Throw Dispenser",
+    "description": "Dispenses another copy of the absorbed Rock Throw spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s rock_throw"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "rock_slide_owned": {
+    "title": "Rock Slide",
+    "description": "Absorbed. Avalanche of stones that may cause flinching.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_rock_slide"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "rock_slide": {
+    "title": "Rock Slide Dispenser",
+    "description": "Dispenses another copy of the absorbed Rock Slide spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s rock_slide"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "stone_edge_owned": {
+    "title": "Stone Edge",
+    "description": "Absorbed. Razor-sharp stone spikes erupt with critical force.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:smooth_stone"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "stone_edge": {
+    "title": "Stone Edge Dispenser",
+    "description": "Dispenses another copy of the absorbed Stone Edge spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s stone_edge"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "night_shade_owned": {
+    "title": "Night Shade",
+    "description": "Absorbed. Shadow energy that blinds and haunts the target.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:black_dye"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "night_shade": {
+    "title": "Night Shade Dispenser",
+    "description": "Dispenses another copy of the absorbed Night Shade spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s night_shade"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "shadow_sneak_owned": {
+    "title": "Shadow Sneak",
+    "description": "Absorbed. Slip through shadow and strike a nearby target instantly.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_shadow_sneak"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "shadow_sneak": {
+    "title": "Shadow Sneak Dispenser",
+    "description": "Dispenses another copy of the absorbed Shadow Sneak spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s shadow_sneak"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "shadow_ball_owned": {
+    "title": "Shadow Ball",
+    "description": "Absorbed. A ball of compressed shadow energy that weakens on impact.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:black_concrete"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "shadow_ball": {
+    "title": "Shadow Ball Dispenser",
+    "description": "Dispenses another copy of the absorbed Shadow Ball spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s shadow_ball"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "hex_owned": {
+    "title": "Hex",
+    "description": "Absorbed. Deals massive damage to weakened targets.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:wither_skeleton_skull"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "hex": {
+    "title": "Hex Dispenser",
+    "description": "Dispenses another copy of the absorbed Hex spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s hex"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "dragon_breath_owned": {
+    "title": "Dragon Breath",
+    "description": "Absorbed. A breath of toxic dragonfire.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dragon_breath"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "dragon_breath": {
+    "title": "Dragon Breath Dispenser",
+    "description": "Dispenses another copy of the absorbed Dragon Breath spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s dragon_breath"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "dragon_pulse_owned": {
+    "title": "Dragon Pulse",
+    "description": "Absorbed. A condensed sphere of dragon energy.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dragon_head"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "dragon_pulse": {
+    "title": "Dragon Pulse Dispenser",
+    "description": "Dispenses another copy of the absorbed Dragon Pulse spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s dragon_pulse"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "draco_meteor_owned": {
+    "title": "Draco Meteor",
+    "description": "Absorbed. Call down a meteor of pure dragon power from the sky.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_draco_meteor"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "draco_meteor": {
+    "title": "Draco Meteor Dispenser",
+    "description": "Dispenses another copy of the absorbed Draco Meteor spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s draco_meteor"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "outrage_owned": {
+    "title": "Outrage",
+    "description": "Absorbed. Unleash uncontrollable draconic rage. Devastating but disorienting.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:nether_star"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "outrage": {
+    "title": "Outrage Dispenser",
+    "description": "Dispenses another copy of the absorbed Outrage spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s outrage"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "dark_pulse_owned": {
+    "title": "Dark Pulse",
+    "description": "Absorbed. A pulse of dark energy that may cause flinching.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_dark_pulse"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "dark_pulse": {
+    "title": "Dark Pulse Dispenser",
+    "description": "Dispenses another copy of the absorbed Dark Pulse spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s dark_pulse"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "sucker_punch_owned": {
+    "title": "Sucker Punch",
+    "description": "Absorbed. An absorbed Dark-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_sucker_punch"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "sucker_punch": {
+    "title": "Sucker Punch Dispenser",
+    "description": "Dispenses another copy of the absorbed Sucker Punch spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s sucker_punch"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "foul_play_owned": {
+    "title": "Foul Play",
+    "description": "Absorbed. Turn your enemy's strength against them.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:netherite_ingot"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "foul_play": {
+    "title": "Foul Play Dispenser",
+    "description": "Dispenses another copy of the absorbed Foul Play spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s foul_play"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "iron_tail_owned": {
+    "title": "Iron Tail",
+    "description": "Absorbed. A metallic strike that weakens the target's defenses.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:iron_ingot"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "iron_tail": {
+    "title": "Iron Tail Dispenser",
+    "description": "Dispenses another copy of the absorbed Iron Tail spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s iron_tail"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "iron_defense_owned": {
+    "title": "Iron Defense",
+    "description": "Absorbed. An absorbed Steel-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_iron_defense"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "iron_defense": {
+    "title": "Iron Defense Dispenser",
+    "description": "Dispenses another copy of the absorbed Iron Defense spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s iron_defense"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "iron_strike_owned": {
+    "title": "Iron Strike",
+    "description": "Absorbed. A heavy steel projectile with knockback.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:iron_block"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "iron_strike": {
+    "title": "Iron Strike Dispenser",
+    "description": "Dispenses another copy of the absorbed Iron Strike spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s iron_strike"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "flash_cannon_owned": {
+    "title": "Flash Cannon",
+    "description": "Absorbed. A beam of blinding steel energy that weakens on impact.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:netherite_ingot"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "flash_cannon": {
+    "title": "Flash Cannon Dispenser",
+    "description": "Dispenses another copy of the absorbed Flash Cannon spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s flash_cannon"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "fairy_wind_owned": {
+    "title": "Fairy Wind",
+    "description": "Absorbed. An absorbed Fairy-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_fairy_wind"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "fairy_wind": {
+    "title": "Fairy Wind Dispenser",
+    "description": "Dispenses another copy of the absorbed Fairy Wind spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s fairy_wind"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "draining_kiss_owned": {
+    "title": "Draining Kiss",
+    "description": "Absorbed. An absorbed Fairy-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_draining_kiss"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "draining_kiss": {
+    "title": "Draining Kiss Dispenser",
+    "description": "Dispenses another copy of the absorbed Draining Kiss spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s draining_kiss"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "charm_owned": {
+    "title": "Charm",
+    "description": "Absorbed. An absorbed Fairy-type Pokemon ability.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_charm"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "charm": {
+    "title": "Charm Dispenser",
+    "description": "Dispenses another copy of the absorbed Charm spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s charm"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "dazzling_gleam_owned": {
+    "title": "Dazzling Gleam",
+    "description": "Absorbed. A burst of blinding fairy light.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_dazzling_gleam"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "dazzling_gleam": {
+    "title": "Dazzling Gleam Dispenser",
+    "description": "Dispenses another copy of the absorbed Dazzling Gleam spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s dazzling_gleam"
+        }
+      }
+    ],
+    "cost": 0
+  },
+  "moonblast_owned": {
+    "title": "Moonblast",
+    "description": "Absorbed. Channel the power of the moon in a devastating area blast.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_moonblast"
+      }
+    },
+    "size": 1.3,
+    "rewards": [
+
+    ],
+    "cost": 1
+  },
+  "moonblast": {
+    "title": "Moonblast Dispenser",
+    "description": "Dispenses another copy of the absorbed Moonblast spell.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:dispenser"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s moonblast"
+        }
+      }
+    ],
+    "cost": 0
+  }
+}

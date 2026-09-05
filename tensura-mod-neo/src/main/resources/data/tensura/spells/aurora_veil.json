@@ -20,7 +20,7 @@
     }
   ],
   "visual": {
-    "cast_animation": "guard_stance",
+    "cast_animation": "aurora_veil_stance",
     "telegraph": "aurora_dome",
     "aftermath": "aurora_curtain"
   },

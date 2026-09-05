@@ -9,6 +9,9 @@ import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class TensuraItemRegistry {
 
     public static final DeferredRegister<Item> ITEMS =
@@ -25,26 +28,14 @@ public class TensuraItemRegistry {
             ITEMS.register("recall_station", () ->
                     new BlockItem(TensuraBlockRegistry.RECALL_STATION.get(), new Item.Properties()));
 
-    public static final DeferredHolder<Item, Item> SPELL_ICON_CLOSE_COMBAT =
-            ITEMS.register("spell_icon_close_combat", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SPELL_ICON_FLAMETHROWER =
-            ITEMS.register("spell_icon_flamethrower", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SPELL_ICON_VOLT_TACKLE =
-            ITEMS.register("spell_icon_volt_tackle", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SPELL_ICON_SURF =
-            ITEMS.register("spell_icon_surf", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SPELL_ICON_PSYBEAM =
-            ITEMS.register("spell_icon_psybeam", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SPELL_ICON_DARK_PULSE =
-            ITEMS.register("spell_icon_dark_pulse", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SPELL_ICON_ROCK_SLIDE =
-            ITEMS.register("spell_icon_rock_slide", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SPELL_ICON_TOXIC_SPIKES =
-            ITEMS.register("spell_icon_toxic_spikes", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SPELL_ICON_SHADOW_SNEAK =
-            ITEMS.register("spell_icon_shadow_sneak", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SPELL_ICON_FIRE_SPIN =
-            ITEMS.register("spell_icon_fire_spin", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SPELL_ICON_RECOVER =
-            ITEMS.register("spell_icon_recover", () -> new Item(new Item.Properties()));
+    public static final Map<String, DeferredHolder<Item, Item>> SPELL_ICONS = registerSpellIcons();
+
+    private static Map<String, DeferredHolder<Item, Item>> registerSpellIcons() {
+        Map<String, DeferredHolder<Item, Item>> icons = new LinkedHashMap<>();
+        for (String spellId : SpellItem.CUSTOM_ICON_ORDER) {
+            icons.put(spellId, ITEMS.register("spell_icon_" + spellId,
+                    () -> new Item(new Item.Properties())));
+        }
+        return Map.copyOf(icons);
+    }
 }

@@ -4,29 +4,383 @@
     "layer0": "cobblemon:item/type_gem/fighting_gem"
   },
   "overrides": [
-    { "predicate": { "tensura:school":  1 }, "model": "tensura:item/spell_lightning" },
-    { "predicate": { "tensura:school":  2 }, "model": "tensura:item/spell_fire"      },
-    { "predicate": { "tensura:school":  3 }, "model": "tensura:item/spell_water"     },
-    { "predicate": { "tensura:school":  4 }, "model": "tensura:item/spell_ice"       },
-    { "predicate": { "tensura:school":  5 }, "model": "tensura:item/spell_shadow"    },
-    { "predicate": { "tensura:school":  6 }, "model": "tensura:item/spell_psychic"   },
-    { "predicate": { "tensura:school":  7 }, "model": "tensura:item/spell_dragon"    },
-    { "predicate": { "tensura:school":  8 }, "model": "tensura:item/spell_nature"    },
-    { "predicate": { "tensura:school":  9 }, "model": "tensura:item/spell_poison"    },
-    { "predicate": { "tensura:school": 10 }, "model": "tensura:item/spell_earth"     },
-    { "predicate": { "tensura:school": 11 }, "model": "tensura:item/spell_wind"      },
-    { "predicate": { "tensura:school": 12 }, "model": "tensura:item/spell_fairy"     },
-    { "predicate": { "tensura:school": 13 }, "model": "tensura:item/spell_steel"     },
-    { "predicate": { "tensura:icon":  1 }, "model": "tensura:item/spell_flamethrower" },
-    { "predicate": { "tensura:icon":  2 }, "model": "tensura:item/spell_surf" },
-    { "predicate": { "tensura:icon":  3 }, "model": "tensura:item/spell_toxic_spikes" },
-    { "predicate": { "tensura:icon":  4 }, "model": "tensura:item/spell_close_combat" },
-    { "predicate": { "tensura:icon":  5 }, "model": "tensura:item/spell_shadow_sneak" },
-    { "predicate": { "tensura:icon":  6 }, "model": "tensura:item/spell_psybeam" },
-    { "predicate": { "tensura:icon":  7 }, "model": "tensura:item/spell_volt_tackle" },
-    { "predicate": { "tensura:icon":  8 }, "model": "tensura:item/spell_fire_spin" },
-    { "predicate": { "tensura:icon":  9 }, "model": "tensura:item/spell_rock_slide" },
-    { "predicate": { "tensura:icon": 10 }, "model": "tensura:item/spell_recover" },
-    { "predicate": { "tensura:icon": 11 }, "model": "tensura:item/spell_dark_pulse" }
+    {
+      "predicate": {
+        "tensura:school": 1
+      },
+      "model": "tensura:item/spell_lightning"
+    },
+    {
+      "predicate": {
+        "tensura:school": 2
+      },
+      "model": "tensura:item/spell_fire"
+    },
+    {
+      "predicate": {
+        "tensura:school": 3
+      },
+      "model": "tensura:item/spell_water"
+    },
+    {
+      "predicate": {
+        "tensura:school": 4
+      },
+      "model": "tensura:item/spell_ice"
+    },
+    {
+      "predicate": {
+        "tensura:school": 5
+      },
+      "model": "tensura:item/spell_shadow"
+    },
+    {
+      "predicate": {
+        "tensura:school": 6
+      },
+      "model": "tensura:item/spell_psychic"
+    },
+    {
+      "predicate": {
+        "tensura:school": 7
+      },
+      "model": "tensura:item/spell_dragon"
+    },
+    {
+      "predicate": {
+        "tensura:school": 8
+      },
+      "model": "tensura:item/spell_nature"
+    },
+    {
+      "predicate": {
+        "tensura:school": 9
+      },
+      "model": "tensura:item/spell_poison"
+    },
+    {
+      "predicate": {
+        "tensura:school": 10
+      },
+      "model": "tensura:item/spell_earth"
+    },
+    {
+      "predicate": {
+        "tensura:school": 11
+      },
+      "model": "tensura:item/spell_wind"
+    },
+    {
+      "predicate": {
+        "tensura:school": 12
+      },
+      "model": "tensura:item/spell_fairy"
+    },
+    {
+      "predicate": {
+        "tensura:school": 13
+      },
+      "model": "tensura:item/spell_steel"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 1
+      },
+      "model": "tensura:item/spell_flamethrower"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 2
+      },
+      "model": "tensura:item/spell_surf"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 3
+      },
+      "model": "tensura:item/spell_toxic_spikes"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 4
+      },
+      "model": "tensura:item/spell_close_combat"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 5
+      },
+      "model": "tensura:item/spell_shadow_sneak"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 6
+      },
+      "model": "tensura:item/spell_psybeam"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 7
+      },
+      "model": "tensura:item/spell_volt_tackle"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 8
+      },
+      "model": "tensura:item/spell_fire_spin"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 9
+      },
+      "model": "tensura:item/spell_rock_slide"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 10
+      },
+      "model": "tensura:item/spell_recover"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 11
+      },
+      "model": "tensura:item/spell_dark_pulse"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 12
+      },
+      "model": "tensura:item/spell_aqua_jet"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 13
+      },
+      "model": "tensura:item/spell_aurora_veil"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 14
+      },
+      "model": "tensura:item/spell_blizzard"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 15
+      },
+      "model": "tensura:item/spell_draco_meteor"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 16
+      },
+      "model": "tensura:item/spell_electro_ball"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 17
+      },
+      "model": "tensura:item/spell_ember"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 18
+      },
+      "model": "tensura:item/spell_future_sight"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 19
+      },
+      "model": "tensura:item/spell_hydro_pump"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 20
+      },
+      "model": "tensura:item/spell_ice_beam"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 21
+      },
+      "model": "tensura:item/spell_iron_defense"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 22
+      },
+      "model": "tensura:item/spell_quick_attack"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 23
+      },
+      "model": "tensura:item/spell_rest"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 24
+      },
+      "model": "tensura:item/spell_string_shot"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 25
+      },
+      "model": "tensura:item/spell_sucker_punch"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 26
+      },
+      "model": "tensura:item/spell_thunder"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 27
+      },
+      "model": "tensura:item/spell_tri_attack"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 28
+      },
+      "model": "tensura:item/spell_vine_whip"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 29
+      },
+      "model": "tensura:item/spell_whirlpool"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 30
+      },
+      "model": "tensura:item/spell_pin_missile"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 31
+      },
+      "model": "tensura:item/spell_u_turn"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 32
+      },
+      "model": "tensura:item/spell_x_scissor"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 33
+      },
+      "model": "tensura:item/spell_bug_buzz"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 34
+      },
+      "model": "tensura:item/spell_mud_shot"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 35
+      },
+      "model": "tensura:item/spell_bulldoze"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 36
+      },
+      "model": "tensura:item/spell_dig"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 37
+      },
+      "model": "tensura:item/spell_earth_power"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 38
+      },
+      "model": "tensura:item/spell_earthquake"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 39
+      },
+      "model": "tensura:item/spell_fairy_wind"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 40
+      },
+      "model": "tensura:item/spell_draining_kiss"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 41
+      },
+      "model": "tensura:item/spell_charm"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 42
+      },
+      "model": "tensura:item/spell_dazzling_gleam"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 43
+      },
+      "model": "tensura:item/spell_moonblast"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 44
+      },
+      "model": "tensura:item/spell_gust"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 45
+      },
+      "model": "tensura:item/spell_air_cutter"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 46
+      },
+      "model": "tensura:item/spell_aerial_ace"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 47
+      },
+      "model": "tensura:item/spell_tailwind"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 48
+      },
+      "model": "tensura:item/spell_hurricane"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 49
+      },
+      "model": "tensura:item/spell_swift"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 50
+      },
+      "model": "tensura:item/spell_hyper_voice"
+    }
   ]
 }

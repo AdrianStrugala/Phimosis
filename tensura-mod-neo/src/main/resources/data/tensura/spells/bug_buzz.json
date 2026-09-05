@@ -1,0 +1,42 @@
+{
+  "pokemon_type": "bug",
+  "category": "special",
+  "power": 3.0,
+  "school": "bug",
+  "cooldown_ticks": 300,
+  "targeting": {
+    "type": "aim",
+    "range": 10.0,
+    "width": 5.0,
+    "max_targets": 8
+  },
+  "delivery": {
+    "type": "channel_cone",
+    "duration_ticks": 20,
+    "tick_interval_ticks": 5,
+    "cone_angle": 38.0
+  },
+  "impact": [
+    {
+      "type": "damage",
+      "damage_multiplier": 1.0
+    },
+    {
+      "type": "expose",
+      "duration": 80,
+      "amplifier": 0
+    }
+  ],
+  "visual": {
+    "cast_animation": "bug_buzz_channel",
+    "projectile": "bug_buzz_wave",
+    "trail": "sonic_chitin_rings",
+    "impact": "bug_buzz_impact",
+    "aftermath": "bug_exposed_mark"
+  },
+  "sound": {
+    "cast": "minecraft:entity.bee.loop_aggressive",
+    "loop": "minecraft:entity.bee.loop",
+    "impact": "minecraft:block.amethyst_block.resonate"
+  }
+}

@@ -27,7 +27,7 @@
     }
   ],
   "visual": {
-    "cast_animation": "dash_forward",
+    "cast_animation": "aqua_jet_dash",
     "trail": "water_shell",
     "impact": "water_burst"
   },

@@ -1,10 +1,24 @@
 {
+  "pokemon_type": "flying",
+  "category": "special",
+  "power": 6.0,
   "school": "wind",
   "cooldown_ticks": 60,
-  "targeting": { "type": "aim", "range": 16 },
-  "delivery": { "type": "projectile", "speed": 2.2 },
+  "targeting": { "type": "aim", "range": 9.0, "width": 5.0, "max_targets": 8 },
+  "delivery": { "type": "channel_cone", "duration_ticks": 1, "tick_interval_ticks": 1, "cone_angle": 42.0 },
   "impact": [
-    { "type": "damage", "damage_multiplier": 0.8 },
-    { "type": "knockback", "strength": 3.0 }
-  ]
+    { "type": "damage", "damage_multiplier": 1.0 },
+    { "type": "knockback", "strength": 1.2 }
+  ],
+  "visual": {
+    "cast_animation": "gust_sweep_cast",
+    "projectile": "gust_air_arcs",
+    "trail": "gust_leaves",
+    "impact": "gust_burst",
+    "aftermath": "gust_dust"
+  },
+  "sound": {
+    "cast": "minecraft:entity.breeze.shoot",
+    "impact": "minecraft:entity.breeze.wind_burst"
+  }
 }

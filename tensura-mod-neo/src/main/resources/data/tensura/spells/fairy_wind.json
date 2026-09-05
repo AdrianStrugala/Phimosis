@@ -1,0 +1,24 @@
+{
+  "pokemon_type": "fairy",
+  "category": "special",
+  "power": 6.0,
+  "school": "fairy",
+  "cooldown_ticks": 60,
+  "targeting": { "type": "aim", "range": 18.0, "width": 0.8, "max_targets": 1 },
+  "delivery": { "type": "projectile", "speed": 2.2, "homing_strength": 0.06 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 1.0 },
+    { "type": "knockback", "strength": 0.65 }
+  ],
+  "visual": {
+    "cast_animation": "fairy_ribbon_cast",
+    "projectile": "fairy_wind_ribbon",
+    "trail": "prismatic_motes",
+    "impact": "fairy_wind_bloom"
+  },
+  "sound": {
+    "cast": "minecraft:block.amethyst_block.chime",
+    "travel": "minecraft:item.elytra.flying",
+    "impact": "minecraft:entity.allay.item_given"
+  }
+}

@@ -1,10 +1,25 @@
 {
+  "pokemon_type": "fairy",
+  "category": "special",
+  "power": 14.0,
   "school": "fairy",
-  "cooldown_ticks": 160,
-  "targeting": { "type": "area", "range": 6 },
-  "delivery": { "type": "instant", "speed": 1.0 },
+  "cooldown_ticks": 240,
+  "cast_time_ticks": 8,
+  "targeting": { "type": "area", "range": 6.0, "radius": 6.0, "max_targets": 12 },
+  "delivery": { "type": "instant" },
   "impact": [
-    { "type": "damage", "damage_multiplier": 2.0 },
-    { "type": "status_effect", "effect": "minecraft:blindness", "duration": 60, "amplifier": 0, "chance": 0.5 }
-  ]
+    { "type": "damage", "damage_multiplier": 1.0 },
+    { "type": "cleanse", "recipient": "caster" }
+  ],
+  "visual": {
+    "cast_animation": "gleam_dome_cast",
+    "telegraph": "dazzling_crystal_ring",
+    "projectile": "dazzling_dome",
+    "impact": "prismatic_gleam",
+    "aftermath": "rainbow_edge"
+  },
+  "sound": {
+    "cast": "minecraft:block.amethyst_block.resonate",
+    "impact": "minecraft:block.beacon.activate"
+  }
 }

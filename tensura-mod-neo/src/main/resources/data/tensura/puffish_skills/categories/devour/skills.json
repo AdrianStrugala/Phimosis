@@ -1,0 +1,978 @@
+{
+  "devour_core": {
+    "x": 0,
+    "y": 0,
+    "definition": "devour_core",
+    "root": true
+  },
+  "tackle_owned": {
+    "x": 0,
+    "y": -96,
+    "definition": "tackle_owned"
+  },
+  "tackle": {
+    "x": 0,
+    "y": -96,
+    "definition": "tackle"
+  },
+  "quick_attack_owned": {
+    "x": 0,
+    "y": -150,
+    "definition": "quick_attack_owned"
+  },
+  "quick_attack": {
+    "x": 0,
+    "y": -150,
+    "definition": "quick_attack"
+  },
+  "swift_owned": {
+    "x": 0,
+    "y": -204,
+    "definition": "swift_owned"
+  },
+  "swift": {
+    "x": 0,
+    "y": -204,
+    "definition": "swift"
+  },
+  "tri_attack_owned": {
+    "x": 0,
+    "y": -258,
+    "definition": "tri_attack_owned"
+  },
+  "tri_attack": {
+    "x": 0,
+    "y": -258,
+    "definition": "tri_attack"
+  },
+  "recover_owned": {
+    "x": 0,
+    "y": -312,
+    "definition": "recover_owned"
+  },
+  "recover": {
+    "x": 0,
+    "y": -312,
+    "definition": "recover"
+  },
+  "hyper_voice_owned": {
+    "x": 0,
+    "y": -366,
+    "definition": "hyper_voice_owned"
+  },
+  "hyper_voice": {
+    "x": 0,
+    "y": -366,
+    "definition": "hyper_voice"
+  },
+  "hyper_beam_owned": {
+    "x": 0,
+    "y": -420,
+    "definition": "hyper_beam_owned"
+  },
+  "hyper_beam": {
+    "x": 0,
+    "y": -420,
+    "definition": "hyper_beam"
+  },
+  "explosion_owned": {
+    "x": 0,
+    "y": -474,
+    "definition": "explosion_owned"
+  },
+  "explosion": {
+    "x": 0,
+    "y": -474,
+    "definition": "explosion"
+  },
+  "ember_owned": {
+    "x": 33,
+    "y": -90,
+    "definition": "ember_owned"
+  },
+  "ember": {
+    "x": 33,
+    "y": -90,
+    "definition": "ember"
+  },
+  "will_o_wisp_owned": {
+    "x": 51,
+    "y": -141,
+    "definition": "will_o_wisp_owned"
+  },
+  "will_o_wisp": {
+    "x": 51,
+    "y": -141,
+    "definition": "will_o_wisp"
+  },
+  "flamethrower_owned": {
+    "x": 70,
+    "y": -192,
+    "definition": "flamethrower_owned"
+  },
+  "flamethrower": {
+    "x": 70,
+    "y": -192,
+    "definition": "flamethrower"
+  },
+  "fire_spin_owned": {
+    "x": 88,
+    "y": -242,
+    "definition": "fire_spin_owned"
+  },
+  "fire_spin": {
+    "x": 88,
+    "y": -242,
+    "definition": "fire_spin"
+  },
+  "fire_blast_owned": {
+    "x": 107,
+    "y": -293,
+    "definition": "fire_blast_owned"
+  },
+  "fire_blast": {
+    "x": 107,
+    "y": -293,
+    "definition": "fire_blast"
+  },
+  "overheat_owned": {
+    "x": 125,
+    "y": -344,
+    "definition": "overheat_owned"
+  },
+  "overheat": {
+    "x": 125,
+    "y": -344,
+    "definition": "overheat"
+  },
+  "sacred_fire_owned": {
+    "x": 144,
+    "y": -395,
+    "definition": "sacred_fire_owned"
+  },
+  "sacred_fire": {
+    "x": 144,
+    "y": -395,
+    "definition": "sacred_fire"
+  },
+  "water_gun_owned": {
+    "x": 62,
+    "y": -74,
+    "definition": "water_gun_owned"
+  },
+  "water_gun": {
+    "x": 62,
+    "y": -74,
+    "definition": "water_gun"
+  },
+  "aqua_jet_owned": {
+    "x": 96,
+    "y": -115,
+    "definition": "aqua_jet_owned"
+  },
+  "aqua_jet": {
+    "x": 96,
+    "y": -115,
+    "definition": "aqua_jet"
+  },
+  "bubble_beam_owned": {
+    "x": 131,
+    "y": -156,
+    "definition": "bubble_beam_owned"
+  },
+  "bubble_beam": {
+    "x": 131,
+    "y": -156,
+    "definition": "bubble_beam"
+  },
+  "water_pulse_owned": {
+    "x": 166,
+    "y": -198,
+    "definition": "water_pulse_owned"
+  },
+  "water_pulse": {
+    "x": 166,
+    "y": -198,
+    "definition": "water_pulse"
+  },
+  "whirlpool_owned": {
+    "x": 201,
+    "y": -239,
+    "definition": "whirlpool_owned"
+  },
+  "whirlpool": {
+    "x": 201,
+    "y": -239,
+    "definition": "whirlpool"
+  },
+  "surf_owned": {
+    "x": 235,
+    "y": -280,
+    "definition": "surf_owned"
+  },
+  "surf": {
+    "x": 235,
+    "y": -280,
+    "definition": "surf"
+  },
+  "hydro_pump_owned": {
+    "x": 270,
+    "y": -322,
+    "definition": "hydro_pump_owned"
+  },
+  "hydro_pump": {
+    "x": 270,
+    "y": -322,
+    "definition": "hydro_pump"
+  },
+  "scald_owned": {
+    "x": 305,
+    "y": -363,
+    "definition": "scald_owned"
+  },
+  "scald": {
+    "x": 305,
+    "y": -363,
+    "definition": "scald"
+  },
+  "thundershock_owned": {
+    "x": 83,
+    "y": -48,
+    "definition": "thundershock_owned"
+  },
+  "thundershock": {
+    "x": 83,
+    "y": -48,
+    "definition": "thundershock"
+  },
+  "electro_ball_owned": {
+    "x": 130,
+    "y": -75,
+    "definition": "electro_ball_owned"
+  },
+  "electro_ball": {
+    "x": 130,
+    "y": -75,
+    "definition": "electro_ball"
+  },
+  "thunderbolt_owned": {
+    "x": 177,
+    "y": -102,
+    "definition": "thunderbolt_owned"
+  },
+  "thunderbolt": {
+    "x": 177,
+    "y": -102,
+    "definition": "thunderbolt"
+  },
+  "discharge_owned": {
+    "x": 223,
+    "y": -129,
+    "definition": "discharge_owned"
+  },
+  "discharge": {
+    "x": 223,
+    "y": -129,
+    "definition": "discharge"
+  },
+  "thunder_owned": {
+    "x": 270,
+    "y": -156,
+    "definition": "thunder_owned"
+  },
+  "thunder": {
+    "x": 270,
+    "y": -156,
+    "definition": "thunder"
+  },
+  "volt_tackle_owned": {
+    "x": 317,
+    "y": -183,
+    "definition": "volt_tackle_owned"
+  },
+  "volt_tackle": {
+    "x": 317,
+    "y": -183,
+    "definition": "volt_tackle"
+  },
+  "vine_whip_owned": {
+    "x": 95,
+    "y": -17,
+    "definition": "vine_whip_owned"
+  },
+  "vine_whip": {
+    "x": 95,
+    "y": -17,
+    "definition": "vine_whip"
+  },
+  "leech_seed_owned": {
+    "x": 148,
+    "y": -26,
+    "definition": "leech_seed_owned"
+  },
+  "leech_seed": {
+    "x": 148,
+    "y": -26,
+    "definition": "leech_seed"
+  },
+  "razor_leaf_owned": {
+    "x": 201,
+    "y": -35,
+    "definition": "razor_leaf_owned"
+  },
+  "razor_leaf": {
+    "x": 201,
+    "y": -35,
+    "definition": "razor_leaf"
+  },
+  "leaf_blade_owned": {
+    "x": 254,
+    "y": -45,
+    "definition": "leaf_blade_owned"
+  },
+  "leaf_blade": {
+    "x": 254,
+    "y": -45,
+    "definition": "leaf_blade"
+  },
+  "energy_ball_owned": {
+    "x": 307,
+    "y": -54,
+    "definition": "energy_ball_owned"
+  },
+  "energy_ball": {
+    "x": 307,
+    "y": -54,
+    "definition": "energy_ball"
+  },
+  "petal_blizzard_owned": {
+    "x": 360,
+    "y": -64,
+    "definition": "petal_blizzard_owned"
+  },
+  "petal_blizzard": {
+    "x": 360,
+    "y": -64,
+    "definition": "petal_blizzard"
+  },
+  "solar_beam_owned": {
+    "x": 414,
+    "y": -73,
+    "definition": "solar_beam_owned"
+  },
+  "solar_beam": {
+    "x": 414,
+    "y": -73,
+    "definition": "solar_beam"
+  },
+  "nature_burst_owned": {
+    "x": 467,
+    "y": -82,
+    "definition": "nature_burst_owned"
+  },
+  "nature_burst": {
+    "x": 467,
+    "y": -82,
+    "definition": "nature_burst"
+  },
+  "powder_snow_owned": {
+    "x": 95,
+    "y": 17,
+    "definition": "powder_snow_owned"
+  },
+  "powder_snow": {
+    "x": 95,
+    "y": 17,
+    "definition": "powder_snow"
+  },
+  "ice_shard_owned": {
+    "x": 148,
+    "y": 26,
+    "definition": "ice_shard_owned"
+  },
+  "ice_shard": {
+    "x": 148,
+    "y": 26,
+    "definition": "ice_shard"
+  },
+  "ice_beam_owned": {
+    "x": 201,
+    "y": 35,
+    "definition": "ice_beam_owned"
+  },
+  "ice_beam": {
+    "x": 201,
+    "y": 35,
+    "definition": "ice_beam"
+  },
+  "frost_nova_owned": {
+    "x": 254,
+    "y": 45,
+    "definition": "frost_nova_owned"
+  },
+  "frost_nova": {
+    "x": 254,
+    "y": 45,
+    "definition": "frost_nova"
+  },
+  "aurora_veil_owned": {
+    "x": 307,
+    "y": 54,
+    "definition": "aurora_veil_owned"
+  },
+  "aurora_veil": {
+    "x": 307,
+    "y": 54,
+    "definition": "aurora_veil"
+  },
+  "blizzard_owned": {
+    "x": 360,
+    "y": 64,
+    "definition": "blizzard_owned"
+  },
+  "blizzard": {
+    "x": 360,
+    "y": 64,
+    "definition": "blizzard"
+  },
+  "mach_punch_owned": {
+    "x": 83,
+    "y": 48,
+    "definition": "mach_punch_owned"
+  },
+  "mach_punch": {
+    "x": 83,
+    "y": 48,
+    "definition": "mach_punch"
+  },
+  "close_combat_owned": {
+    "x": 130,
+    "y": 75,
+    "definition": "close_combat_owned"
+  },
+  "close_combat": {
+    "x": 130,
+    "y": 75,
+    "definition": "close_combat"
+  },
+  "focus_blast_owned": {
+    "x": 177,
+    "y": 102,
+    "definition": "focus_blast_owned"
+  },
+  "focus_blast": {
+    "x": 177,
+    "y": 102,
+    "definition": "focus_blast"
+  },
+  "seismic_slam_owned": {
+    "x": 223,
+    "y": 129,
+    "definition": "seismic_slam_owned"
+  },
+  "seismic_slam": {
+    "x": 223,
+    "y": 129,
+    "definition": "seismic_slam"
+  },
+  "poison_sting_owned": {
+    "x": 62,
+    "y": 74,
+    "definition": "poison_sting_owned"
+  },
+  "poison_sting": {
+    "x": 62,
+    "y": 74,
+    "definition": "poison_sting"
+  },
+  "poison_strike_owned": {
+    "x": 96,
+    "y": 115,
+    "definition": "poison_strike_owned"
+  },
+  "poison_strike": {
+    "x": 96,
+    "y": 115,
+    "definition": "poison_strike"
+  },
+  "toxic_spikes_owned": {
+    "x": 131,
+    "y": 156,
+    "definition": "toxic_spikes_owned"
+  },
+  "toxic_spikes": {
+    "x": 131,
+    "y": 156,
+    "definition": "toxic_spikes"
+  },
+  "sludge_bomb_owned": {
+    "x": 166,
+    "y": 198,
+    "definition": "sludge_bomb_owned"
+  },
+  "sludge_bomb": {
+    "x": 166,
+    "y": 198,
+    "definition": "sludge_bomb"
+  },
+  "toxic_owned": {
+    "x": 201,
+    "y": 239,
+    "definition": "toxic_owned"
+  },
+  "toxic": {
+    "x": 201,
+    "y": 239,
+    "definition": "toxic"
+  },
+  "mud_shot_owned": {
+    "x": 33,
+    "y": 90,
+    "definition": "mud_shot_owned"
+  },
+  "mud_shot": {
+    "x": 33,
+    "y": 90,
+    "definition": "mud_shot"
+  },
+  "bulldoze_owned": {
+    "x": 51,
+    "y": 141,
+    "definition": "bulldoze_owned"
+  },
+  "bulldoze": {
+    "x": 51,
+    "y": 141,
+    "definition": "bulldoze"
+  },
+  "dig_owned": {
+    "x": 70,
+    "y": 192,
+    "definition": "dig_owned"
+  },
+  "dig": {
+    "x": 70,
+    "y": 192,
+    "definition": "dig"
+  },
+  "earth_power_owned": {
+    "x": 88,
+    "y": 242,
+    "definition": "earth_power_owned"
+  },
+  "earth_power": {
+    "x": 88,
+    "y": 242,
+    "definition": "earth_power"
+  },
+  "earthquake_owned": {
+    "x": 107,
+    "y": 293,
+    "definition": "earthquake_owned"
+  },
+  "earthquake": {
+    "x": 107,
+    "y": 293,
+    "definition": "earthquake"
+  },
+  "gust_owned": {
+    "x": 0,
+    "y": 96,
+    "definition": "gust_owned"
+  },
+  "gust": {
+    "x": 0,
+    "y": 96,
+    "definition": "gust"
+  },
+  "air_cutter_owned": {
+    "x": 0,
+    "y": 150,
+    "definition": "air_cutter_owned"
+  },
+  "air_cutter": {
+    "x": 0,
+    "y": 150,
+    "definition": "air_cutter"
+  },
+  "aerial_ace_owned": {
+    "x": 0,
+    "y": 204,
+    "definition": "aerial_ace_owned"
+  },
+  "aerial_ace": {
+    "x": 0,
+    "y": 204,
+    "definition": "aerial_ace"
+  },
+  "tailwind_owned": {
+    "x": 0,
+    "y": 258,
+    "definition": "tailwind_owned"
+  },
+  "tailwind": {
+    "x": 0,
+    "y": 258,
+    "definition": "tailwind"
+  },
+  "hurricane_owned": {
+    "x": 0,
+    "y": 312,
+    "definition": "hurricane_owned"
+  },
+  "hurricane": {
+    "x": 0,
+    "y": 312,
+    "definition": "hurricane"
+  },
+  "aerial_strike_owned": {
+    "x": 0,
+    "y": 366,
+    "definition": "aerial_strike_owned"
+  },
+  "aerial_strike": {
+    "x": 0,
+    "y": 366,
+    "definition": "aerial_strike"
+  },
+  "confusion_owned": {
+    "x": -33,
+    "y": 90,
+    "definition": "confusion_owned"
+  },
+  "confusion": {
+    "x": -33,
+    "y": 90,
+    "definition": "confusion"
+  },
+  "psybeam_owned": {
+    "x": -51,
+    "y": 141,
+    "definition": "psybeam_owned"
+  },
+  "psybeam": {
+    "x": -51,
+    "y": 141,
+    "definition": "psybeam"
+  },
+  "psychic_owned": {
+    "x": -70,
+    "y": 192,
+    "definition": "psychic_owned"
+  },
+  "psychic": {
+    "x": -70,
+    "y": 192,
+    "definition": "psychic"
+  },
+  "rest_owned": {
+    "x": -88,
+    "y": 242,
+    "definition": "rest_owned"
+  },
+  "rest": {
+    "x": -88,
+    "y": 242,
+    "definition": "rest"
+  },
+  "psychic_blast_owned": {
+    "x": -107,
+    "y": 293,
+    "definition": "psychic_blast_owned"
+  },
+  "psychic_blast": {
+    "x": -107,
+    "y": 293,
+    "definition": "psychic_blast"
+  },
+  "future_sight_owned": {
+    "x": -125,
+    "y": 344,
+    "definition": "future_sight_owned"
+  },
+  "future_sight": {
+    "x": -125,
+    "y": 344,
+    "definition": "future_sight"
+  },
+  "string_shot_owned": {
+    "x": -62,
+    "y": 74,
+    "definition": "string_shot_owned"
+  },
+  "string_shot": {
+    "x": -62,
+    "y": 74,
+    "definition": "string_shot"
+  },
+  "pin_missile_owned": {
+    "x": -96,
+    "y": 115,
+    "definition": "pin_missile_owned"
+  },
+  "pin_missile": {
+    "x": -96,
+    "y": 115,
+    "definition": "pin_missile"
+  },
+  "u_turn_owned": {
+    "x": -131,
+    "y": 156,
+    "definition": "u_turn_owned"
+  },
+  "u_turn": {
+    "x": -131,
+    "y": 156,
+    "definition": "u_turn"
+  },
+  "x_scissor_owned": {
+    "x": -166,
+    "y": 198,
+    "definition": "x_scissor_owned"
+  },
+  "x_scissor": {
+    "x": -166,
+    "y": 198,
+    "definition": "x_scissor"
+  },
+  "bug_buzz_owned": {
+    "x": -201,
+    "y": 239,
+    "definition": "bug_buzz_owned"
+  },
+  "bug_buzz": {
+    "x": -201,
+    "y": 239,
+    "definition": "bug_buzz"
+  },
+  "rock_throw_owned": {
+    "x": -83,
+    "y": 48,
+    "definition": "rock_throw_owned"
+  },
+  "rock_throw": {
+    "x": -83,
+    "y": 48,
+    "definition": "rock_throw"
+  },
+  "rock_slide_owned": {
+    "x": -130,
+    "y": 75,
+    "definition": "rock_slide_owned"
+  },
+  "rock_slide": {
+    "x": -130,
+    "y": 75,
+    "definition": "rock_slide"
+  },
+  "stone_edge_owned": {
+    "x": -177,
+    "y": 102,
+    "definition": "stone_edge_owned"
+  },
+  "stone_edge": {
+    "x": -177,
+    "y": 102,
+    "definition": "stone_edge"
+  },
+  "night_shade_owned": {
+    "x": -95,
+    "y": 17,
+    "definition": "night_shade_owned"
+  },
+  "night_shade": {
+    "x": -95,
+    "y": 17,
+    "definition": "night_shade"
+  },
+  "shadow_sneak_owned": {
+    "x": -148,
+    "y": 26,
+    "definition": "shadow_sneak_owned"
+  },
+  "shadow_sneak": {
+    "x": -148,
+    "y": 26,
+    "definition": "shadow_sneak"
+  },
+  "shadow_ball_owned": {
+    "x": -201,
+    "y": 35,
+    "definition": "shadow_ball_owned"
+  },
+  "shadow_ball": {
+    "x": -201,
+    "y": 35,
+    "definition": "shadow_ball"
+  },
+  "hex_owned": {
+    "x": -254,
+    "y": 45,
+    "definition": "hex_owned"
+  },
+  "hex": {
+    "x": -254,
+    "y": 45,
+    "definition": "hex"
+  },
+  "dragon_breath_owned": {
+    "x": -95,
+    "y": -17,
+    "definition": "dragon_breath_owned"
+  },
+  "dragon_breath": {
+    "x": -95,
+    "y": -17,
+    "definition": "dragon_breath"
+  },
+  "dragon_pulse_owned": {
+    "x": -148,
+    "y": -26,
+    "definition": "dragon_pulse_owned"
+  },
+  "dragon_pulse": {
+    "x": -148,
+    "y": -26,
+    "definition": "dragon_pulse"
+  },
+  "draco_meteor_owned": {
+    "x": -201,
+    "y": -35,
+    "definition": "draco_meteor_owned"
+  },
+  "draco_meteor": {
+    "x": -201,
+    "y": -35,
+    "definition": "draco_meteor"
+  },
+  "outrage_owned": {
+    "x": -254,
+    "y": -45,
+    "definition": "outrage_owned"
+  },
+  "outrage": {
+    "x": -254,
+    "y": -45,
+    "definition": "outrage"
+  },
+  "dark_pulse_owned": {
+    "x": -83,
+    "y": -48,
+    "definition": "dark_pulse_owned"
+  },
+  "dark_pulse": {
+    "x": -83,
+    "y": -48,
+    "definition": "dark_pulse"
+  },
+  "sucker_punch_owned": {
+    "x": -130,
+    "y": -75,
+    "definition": "sucker_punch_owned"
+  },
+  "sucker_punch": {
+    "x": -130,
+    "y": -75,
+    "definition": "sucker_punch"
+  },
+  "foul_play_owned": {
+    "x": -177,
+    "y": -102,
+    "definition": "foul_play_owned"
+  },
+  "foul_play": {
+    "x": -177,
+    "y": -102,
+    "definition": "foul_play"
+  },
+  "iron_tail_owned": {
+    "x": -62,
+    "y": -74,
+    "definition": "iron_tail_owned"
+  },
+  "iron_tail": {
+    "x": -62,
+    "y": -74,
+    "definition": "iron_tail"
+  },
+  "iron_defense_owned": {
+    "x": -96,
+    "y": -115,
+    "definition": "iron_defense_owned"
+  },
+  "iron_defense": {
+    "x": -96,
+    "y": -115,
+    "definition": "iron_defense"
+  },
+  "iron_strike_owned": {
+    "x": -131,
+    "y": -156,
+    "definition": "iron_strike_owned"
+  },
+  "iron_strike": {
+    "x": -131,
+    "y": -156,
+    "definition": "iron_strike"
+  },
+  "flash_cannon_owned": {
+    "x": -166,
+    "y": -198,
+    "definition": "flash_cannon_owned"
+  },
+  "flash_cannon": {
+    "x": -166,
+    "y": -198,
+    "definition": "flash_cannon"
+  },
+  "fairy_wind_owned": {
+    "x": -33,
+    "y": -90,
+    "definition": "fairy_wind_owned"
+  },
+  "fairy_wind": {
+    "x": -33,
+    "y": -90,
+    "definition": "fairy_wind"
+  },
+  "draining_kiss_owned": {
+    "x": -51,
+    "y": -141,
+    "definition": "draining_kiss_owned"
+  },
+  "draining_kiss": {
+    "x": -51,
+    "y": -141,
+    "definition": "draining_kiss"
+  },
+  "charm_owned": {
+    "x": -70,
+    "y": -192,
+    "definition": "charm_owned"
+  },
+  "charm": {
+    "x": -70,
+    "y": -192,
+    "definition": "charm"
+  },
+  "dazzling_gleam_owned": {
+    "x": -88,
+    "y": -242,
+    "definition": "dazzling_gleam_owned"
+  },
+  "dazzling_gleam": {
+    "x": -88,
+    "y": -242,
+    "definition": "dazzling_gleam"
+  },
+  "moonblast_owned": {
+    "x": -107,
+    "y": -293,
+    "definition": "moonblast_owned"
+  },
+  "moonblast": {
+    "x": -107,
+    "y": -293,
+    "definition": "moonblast"
+  }
+}

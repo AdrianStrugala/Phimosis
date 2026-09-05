@@ -15,7 +15,13 @@
     "projectile_count": 3,
     "duration_ticks": 400
   },
-  "impact": [],
+  "impact": [
+    {
+      "type": "toxic",
+      "duration": 160,
+      "amplifier": 0
+    }
+  ],
   "visual": {
     "cast_animation": "throw_overhead",
     "telegraph": "toxic_spikes",

@@ -19,7 +19,7 @@
     { "type": "fire", "seconds": 3 }
   ],
   "visual": {
-    "cast_animation": "cast_point",
+    "cast_animation": "ember_flick_cast",
     "projectile": "glowing_ember",
     "trail": "fire_sparks",
     "impact": "ember_burst"

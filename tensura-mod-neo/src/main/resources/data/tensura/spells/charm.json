@@ -1,0 +1,23 @@
+{
+  "pokemon_type": "fairy",
+  "category": "status",
+  "power": 0.0,
+  "school": "fairy",
+  "cooldown_ticks": 220,
+  "targeting": { "type": "aim", "range": 8.0, "width": 5.0, "max_targets": 8 },
+  "delivery": { "type": "channel_cone", "duration_ticks": 1, "tick_interval_ticks": 1, "cone_angle": 42.0 },
+  "impact": [
+    { "type": "status_effect", "effect": "minecraft:weakness", "duration": 120, "amplifier": 0 }
+  ],
+  "visual": {
+    "cast_animation": "charm_cast",
+    "projectile": "charm_light_cone",
+    "trail": "charm_heart_wave",
+    "impact": "charm_break",
+    "aftermath": "charm_debuff"
+  },
+  "sound": {
+    "cast": "minecraft:entity.allay.ambient_without_item",
+    "impact": "minecraft:block.amethyst_cluster.break"
+  }
+}

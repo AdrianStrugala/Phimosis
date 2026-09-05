@@ -56,7 +56,6 @@ public class CobblemonMoveMapper {
         n("cut",                "razor_leaf");
         n("fury_cutter",        "razor_leaf");
         n("slash",              "leaf_blade");
-        n("x_scissor",          "leaf_blade");
         n("trailblaze",         "vine_whip");
         n("snap_trap",          "vine_whip");
         n("trop_kick",          "vine_whip");
@@ -410,14 +409,16 @@ public class CobblemonMoveMapper {
         // ═══════════════════════════════════════════════════════════════════
         // BUG
         // ═══════════════════════════════════════════════════════════════════
-        n("bug_buzz",           "aerial_strike");
-        n("x_scissor",          "aerial_ace");
+        n("string_shot",        "string_shot");
+        n("pin_missile",        "pin_missile");
+        n("u_turn",             "u_turn");
+        n("x_scissor",          "x_scissor");
+        n("bug_buzz",           "bug_buzz");
         n("signal_beam",        "psybeam");
         n("leech_life",         "leech_seed");
         n("silver_wind",        "aerial_strike");
         n("quiver_dance",       "future_sight");
         n("attack_order",       "aerial_ace");
-        n("pin_missile",        "aerial_ace");
         n("fell_stinger",       "poison_sting");
         n("lunge",              "aerial_ace");
         n("first_impression",   "razor_leaf");
@@ -550,6 +551,29 @@ public class CobblemonMoveMapper {
         n("oblivion_wing",      "recover");
         n("parabolic_charge",   "recover");
         n("strength_sap",       "leech_seed");
+
+        // Canonical mappings for the fully reworked Devour roster.
+        n("swift",              "swift");
+        n("hyper_voice",        "hyper_voice");
+        n("pin_missile",        "pin_missile");
+        n("u_turn",             "u_turn");
+        n("x_scissor",          "x_scissor");
+        n("bug_buzz",           "bug_buzz");
+        n("mud_shot",           "mud_shot");
+        n("bulldoze",           "bulldoze");
+        n("dig",                "dig");
+        n("earth_power",        "earth_power");
+        n("earthquake",         "earthquake");
+        n("fairy_wind",         "fairy_wind");
+        n("draining_kiss",      "draining_kiss");
+        n("charm",              "charm");
+        n("dazzling_gleam",     "dazzling_gleam");
+        n("moonblast",          "moonblast");
+        n("gust",               "gust");
+        n("air_cutter",         "air_cutter");
+        n("aerial_ace",         "aerial_ace");
+        n("tailwind",           "tailwind");
+        n("hurricane",          "hurricane");
     }
 
     private static void n(String moveName, String spellPath) {

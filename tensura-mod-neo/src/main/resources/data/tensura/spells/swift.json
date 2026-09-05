@@ -1,0 +1,23 @@
+{
+  "pokemon_type": "normal",
+  "category": "special",
+  "power": 4.0,
+  "school": "physical",
+  "cooldown_ticks": 160,
+  "targeting": { "type": "aim", "range": 20.0, "width": 0.8, "max_targets": 1 },
+  "delivery": { "type": "projectile", "speed": 1.8, "projectile_count": 3, "spread_degrees": 9.0, "homing_strength": 0.2 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 1.0 }
+  ],
+  "visual": {
+    "cast_animation": "swift_star_cast",
+    "projectile": "swift_star",
+    "trail": "swift_starlight_arc",
+    "impact": "swift_starburst"
+  },
+  "sound": {
+    "cast": "minecraft:entity.firework_rocket.launch",
+    "travel": "minecraft:entity.allay.ambient_without_item",
+    "impact": "minecraft:entity.firework_rocket.blast"
+  }
+}

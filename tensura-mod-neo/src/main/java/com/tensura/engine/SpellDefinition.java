@@ -66,6 +66,7 @@ public class SpellDefinition {
         public int combo_hits = 1;
         public int combo_interval_ticks = 4;
         public int bounce_count = 0;
+        public boolean return_to_origin = false;
     }
 
     public static class Impact {

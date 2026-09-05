@@ -1,122 +1,233 @@
 {
-  "predator_root":      {"x":    0, "y":    0, "definition": "predator_root", "root": true},
-
-  "tough_hide":         {"x":  -52, "y":    0, "definition": "tough_hide"},
-  "vital_core_1":       {"x": -104, "y":  -52, "definition": "vital_core_1"},
-  "iron_skin_1":        {"x": -104, "y":    0, "definition": "iron_skin_1"},
-  "predator_fist":      {"x": -104, "y":   52, "definition": "predator_fist"},
-  "drain_essence":      {"x": -156, "y":  -78, "definition": "drain_essence"},
-  "vital_core_2":       {"x": -156, "y":  -52, "definition": "vital_core_2"},
-  "iron_skin_2":        {"x": -156, "y":    0, "definition": "iron_skin_2"},
-  "swift_predator":     {"x": -156, "y":   26, "definition": "swift_predator"},
-  "endurance":          {"x": -156, "y":   52, "definition": "endurance"},
-  "predator_strength":  {"x": -156, "y":   78, "definition": "predator_strength"},
-  "vampiric":           {"x": -208, "y":  -78, "definition": "vampiric"},
-  "vital_core_3":       {"x": -208, "y":  -52, "definition": "vital_core_3"},
-  "iron_skin_3":        {"x": -208, "y":    0, "definition": "iron_skin_3"},
-  "hunter_step":        {"x": -208, "y":   26, "definition": "hunter_step"},
-  "magic_ward":         {"x": -208, "y":   52, "definition": "magic_ward"},
-  "battle_hardened":    {"x": -208, "y":   78, "definition": "battle_hardened"},
-  "immortal_flesh":     {"x": -260, "y":  -78, "definition": "immortal_flesh"},
-  "titan_heart":        {"x": -260, "y":  -52, "definition": "titan_heart"},
-  "diamond_hide":       {"x": -260, "y":    0, "definition": "diamond_hide"},
-  "apex_speed":         {"x": -260, "y":   26, "definition": "apex_speed"},
-  "iron_will":          {"x": -260, "y":   52, "definition": "iron_will"},
-  "alpha_predator":     {"x": -260, "y":   78, "definition": "alpha_predator"},
-  "undying_will":       {"x": -312, "y":  -52, "definition": "undying_will"},
-  "fortress_body":      {"x": -312, "y":    0, "definition": "fortress_body"},
-  "bulwark":            {"x": -312, "y":   52, "definition": "bulwark"},
-  "apex_predator":      {"x": -364, "y":    0, "definition": "apex_predator"},
-
-  "diggers_instinct":   {"x":   52, "y":    0, "definition": "diggers_instinct"},
-  "stone_sense":        {"x":  104, "y":  -26, "definition": "stone_sense"},
-  "swift_hands":        {"x":  104, "y":    0, "definition": "swift_hands"},
-  "woodcutter":         {"x":  104, "y":   26, "definition": "woodcutter"},
-  "deep_miner_1":       {"x":  156, "y":  -52, "definition": "deep_miner_1"},
-  "ore_eye":            {"x":  156, "y":  -26, "definition": "ore_eye"},
-  "nimble_fingers":     {"x":  156, "y":    0, "definition": "nimble_fingers"},
-  "lumberjack":         {"x":  156, "y":   26, "definition": "lumberjack"},
-  "deep_miner_2":       {"x":  208, "y":  -52, "definition": "deep_miner_2"},
-  "fortune_seeker":     {"x":  208, "y":  -26, "definition": "fortune_seeker"},
-  "foreman":            {"x":  208, "y":    0, "definition": "foreman"},
-  "forest_fury":        {"x":  208, "y":   26, "definition": "forest_fury"},
-  "vein_hunter":        {"x":  260, "y":  -52, "definition": "vein_hunter"},
-  "gem_sense":          {"x":  260, "y":  -26, "definition": "gem_sense"},
-  "efficiency_master":  {"x":  260, "y":    0, "definition": "efficiency_master"},
-  "master_carpenter":   {"x":  260, "y":   26, "definition": "master_carpenter"},
-  "grand_excavator":    {"x":  312, "y":  -26, "definition": "grand_excavator"},
-  "master_builder":     {"x":  312, "y":   26, "definition": "master_builder"},
-  "grand_architect":    {"x":  364, "y":    0, "definition": "grand_architect"},
-
-  "tackle":             {"x":    0, "y":  104, "definition": "tackle"},
-  "mach_punch":         {"x":    0, "y":  130, "definition": "mach_punch"},
-  "ember":              {"x": -312, "y":  130, "definition": "ember"},
-  "thundershock":       {"x": -234, "y":  130, "definition": "thundershock"},
-  "water_gun":          {"x": -156, "y":  130, "definition": "water_gun"},
-  "powder_snow":        {"x":  -78, "y":  130, "definition": "powder_snow"},
-  "vine_whip":          {"x":   78, "y":  130, "definition": "vine_whip"},
-  "confusion":          {"x":  156, "y":  130, "definition": "confusion"},
-  "night_shade":        {"x":  234, "y":  130, "definition": "night_shade"},
-  "dragon_breath":      {"x":  312, "y":  130, "definition": "dragon_breath"},
-  "poison_sting":       {"x":  -26, "y":  130, "definition": "poison_sting"},
-  "rock_throw":         {"x":   26, "y":  130, "definition": "rock_throw"},
-  "gust":               {"x":  390, "y":  130, "definition": "gust"},
-  "iron_tail":          {"x":  468, "y":  130, "definition": "iron_tail"},
-  "dazzling_gleam":     {"x":  546, "y":  130, "definition": "dazzling_gleam"},
-  "close_combat":       {"x":    0, "y":  156, "definition": "close_combat"},
-  "will_o_wisp":        {"x": -286, "y":  156, "definition": "will_o_wisp"},
-  "flamethrower":       {"x": -312, "y":  156, "definition": "flamethrower"},
-  "fire_spin":          {"x": -338, "y":  182, "definition": "fire_spin"},
-  "thunderbolt":        {"x": -234, "y":  156, "definition": "thunderbolt"},
-  "bubble_beam":        {"x": -156, "y":  156, "definition": "bubble_beam"},
-  "ice_shard":          {"x":  -78, "y":  156, "definition": "ice_shard"},
-  "leech_seed":         {"x":  104, "y":  156, "definition": "leech_seed"},
-  "recover":            {"x":  104, "y":  182, "definition": "recover"},
-  "razor_leaf":         {"x":   78, "y":  156, "definition": "razor_leaf"},
-  "psybeam":            {"x":  156, "y":  156, "definition": "psybeam"},
-  "shadow_ball":        {"x":  234, "y":  156, "definition": "shadow_ball"},
-  "shadow_sneak":       {"x":  260, "y":  156, "definition": "shadow_sneak"},
-  "dragon_pulse":       {"x":  312, "y":  156, "definition": "dragon_pulse"},
-  "poison_strike":      {"x":  -26, "y":  156, "definition": "poison_strike"},
-  "rock_slide":         {"x":   26, "y":  156, "definition": "rock_slide"},
-  "aerial_ace":         {"x":  390, "y":  156, "definition": "aerial_ace"},
-  "iron_strike":        {"x":  468, "y":  156, "definition": "iron_strike"},
-  "moonblast":          {"x":  546, "y":  156, "definition": "moonblast"},
-  "focus_blast":        {"x":    0, "y":  182, "definition": "focus_blast"},
-  "fire_blast":         {"x": -312, "y":  182, "definition": "fire_blast"},
-  "thunder":            {"x": -234, "y":  182, "definition": "thunder"},
-  "water_pulse":        {"x": -156, "y":  182, "definition": "water_pulse"},
-  "ice_beam":           {"x":  -78, "y":  182, "definition": "ice_beam"},
-  "leaf_blade":         {"x":   78, "y":  182, "definition": "leaf_blade"},
-  "psychic":            {"x":  156, "y":  182, "definition": "psychic"},
-  "dark_pulse":         {"x":  234, "y":  182, "definition": "dark_pulse"},
-  "draco_meteor":       {"x":  312, "y":  182, "definition": "draco_meteor"},
-  "sludge_bomb":        {"x":  -26, "y":  182, "definition": "sludge_bomb"},
-  "toxic_spikes":       {"x":  -52, "y":  182, "definition": "toxic_spikes"},
-  "stone_edge":         {"x":   26, "y":  182, "definition": "stone_edge"},
-  "aerial_strike":      {"x":  390, "y":  182, "definition": "aerial_strike"},
-  "flash_cannon":       {"x":  468, "y":  182, "definition": "flash_cannon"},
-  "hyper_beam":         {"x":    0, "y":  208, "definition": "hyper_beam"},
-  "overheat":           {"x": -312, "y":  208, "definition": "overheat"},
-  "discharge":          {"x": -234, "y":  208, "definition": "discharge"},
-  "surf":               {"x": -156, "y":  208, "definition": "surf"},
-  "frost_nova":         {"x":  -78, "y":  208, "definition": "frost_nova"},
-  "energy_ball":        {"x":   78, "y":  208, "definition": "energy_ball"},
-  "psychic_blast":      {"x":  156, "y":  208, "definition": "psychic_blast"},
-  "hex":                {"x":  234, "y":  208, "definition": "hex"},
-  "outrage":            {"x":  312, "y":  208, "definition": "outrage"},
-  "toxic":              {"x":  -26, "y":  208, "definition": "toxic"},
-  "seismic_slam":       {"x":   26, "y":  208, "definition": "seismic_slam"},
-  "sacred_fire":        {"x": -312, "y":  234, "definition": "sacred_fire"},
-  "volt_tackle":        {"x": -234, "y":  234, "definition": "volt_tackle"},
-  "hydro_pump":         {"x": -156, "y":  234, "definition": "hydro_pump"},
-  "blizzard":           {"x":  -78, "y":  234, "definition": "blizzard"},
-  "petal_blizzard":     {"x":   78, "y":  234, "definition": "petal_blizzard"},
-  "future_sight":       {"x":  156, "y":  234, "definition": "future_sight"},
-  "foul_play":          {"x":  234, "y":  234, "definition": "foul_play"},
-  "earthquake":         {"x":   26, "y":  234, "definition": "earthquake"},
-  "explosion":          {"x": -312, "y":  260, "definition": "explosion"},
-  "scald":              {"x": -156, "y":  260, "definition": "scald"},
-  "solar_beam":         {"x":   78, "y":  260, "definition": "solar_beam"},
-  "nature_burst":       {"x":   78, "y":  286, "definition": "nature_burst"}
+  "predator_root": {
+    "x": 0,
+    "y": 0,
+    "definition": "predator_root",
+    "root": true
+  },
+  "tough_hide": {
+    "x": -52,
+    "y": 0,
+    "definition": "tough_hide"
+  },
+  "vital_core_1": {
+    "x": -104,
+    "y": -52,
+    "definition": "vital_core_1"
+  },
+  "iron_skin_1": {
+    "x": -104,
+    "y": 0,
+    "definition": "iron_skin_1"
+  },
+  "predator_fist": {
+    "x": -104,
+    "y": 52,
+    "definition": "predator_fist"
+  },
+  "drain_essence": {
+    "x": -156,
+    "y": -78,
+    "definition": "drain_essence"
+  },
+  "vital_core_2": {
+    "x": -156,
+    "y": -52,
+    "definition": "vital_core_2"
+  },
+  "iron_skin_2": {
+    "x": -156,
+    "y": 0,
+    "definition": "iron_skin_2"
+  },
+  "swift_predator": {
+    "x": -156,
+    "y": 26,
+    "definition": "swift_predator"
+  },
+  "endurance": {
+    "x": -156,
+    "y": 52,
+    "definition": "endurance"
+  },
+  "predator_strength": {
+    "x": -156,
+    "y": 78,
+    "definition": "predator_strength"
+  },
+  "vampiric": {
+    "x": -208,
+    "y": -78,
+    "definition": "vampiric"
+  },
+  "vital_core_3": {
+    "x": -208,
+    "y": -52,
+    "definition": "vital_core_3"
+  },
+  "iron_skin_3": {
+    "x": -208,
+    "y": 0,
+    "definition": "iron_skin_3"
+  },
+  "hunter_step": {
+    "x": -208,
+    "y": 26,
+    "definition": "hunter_step"
+  },
+  "magic_ward": {
+    "x": -208,
+    "y": 52,
+    "definition": "magic_ward"
+  },
+  "battle_hardened": {
+    "x": -208,
+    "y": 78,
+    "definition": "battle_hardened"
+  },
+  "immortal_flesh": {
+    "x": -260,
+    "y": -78,
+    "definition": "immortal_flesh"
+  },
+  "titan_heart": {
+    "x": -260,
+    "y": -52,
+    "definition": "titan_heart"
+  },
+  "diamond_hide": {
+    "x": -260,
+    "y": 0,
+    "definition": "diamond_hide"
+  },
+  "apex_speed": {
+    "x": -260,
+    "y": 26,
+    "definition": "apex_speed"
+  },
+  "iron_will": {
+    "x": -260,
+    "y": 52,
+    "definition": "iron_will"
+  },
+  "alpha_predator": {
+    "x": -260,
+    "y": 78,
+    "definition": "alpha_predator"
+  },
+  "undying_will": {
+    "x": -312,
+    "y": -52,
+    "definition": "undying_will"
+  },
+  "fortress_body": {
+    "x": -312,
+    "y": 0,
+    "definition": "fortress_body"
+  },
+  "bulwark": {
+    "x": -312,
+    "y": 52,
+    "definition": "bulwark"
+  },
+  "apex_predator": {
+    "x": -364,
+    "y": 0,
+    "definition": "apex_predator"
+  },
+  "diggers_instinct": {
+    "x": 52,
+    "y": 0,
+    "definition": "diggers_instinct"
+  },
+  "stone_sense": {
+    "x": 104,
+    "y": -26,
+    "definition": "stone_sense"
+  },
+  "swift_hands": {
+    "x": 104,
+    "y": 0,
+    "definition": "swift_hands"
+  },
+  "woodcutter": {
+    "x": 104,
+    "y": 26,
+    "definition": "woodcutter"
+  },
+  "deep_miner_1": {
+    "x": 156,
+    "y": -52,
+    "definition": "deep_miner_1"
+  },
+  "ore_eye": {
+    "x": 156,
+    "y": -26,
+    "definition": "ore_eye"
+  },
+  "nimble_fingers": {
+    "x": 156,
+    "y": 0,
+    "definition": "nimble_fingers"
+  },
+  "lumberjack": {
+    "x": 156,
+    "y": 26,
+    "definition": "lumberjack"
+  },
+  "deep_miner_2": {
+    "x": 208,
+    "y": -52,
+    "definition": "deep_miner_2"
+  },
+  "fortune_seeker": {
+    "x": 208,
+    "y": -26,
+    "definition": "fortune_seeker"
+  },
+  "foreman": {
+    "x": 208,
+    "y": 0,
+    "definition": "foreman"
+  },
+  "forest_fury": {
+    "x": 208,
+    "y": 26,
+    "definition": "forest_fury"
+  },
+  "vein_hunter": {
+    "x": 260,
+    "y": -52,
+    "definition": "vein_hunter"
+  },
+  "gem_sense": {
+    "x": 260,
+    "y": -26,
+    "definition": "gem_sense"
+  },
+  "efficiency_master": {
+    "x": 260,
+    "y": 0,
+    "definition": "efficiency_master"
+  },
+  "master_carpenter": {
+    "x": 260,
+    "y": 26,
+    "definition": "master_carpenter"
+  },
+  "grand_excavator": {
+    "x": 312,
+    "y": -26,
+    "definition": "grand_excavator"
+  },
+  "master_builder": {
+    "x": 312,
+    "y": 26,
+    "definition": "master_builder"
+  },
+  "grand_architect": {
+    "x": 364,
+    "y": 0,
+    "definition": "grand_architect"
+  }
 }

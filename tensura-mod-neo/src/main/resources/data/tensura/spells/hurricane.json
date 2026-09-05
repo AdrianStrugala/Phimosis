@@ -1,0 +1,27 @@
+{
+  "pokemon_type": "flying",
+  "category": "special",
+  "power": 4.4,
+  "school": "wind",
+  "cooldown_ticks": 400,
+  "cast_time_ticks": 16,
+  "targeting": { "type": "area", "range": 18.0, "radius": 5.0, "max_targets": 12 },
+  "delivery": { "type": "vortex", "duration_ticks": 100, "tick_interval_ticks": 20, "pull_strength": 0.14 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 1.0 },
+    { "type": "pull", "strength": 0.16 }
+  ],
+  "visual": {
+    "cast_animation": "hurricane_channel",
+    "telegraph": "hurricane_ground_ring",
+    "projectile": "hurricane_funnel",
+    "trail": "hurricane_debris",
+    "impact": "hurricane_lift",
+    "aftermath": "hurricane_release"
+  },
+  "sound": {
+    "cast": "minecraft:entity.breeze.inhale",
+    "loop": "minecraft:entity.breeze.whirl",
+    "impact": "minecraft:entity.breeze.wind_burst"
+  }
+}

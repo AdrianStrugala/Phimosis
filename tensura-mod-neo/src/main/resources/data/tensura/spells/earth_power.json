@@ -1,0 +1,26 @@
+{
+  "pokemon_type": "ground",
+  "category": "special",
+  "power": 18.0,
+  "school": "earth",
+  "cooldown_ticks": 280,
+  "cast_time_ticks": 10,
+  "targeting": { "type": "area", "range": 15.0, "radius": 3.0, "max_targets": 8 },
+  "delivery": { "type": "delayed_area", "delay_ticks": 18 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 1.0 },
+    { "type": "expose", "duration": 100, "amplifier": 0 }
+  ],
+  "visual": {
+    "cast_animation": "earth_channel_cast",
+    "telegraph": "earth_power_fissures",
+    "projectile": "earth_power_column",
+    "impact": "earth_power_eruption",
+    "aftermath": "glowing_cracks"
+  },
+  "sound": {
+    "cast": "minecraft:block.enchantment_table.use",
+    "travel": "minecraft:block.basalt.step",
+    "impact": "minecraft:entity.generic.explode"
+  }
+}

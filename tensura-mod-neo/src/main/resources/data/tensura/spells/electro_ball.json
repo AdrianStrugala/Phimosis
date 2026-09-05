@@ -23,7 +23,7 @@
     }
   ],
   "visual": {
-    "cast_animation": "cast_point",
+    "cast_animation": "electro_ball_charge",
     "projectile": "electro_ball",
     "trail": "electric_arc",
     "impact": "electric_burst"

@@ -1,11 +1,27 @@
 {
+  "pokemon_type": "ground",
+  "category": "physical",
+  "power": 23.0,
   "school": "earth",
-  "cooldown_ticks": 220,
-  "targeting": { "type": "area", "range": 10, "radius": 10 },
-  "delivery": { "type": "meteor", "speed": 1.0 },
+  "cooldown_ticks": 400,
+  "cast_time_ticks": 16,
+  "targeting": { "type": "area", "range": 10.0, "radius": 10.0, "max_targets": 16 },
+  "delivery": { "type": "instant" },
   "impact": [
-    { "type": "damage", "damage_multiplier": 3.5 },
-    { "type": "knockback", "strength": 2.0 },
-    { "type": "status_effect", "effect": "minecraft:slowness", "duration": 100, "amplifier": 2, "chance": 0.6 }
-  ]
+    { "type": "damage", "damage_multiplier": 1.0 },
+    { "type": "knockback", "strength": 1.5 },
+    { "type": "status_effect", "effect": "minecraft:slowness", "duration": 80, "amplifier": 1 }
+  ],
+  "visual": {
+    "cast_animation": "earthquake_slam",
+    "telegraph": "earthquake_first_ring",
+    "projectile": "earthquake_radial_waves",
+    "impact": "earthquake_fissure",
+    "aftermath": "earthquake_dust"
+  },
+  "sound": {
+    "cast": "minecraft:entity.warden.sonic_charge",
+    "travel": "minecraft:entity.warden.heartbeat",
+    "impact": "minecraft:entity.warden.sonic_boom"
+  }
 }
