@@ -9,6 +9,17 @@ SPELL_DIR = File.join(ROOT, "src/main/resources/data/tensura/spells")
 OUTPUT_DIR = File.join(ROOT, "src/main/resources/assets/tensura/textures/item/spell")
 
 TARGETS = {
+  "flamethrower" => :flame_breath,
+  "surf" => :surf_wave,
+  "toxic_spikes" => :toxic_spikes,
+  "close_combat" => :combat_burst,
+  "shadow_sneak" => :shadow_sneak,
+  "psybeam" => :psybeam,
+  "volt_tackle" => :volt_dash,
+  "fire_spin" => :fire_spiral,
+  "rock_slide" => :falling_rocks,
+  "recover" => :recover,
+  "dark_pulse" => :dark_pulse,
   "aerial_ace" => :cross_wing,
   "air_cutter" => :triple_blade,
   "aqua_jet" => :drop_arrow,
@@ -49,6 +60,11 @@ TARGETS = {
   "whirlpool" => :whirlpool,
   "x_scissor" => :scissor
 }.freeze
+
+REDRAW = %w[
+  flamethrower surf toxic_spikes close_combat shadow_sneak psybeam volt_tackle
+  fire_spin rock_slide recover dark_pulse
+].freeze
 
 ICON_ORDER = %w[
   flamethrower surf toxic_spikes close_combat shadow_sneak psybeam volt_tackle
@@ -153,6 +169,89 @@ class Canvas
     end
     dot(7, 8, [255, 255, 255, 170], 0)
     dot(24, 23, @secondary, 0)
+  end
+
+  def flame_breath
+    line(6, 16, 12, 16, @secondary, 2)
+    line(10, 12, 15, 16, @primary); line(10, 20, 15, 16, @primary)
+    arc(19, 16, 7, -2.35, 2.35, @primary, 2)
+    line(15, 16, 20, 8, @secondary, 2); line(20, 8, 22, 15, @secondary, 2)
+    line(22, 15, 18, 22, @primary, 2)
+  end
+
+  def surf_wave
+    arc(14, 18, 9, 3.45, 6.0, @primary, 2)
+    arc(19, 18, 6, 0.4, 3.15, @secondary, 2)
+    line(7, 23, 25, 23, @primary, 2)
+    line(9, 19, 14, 19, @secondary); line(18, 15, 24, 15, @primary)
+  end
+
+  def toxic_spikes
+    line(7, 23, 11, 10, @primary, 2); line(11, 10, 15, 23, @secondary, 2)
+    line(13, 23, 17, 7, @secondary, 2); line(17, 7, 20, 23, @primary, 2)
+    line(19, 23, 23, 12, @primary, 2); line(23, 12, 26, 23, @secondary, 2)
+    dot(10, 8, @secondary, 1); dot(24, 9, @primary, 1)
+  end
+
+  def combat_burst
+    line(7, 11, 14, 16, @primary, 2); line(7, 21, 14, 16, @primary, 2)
+    line(25, 11, 18, 16, @secondary, 2); line(25, 21, 18, 16, @secondary, 2)
+    line(12, 7, 16, 13, @secondary); line(20, 7, 16, 13, @primary)
+    line(12, 25, 16, 19, @primary); line(20, 25, 16, 19, @secondary)
+    dot(16, 16, [255, 255, 255, 255], 2)
+  end
+
+  def shadow_sneak
+    arc(17, 16, 9, -1.45, 1.45, @secondary, 2)
+    arc(12, 16, 7, -1.25, 1.25, @primary, 2)
+    line(7, 21, 21, 10, @primary, 2); line(18, 9, 23, 9, @secondary, 2)
+    line(23, 9, 22, 14, @secondary, 2)
+  end
+
+  def psybeam
+    arc(13, 16, 6, 3.45, 5.95, @primary, 2)
+    arc(13, 16, 6, 0.35, 2.8, @secondary, 2)
+    dot(13, 16, @primary, 2)
+    line(18, 16, 26, 10, @secondary, 2); line(18, 16, 26, 16, @primary)
+    line(18, 16, 26, 22, @secondary, 2)
+  end
+
+  def volt_dash
+    line(7, 11, 14, 11, @secondary, 2); line(5, 16, 12, 16, @primary, 2)
+    line(8, 21, 14, 21, @secondary, 2)
+    line(19, 7, 12, 17, @primary, 2); line(12, 17, 18, 17, @primary, 2)
+    line(18, 17, 14, 25, @secondary, 2); line(14, 25, 25, 13, @secondary, 2)
+  end
+
+  def fire_spiral
+    arc(16, 16, 9, -0.6, 4.9, @primary, 2)
+    arc(16, 16, 5, 1.0, 6.1, @secondary, 2)
+    line(22, 8, 25, 11, @secondary, 2); line(25, 11, 21, 12, @primary)
+    dot(16, 16, @primary, 1)
+  end
+
+  def falling_rocks
+    line(8, 8, 12, 5, @secondary); line(12, 5, 16, 9, @primary, 2)
+    line(16, 9, 12, 13, @secondary, 2); line(12, 13, 8, 8, @primary)
+    line(17, 14, 21, 11, @primary); line(21, 11, 25, 16, @secondary, 2)
+    line(25, 16, 21, 20, @primary, 2); line(21, 20, 17, 14, @secondary)
+    line(8, 18, 12, 15, @primary); line(12, 15, 16, 21, @secondary, 2)
+    line(16, 21, 12, 25, @primary, 2); line(12, 25, 8, 18, @secondary)
+  end
+
+  def recover
+    line(16, 7, 16, 25, @primary, 2); line(7, 16, 25, 16, @primary, 2)
+    arc(16, 16, 8, -1.15, 0.9, @secondary, 2)
+    arc(16, 16, 8, 2.0, 4.05, @secondary, 2)
+    dot(9, 9, [255, 255, 255, 255], 1); dot(23, 23, @secondary, 1)
+  end
+
+  def dark_pulse
+    line(16, 10, 22, 16, @primary, 2); line(22, 16, 16, 22, @secondary, 2)
+    line(16, 22, 10, 16, @primary, 2); line(10, 16, 16, 10, @secondary, 2)
+    arc(16, 16, 10, -0.75, 0.75, @primary, 2)
+    arc(16, 16, 10, 2.4, 3.9, @secondary, 2)
+    dot(16, 16, [255, 255, 255, 255], 1)
   end
 
   def cross_wing
@@ -373,7 +472,7 @@ end
 generated = []
 TARGETS.each do |spell, symbol|
   output = File.join(OUTPUT_DIR, "#{spell}.png")
-  next if File.exist?(output)
+  next if File.exist?(output) && !REDRAW.include?(spell)
 
   definition = JSON.parse(File.read(File.join(SPELL_DIR, "#{spell}.json")))
   palette = PALETTES.fetch(definition.fetch("pokemon_type"))
