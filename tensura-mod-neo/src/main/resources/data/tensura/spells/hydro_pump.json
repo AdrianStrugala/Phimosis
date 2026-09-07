@@ -13,11 +13,11 @@
   },
   "delivery": {
     "type": "channel_beam",
-    "duration_ticks": 24,
+    "duration_ticks": 200,
     "tick_interval_ticks": 4
   },
   "impact": [
-    { "type": "damage", "damage_multiplier": 0.1666666667 },
+    { "type": "damage", "damage_multiplier": 0.04 },
     { "type": "knockback", "strength": 0.35 },
     {
       "type": "wet",

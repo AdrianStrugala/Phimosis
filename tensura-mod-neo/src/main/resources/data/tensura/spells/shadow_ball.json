@@ -1,10 +1,25 @@
 {
+  "pokemon_type": "ghost",
+  "category": "special",
+  "power": 14.0,
   "school": "shadow",
   "cooldown_ticks": 160,
-  "targeting": { "type": "aim", "range": 20 },
-  "delivery": { "type": "projectile", "speed": 1.4 },
+  "targeting": { "type": "aim", "range": 22.0, "radius": 2.5, "width": 1.1, "max_targets": 4 },
+  "delivery": { "type": "projectile", "speed": 1.35, "homing_strength": 0.08 },
   "impact": [
-    { "type": "damage", "damage_multiplier": 2.5 },
-    { "type": "status_effect", "effect": "minecraft:weakness", "duration": 100, "amplifier": 1, "chance": 0.5 }
-  ]
+    { "type": "damage", "damage_multiplier": 1.0 },
+    { "type": "status_effect", "effect": "minecraft:weakness", "duration": 100, "amplifier": 1, "chance": 0.35 }
+  ],
+  "visual": {
+    "cast_animation": "shadow_ball_orbit",
+    "projectile": "shadow_ball_core",
+    "trail": "shadow_orbit_trail",
+    "impact": "shadow_ball_implosion",
+    "aftermath": "shadow_residue"
+  },
+  "sound": {
+    "cast": "minecraft:entity.enderman.teleport",
+    "travel": "minecraft:entity.wither.shoot",
+    "impact": "minecraft:entity.generic.explode"
+  }
 }

@@ -1,10 +1,24 @@
 {
+  "pokemon_type": "fire",
+  "category": "status",
+  "power": 0.0,
   "school": "fire",
   "cooldown_ticks": 180,
-  "targeting": { "type": "aim", "range": 16, "radius": 3 },
-  "delivery": { "type": "cloud", "speed": 1.0 },
+  "targeting": { "type": "area", "range": 16.0, "radius": 3.5, "max_targets": 6 },
+  "delivery": { "type": "cloud", "duration_ticks": 120, "tick_interval_ticks": 20 },
   "impact": [
-    { "type": "fire", "seconds": 10 },
-    { "type": "status_effect", "effect": "minecraft:weakness", "duration": 200, "amplifier": 1, "chance": 1.0 }
-  ]
+    { "type": "fire", "seconds": 4 },
+    { "type": "status_effect", "effect": "minecraft:weakness", "duration": 80, "amplifier": 1 }
+  ],
+  "visual": {
+    "cast_animation": "will_o_wisp_conjure",
+    "telegraph": "wisp_circle",
+    "impact": "wisp_ignition",
+    "aftermath": "wandering_wisps"
+  },
+  "sound": {
+    "cast": "minecraft:entity.blaze.shoot",
+    "loop": "minecraft:block.fire.ambient",
+    "impact": "minecraft:item.firecharge.use"
+  }
 }

@@ -44,7 +44,12 @@ public class SpellItem extends Item {
         "x_scissor", "bug_buzz", "mud_shot", "bulldoze", "dig", "earth_power",
         "earthquake", "fairy_wind", "draining_kiss", "charm", "dazzling_gleam",
         "moonblast", "gust", "air_cutter", "aerial_ace", "tailwind", "hurricane",
-        "swift", "hyper_voice"
+        "swift", "hyper_voice", "water_gun", "thundershock", "psychic", "confusion",
+        "razor_leaf", "leaf_blade", "will_o_wisp", "poison_sting", "rock_throw",
+        "ice_shard", "thunderbolt", "fire_blast", "scald", "bubble_beam",
+        "energy_ball", "petal_blizzard", "solar_beam", "stone_edge", "discharge",
+        "sacred_fire", "dragon_pulse", "iron_strike", "mach_punch", "focus_blast",
+        "shadow_ball"
     );
 
     public SpellItem(Properties props) {
@@ -165,7 +170,7 @@ public class SpellItem extends Item {
 
     @Override
     public UseAnim getUseAnimation(ItemStack stack) {
-        return getChannelWindup(stack) > 0 ? UseAnim.BOW : UseAnim.NONE;
+        return getChannelWindup(stack) > 0 ? UseAnim.SPEAR : UseAnim.NONE;
     }
 
     @Override
@@ -205,6 +210,10 @@ public class SpellItem extends Item {
         CustomData data = stack.get(DataComponents.CUSTOM_DATA);
         if (data == null) return 1;
         int configured = data.copyTag().getInt(NBT_CHANNEL_DURATION);
+        ResourceLocation spellId = getSpellId(stack);
+        if (spellId != null && "hydro_pump".equals(spellId.getPath())) {
+            configured = Math.max(configured, 200);
+        }
         return Math.max(1, configured > 0 ? configured : 24);
     }
 

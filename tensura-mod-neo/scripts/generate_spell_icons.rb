@@ -58,7 +58,32 @@ TARGETS = {
   "u_turn" => :return,
   "vine_whip" => :vine,
   "whirlpool" => :whirlpool,
-  "x_scissor" => :scissor
+  "x_scissor" => :scissor,
+  "water_gun" => :water_nozzle,
+  "thundershock" => :small_spark,
+  "psychic" => :psychic_eye,
+  "confusion" => :confusion_spiral,
+  "razor_leaf" => :razor_leaves,
+  "leaf_blade" => :leaf_sword,
+  "will_o_wisp" => :wisp_flame,
+  "poison_sting" => :poison_needle,
+  "rock_throw" => :thrown_rock,
+  "ice_shard" => :ice_shards,
+  "thunderbolt" => :forked_bolt,
+  "fire_blast" => :fire_star,
+  "scald" => :steam_drop,
+  "bubble_beam" => :bubbles,
+  "energy_ball" => :energy_seed,
+  "petal_blizzard" => :petal_storm,
+  "solar_beam" => :sun_beam,
+  "stone_edge" => :stone_spires,
+  "discharge" => :electric_field,
+  "sacred_fire" => :sacred_flame,
+  "dragon_pulse" => :dragon_orb,
+  "iron_strike" => :steel_charge,
+  "mach_punch" => :speed_fist,
+  "focus_blast" => :focus_orb,
+  "shadow_ball" => :shadow_orb
 }.freeze
 
 REDRAW = %w[
@@ -73,7 +98,11 @@ ICON_ORDER = %w[
   quick_attack rest string_shot sucker_punch thunder tri_attack vine_whip
   whirlpool pin_missile u_turn x_scissor bug_buzz mud_shot bulldoze dig
   earth_power earthquake fairy_wind draining_kiss charm dazzling_gleam moonblast
-  gust air_cutter aerial_ace tailwind hurricane swift hyper_voice
+  gust air_cutter aerial_ace tailwind hurricane swift hyper_voice water_gun
+  thundershock psychic confusion razor_leaf leaf_blade will_o_wisp poison_sting
+  rock_throw ice_shard thunderbolt fire_blast scald bubble_beam energy_ball
+  petal_blizzard solar_beam stone_edge discharge sacred_fire dragon_pulse
+  iron_strike mach_punch focus_blast shadow_ball
 ].freeze
 
 PALETTES = {
@@ -452,6 +481,150 @@ class Canvas
     line(8, 8, 24, 24, @primary, 2); line(24, 8, 8, 24, @secondary, 2)
     dot(10, 10, @secondary, 2); dot(22, 10, @primary, 2)
   end
+
+  def water_nozzle
+    line(7, 18, 14, 18, @secondary, 2); line(14, 14, 14, 22, @primary, 2)
+    line(14, 16, 25, 11, @primary, 2); line(16, 20, 26, 17, @secondary, 2)
+  end
+
+  def small_spark
+    line(17, 7, 11, 15, @primary, 2); line(11, 15, 17, 15, @secondary, 2)
+    line(17, 15, 13, 24, @primary, 2); line(13, 24, 23, 13, @secondary, 2)
+  end
+
+  def psychic_eye
+    arc(16, 16, 9, 3.4, 5.95, @primary, 2); arc(16, 16, 9, 0.34, 2.88, @secondary, 2)
+    arc(16, 16, 4, 0, Math::PI * 2, @primary, 2); dot(17, 15, [255, 255, 255, 255], 1)
+  end
+
+  def confusion_spiral
+    arc(16, 16, 9, -0.4, 5.2, @primary, 2); arc(16, 16, 5, 1.0, 6.0, @secondary, 2)
+    line(16, 16, 21, 13, @primary); dot(9, 9, @secondary, 1)
+  end
+
+  def razor_leaves
+    line(7, 22, 22, 8, @primary, 2); line(12, 24, 25, 12, @secondary, 2)
+    arc(13, 15, 5, 2.3, 5.4, @secondary); arc(20, 17, 4, -0.9, 2.0, @primary)
+  end
+
+  def leaf_sword
+    line(9, 24, 23, 8, @primary, 2); line(12, 23, 25, 10, @secondary, 2)
+    line(8, 19, 15, 25, @secondary, 2); line(7, 24, 12, 19, @primary)
+  end
+
+  def wisp_flame
+    arc(16, 18, 7, -0.2, 3.5, @primary, 2); line(10, 18, 17, 7, @secondary, 2)
+    line(17, 7, 19, 16, @primary, 2); arc(16, 19, 3, 0, Math::PI * 2, @secondary)
+    dot(23, 10, @primary, 1)
+  end
+
+  def poison_needle
+    line(7, 23, 22, 8, @primary, 2); line(11, 24, 25, 11, @secondary, 2)
+    line(8, 18, 14, 24, @secondary); dot(23, 20, @primary, 2)
+  end
+
+  def thrown_rock
+    line(9, 11, 16, 7, @secondary, 2); line(16, 7, 24, 13, @primary, 2)
+    line(24, 13, 21, 23, @secondary, 2); line(21, 23, 10, 22, @primary, 2)
+    line(10, 22, 9, 11, @secondary, 2); line(13, 11, 20, 20, @primary)
+  end
+
+  def ice_shards
+    line(10, 24, 14, 8, @primary, 2); line(14, 8, 18, 23, @secondary, 2)
+    line(18, 23, 22, 10, @primary, 2); line(8, 18, 24, 16, @secondary)
+  end
+
+  def forked_bolt
+    line(18, 6, 10, 16, @primary, 2); line(10, 16, 17, 16, @secondary, 2)
+    line(17, 16, 12, 26, @primary, 2); line(17, 16, 24, 12, @secondary, 2)
+    line(17, 16, 23, 21, @primary, 2)
+  end
+
+  def fire_star
+    star
+    dot(16, 16, @secondary, 3)
+  end
+
+  def steam_drop
+    arc(16, 17, 7, -0.1, 3.25, @primary, 2); line(10, 17, 16, 7, @secondary, 2)
+    line(16, 7, 22, 17, @primary, 2); arc(12, 9, 3, 2.0, 4.8, @secondary)
+    arc(21, 8, 3, 2.0, 4.8, @primary)
+  end
+
+  def bubbles
+    arc(12, 18, 5, 0, Math::PI * 2, @primary, 2); arc(20, 12, 4, 0, Math::PI * 2, @secondary, 2)
+    arc(22, 21, 3, 0, Math::PI * 2, @primary); dot(10, 16, [255, 255, 255, 255], 1)
+  end
+
+  def energy_seed
+    arc(16, 16, 8, 0, Math::PI * 2, @primary, 2); dot(16, 16, @secondary, 3)
+    line(16, 8, 16, 24, @secondary); line(8, 16, 24, 16, @primary)
+    line(10, 10, 22, 22, @secondary); line(22, 10, 10, 22, @primary)
+  end
+
+  def petal_storm
+    (0...4).each do |index|
+      angle = index * Math::PI / 2.0
+      x = (16 + Math.cos(angle) * 6).round
+      y = (16 + Math.sin(angle) * 6).round
+      dot(x, y, index.even? ? @primary : @secondary, 3)
+    end
+    dot(16, 16, [255, 255, 255, 255], 2)
+  end
+
+  def sun_beam
+    arc(12, 16, 5, 0, Math::PI * 2, @secondary, 2); dot(12, 16, @primary, 2)
+    line(17, 16, 26, 16, @primary, 2); line(18, 12, 25, 10, @secondary)
+    line(18, 20, 25, 22, @secondary)
+  end
+
+  def stone_spires
+    line(7, 24, 11, 11, @primary, 2); line(11, 11, 15, 24, @secondary, 2)
+    line(13, 24, 18, 7, @secondary, 2); line(18, 7, 22, 24, @primary, 2)
+    line(20, 24, 24, 14, @primary, 2); line(24, 14, 26, 24, @secondary)
+  end
+
+  def electric_field
+    arc(16, 16, 9, 0, Math::PI * 2, @primary, 2); arc(16, 16, 5, 0, Math::PI * 2, @secondary)
+    line(16, 6, 16, 11, @secondary, 2); line(16, 21, 16, 26, @primary, 2)
+    line(6, 16, 11, 16, @primary, 2); line(21, 16, 26, 16, @secondary, 2)
+  end
+
+  def sacred_flame
+    line(16, 6, 11, 16, @secondary, 2); line(11, 16, 16, 25, @primary, 2)
+    line(16, 25, 22, 16, @secondary, 2); line(22, 16, 18, 10, @primary, 2)
+    arc(16, 17, 5, 0, Math::PI * 2, [255, 255, 255, 255], 1)
+  end
+
+  def dragon_orb
+    arc(16, 16, 7, 0, Math::PI * 2, @primary, 2); dot(16, 16, @secondary, 2)
+    line(9, 13, 5, 9, @secondary, 2); line(23, 13, 27, 9, @primary, 2)
+    line(10, 21, 7, 25, @primary); line(22, 21, 25, 25, @secondary)
+  end
+
+  def steel_charge
+    line(7, 16, 22, 8, @primary, 2); line(7, 16, 22, 24, @secondary, 2)
+    line(22, 8, 26, 16, @secondary, 2); line(26, 16, 22, 24, @primary, 2)
+    line(6, 11, 13, 11, @secondary); line(6, 21, 13, 21, @primary)
+  end
+
+  def speed_fist
+    line(11, 13, 23, 13, @primary, 2); line(12, 13, 11, 23, @secondary, 2)
+    line(11, 23, 20, 23, @primary, 2); line(20, 23, 25, 16, @secondary, 2)
+    line(13, 8, 13, 13, @primary, 2); line(18, 7, 18, 13, @secondary, 2)
+    line(6, 17, 10, 17, [255, 255, 255, 255], 1)
+  end
+
+  def focus_orb
+    arc(16, 16, 8, 0, Math::PI * 2, @primary, 2); arc(16, 16, 4, 0, Math::PI * 2, @secondary, 2)
+    line(16, 5, 16, 10, @secondary); line(16, 22, 16, 27, @primary)
+    line(5, 16, 10, 16, @primary); line(22, 16, 27, 16, @secondary)
+  end
+
+  def shadow_orb
+    arc(16, 16, 8, 0, Math::PI * 2, @secondary, 2); dot(16, 16, @primary, 4)
+    arc(16, 16, 11, -0.6, 1.0, @primary, 2); arc(16, 16, 11, 2.5, 4.1, @secondary, 2)
+  end
 end
 
 def png_chunk(type, data)
@@ -481,27 +654,28 @@ TARGETS.each do |spell, symbol|
 end
 
 model_directory = File.join(ROOT, "src/main/resources/assets/tensura/models/item")
+school_models = %w[
+  lightning fire water ice shadow psychic dragon nature poison earth wind fairy steel
+].freeze
+model_name = ->(spell) { school_models.include?(spell) ? "spell_custom_#{spell}" : "spell_#{spell}" }
 ICON_ORDER.each do |spell|
   spell_model = {
     "parent" => "item/generated",
     "textures" => { "layer0" => "tensura:item/spell/#{spell}" }
   }
-  File.write(File.join(model_directory, "spell_#{spell}.json"),
+  File.write(File.join(model_directory, "#{model_name.call(spell)}.json"),
     JSON.pretty_generate(spell_model) + "\n")
   File.write(File.join(model_directory, "spell_icon_#{spell}.json"),
-    JSON.pretty_generate("parent" => "tensura:item/spell_#{spell}") + "\n")
+    JSON.pretty_generate("parent" => "tensura:item/#{model_name.call(spell)}") + "\n")
 end
 
-school_models = %w[
-  lightning fire water ice shadow psychic dragon nature poison earth wind fairy steel
-]
 overrides = school_models.each_with_index.map do |school, index|
   { "predicate" => { "tensura:school" => index + 1 },
     "model" => "tensura:item/spell_#{school}" }
 end
 overrides.concat(ICON_ORDER.each_with_index.map do |spell, index|
   { "predicate" => { "tensura:icon" => index + 1 },
-    "model" => "tensura:item/spell_#{spell}" }
+    "model" => "tensura:item/#{model_name.call(spell)}" }
 end)
 spell_item_model = {
   "parent" => "item/generated",

@@ -29,6 +29,7 @@
   "visual": {
     "cast_animation": "storm_cast",
     "telegraph": "snow_zone",
+    "impact": "blizzard_frost_hit",
     "aftermath": "moving_blizzard"
   },
   "sound": {

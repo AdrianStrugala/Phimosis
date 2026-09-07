@@ -17,6 +17,33 @@ TEXTURE_DIR = File.join(ROOT, "src/main/resources/assets/tensura/textures/item/s
 DEVOUR_DIR = File.join(ROOT,
   "src/main/resources/data/tensura/puffish_skills/categories/devour")
 
+DELIVERY_VFX = {
+  "projectile" => [%w[projectile], %w[trail], %w[impact]],
+  "beam" => [%w[trail], %w[impact]],
+  "channel_beam" => [%w[trail], %w[impact]],
+  "channel_cone" => [%w[trail], %w[impact]],
+  "dash" => [%w[trail], %w[impact]],
+  "delayed" => [%w[telegraph], %w[impact]],
+  "delayed_area" => [%w[telegraph], %w[impact], %w[aftermath]],
+  "moving_zone" => [%w[aftermath], %w[impact]],
+  "cloud" => [%w[aftermath], %w[impact]],
+  "protective_aura" => [%w[telegraph], %w[aftermath]],
+  "counter" => [%w[telegraph], %w[impact]],
+  "wave" => [%w[trail aftermath], %w[impact]],
+  "trap" => [%w[telegraph], %w[aftermath]],
+  "vortex" => [%w[telegraph], %w[aftermath]],
+  "melee_combo" => [%w[impact], %w[aftermath]],
+  "teleport_strike" => [%w[trail], %w[impact]],
+  "ricochet_beam" => [%w[trail], %w[impact]],
+  "meteor" => [%w[projectile], %w[telegraph], %w[impact]],
+  "instant" => [%w[impact]],
+  "self" => [%w[impact], %w[aftermath]]
+}.freeze
+
+LOOP_DELIVERIES = %w[
+  channel_beam channel_cone cloud moving_zone protective_aura vortex wave
+].freeze
+
 def fail_validation(message)
   warn "Validation failed: #{message}"
   exit 1
@@ -26,8 +53,18 @@ java = File.read(JAVA_ICON_FILE)
 icon_block = java[/CUSTOM_ICON_ORDER = java\.util\.List\.of\((.*?)\n    \);/m, 1]
 fail_validation("CUSTOM_ICON_ORDER not found") unless icon_block
 spells = icon_block.scan(/"([a-z0-9_]+)"/).flatten
-fail_validation("expected 50 custom icon spells, got #{spells.size}") unless spells.size == 50
+fail_validation("expected 75 custom icon spells, got #{spells.size}") unless spells.size == 75
 fail_validation("duplicate custom icon spell") unless spells.uniq.size == spells.size
+
+promoted_spells = %w[
+  water_gun thundershock psychic confusion razor_leaf leaf_blade will_o_wisp
+  poison_sting rock_throw ice_shard thunderbolt fire_blast scald bubble_beam
+  energy_ball petal_blizzard solar_beam stone_edge discharge sacred_fire
+  dragon_pulse iron_strike mach_punch focus_blast shadow_ball
+]
+missing_promotions = promoted_spells - spells
+fail_validation("missing promoted spells: #{missing_promotions.join(', ')}") unless
+  missing_promotions.empty?
 
 mapper = File.read(MAPPER_FILE)
 executor = File.read(EXECUTOR_FILE)
@@ -56,13 +93,20 @@ spells.each do |spell|
 
   fail_validation("#{spell} has no pokemon_type") if definition["pokemon_type"].to_s.empty?
   fail_validation("#{spell} has no explicit power") unless definition.key?("power")
-  fail_validation("#{spell} has no delivery") if definition.dig("delivery", "type").to_s.empty?
-  controller_delivery = definition.dig("delivery", "type") == "trap"
+  delivery = definition.dig("delivery", "type").to_s
+  fail_validation("#{spell} has no delivery") if delivery.empty?
+  fail_validation("#{spell} has unsupported delivery #{delivery}") unless DELIVERY_VFX.key?(delivery)
+  controller_delivery = delivery == "trap"
   fail_validation("#{spell} has no impact or controller mechanic") if
     Array(definition["impact"]).empty? && !controller_delivery
-  fail_validation("#{spell} has no sound") unless definition.fetch("sound", {}).values.any? do |value|
-    value.is_a?(String) && !value.empty?
-  end
+  sounds = definition.fetch("sound", {})
+  sound_keys = sounds.select { |_key, value| value.is_a?(String) && !value.empty? }.keys
+  fail_validation("#{spell} has no cast sound") unless sound_keys.include?("cast")
+  unsupported_sounds = sound_keys - %w[cast travel impact loop]
+  fail_validation("#{spell} has unsupported sounds: #{unsupported_sounds.join(', ')}") unless
+    unsupported_sounds.empty?
+  fail_validation("#{spell} declares a loop sound for non-looping #{delivery}") if
+    sound_keys.include?("loop") && !LOOP_DELIVERIES.include?(delivery)
 
   visual = definition.fetch("visual", {})
   cast = visual["cast_animation"].to_s
@@ -71,8 +115,11 @@ spells.each do |spell|
   casts[cast] = spell
   fail_validation("#{spell} cast #{cast} has no explicit geometry profile") unless
     cast_profiles.key?(cast)
-  populated_vfx = visual.values.count { |value| value.is_a?(String) && !value.empty? }
-  fail_validation("#{spell} has fewer than three VFX phases") if populated_vfx < 3
+  DELIVERY_VFX.fetch(delivery).each do |alternatives|
+    next if alternatives.any? { |phase| !visual[phase].to_s.empty? }
+
+    fail_validation("#{spell} #{delivery} lacks reachable #{alternatives.join('/')} VFX")
+  end
 
   self_mapping = /n\("#{Regexp.escape(spell)}",\s*"#{Regexp.escape(spell)}"\);/
   fail_validation("#{spell} has no direct Cobblemon mapping") unless mapper.match?(self_mapping)
@@ -92,12 +139,16 @@ spells.each do |spell|
   fail_validation("#{spell} owned-to-dispenser edge is missing") unless
     connections.include?([owned_id, spell])
 
-  spell_model = File.join(MODEL_DIR, "spell_#{spell}.json")
+  spell_model_name = spell == "psychic" ? "spell_custom_psychic" : "spell_#{spell}"
+  spell_model = File.join(MODEL_DIR, "#{spell_model_name}.json")
   icon_model = File.join(MODEL_DIR, "spell_icon_#{spell}.json")
   texture = File.join(TEXTURE_DIR, "#{spell}.png")
   fail_validation("#{spell} item model is missing") unless File.exist?(spell_model)
   fail_validation("#{spell} tree icon model is missing") unless File.exist?(icon_model)
   fail_validation("#{spell} texture is missing") unless File.exist?(texture)
+  icon_parent = JSON.parse(File.read(icon_model))["parent"]
+  fail_validation("#{spell} tree icon points at #{icon_parent}") unless
+    icon_parent == "tensura:item/#{spell_model_name}"
 
   png = File.binread(texture)
   valid_png = png.start_with?("\x89PNG\r\n\x1a\n".b) &&
@@ -124,6 +175,13 @@ fail_validation("U-turn is not configured to return") unless
   u_turn.dig("delivery", "return_to_origin") && movement.include?("beginReturn(dash)")
 fail_validation("grouped projectiles do not reset target i-frames") unless
   projectile.include?("target.invulnerableTime = 0")
+fail_validation("channel beams do not bypass target i-frames") unless
+  executor.include?('if ("channel_beam".equals(def.delivery.type))') &&
+    executor.include?("t.invulnerableTime = 0")
+fail_validation("channel cones do not bypass target i-frames") unless
+  executor.match?(/castRuntimeCone.*?target\.invulnerableTime = 0/m)
+fail_validation("persistent zones do not bypass target i-frames") unless
+  runtime.match?(/tickMovingZones.*?target\.invulnerableTime = 0/m)
 
 close_combat_penalty = impacts.call("close_combat").find do |impact|
   impact["type"] == "expose" && impact["recipient"] == "caster"
@@ -166,12 +224,50 @@ end
 fail_validation("Draining Kiss does not heal 75% of actual damage") unless
   draining_heal&.fetch("amount", nil) == 0.75 && executor.include?("healthBefore - target.getHealth()")
 
+hydro_pump = spell_definition.call("hydro_pump")
+fail_validation("Hydro Pump is not a held channel") unless
+  hydro_pump.dig("delivery", "type") == "channel_beam" &&
+    hydro_pump.dig("delivery", "duration_ticks").to_i >= 200 &&
+    runtime.include?("beam.ownerId.equals(beam.effectCasterId) && !owner.isUsingItem()") &&
+    java.include?("stopPlayerChannelBeam(player.getUUID())") &&
+    java.include?("UseAnim.SPEAR")
+fail_validation("channel cooldown incorrectly scales with held duration") unless
+  executor.include?("playerCooldowns.put(spellId, now + def.cooldown_ticks)")
+
+fail_validation("lingering clouds are not connected to the runtime controller") unless
+  executor.include?("def.delivery.duration_ticks > 0") &&
+    executor.include?("SpellRuntimeController.startMovingZone(caster, caster, def, cloudPos, Vec3.ZERO)")
+fail_validation("fire impacts ignore configured chance") unless
+  executor.include?("target.getRandom().nextDouble() <= impact.chance")
+fail_validation("travel sounds are not wired for players and companions") unless
+  executor.include?("def.sound.travel") &&
+    executor.scan("if (started) playTravelSound").size >= 2
+fail_validation("looping impact sounds are not rate-limited") unless
+  executor.include?("impactSoundTimes") && executor.include?("now - lastPlayed < 10") &&
+    executor.match?(/playImpactSound\(owner, target, def\);\s*}\s*\n\s*private static double applyExposedModifier/)
+
+fail_validation("delayed areas do not use school-aware particles") unless
+  runtime.match?(/tickDelayedAreas.*?runtimeParticle\(area\.definition\.school\)/m)
+fail_validation("delayed areas create lightning for non-Lightning schools") unless
+  runtime.include?('if ("lightning".equals(area.definition.school))')
+fail_validation("waves do not use school-aware particles") unless
+  runtime.match?(/tickWaves.*?runtimeParticle\(wave\.definition\.school\)/m)
+fail_validation("waves do not consume trail when aftermath is absent") unless
+  runtime.include?("? wave.definition.visual.trail : wave.definition.visual.aftermath")
+
+stone_edge_damage = impacts.call("stone_edge").find { |impact| impact["type"] == "damage" }
+fail_validation("Stone Edge is under-scaled for one-hit meteor groups") unless
+  stone_edge_damage&.fetch("damage_multiplier", 0).to_f >= 1.0
+fail_validation("Shift Gear incorrectly grants Iron Strike") if
+  mapper.match?(/n\("shift_gear",\s*"iron_strike"\);/)
+
 ray_count = connections.count { |edge| edge.first == "devour_core" }
 fail_validation("expected 18 Devour rays, got #{ray_count}") unless ray_count == 18
 
 spell_files = Dir[File.join(SPELL_DIR, "*.json")]
 spell_files.each do |path|
   spell = File.basename(path, ".json")
+  source_definition = JSON.parse(File.read(path))
   fail_validation("#{spell} owned marker is not an independent root") unless
     skills.dig("#{spell}_owned", "root") == true
   expected_title = spell.split("_").map(&:capitalize).join(" ")
@@ -182,6 +278,11 @@ spell_files.each do |path|
     description.length.between?(35, 160) && description.end_with?(".") &&
       !description.match?(/\d|cooldown|block range|duration_ticks|damage_multiplier|Dispenses|Absorbed/) &&
       !description.match?(/\s{2,}/)
+  chance_impacts = Array(source_definition["impact"]).select do |impact|
+    %w[fire expose].include?(impact["type"]) && impact.fetch("chance", 1).to_f < 1
+  end
+  fail_validation("#{spell} hides probabilistic fire/expose in its description") if
+    chance_impacts.any? && !description.downcase.include?("sometimes")
 end
 
 puts "Done spells: #{spells.size}"

@@ -436,14 +436,14 @@ public class CobblemonMoveMapper {
         n("flash_cannon",       "flash_cannon");
         n("meteor_mash",        "iron_tail");
         n("iron_head",          "iron_tail");
-        n("steel_wing",         "iron_strike");
+            n("iron_strike",        "iron_strike");
+            n("steel_wing",         "iron_strike");
         n("bullet_punch",       "mach_punch");
         n("gyro_ball",          "iron_tail");
         n("doom_desire",        "draco_meteor");
         n("sunsteel_strike",    "iron_strike");
         n("smart_strike",       "iron_tail");
         n("iron_defense",       "iron_defense");
-        n("shift_gear",         "iron_strike");
         n("magnet_bomb",        "iron_tail");
         n("mirror_shot",        "flash_cannon");
         n("steel_beam",         "flash_cannon");

@@ -6,6 +6,12 @@ ROOT = File.expand_path("..", __dir__)
 DEVOUR_DIR = File.join(ROOT,
   "src/main/resources/data/tensura/puffish_skills/categories/devour")
 SPELL_DIR = File.join(ROOT, "src/main/resources/data/tensura/spells")
+SPELL_ITEM_FILE = File.join(ROOT, "src/main/java/com/tensura/item/SpellItem.java")
+
+spell_item = File.read(SPELL_ITEM_FILE)
+icon_block = spell_item[/CUSTOM_ICON_ORDER = java\.util\.List\.of\((.*?)\n    \);/m, 1]
+abort "CUSTOM_ICON_ORDER not found" unless icon_block
+CUSTOM_ICONS = icon_block.scan(/"([a-z0-9_]+)"/).flatten.freeze
 
 RAYS = {
   normal: %w[tackle quick_attack swift tri_attack recover hyper_voice hyper_beam explosion],
@@ -82,7 +88,8 @@ def impact_text(impact)
     verb = EFFECT_NAMES.fetch(impact["effect"], "afflicts")
     subject = self_effect ? "you" : "enemies"
     impact.fetch("chance", 1).to_f < 1 ? "sometimes #{verb} #{subject}" : "#{verb} #{subject}"
-  when "fire" then "sets enemies ablaze"
+  when "fire"
+    impact.fetch("chance", 1).to_f < 1 ? "sometimes sets enemies ablaze" : "sets enemies ablaze"
   when "knockback" then "knocks enemies back"
   when "pull" then "pulls enemies inward"
   when "heal", "heal_fraction" then "restores your health"
@@ -97,7 +104,9 @@ def impact_text(impact)
   when "freeze_if_wet" then "chills soaked enemies"
   when "paralyze_if_wet" then "paralyzes soaked enemies"
   when "damage_reduction" then "reduces incoming damage"
-  when "expose" then self_effect ? "leaves you Exposed afterward" : "leaves enemies Exposed"
+  when "expose"
+    effect = self_effect ? "leaves you Exposed afterward" : "leaves enemies Exposed"
+    impact.fetch("chance", 1).to_f < 1 ? "sometimes #{effect}" : effect
   when "guard" then "blocks the next hit"
   when "tri_status" then "may burn, chill, or paralyze"
   end
@@ -232,6 +241,12 @@ RAYS.each do |type, spells|
     end
     ordered_definitions[spell]["title"] = title_for(spell)
     ordered_definitions[spell]["description"] = description
+    if CUSTOM_ICONS.include?(spell)
+      ordered_definitions[spell]["icon"] = {
+        "type" => "item",
+        "data" => { "item" => "tensura:spell_icon_#{spell}" }
+      }
+    end
   end
 end
 

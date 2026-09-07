@@ -501,7 +501,7 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:soul_lantern"
+        "item": "tensura:spell_icon_will_o_wisp"
       }
     },
     "rewards": [
@@ -650,11 +650,11 @@
   },
   "fire_blast": {
     "title": "Fire Blast",
-    "description": "Strike enemies with a burst of Fire energy at close range. Sets enemies ablaze.",
+    "description": "Launch a Fire blast from long range that explodes on impact. Sets enemies ablaze. Takes a short moment to cast.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:blaze_powder"
+        "item": "tensura:spell_icon_fire_blast"
       }
     },
     "rewards": [
@@ -752,11 +752,11 @@
   },
   "sacred_fire": {
     "title": "Sacred Fire",
-    "description": "Launch a Fire projectile from long range. Sets enemies ablaze and sometimes weakens enemies.",
+    "description": "Launch a Fire blast from long range that explodes on impact. Sometimes sets enemies ablaze and sometimes weakens enemies. Takes a short moment to cast.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:fire_charge"
+        "item": "tensura:spell_icon_sacred_fire"
       }
     },
     "rewards": [
@@ -803,11 +803,11 @@
   },
   "water_gun": {
     "title": "Water Gun",
-    "description": "Unleash a piercing Water beam at medium range. Knocks enemies back.",
+    "description": "Unleash a piercing Water beam at medium range. Soaks enemies and knocks enemies back.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:water_bucket"
+        "item": "tensura:spell_icon_water_gun"
       }
     },
     "rewards": [
@@ -909,7 +909,7 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:bubble_coral"
+        "item": "tensura:spell_icon_bubble_beam"
       }
     },
     "rewards": [
@@ -1160,11 +1160,11 @@
   },
   "scald": {
     "title": "Scald",
-    "description": "Launch a Water projectile from long range. Sets enemies ablaze and sometimes weakens enemies.",
+    "description": "Launch a Water blast from long range that explodes on impact. Soaks enemies and sometimes sets enemies ablaze.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:magma_cream"
+        "item": "tensura:spell_icon_scald"
       }
     },
     "rewards": [
@@ -1211,11 +1211,11 @@
   },
   "thundershock": {
     "title": "Thundershock",
-    "description": "Launch a Lightning projectile at medium range. Sometimes slows enemies.",
+    "description": "Launch an Electric projectile at medium range. Paralyzes soaked enemies.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:lightning_rod"
+        "item": "tensura:spell_icon_thundershock"
       }
     },
     "rewards": [
@@ -1313,11 +1313,11 @@
   },
   "thunderbolt": {
     "title": "Thunderbolt",
-    "description": "Launch a Lightning projectile from long range. Sometimes slows enemies.",
+    "description": "Fire an Electric beam that leaps to another enemy from long range. Paralyzes soaked enemies.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:lightning_rod"
+        "item": "tensura:spell_icon_thunderbolt"
       }
     },
     "rewards": [
@@ -1364,11 +1364,11 @@
   },
   "discharge": {
     "title": "Discharge",
-    "description": "Create a lingering cloud of Lightning energy at medium range. Sometimes slows enemies.",
+    "description": "Create a lingering cloud of Electric energy at medium range. Paralyzes soaked enemies.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:copper_ingot"
+        "item": "tensura:spell_icon_discharge"
       }
     },
     "rewards": [
@@ -1619,11 +1619,11 @@
   },
   "razor_leaf": {
     "title": "Razor Leaf",
-    "description": "Launch a Nature projectile from long range. Sometimes poisons enemies.",
+    "description": "Launch a volley of Grass projectiles from long range. Sometimes leaves enemies Exposed.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:oak_leaves"
+        "item": "tensura:spell_icon_razor_leaf"
       }
     },
     "rewards": [
@@ -1670,11 +1670,11 @@
   },
   "leaf_blade": {
     "title": "Leaf Blade",
-    "description": "Strike enemies with a burst of Nature energy at medium range. Sometimes weakens enemies.",
+    "description": "Dash forward in a burst of Grass energy at medium range. Sometimes leaves enemies Exposed and hastens you.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:bamboo"
+        "item": "tensura:spell_icon_leaf_blade"
       }
     },
     "rewards": [
@@ -1721,11 +1721,11 @@
   },
   "energy_ball": {
     "title": "Energy Ball",
-    "description": "Strike enemies with a burst of Nature energy at close range. Sometimes weakens enemies.",
+    "description": "Launch a Grass blast from long range that explodes on impact. Sometimes weakens enemies.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:slime_ball"
+        "item": "tensura:spell_icon_energy_ball"
       }
     },
     "rewards": [
@@ -1772,11 +1772,11 @@
   },
   "petal_blizzard": {
     "title": "Petal Blizzard",
-    "description": "Strike enemies with a burst of Nature energy at close range. Knocks enemies back.",
+    "description": "Send a surging wave of Grass energy forward. Knocks enemies back.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:pink_petals"
+        "item": "tensura:spell_icon_petal_blizzard"
       }
     },
     "rewards": [
@@ -1827,7 +1827,7 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:sunflower"
+        "item": "tensura:spell_icon_solar_beam"
       }
     },
     "rewards": [
@@ -1980,7 +1980,7 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:packed_ice"
+        "item": "tensura:spell_icon_ice_shard"
       }
     },
     "rewards": [
@@ -2231,11 +2231,11 @@
   },
   "mach_punch": {
     "title": "Mach Punch",
-    "description": "Strike enemies with a burst of Physical energy at medium range. Knocks enemies back.",
+    "description": "Dash forward in a burst of Fighting energy at close range. Knocks enemies back. Can be used twice before recharging.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:iron_sword"
+        "item": "tensura:spell_icon_mach_punch"
       }
     },
     "rewards": [
@@ -2333,11 +2333,11 @@
   },
   "focus_blast": {
     "title": "Focus Blast",
-    "description": "Launch a Physical projectile from long range. Knocks enemies back and sometimes weakens enemies.",
+    "description": "Launch a Fighting blast from long range that explodes on impact. Knocks enemies back and sometimes leaves enemies Exposed. Takes a short moment to cast.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:magma_cream"
+        "item": "tensura:spell_icon_focus_blast"
       }
     },
     "rewards": [
@@ -2435,11 +2435,11 @@
   },
   "poison_sting": {
     "title": "Poison Sting",
-    "description": "Launch a Poison projectile at medium range. Sometimes poisons enemies.",
+    "description": "Launch a volley of Poison projectiles from long range. Sometimes poisons enemies.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:poisonous_potato"
+        "item": "tensura:spell_icon_poison_sting"
       }
     },
     "rewards": [
@@ -3251,11 +3251,11 @@
   },
   "confusion": {
     "title": "Confusion",
-    "description": "Launch a Psychic projectile at medium range. Sometimes disorients enemies.",
+    "description": "Launch a Psychic projectile from long range. Sometimes disorients enemies.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:amethyst_shard"
+        "item": "tensura:spell_icon_confusion"
       }
     },
     "rewards": [
@@ -3353,11 +3353,11 @@
   },
   "psychic": {
     "title": "Psychic",
-    "description": "Strike enemies with a burst of Psychic energy from long range. Knocks enemies back and sometimes weakens enemies.",
+    "description": "Mark an area for a delayed Psychic blast from long range. Knocks enemies back and sometimes weakens enemies.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:large_amethyst_bud"
+        "item": "tensura:spell_icon_psychic"
       }
     },
     "rewards": [
@@ -3816,7 +3816,7 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:cobblestone"
+        "item": "tensura:spell_icon_rock_throw"
       }
     },
     "rewards": [
@@ -3914,11 +3914,11 @@
   },
   "stone_edge": {
     "title": "Stone Edge",
-    "description": "Strike enemies with a burst of Earth energy from long range.",
+    "description": "Call down a barrage of Rock strikes from long range. Sometimes leaves enemies Exposed. Takes a short moment to cast.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:smooth_stone"
+        "item": "tensura:spell_icon_stone_edge"
       }
     },
     "rewards": [
@@ -4067,11 +4067,11 @@
   },
   "shadow_ball": {
     "title": "Shadow Ball",
-    "description": "Launch a Shadow projectile from long range. Sometimes weakens enemies.",
+    "description": "Launch a Ghost blast from long range that explodes on impact. Sometimes weakens enemies.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:black_concrete"
+        "item": "tensura:spell_icon_shadow_ball"
       }
     },
     "rewards": [
@@ -4224,7 +4224,7 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dragon_head"
+        "item": "tensura:spell_icon_dragon_pulse"
       }
     },
     "rewards": [
@@ -4628,11 +4628,11 @@
   },
   "iron_strike": {
     "title": "Iron Strike",
-    "description": "Launch a Steel projectile at medium range. Knocks enemies back.",
+    "description": "Dash forward in a burst of Steel energy at medium range. Knocks enemies back and blocks the next hit.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:iron_block"
+        "item": "tensura:spell_icon_iron_strike"
       }
     },
     "rewards": [

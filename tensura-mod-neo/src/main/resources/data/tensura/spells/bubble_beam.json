@@ -1,10 +1,31 @@
 {
+  "pokemon_type": "water",
+  "category": "special",
+  "power": 10.0,
   "school": "water",
   "cooldown_ticks": 100,
-  "targeting": { "type": "aim", "range": 16 },
-  "delivery": { "type": "projectile", "speed": 1.6 },
+  "targeting": { "type": "aim", "range": 20.0, "width": 1.1, "max_targets": 1 },
+  "delivery": {
+    "type": "projectile",
+    "speed": 1.65,
+    "projectile_count": 4,
+    "spread_degrees": 5.0,
+    "homing_strength": 0.05
+  },
   "impact": [
-    { "type": "damage", "damage_multiplier": 1.5 },
-    { "type": "status_effect", "effect": "minecraft:slowness", "duration": 120, "amplifier": 1, "chance": 0.5 }
-  ]
+    { "type": "damage", "damage_multiplier": 0.25 },
+    { "type": "wet", "duration": 120, "final_hit_only": true },
+    { "type": "status_effect", "effect": "minecraft:slowness", "duration": 80, "chance": 0.4, "final_hit_only": true }
+  ],
+  "visual": {
+    "cast_animation": "bubble_beam_stream",
+    "projectile": "bubble_cluster",
+    "trail": "bubble_ribbon",
+    "impact": "bubble_beam_pop"
+  },
+  "sound": {
+    "cast": "minecraft:block.bubble_column.upwards_inside",
+    "travel": "minecraft:block.bubble_column.upwards_ambient",
+    "impact": "minecraft:entity.player.splash"
+  }
 }

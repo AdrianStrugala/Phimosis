@@ -1,10 +1,25 @@
 {
+  "pokemon_type": "ice",
+  "category": "physical",
+  "power": 8.0,
   "school": "ice",
   "cooldown_ticks": 80,
-  "targeting": { "type": "aim", "range": 18 },
-  "delivery": { "type": "projectile", "speed": 2.5 },
+  "charges": 2,
+  "charge_recovery_ticks": 80,
+  "targeting": { "type": "aim", "range": 20.0, "width": 0.7, "max_targets": 1 },
+  "delivery": { "type": "projectile", "speed": 2.8, "projectile_count": 2, "spread_degrees": 2.0 },
   "impact": [
-    { "type": "damage", "damage_multiplier": 1.2 },
-    { "type": "status_effect", "effect": "minecraft:slowness", "duration": 60, "amplifier": 0, "chance": 0.4 }
-  ]
+    { "type": "damage", "damage_multiplier": 0.5 },
+    { "type": "freeze_if_wet", "duration": 70, "amplifier": 1, "final_hit_only": true }
+  ],
+  "visual": {
+    "cast_animation": "ice_shard_snap",
+    "projectile": "ice_shard_pair",
+    "trail": "frost_slivers",
+    "impact": "ice_shard_crack"
+  },
+  "sound": {
+    "cast": "minecraft:block.glass.hit",
+    "impact": "minecraft:block.glass.break"
+  }
 }

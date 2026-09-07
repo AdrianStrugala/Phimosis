@@ -1,10 +1,24 @@
 {
+  "pokemon_type": "grass",
+  "category": "physical",
+  "power": 14.0,
   "school": "nature",
   "cooldown_ticks": 140,
-  "targeting": { "type": "aim", "range": 12 },
-  "delivery": { "type": "instant", "speed": 1.0 },
+  "targeting": { "type": "aim", "range": 10.0, "width": 1.1, "max_targets": 1 },
+  "delivery": { "type": "dash", "distance": 9.0, "duration_ticks": 6, "steerable": true },
   "impact": [
-    { "type": "damage", "damage_multiplier": 3.0 },
-    { "type": "status_effect", "effect": "minecraft:weakness", "duration": 60, "amplifier": 0, "chance": 0.2 }
-  ]
+    { "type": "damage", "damage_multiplier": 1.0 },
+    { "type": "expose", "duration": 100, "chance": 0.25 },
+    { "type": "status_effect", "recipient": "caster", "effect": "minecraft:speed", "duration": 40 }
+  ],
+  "visual": {
+    "cast_animation": "leaf_blade_dash",
+    "trail": "leaf_blade_arc",
+    "impact": "leaf_blade_cross",
+    "aftermath": "falling_leaf_motes"
+  },
+  "sound": {
+    "cast": "minecraft:entity.player.attack.sweep",
+    "impact": "minecraft:block.bamboo.break"
+  }
 }

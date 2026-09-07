@@ -546,6 +546,7 @@ public class SpellRuntimeController {
                     ? null : level.getEntity(beam.targetId);
                 if (level == null || owner == null || owner.level() != level
                     || !(source instanceof LivingEntity effectCaster) || !effectCaster.isAlive()
+                    || (beam.ownerId.equals(beam.effectCasterId) && !owner.isUsingItem())
                     || --beam.remainingTicks < 0) {
                 iterator.remove();
                 continue;
@@ -608,7 +609,7 @@ public class SpellRuntimeController {
             double phase = area.remainingTicks * 0.3;
             for (int index = 0; index < 12; index++) {
                 double angle = phase + index * Math.PI * 2.0 / 12.0;
-                level.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                level.sendParticles(runtimeParticle(area.definition.school),
                         area.center.x + Math.cos(angle) * radius,
                         area.center.y + 0.08,
                         area.center.z + Math.sin(angle) * radius,
@@ -630,10 +631,12 @@ public class SpellRuntimeController {
             for (LivingEntity target : targets) {
                 SpellExecutor.applyImpacts(owner, effectCaster, target, area.definition);
             }
-            LightningBolt lightning = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
-            lightning.moveTo(area.center.x, area.center.y, area.center.z);
-            lightning.setVisualOnly(true);
-            level.addFreshEntity(lightning);
+            if ("lightning".equals(area.definition.school)) {
+                LightningBolt lightning = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
+                lightning.moveTo(area.center.x, area.center.y, area.center.z);
+                lightning.setVisualOnly(true);
+                level.addFreshEntity(lightning);
+            }
             level.sendParticles(ParticleTypes.FLASH, area.center.x, area.center.y + 1.0,
                     area.center.z, 2, radius * 0.2, 0.5, radius * 0.2, 0.0);
             iterator.remove();
@@ -658,7 +661,7 @@ public class SpellRuntimeController {
                     Math.max(0.0, zone.definition.delivery.movement_speed)));
             double radius = zone.definition.targeting.radius > 0.0
                     ? zone.definition.targeting.radius : 4.0;
-            level.sendParticles(ParticleTypes.SNOWFLAKE,
+                level.sendParticles(runtimeParticle(zone.definition.school),
                     zone.center.x, zone.center.y + 1.0, zone.center.z,
                     10, radius * 0.55, 1.0, radius * 0.55, 0.03);
             level.sendParticles(ParticleTypes.CLOUD,
@@ -687,11 +690,30 @@ public class SpellRuntimeController {
                     targets = targets.subList(0, zone.definition.targeting.max_targets);
                 }
                 for (LivingEntity target : targets) {
+                    target.invulnerableTime = 0;
                     SpellExecutor.applyImpacts(owner, effectCaster, target, zone.definition);
                 }
             }
             if (zone.remainingTicks == 0) iterator.remove();
         }
+    }
+
+    private static net.minecraft.core.particles.ParticleOptions runtimeParticle(String school) {
+        return switch (school) {
+            case "fire" -> ParticleTypes.FLAME;
+            case "lightning" -> ParticleTypes.ELECTRIC_SPARK;
+            case "water" -> ParticleTypes.SPLASH;
+            case "poison" -> ParticleTypes.WITCH;
+            case "nature" -> ParticleTypes.COMPOSTER;
+            case "shadow" -> ParticleTypes.PORTAL;
+            case "psychic" -> ParticleTypes.ENCHANT;
+            case "dragon" -> ParticleTypes.DRAGON_BREATH;
+            case "earth" -> ParticleTypes.POOF;
+            case "wind" -> ParticleTypes.CLOUD;
+            case "fairy" -> ParticleTypes.END_ROD;
+            case "steel", "physical" -> ParticleTypes.CRIT;
+            default -> ParticleTypes.SNOWFLAKE;
+        };
     }
 
         private static void tickWaves(MinecraftServer server) {
@@ -723,14 +745,18 @@ public class SpellRuntimeController {
                 ? wave.definition.targeting.width : 3.0;
             double radius = wave.definition.targeting.radius > 0.0
                 ? wave.definition.targeting.radius : 1.5;
-            level.sendParticles(ParticleTypes.SPLASH,
+            level.sendParticles(runtimeParticle(wave.definition.school),
                 wave.center.x, wave.center.y + 0.8, wave.center.z,
                 18, width * 0.45, 0.8, width * 0.45, 0.08);
-            level.sendParticles(ParticleTypes.BUBBLE,
+            level.sendParticles("water".equals(wave.definition.school)
+                    ? ParticleTypes.BUBBLE : ParticleTypes.POOF,
                 wave.center.x, wave.center.y + 0.45, wave.center.z,
                 8, width * 0.4, 0.45, width * 0.4, 0.04);
             if (wave.remainingTicks % 4 == 0) {
-            SpellVfxDispatcher.send(level, "wave", wave.definition.visual.aftermath,
+            String waveStyle = wave.definition.visual.aftermath == null
+                    || wave.definition.visual.aftermath.isBlank()
+                    ? wave.definition.visual.trail : wave.definition.visual.aftermath;
+            SpellVfxDispatcher.send(level, "wave", waveStyle,
                 wave.definition.school, wave.center,
                 wave.center.add(wave.direction.scale(2.0)), width,
                 6, effectCaster, false);

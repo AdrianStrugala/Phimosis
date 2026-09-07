@@ -40,15 +40,18 @@ public class SpellExecutor {
     // cooldownMap: playerUUID -> (spellId -> gameTime when ready)
     private static final Map<UUID, Map<ResourceLocation, Long>> cooldowns = new HashMap<>();
     private static final Map<UUID, Map<ResourceLocation, ChargeState>> charges = new HashMap<>();
+    private static final Map<UUID, Map<String, Long>> impactSoundTimes = new HashMap<>();
 
     public static void clearPlayerState(UUID playerId) {
         cooldowns.remove(playerId);
         charges.remove(playerId);
+        impactSoundTimes.remove(playerId);
     }
 
     public static void clearAllState() {
         cooldowns.clear();
         charges.clear();
+        impactSoundTimes.clear();
     }
 
     public static boolean cast(ServerPlayer caster, ResourceLocation spellId) {
@@ -126,7 +129,7 @@ public class SpellExecutor {
     }
 
     public static boolean executeDelivery(ServerPlayer caster, ResourceLocation spellId, SpellDefinition def) {
-        return switch (def.delivery.type) {
+        boolean started = switch (def.delivery.type) {
             case "dash" -> SpellMovementController.startDash(caster, def);
             case "vortex" -> castVortex(caster, def);
             case "delayed" -> castDelayed(caster, def);
@@ -150,6 +153,8 @@ public class SpellExecutor {
             case "instant", "self" -> { castStandard(caster, def); yield true; }
             default -> { castStandard(caster, def); yield true; }
         };
+        if (started) playTravelSound(caster, def);
+        return started;
     }
 
     /**
@@ -190,7 +195,7 @@ public class SpellExecutor {
         if (!companion.isAlive() || !target.isAlive()) return false;
         if (!"self".equals(def.targeting.type)
             && !SpellTargetingRules.canHarm(owner, companion, target)) return false;
-        return switch (def.delivery.type) {
+        boolean started = switch (def.delivery.type) {
             case "dash" -> SpellMovementController.startDash(owner, companion, target, def);
             case "vortex" -> SpellRuntimeController.startVortex(owner, companion, def, target.position());
             case "delayed" -> SpellRuntimeController.startDelayed(owner, companion, target, def);
@@ -225,6 +230,8 @@ public class SpellExecutor {
                 yield true;
             }
         };
+        if (started) playTravelSound(companion, def);
+        return started;
     }
 
     // ── Projectile: flying entity like ghast fireball ────────────────────────
@@ -382,6 +389,9 @@ public class SpellExecutor {
             hit = hit.subList(0, def.targeting.max_targets);
         }
         for (LivingEntity t : hit) {
+            if ("channel_beam".equals(def.delivery.type)) {
+                t.invulnerableTime = 0;
+            }
             applyImpacts(owner, effectCaster, t, def);
         }
 
@@ -426,6 +436,7 @@ public class SpellExecutor {
             targets = targets.subList(0, def.targeting.max_targets);
         }
         for (LivingEntity target : targets) {
+            target.invulnerableTime = 0;
             applyImpacts(owner, effectCaster, target, def);
         }
         Vec3 end = origin.add(forward.scale(range));
@@ -681,6 +692,11 @@ public class SpellExecutor {
         Vec3 cloudPos = aimTarget != null ? aimTarget.position()
                 : caster.position().add(caster.getLookAngle().scale(8));
 
+        if (def.delivery.duration_ticks > 0) {
+            SpellRuntimeController.startMovingZone(caster, caster, def, cloudPos, Vec3.ZERO);
+            return;
+        }
+
         double radius = def.targeting.radius > 0 ? def.targeting.radius : 4.0;
 
         // Particle cloud effect (30 ticks spread)
@@ -705,6 +721,10 @@ public class SpellExecutor {
     private static void castCompanionCloud(ServerPlayer owner, PokemonEntity companion,
                                            Vec3 position, SpellDefinition def) {
         if (!(companion.level() instanceof ServerLevel serverLevel)) return;
+        if (def.delivery.duration_ticks > 0) {
+            SpellRuntimeController.startMovingZone(owner, companion, def, position, Vec3.ZERO);
+            return;
+        }
         double radius = def.targeting.radius > 0 ? def.targeting.radius : 4.0;
         serverLevel.sendParticles(schoolParticle(def.school), position.x, position.y + 1, position.z,
                 40, radius * 0.5, 1.0, radius * 0.5, 0.03);
@@ -761,6 +781,14 @@ public class SpellExecutor {
         SpellVfxDispatcher.send(level, "attachment", definition.visual.cast_animation,
                 definition.school, effectCaster.position(), effectCaster.position(),
                 1.0, definition.cast_time_ticks, effectCaster, true);
+        if (definition.cast_time_ticks > 0
+            && ("projectile".equals(definition.delivery.type)
+                || "beam".equals(definition.delivery.type)
+                || "channel_beam".equals(definition.delivery.type))) {
+            SpellVfxDispatcher.send(level, "telegraph", definition.visual.telegraph,
+                definition.school, effectCaster.position(), effectCaster.position(),
+                1.25, definition.cast_time_ticks, effectCaster, true);
+        }
     }
 
     // ── Targeting helpers ────────────────────────────────────────────────────
@@ -873,8 +901,24 @@ public class SpellExecutor {
                         sound, SoundSource.PLAYERS, 1.0f, 1.0f));
     }
 
+    private static void playTravelSound(LivingEntity source, SpellDefinition def) {
+        if (def.sound.travel == null || def.sound.travel.isBlank()) return;
+        BuiltInRegistries.SOUND_EVENT.getOptional(ResourceLocation.parse(def.sound.travel))
+                .ifPresent(sound -> source.level().playSound(null,
+                        source.getX(), source.getY(), source.getZ(),
+                        sound, SoundSource.PLAYERS, 0.9f, 1.0f));
+    }
+
     private static void playImpactSound(ServerPlayer caster, LivingEntity target, SpellDefinition def) {
         if (def.sound.impact == null || def.sound.impact.isBlank()) return;
+        if (def.sound.loop != null && !def.sound.loop.isBlank()) {
+            long now = target.level().getGameTime();
+            Map<String, Long> playerSounds = impactSoundTimes.computeIfAbsent(
+                    caster.getUUID(), ignored -> new HashMap<>());
+            long lastPlayed = playerSounds.getOrDefault(def.sound.impact, Long.MIN_VALUE / 2);
+            if (now - lastPlayed < 10) return;
+            playerSounds.put(def.sound.impact, now);
+        }
         BuiltInRegistries.SOUND_EVENT.getOptional(ResourceLocation.parse(def.sound.impact))
                 .ifPresent(sound -> target.level().playSound(null, target.getX(), target.getY(), target.getZ(),
                         sound, SoundSource.PLAYERS, 1.0f, 1.0f));
@@ -1037,7 +1081,9 @@ public class SpellExecutor {
                     }
                 }
                 case "fire" -> {
-                    if (canHarm) target.igniteForSeconds(impact.seconds);
+                    if (canHarm && target.getRandom().nextDouble() <= impact.chance) {
+                        target.igniteForSeconds(impact.seconds);
+                    }
                 }
                 case "knockback" -> {
                     if (!canHarm) continue;
@@ -1122,7 +1168,8 @@ public class SpellExecutor {
                     }
                 }
                 case "expose" -> {
-                    if (canHarm || recipient == effectCaster) {
+                    if ((canHarm || recipient == effectCaster)
+                            && recipient.getRandom().nextDouble() <= impact.chance) {
                         recipient.addEffect(new MobEffectInstance(TensuraMobEffects.EXPOSED,
                                 impact.duration, impact.amplifier, false,
                                 impact.show_particles, impact.show_icon));
@@ -1155,9 +1202,7 @@ public class SpellExecutor {
                         effectCaster, !SpellTargetingRules.canHarm(owner, effectCaster, target));
                     }
         }
-        if (def.sound.loop == null || def.sound.loop.isBlank()) {
-            playImpactSound(owner, target, def);
-        }
+        playImpactSound(owner, target, def);
     }
 
     private static double applyExposedModifier(double damage, LivingEntity target,
