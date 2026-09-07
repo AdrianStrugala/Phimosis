@@ -371,58 +371,6 @@
       }
     }
   },
-  "explosion_owned": {
-    "title": "Explosion",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "explosion": {
-    "title": "Explosion",
-    "description": "Detonate a massive Fire blast around you. Sets enemies ablaze and knocks enemies back.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "minecraft:dispenser"
-      }
-    },
-    "size": 0.7,
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s explosion"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
   "ember_owned": {
     "title": "Ember",
     "icon": {
@@ -460,57 +408,6 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s ember"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
-  "will_o_wisp_owned": {
-    "title": "Will-O-Wisp",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "will_o_wisp": {
-    "title": "Will O Wisp",
-    "description": "Create a lingering cloud of Fire energy from long range. Sets enemies ablaze and weakens enemies.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_will_o_wisp"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s will_o_wisp"
         }
       }
     ],
@@ -730,57 +627,6 @@
       }
     }
   },
-  "sacred_fire_owned": {
-    "title": "Sacred Fire",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "sacred_fire": {
-    "title": "Sacred Fire",
-    "description": "Launch a Fire blast from long range that explodes on impact. Sometimes sets enemies ablaze and sometimes weakens enemies. Takes a short moment to cast.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_sacred_fire"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s sacred_fire"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
   "water_gun_owned": {
     "title": "Water Gun",
     "icon": {
@@ -920,58 +766,6 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s bubble_beam"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
-  "water_pulse_owned": {
-    "title": "Water Pulse",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "water_pulse": {
-    "title": "Water Pulse",
-    "description": "Launch a pulsing orb of Water from long range that may slow enemies.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "minecraft:dispenser"
-      }
-    },
-    "size": 0.7,
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s water_pulse"
         }
       }
     ],
@@ -1139,57 +933,6 @@
       }
     }
   },
-  "scald_owned": {
-    "title": "Scald",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "scald": {
-    "title": "Scald",
-    "description": "Launch a Water blast from long range that explodes on impact. Soaks enemies and sometimes sets enemies ablaze.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_scald"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s scald"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
   "thundershock_owned": {
     "title": "Thundershock",
     "icon": {
@@ -1278,57 +1021,6 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s electro_ball"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
-  "thunderbolt_owned": {
-    "title": "Thunderbolt",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "thunderbolt": {
-    "title": "Thunderbolt",
-    "description": "Fire an Electric beam that leaps to another enemy from long range. Paralyzes soaked enemies.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_thunderbolt"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s thunderbolt"
         }
       }
     ],
@@ -1686,57 +1378,6 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s leaf_blade"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
-  "energy_ball_owned": {
-    "title": "Energy Ball",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "energy_ball": {
-    "title": "Energy Ball",
-    "description": "Launch a Grass blast from long range that explodes on impact. Sometimes weakens enemies.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_energy_ball"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s energy_ball"
         }
       }
     ],
@@ -2554,57 +2195,6 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s toxic_spikes"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
-  "sludge_bomb_owned": {
-    "title": "Sludge Bomb",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "sludge_bomb": {
-    "title": "Sludge Bomb",
-    "description": "Create a lingering cloud of Poison energy from long range. Sometimes poisons enemies.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "minecraft:slime_block"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s sludge_bomb"
         }
       }
     ],
@@ -4492,57 +4082,6 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s foul_play"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
-  "iron_tail_owned": {
-    "title": "Iron Tail",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "iron_tail": {
-    "title": "Iron Tail",
-    "description": "Strike enemies with a burst of Steel energy at medium range. Knocks enemies back and sometimes weakens enemies.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "minecraft:iron_ingot"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s iron_tail"
         }
       }
     ],

@@ -33,8 +33,8 @@ public class SpellLoader extends SimplePreparableReloadListener<Map<ResourceLoca
         manager.listResources(FOLDER, path -> path.getPath().endsWith(".json")).forEach((location, resource) -> {
             try (var reader = new InputStreamReader(resource.open(), StandardCharsets.UTF_8)) {
                 SpellDefinition def = GSON.fromJson(reader, SpellDefinition.class);
-                // Convert path "tensura/spells/thunderbolt.json" → id "tensura:thunderbolt"
-                String path = location.getPath(); // e.g. "tensura/spells/thunderbolt.json"
+                // Convert a spell resource path to its namespaced spell ID.
+                String path = location.getPath();
                 String name = path.substring(FOLDER.length() + 1, path.length() - 5); // strip folder/ and .json
                 ResourceLocation id = ResourceLocation.fromNamespaceAndPath(TensuraMod.MOD_ID, name);
                 loaded.put(id, def);

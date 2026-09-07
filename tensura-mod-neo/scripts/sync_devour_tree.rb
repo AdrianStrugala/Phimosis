@@ -14,14 +14,14 @@ abort "CUSTOM_ICON_ORDER not found" unless icon_block
 CUSTOM_ICONS = icon_block.scan(/"([a-z0-9_]+)"/).flatten.freeze
 
 RAYS = {
-  normal: %w[tackle quick_attack swift tri_attack recover hyper_voice hyper_beam explosion],
-  fire: %w[ember will_o_wisp flamethrower fire_spin fire_blast overheat sacred_fire],
-  water: %w[water_gun aqua_jet bubble_beam water_pulse whirlpool surf hydro_pump scald],
-  electric: %w[thundershock electro_ball thunderbolt discharge thunder volt_tackle],
-  grass: %w[vine_whip leech_seed razor_leaf leaf_blade energy_ball petal_blizzard solar_beam nature_burst],
+  normal: %w[tackle quick_attack swift tri_attack recover hyper_voice hyper_beam],
+  fire: %w[ember flamethrower fire_spin fire_blast overheat],
+  water: %w[water_gun aqua_jet bubble_beam whirlpool surf hydro_pump],
+  electric: %w[thundershock electro_ball discharge thunder volt_tackle],
+  grass: %w[vine_whip leech_seed razor_leaf leaf_blade petal_blizzard solar_beam nature_burst],
   ice: %w[powder_snow ice_shard ice_beam frost_nova aurora_veil blizzard],
   fighting: %w[mach_punch close_combat focus_blast seismic_slam],
-  poison: %w[poison_sting poison_strike toxic_spikes sludge_bomb toxic],
+  poison: %w[poison_sting poison_strike toxic_spikes toxic],
   ground: %w[mud_shot bulldoze dig earth_power earthquake],
   flying: %w[gust air_cutter aerial_ace tailwind hurricane aerial_strike],
   psychic: %w[confusion psybeam psychic rest psychic_blast future_sight],
@@ -30,7 +30,7 @@ RAYS = {
   ghost: %w[night_shade shadow_sneak shadow_ball hex],
   dragon: %w[dragon_breath dragon_pulse draco_meteor outrage],
   dark: %w[dark_pulse sucker_punch foul_play],
-  steel: %w[iron_tail iron_defense iron_strike flash_cannon],
+  steel: %w[iron_defense iron_strike flash_cannon],
   fairy: %w[fairy_wind draining_kiss charm dazzling_gleam moonblast]
 }.freeze
 
@@ -60,7 +60,6 @@ DESCRIPTION_OVERRIDES = {
   "rock_throw" => "Hurl a heavy rock at an enemy from long range.",
   "frost_nova" => "Release a burst of freezing air that slows and weakens nearby enemies.",
   "bubble_beam" => "Launch a stream of bubbles from long range that may slow enemies.",
-  "water_pulse" => "Launch a pulsing orb of Water from long range that may slow enemies.",
   "solar_beam" => "Launch a devastating blast of Nature energy from long range.",
   "dragon_pulse" => "Launch a concentrated blast of Dragon energy from long range.",
   "ice_beam" => "Hold to channel a piercing Ice beam. Soaked enemies freeze on hit, and recharging starts when released.",
@@ -150,7 +149,6 @@ def spell_action(definition)
   when "dash" then "Dash forward in a burst of #{type} energy#{range}"
   when "delayed" then "Mark an enemy for a delayed #{type} strike#{range}"
   when "delayed_area" then "Mark an area for a delayed #{type} blast#{range}"
-  when "explosion" then "Detonate a massive #{type} blast around you"
   when "melee_combo" then "Rush an enemy with a rapid #{type} combo#{range}"
   when "meteor" then "Call down a barrage of #{type} strikes#{range}"
   when "moving_zone" then "Summon a roaming storm of #{type} energy"

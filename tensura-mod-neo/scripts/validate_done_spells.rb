@@ -53,14 +53,13 @@ java = File.read(JAVA_ICON_FILE)
 icon_block = java[/CUSTOM_ICON_ORDER = java\.util\.List\.of\((.*?)\n    \);/m, 1]
 fail_validation("CUSTOM_ICON_ORDER not found") unless icon_block
 spells = icon_block.scan(/"([a-z0-9_]+)"/).flatten
-fail_validation("expected 75 custom icon spells, got #{spells.size}") unless spells.size == 75
+fail_validation("expected 70 custom icon spells, got #{spells.size}") unless spells.size == 70
 fail_validation("duplicate custom icon spell") unless spells.uniq.size == spells.size
 
 promoted_spells = %w[
-  water_gun thundershock psychic confusion razor_leaf leaf_blade will_o_wisp
-  poison_sting rock_throw ice_shard thunderbolt fire_blast scald bubble_beam
-  energy_ball petal_blizzard solar_beam stone_edge discharge sacred_fire
-  dragon_pulse iron_strike mach_punch focus_blast shadow_ball
+  water_gun thundershock psychic confusion razor_leaf leaf_blade poison_sting
+  rock_throw ice_shard fire_blast bubble_beam petal_blizzard solar_beam
+  stone_edge discharge dragon_pulse iron_strike mach_punch focus_blast shadow_ball
 ]
 missing_promotions = promoted_spells - spells
 fail_validation("missing promoted spells: #{missing_promotions.join(', ')}") unless

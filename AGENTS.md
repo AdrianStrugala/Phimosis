@@ -44,10 +44,13 @@ okresl jednoznacznie, za co odpowiada.
 Stan zweryfikowany 2026-09-07:
 
 - plan docelowy: 110 unikalnych spelli w `SPELL_REWORK_PROPOSAL.md`;
-- implementacja done-done: 75 spelli;
-- drzewko Devour: 18 rays i 97 par spell/dispenser;
-- customowe ikony: 75;
-- unikalne profile cast VFX: 75, w 8 rodzinach geometrii;
+- implementacja done-done: 70 spelli;
+- drzewko Devour: 18 rays i 88 par spell/dispenser;
+- customowe ikony: 70;
+- unikalne profile cast VFX: 70, w 8 rodzinach geometrii;
+- `energy_ball`, `explosion`, `iron_tail`, `sacred_fire`, `scald`, `sludge_bomb`,
+  `thunderbolt`, `water_pulse` i `will_o_wisp` zostaly trwale usuniete z runtime,
+  mapowan i Devour;
 - nowa rodzina `arc_strike` jest tylko zaplanowana, nie jest wdrozona;
 - dziesiec dodatkow do planu 110 nie zostalo jeszcze wdrozonych jako jeden pakiet.
 

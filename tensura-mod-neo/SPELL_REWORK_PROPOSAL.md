@@ -459,15 +459,19 @@ Modele pociskow i stref nie wymagaja GeckoLib. Wlasne `EntityRenderer`, modele B
 
 ### Zachowac i przebudowac
 
-`aerial_ace`, `blizzard`, `bubble_beam`, `close_combat`, `confusion`, `dark_pulse`, `dazzling_gleam`, `discharge`, `draco_meteor`, `dragon_breath`, `dragon_pulse`, `earthquake`, `ember`, `fire_blast`, `flamethrower`, `focus_blast`, `foul_play`, `future_sight`, `gust`, `hex`, `hydro_pump`, `hyper_beam`, `ice_beam`, `ice_shard`, `iron_tail`, `leaf_blade`, `leech_seed`, `mach_punch`, `moonblast`, `night_shade`, `outrage`, `overheat`, `petal_blizzard`, `poison_sting`, `psychic`, `psybeam`, `razor_leaf`, `rock_slide`, `rock_throw`, `sacred_fire`, `scald`, `shadow_ball`, `sludge_bomb`, `solar_beam`, `stone_edge`, `surf`, `tackle`, `thunder`, `thunderbolt`, `toxic`, `vine_whip`, `volt_tackle`, `water_gun`, `water_pulse` i `will_o_wisp` pozostaja prawidlowymi kanonicznymi ruchami. Czesc nie znajduje sie w bazowej setce, ale mozna ja przywrocic pozniej jako rozszerzenie bez zmiany silnika.
+`aerial_ace`, `blizzard`, `bubble_beam`, `close_combat`, `confusion`, `dark_pulse`, `dazzling_gleam`, `discharge`, `draco_meteor`, `dragon_breath`, `dragon_pulse`, `earthquake`, `ember`, `fire_blast`, `flamethrower`, `focus_blast`, `foul_play`, `future_sight`, `gust`, `hex`, `hydro_pump`, `hyper_beam`, `ice_beam`, `ice_shard`, `leaf_blade`, `leech_seed`, `mach_punch`, `moonblast`, `night_shade`, `outrage`, `overheat`, `petal_blizzard`, `poison_sting`, `psychic`, `psybeam`, `razor_leaf`, `rock_slide`, `rock_throw`, `shadow_ball`, `solar_beam`, `stone_edge`, `surf`, `tackle`, `thunder`, `toxic`, `vine_whip`, `volt_tackle` i `water_gun` pozostaja prawidlowymi kanonicznymi ruchami.
+
+### Usuniete z projektu
+
+`energy_ball`, `explosion`, `iron_tail`, `sacred_fire`, `scald`, `sludge_bomb`,
+`thunderbolt`, `water_pulse` i `will_o_wisp` zostaly trwale usuniete. Nie maja
+definicji, mapowan Cobblemon, wpisow Devour ani trybu `Legacy Skill`.
 
 ### Zmienic ID lub zastapic
 
 | Stary spell | Migracja |
 |---|---|
 | `aerial_strike` | `hurricane`; Aerial Strike nie jest kanonicznym ruchem Pokemon. |
-| `energy_ball` | Zachowac jako pozniejszy Grass projectile albo wymienic przedmiot na Razor Leaf. |
-| `explosion` | Zachowac na pozniej; wymaga uczciwego recoil/samouszkodzenia. |
 | `flash_cannon` | Zachowac w bazowej setce bez zmiany ID. |
 | `frost_nova` | `icy_wind`; Frost Nova nie jest ruchem Pokemon. |
 | `iron_strike` | `bullet_punch`; Iron Strike nie jest ruchem Pokemon. |
@@ -478,7 +482,8 @@ Modele pociskow i stref nie wymagaja GeckoLib. Wlasne `EntityRenderer`, modele B
 | `seismic_slam` | `seismic_toss`; Seismic Slam nie jest kanonicznym ruchem. |
 | `thundershock` | `thunder_shock`; poprawny kanoniczny zapis to Thunder Shock. |
 
-Stary przedmiot nie moze zniknac po aktualizacji. Przy odczycie dawnego `SpellId` migrator zamienia ID zgodnie z tabela. Jezeli stary spell jest kanoniczny, ale chwilowo wypada poza aktywna setke, gracz zachowuje go jako dzialajacy `Legacy Skill`; nie jest juz losowany do czasu jego pelnego reworku.
+Przy odczycie dawnego `SpellId` migrator zamienia ID zgodnie z tabela. Zasada ta
+nie obejmuje ID wymienionych w sekcji `Usuniete z projektu`.
 
 ## 9. Kolejnosc implementacji
 

@@ -56,14 +56,6 @@
     "hyper_beam"
   ],
   [
-    "hyper_beam_owned",
-    "explosion_owned"
-  ],
-  [
-    "explosion_owned",
-    "explosion"
-  ],
-  [
     "devour_core",
     "ember_owned"
   ],
@@ -73,14 +65,6 @@
   ],
   [
     "ember_owned",
-    "will_o_wisp_owned"
-  ],
-  [
-    "will_o_wisp_owned",
-    "will_o_wisp"
-  ],
-  [
-    "will_o_wisp_owned",
     "flamethrower_owned"
   ],
   [
@@ -112,14 +96,6 @@
     "overheat"
   ],
   [
-    "overheat_owned",
-    "sacred_fire_owned"
-  ],
-  [
-    "sacred_fire_owned",
-    "sacred_fire"
-  ],
-  [
     "devour_core",
     "water_gun_owned"
   ],
@@ -145,14 +121,6 @@
   ],
   [
     "bubble_beam_owned",
-    "water_pulse_owned"
-  ],
-  [
-    "water_pulse_owned",
-    "water_pulse"
-  ],
-  [
-    "water_pulse_owned",
     "whirlpool_owned"
   ],
   [
@@ -176,14 +144,6 @@
     "hydro_pump"
   ],
   [
-    "hydro_pump_owned",
-    "scald_owned"
-  ],
-  [
-    "scald_owned",
-    "scald"
-  ],
-  [
     "devour_core",
     "thundershock_owned"
   ],
@@ -201,14 +161,6 @@
   ],
   [
     "electro_ball_owned",
-    "thunderbolt_owned"
-  ],
-  [
-    "thunderbolt_owned",
-    "thunderbolt"
-  ],
-  [
-    "thunderbolt_owned",
     "discharge_owned"
   ],
   [
@@ -265,14 +217,6 @@
   ],
   [
     "leaf_blade_owned",
-    "energy_ball_owned"
-  ],
-  [
-    "energy_ball_owned",
-    "energy_ball"
-  ],
-  [
-    "energy_ball_owned",
     "petal_blizzard_owned"
   ],
   [
@@ -401,14 +345,6 @@
   ],
   [
     "toxic_spikes_owned",
-    "sludge_bomb_owned"
-  ],
-  [
-    "sludge_bomb_owned",
-    "sludge_bomb"
-  ],
-  [
-    "sludge_bomb_owned",
     "toxic_owned"
   ],
   [
@@ -705,14 +641,6 @@
   ],
   [
     "devour_core",
-    "iron_tail_owned"
-  ],
-  [
-    "iron_tail_owned",
-    "iron_tail"
-  ],
-  [
-    "iron_tail_owned",
     "iron_defense_owned"
   ],
   [

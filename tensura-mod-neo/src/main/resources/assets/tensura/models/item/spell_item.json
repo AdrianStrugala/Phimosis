@@ -422,113 +422,83 @@
       "predicate": {
         "tensura:icon": 57
       },
-      "model": "tensura:item/spell_will_o_wisp"
+      "model": "tensura:item/spell_poison_sting"
     },
     {
       "predicate": {
         "tensura:icon": 58
       },
-      "model": "tensura:item/spell_poison_sting"
+      "model": "tensura:item/spell_rock_throw"
     },
     {
       "predicate": {
         "tensura:icon": 59
       },
-      "model": "tensura:item/spell_rock_throw"
+      "model": "tensura:item/spell_ice_shard"
     },
     {
       "predicate": {
         "tensura:icon": 60
       },
-      "model": "tensura:item/spell_ice_shard"
+      "model": "tensura:item/spell_fire_blast"
     },
     {
       "predicate": {
         "tensura:icon": 61
       },
-      "model": "tensura:item/spell_thunderbolt"
+      "model": "tensura:item/spell_bubble_beam"
     },
     {
       "predicate": {
         "tensura:icon": 62
       },
-      "model": "tensura:item/spell_fire_blast"
+      "model": "tensura:item/spell_petal_blizzard"
     },
     {
       "predicate": {
         "tensura:icon": 63
       },
-      "model": "tensura:item/spell_scald"
+      "model": "tensura:item/spell_solar_beam"
     },
     {
       "predicate": {
         "tensura:icon": 64
       },
-      "model": "tensura:item/spell_bubble_beam"
+      "model": "tensura:item/spell_stone_edge"
     },
     {
       "predicate": {
         "tensura:icon": 65
       },
-      "model": "tensura:item/spell_energy_ball"
+      "model": "tensura:item/spell_discharge"
     },
     {
       "predicate": {
         "tensura:icon": 66
       },
-      "model": "tensura:item/spell_petal_blizzard"
+      "model": "tensura:item/spell_dragon_pulse"
     },
     {
       "predicate": {
         "tensura:icon": 67
       },
-      "model": "tensura:item/spell_solar_beam"
+      "model": "tensura:item/spell_iron_strike"
     },
     {
       "predicate": {
         "tensura:icon": 68
       },
-      "model": "tensura:item/spell_stone_edge"
+      "model": "tensura:item/spell_mach_punch"
     },
     {
       "predicate": {
         "tensura:icon": 69
       },
-      "model": "tensura:item/spell_discharge"
-    },
-    {
-      "predicate": {
-        "tensura:icon": 70
-      },
-      "model": "tensura:item/spell_sacred_fire"
-    },
-    {
-      "predicate": {
-        "tensura:icon": 71
-      },
-      "model": "tensura:item/spell_dragon_pulse"
-    },
-    {
-      "predicate": {
-        "tensura:icon": 72
-      },
-      "model": "tensura:item/spell_iron_strike"
-    },
-    {
-      "predicate": {
-        "tensura:icon": 73
-      },
-      "model": "tensura:item/spell_mach_punch"
-    },
-    {
-      "predicate": {
-        "tensura:icon": 74
-      },
       "model": "tensura:item/spell_focus_blast"
     },
     {
       "predicate": {
-        "tensura:icon": 75
+        "tensura:icon": 70
       },
       "model": "tensura:item/spell_shadow_ball"
     }

@@ -171,7 +171,6 @@ public class SpellExecutor {
             case "meteor" -> { castMeteor(caster, spellId, def); yield true; }
             case "cloud" -> { castCloud(caster, def); yield true; }
             case "projectile" -> { castProjectile(caster, def, spellId); yield true; }
-            case "explosion" -> { castExplosion(caster, def); yield true; }
             case "instant", "self" -> { castStandard(caster, def); yield true; }
             default -> { castStandard(caster, def); yield true; }
         };
@@ -240,7 +239,6 @@ public class SpellExecutor {
             case "meteor" -> { castMeteorAt(owner, companion, spellId, def, target.position()); yield true; }
             case "cloud" -> { castCompanionCloud(owner, companion, target.position(), def); yield true; }
             case "projectile" -> { castCompanionProjectile(owner, companion, target, def, spellId); yield true; }
-            case "explosion" -> { castCompanionExplosion(owner, companion, def); yield true; }
             case "instant", "self" -> {
                 LivingEntity impactTarget = "self".equals(def.targeting.type) ? companion : target;
                 applyImpacts(owner, companion, impactTarget, def);
@@ -293,55 +291,6 @@ public class SpellExecutor {
                     baseDirection.yRot(angle), index, projectileCount, projectileGroup, target);
             serverLevel.addFreshEntity(projectile);
                 sendProjectileVfx(serverLevel, projectile, def, baseDirection.yRot(angle));
-        }
-    }
-
-    // ── Explosion: massive AoE burst centered on caster ──────────────────────
-
-    private static void castExplosion(ServerPlayer caster, SpellDefinition def) {
-        if (!(caster.level() instanceof ServerLevel serverLevel)) return;
-
-        Vec3 pos = caster.position();
-        double radius = def.targeting.range;
-
-        // Visual: multiple explosion layers
-        serverLevel.sendParticles(ParticleTypes.EXPLOSION, pos.x, pos.y + 1, pos.z, 8, radius * 0.4, 0.5, radius * 0.4, 0.1);
-        serverLevel.sendParticles(ParticleTypes.FLAME,     pos.x, pos.y + 1, pos.z, 80, radius * 0.5, 1.0, radius * 0.5, 0.15);
-        serverLevel.sendParticles(ParticleTypes.LAVA,      pos.x, pos.y + 1, pos.z, 30, radius * 0.3, 0.5, radius * 0.3, 0.1);
-
-        // Lightning strikes around caster for extra drama
-        for (int i = 0; i < 4; i++) {
-            double ox = (Math.random() - 0.5) * radius;
-            double oz = (Math.random() - 0.5) * radius;
-            LightningBolt bolt = new LightningBolt(net.minecraft.world.entity.EntityType.LIGHTNING_BOLT, serverLevel);
-            bolt.moveTo(pos.x + ox, pos.y, pos.z + oz);
-            bolt.setVisualOnly(true);
-            serverLevel.addFreshEntity(bolt);
-        }
-
-        // Hit all entities in radius
-        AABB box = caster.getBoundingBox().inflate(radius);
-        List<LivingEntity> targets = caster.level().getEntitiesOfClass(LivingEntity.class, box,
-            target -> caster.distanceTo(target) <= radius
-                && SpellTargetingRules.canHarm(caster, caster, target));
-        for (LivingEntity target : targets) {
-            applyImpacts(caster, target, def);
-        }
-    }
-
-    private static void castCompanionExplosion(ServerPlayer owner, PokemonEntity companion,
-                                               SpellDefinition def) {
-        if (!(companion.level() instanceof ServerLevel serverLevel)) return;
-        Vec3 position = companion.position();
-        double radius = def.targeting.range;
-        serverLevel.sendParticles(ParticleTypes.EXPLOSION, position.x, position.y + 1, position.z,
-                8, radius * 0.4, 0.5, radius * 0.4, 0.1);
-        AABB area = companion.getBoundingBox().inflate(radius);
-        List<LivingEntity> targets = serverLevel.getEntitiesOfClass(LivingEntity.class, area,
-            entity -> SpellTargetingRules.canHarm(owner, companion, entity)
-                        && companion.distanceTo(entity) <= radius);
-        for (LivingEntity target : targets) {
-            applyImpacts(owner, companion, target, def);
         }
     }
 

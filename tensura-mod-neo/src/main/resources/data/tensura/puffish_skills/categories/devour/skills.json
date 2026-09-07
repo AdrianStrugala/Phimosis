@@ -82,17 +82,6 @@
     "y": -420,
     "definition": "hyper_beam"
   },
-  "explosion_owned": {
-    "x": 0,
-    "y": -474,
-    "definition": "explosion_owned",
-    "root": true
-  },
-  "explosion": {
-    "x": 0,
-    "y": -474,
-    "definition": "explosion"
-  },
   "ember_owned": {
     "x": 33,
     "y": -90,
@@ -104,71 +93,49 @@
     "y": -90,
     "definition": "ember"
   },
-  "will_o_wisp_owned": {
-    "x": 51,
-    "y": -141,
-    "definition": "will_o_wisp_owned",
-    "root": true
-  },
-  "will_o_wisp": {
-    "x": 51,
-    "y": -141,
-    "definition": "will_o_wisp"
-  },
   "flamethrower_owned": {
-    "x": 70,
-    "y": -192,
+    "x": 51,
+    "y": -141,
     "definition": "flamethrower_owned",
     "root": true
   },
   "flamethrower": {
-    "x": 70,
-    "y": -192,
+    "x": 51,
+    "y": -141,
     "definition": "flamethrower"
   },
   "fire_spin_owned": {
-    "x": 88,
-    "y": -242,
+    "x": 70,
+    "y": -192,
     "definition": "fire_spin_owned",
     "root": true
   },
   "fire_spin": {
-    "x": 88,
-    "y": -242,
+    "x": 70,
+    "y": -192,
     "definition": "fire_spin"
   },
   "fire_blast_owned": {
-    "x": 107,
-    "y": -293,
+    "x": 88,
+    "y": -242,
     "definition": "fire_blast_owned",
     "root": true
   },
   "fire_blast": {
-    "x": 107,
-    "y": -293,
+    "x": 88,
+    "y": -242,
     "definition": "fire_blast"
   },
   "overheat_owned": {
-    "x": 125,
-    "y": -344,
+    "x": 107,
+    "y": -293,
     "definition": "overheat_owned",
     "root": true
   },
   "overheat": {
-    "x": 125,
-    "y": -344,
+    "x": 107,
+    "y": -293,
     "definition": "overheat"
-  },
-  "sacred_fire_owned": {
-    "x": 144,
-    "y": -395,
-    "definition": "sacred_fire_owned",
-    "root": true
-  },
-  "sacred_fire": {
-    "x": 144,
-    "y": -395,
-    "definition": "sacred_fire"
   },
   "water_gun_owned": {
     "x": 62,
@@ -203,60 +170,38 @@
     "y": -156,
     "definition": "bubble_beam"
   },
-  "water_pulse_owned": {
-    "x": 166,
-    "y": -198,
-    "definition": "water_pulse_owned",
-    "root": true
-  },
-  "water_pulse": {
-    "x": 166,
-    "y": -198,
-    "definition": "water_pulse"
-  },
   "whirlpool_owned": {
-    "x": 201,
-    "y": -239,
+    "x": 166,
+    "y": -198,
     "definition": "whirlpool_owned",
     "root": true
   },
   "whirlpool": {
-    "x": 201,
-    "y": -239,
+    "x": 166,
+    "y": -198,
     "definition": "whirlpool"
   },
   "surf_owned": {
-    "x": 235,
-    "y": -280,
+    "x": 201,
+    "y": -239,
     "definition": "surf_owned",
     "root": true
   },
   "surf": {
-    "x": 235,
-    "y": -280,
+    "x": 201,
+    "y": -239,
     "definition": "surf"
   },
   "hydro_pump_owned": {
-    "x": 270,
-    "y": -322,
+    "x": 235,
+    "y": -280,
     "definition": "hydro_pump_owned",
     "root": true
   },
   "hydro_pump": {
-    "x": 270,
-    "y": -322,
+    "x": 235,
+    "y": -280,
     "definition": "hydro_pump"
-  },
-  "scald_owned": {
-    "x": 305,
-    "y": -363,
-    "definition": "scald_owned",
-    "root": true
-  },
-  "scald": {
-    "x": 305,
-    "y": -363,
-    "definition": "scald"
   },
   "thundershock_owned": {
     "x": 83,
@@ -280,48 +225,37 @@
     "y": -75,
     "definition": "electro_ball"
   },
-  "thunderbolt_owned": {
-    "x": 177,
-    "y": -102,
-    "definition": "thunderbolt_owned",
-    "root": true
-  },
-  "thunderbolt": {
-    "x": 177,
-    "y": -102,
-    "definition": "thunderbolt"
-  },
   "discharge_owned": {
-    "x": 223,
-    "y": -129,
+    "x": 177,
+    "y": -102,
     "definition": "discharge_owned",
     "root": true
   },
   "discharge": {
-    "x": 223,
-    "y": -129,
+    "x": 177,
+    "y": -102,
     "definition": "discharge"
   },
   "thunder_owned": {
-    "x": 270,
-    "y": -156,
+    "x": 223,
+    "y": -129,
     "definition": "thunder_owned",
     "root": true
   },
   "thunder": {
-    "x": 270,
-    "y": -156,
+    "x": 223,
+    "y": -129,
     "definition": "thunder"
   },
   "volt_tackle_owned": {
-    "x": 317,
-    "y": -183,
+    "x": 270,
+    "y": -156,
     "definition": "volt_tackle_owned",
     "root": true
   },
   "volt_tackle": {
-    "x": 317,
-    "y": -183,
+    "x": 270,
+    "y": -156,
     "definition": "volt_tackle"
   },
   "vine_whip_owned": {
@@ -368,48 +302,37 @@
     "y": -45,
     "definition": "leaf_blade"
   },
-  "energy_ball_owned": {
-    "x": 307,
-    "y": -54,
-    "definition": "energy_ball_owned",
-    "root": true
-  },
-  "energy_ball": {
-    "x": 307,
-    "y": -54,
-    "definition": "energy_ball"
-  },
   "petal_blizzard_owned": {
-    "x": 360,
-    "y": -64,
+    "x": 307,
+    "y": -54,
     "definition": "petal_blizzard_owned",
     "root": true
   },
   "petal_blizzard": {
-    "x": 360,
-    "y": -64,
+    "x": 307,
+    "y": -54,
     "definition": "petal_blizzard"
   },
   "solar_beam_owned": {
-    "x": 414,
-    "y": -73,
+    "x": 360,
+    "y": -64,
     "definition": "solar_beam_owned",
     "root": true
   },
   "solar_beam": {
-    "x": 414,
-    "y": -73,
+    "x": 360,
+    "y": -64,
     "definition": "solar_beam"
   },
   "nature_burst_owned": {
-    "x": 467,
-    "y": -82,
+    "x": 414,
+    "y": -73,
     "definition": "nature_burst_owned",
     "root": true
   },
   "nature_burst": {
-    "x": 467,
-    "y": -82,
+    "x": 414,
+    "y": -73,
     "definition": "nature_burst"
   },
   "powder_snow_owned": {
@@ -555,26 +478,15 @@
     "y": 156,
     "definition": "toxic_spikes"
   },
-  "sludge_bomb_owned": {
-    "x": 166,
-    "y": 198,
-    "definition": "sludge_bomb_owned",
-    "root": true
-  },
-  "sludge_bomb": {
-    "x": 166,
-    "y": 198,
-    "definition": "sludge_bomb"
-  },
   "toxic_owned": {
-    "x": 201,
-    "y": 239,
+    "x": 166,
+    "y": 198,
     "definition": "toxic_owned",
     "root": true
   },
   "toxic": {
-    "x": 201,
-    "y": 239,
+    "x": 166,
+    "y": 198,
     "definition": "toxic"
   },
   "mud_shot_owned": {
@@ -973,48 +885,37 @@
     "y": -102,
     "definition": "foul_play"
   },
-  "iron_tail_owned": {
-    "x": -62,
-    "y": -74,
-    "definition": "iron_tail_owned",
-    "root": true
-  },
-  "iron_tail": {
-    "x": -62,
-    "y": -74,
-    "definition": "iron_tail"
-  },
   "iron_defense_owned": {
-    "x": -96,
-    "y": -115,
+    "x": -62,
+    "y": -74,
     "definition": "iron_defense_owned",
     "root": true
   },
   "iron_defense": {
-    "x": -96,
-    "y": -115,
+    "x": -62,
+    "y": -74,
     "definition": "iron_defense"
   },
   "iron_strike_owned": {
-    "x": -131,
-    "y": -156,
+    "x": -96,
+    "y": -115,
     "definition": "iron_strike_owned",
     "root": true
   },
   "iron_strike": {
-    "x": -131,
-    "y": -156,
+    "x": -96,
+    "y": -115,
     "definition": "iron_strike"
   },
   "flash_cannon_owned": {
-    "x": -166,
-    "y": -198,
+    "x": -131,
+    "y": -156,
     "definition": "flash_cannon_owned",
     "root": true
   },
   "flash_cannon": {
-    "x": -166,
-    "y": -198,
+    "x": -131,
+    "y": -156,
     "definition": "flash_cannon"
   },
   "fairy_wind_owned": {

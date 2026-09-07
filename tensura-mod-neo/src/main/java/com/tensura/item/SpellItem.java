@@ -50,10 +50,9 @@ public class SpellItem extends Item {
         "earthquake", "fairy_wind", "draining_kiss", "charm", "dazzling_gleam",
         "moonblast", "gust", "air_cutter", "aerial_ace", "tailwind", "hurricane",
         "swift", "hyper_voice", "water_gun", "thundershock", "psychic", "confusion",
-        "razor_leaf", "leaf_blade", "will_o_wisp", "poison_sting", "rock_throw",
-        "ice_shard", "thunderbolt", "fire_blast", "scald", "bubble_beam",
-        "energy_ball", "petal_blizzard", "solar_beam", "stone_edge", "discharge",
-        "sacred_fire", "dragon_pulse", "iron_strike", "mach_punch", "focus_blast",
+        "razor_leaf", "leaf_blade", "poison_sting", "rock_throw", "ice_shard",
+        "fire_blast", "bubble_beam", "petal_blizzard", "solar_beam", "stone_edge",
+        "discharge", "dragon_pulse", "iron_strike", "mach_punch", "focus_blast",
         "shadow_ball"
     );
 

@@ -65,20 +65,15 @@ TARGETS = {
   "confusion" => :confusion_spiral,
   "razor_leaf" => :razor_leaves,
   "leaf_blade" => :leaf_sword,
-  "will_o_wisp" => :wisp_flame,
   "poison_sting" => :poison_needle,
   "rock_throw" => :thrown_rock,
   "ice_shard" => :ice_shards,
-  "thunderbolt" => :forked_bolt,
   "fire_blast" => :fire_star,
-  "scald" => :steam_drop,
   "bubble_beam" => :bubbles,
-  "energy_ball" => :energy_seed,
   "petal_blizzard" => :petal_storm,
   "solar_beam" => :sun_beam,
   "stone_edge" => :stone_spires,
   "discharge" => :electric_field,
-  "sacred_fire" => :sacred_flame,
   "dragon_pulse" => :dragon_orb,
   "iron_strike" => :steel_charge,
   "mach_punch" => :speed_fist,
@@ -99,10 +94,9 @@ ICON_ORDER = %w[
   whirlpool pin_missile u_turn x_scissor bug_buzz mud_shot bulldoze dig
   earth_power earthquake fairy_wind draining_kiss charm dazzling_gleam moonblast
   gust air_cutter aerial_ace tailwind hurricane swift hyper_voice water_gun
-  thundershock psychic confusion razor_leaf leaf_blade will_o_wisp poison_sting
-  rock_throw ice_shard thunderbolt fire_blast scald bubble_beam energy_ball
-  petal_blizzard solar_beam stone_edge discharge sacred_fire dragon_pulse
-  iron_strike mach_punch focus_blast shadow_ball
+  thundershock psychic confusion razor_leaf leaf_blade poison_sting rock_throw
+  ice_shard fire_blast bubble_beam petal_blizzard solar_beam stone_edge discharge
+  dragon_pulse iron_strike mach_punch focus_blast shadow_ball
 ].freeze
 
 PALETTES = {

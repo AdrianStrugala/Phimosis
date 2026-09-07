@@ -34,7 +34,6 @@ public class CobblemonMoveMapper {
         n("solar_blade",        "solar_beam");
         n("leaf_blade",         "leaf_blade");
         n("leaf_storm",         "solar_beam");
-        n("energy_ball",        "energy_ball");
         n("petal_dance",        "petal_blizzard");
         n("petal_blizzard",     "petal_blizzard");
         n("spore",              "leech_seed");
@@ -60,7 +59,6 @@ public class CobblemonMoveMapper {
         n("snap_trap",          "vine_whip");
         n("trop_kick",          "vine_whip");
         n("branch_poke",        "vine_whip");
-        n("forest_s_curse",     "energy_ball");
         n("grassy_glide",       "vine_whip");
         n("drum_beating",       "vine_whip");
 
@@ -75,10 +73,6 @@ public class CobblemonMoveMapper {
         n("lava_plume",         "fire_blast");
         n("eruption",           "fire_blast");
         n("inferno",            "overheat");
-        n("sacred_fire",        "sacred_fire");
-        n("v_create",           "sacred_fire");
-        n("will_o_wisp",        "will_o_wisp");
-        n("will-o-wisp",        "will_o_wisp");
         n("fire_spin",          "fire_spin");
         n("flame_wheel",        "flamethrower");
         n("blaze_kick",         "flamethrower");
@@ -94,10 +88,8 @@ public class CobblemonMoveMapper {
         n("shell_trap",         "fire_blast");
         n("searing_shot",       "fire_blast");
         n("fiery_dance",        "flamethrower");
-        n("fusion_flare",       "sacred_fire");
         n("fiery_wrath",        "fire_blast");
         n("torch_song",         "flamethrower");
-        n("bitter_blade",       "sacred_fire");
         n("armor_cannon",       "fire_blast");
 
         // ═══════════════════════════════════════════════════════════════════
@@ -115,13 +107,9 @@ public class CobblemonMoveMapper {
         n("hydro_cannon",       "hydro_pump");
         n("origin_pulse",       "hydro_pump");
         n("steam_eruption",     "hydro_pump");
-        n("scald",              "scald");
-        n("water_pulse",        "water_pulse");
         n("water_spout",        "hydro_pump");
-        n("clamp",              "water_pulse");
         n("whirlpool",          "whirlpool");
         n("aqua_ring",          "leech_seed");
-        n("brine",              "scald");
         n("dive",               "surf");
         n("rain_dance",         "surf");
         n("soak",               "water_gun");
@@ -135,36 +123,29 @@ public class CobblemonMoveMapper {
         n("snipe_shot",         "hydro_pump");
         n("surging_strikes",    "water_gun");
         n("ivy_cudgel",         "surf");
-        n("water_pledge",       "water_pulse");
 
         // ═══════════════════════════════════════════════════════════════════
         // ELECTRIC
         // ═══════════════════════════════════════════════════════════════════
         n("thundershock",       "thundershock");
         n("thunder_shock",      "thundershock");
-        n("thunderbolt",        "thunderbolt");
         n("thunder",            "thunder");
         n("discharge",          "discharge");
         n("volt_tackle",        "volt_tackle");
-        n("wild_charge",        "thunderbolt");
         n("spark",              "thundershock");
-        n("charge_beam",        "thunderbolt");
         n("electro_ball",       "electro_ball");
         n("zap_cannon",         "thunder");
         n("thunder_punch",      "thundershock");
         n("thunder_fang",       "thundershock");
         n("bolt_strike",        "volt_tackle");
         n("fusion_bolt",        "thunder");
-        n("volt_switch",        "thunderbolt");
         n("nuzzle",             "thundershock");
         n("parabolic_charge",   "discharge");
-        n("electroweb",         "thunderbolt");
         n("magnetic_flux",      "discharge");
         n("eerie_impulse",      "discharge");
         n("plasma_fists",       "volt_tackle");
         n("overdrive",          "thunder");
         n("rising_voltage",     "thunder");
-        n("thunderclap",        "thunderbolt");
         n("tera_blast",         "thunder");
         n("tera_starstorm",     "thunder");
 
@@ -289,27 +270,18 @@ public class CobblemonMoveMapper {
         // ═══════════════════════════════════════════════════════════════════
         n("poison_sting",       "poison_sting");
         n("sludge",             "poison_strike");
-        n("sludge_bomb",        "sludge_bomb");
-        n("sludge_wave",        "sludge_bomb");
         n("toxic",              "toxic");
         n("toxic_spikes",       "toxic_spikes");
-        n("venoshock",          "sludge_bomb");
         n("acid",               "poison_sting");
         n("smog",               "poison_sting");
         n("cross_poison",       "poison_strike");
-        n("gunk_shot",          "sludge_bomb");
         n("poison_jab",         "poison_strike");
         n("poison_fang",        "poison_sting");
         n("twineedle",          "poison_sting");
-        n("barb_barrage",       "sludge_bomb");
-        n("acid_spray",         "sludge_bomb");
         n("clear_smog",         "poison_sting");
         n("baneful_bunker",     "toxic");
-        n("belch",              "sludge_bomb");
         n("coil",               "poison_strike");
         n("mortal_spin",        "poison_strike");
-        n("noxious_torque",     "sludge_bomb");
-        n("double_shock",       "thunderbolt"); // Pawmi move, actually Electric
 
         // ═══════════════════════════════════════════════════════════════════
         // ROCK / GROUND
@@ -422,7 +394,6 @@ public class CobblemonMoveMapper {
         n("fell_stinger",       "poison_sting");
         n("lunge",              "aerial_ace");
         n("first_impression",   "razor_leaf");
-        n("pollen_puff",        "energy_ball");
         n("struggle_bug",       "aerial_strike");
         n("infestation",        "poison_sting");
         n("bug_bite",           "aerial_ace");
@@ -432,24 +403,15 @@ public class CobblemonMoveMapper {
         // ═══════════════════════════════════════════════════════════════════
         // STEEL
         // ═══════════════════════════════════════════════════════════════════
-        n("iron_tail",          "iron_tail");
         n("flash_cannon",       "flash_cannon");
-        n("meteor_mash",        "iron_tail");
-        n("iron_head",          "iron_tail");
             n("iron_strike",        "iron_strike");
             n("steel_wing",         "iron_strike");
         n("bullet_punch",       "mach_punch");
-        n("gyro_ball",          "iron_tail");
         n("doom_desire",        "draco_meteor");
         n("sunsteel_strike",    "iron_strike");
-        n("smart_strike",       "iron_tail");
         n("iron_defense",       "iron_defense");
-        n("magnet_bomb",        "iron_tail");
         n("mirror_shot",        "flash_cannon");
         n("steel_beam",         "flash_cannon");
-        n("anchor_shot",        "iron_tail");
-        n("double_iron_bash",   "iron_tail");
-        n("steel_roller",       "iron_tail");
         n("behemoth_bash",      "close_combat");
         n("behemoth_blade",     "iron_strike");
         n("make_it_rain",       "flash_cannon");
@@ -507,8 +469,6 @@ public class CobblemonMoveMapper {
         n("hyper_fang",         "close_combat");
         n("swift",              "aerial_ace");
         n("tri_attack",         "tri_attack");
-        n("explosion",          "explosion");
-        n("self_destruct",      "explosion");
         n("egg_bomb",           "fire_blast");
         n("boomburst",          "aerial_strike");
         n("hyper_voice",        "aerial_strike");
@@ -519,7 +479,6 @@ public class CobblemonMoveMapper {
         n("wrap",               "vine_whip");
         n("bind",               "vine_whip");
         n("constrict",          "vine_whip");
-        n("vice_grip",          "iron_tail");
         n("guillotine",         "stone_edge");
         n("horn_attack",        "tackle");
         n("horn_drill",         "stone_edge");
@@ -620,15 +579,15 @@ public class CobblemonMoveMapper {
         double power = move.getPower();
 
         String spellPath = switch (type) {
-            case "electric"           -> power >= 100 ? "thunder"        : "thunderbolt";
+            case "electric"           -> power >= 100 ? "thunder"        : "thundershock";
             case "fire"               -> power >= 100 ? "fire_blast"     : "flamethrower";
-            case "water"              -> power >= 100 ? "hydro_pump"     : "water_pulse";
+            case "water"              -> power >= 100 ? "hydro_pump"     : "water_gun";
             case "ice"                -> power >= 100 ? "blizzard"       : "ice_beam";
             case "ghost", "dark"      -> power >= 100 ? "dark_pulse"     : "shadow_ball";
             case "psychic"            -> power >= 100 ? "psychic_blast"  : "psychic";
             case "dragon"             -> power >= 100 ? "draco_meteor"   : "dragon_pulse";
-            case "poison"             -> power >= 80  ? "sludge_bomb"    : "poison_sting";
-            case "grass", "fairy"     -> power >= 80  ? "solar_beam"     : "energy_ball";
+            case "poison"             -> "poison_sting";
+            case "grass", "fairy"     -> power >= 80  ? "solar_beam"     : "razor_leaf";
             case "steel", "rock"      -> power >= 80  ? "stone_edge"     : "iron_strike";
             case "ground", "fighting" -> power >= 100 ? "earthquake"     : "seismic_slam";
             case "flying", "bug"      -> power >= 80  ? "aerial_strike"  : "aerial_ace";
