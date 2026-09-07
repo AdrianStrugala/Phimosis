@@ -18,6 +18,7 @@ import com.tensura.item.SpellItem;
 import com.tensura.network.NetworkHandler;
 import com.tensura.registry.TensuraAttributes;
 import com.tensura.registry.TensuraBlockRegistry;
+import com.tensura.registry.TensuraCreativeTabs;
 import com.tensura.registry.TensuraEntityRegistry;
 import com.tensura.registry.TensuraItemRegistry;
 import com.tensura.registry.TensuraMenuRegistry;
@@ -56,6 +57,7 @@ public class TensuraMod {
         TensuraEntityRegistry.ENTITIES.register(modBus);
         TensuraAttributes.ATTRIBUTES.register(modBus);
         TensuraMobEffects.MOB_EFFECTS.register(modBus);
+        TensuraCreativeTabs.TABS.register(modBus);
 
         modBus.register(NetworkHandler.class);
 

@@ -179,10 +179,11 @@ public final class SpellImpactApplier {
                     target.setDeltaMovement(Vec3.ZERO);
                     target.hurtMarked = true;
                     SpellRuntimeController.interruptPendingCast(target);
-                    target.addEffect(new MobEffectInstance(
-                            net.minecraft.world.effect.MobEffects.SLOWNESS,
-                            Math.max(1, impact.duration), Math.max(1, impact.amplifier),
-                            false, impact.show_particles, impact.show_icon));
+                    BuiltInRegistries.MOB_EFFECT.getHolder(
+                                    ResourceLocation.withDefaultNamespace("slowness"))
+                            .ifPresent(holder -> target.addEffect(new MobEffectInstance(holder,
+                                    Math.max(1, impact.duration), Math.max(1, impact.amplifier),
+                                    false, impact.show_particles, impact.show_icon)));
                 }
                 case "rear_stagger" -> {
                     if (!canHarm) continue;

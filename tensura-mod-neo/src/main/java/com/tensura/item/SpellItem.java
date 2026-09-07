@@ -1,6 +1,7 @@
 package com.tensura.item;
 
 import com.tensura.engine.SpellExecutor;
+import com.tensura.engine.SpellDefinition;
 import com.tensura.engine.SpellIdAliases;
 import com.tensura.engine.SpellRegistry;
 import net.minecraft.core.component.DataComponents;
@@ -66,11 +67,20 @@ public class SpellItem extends Item {
     }
 
     public static ItemStack create(ResourceLocation spellId) {
+        return create(spellId, SpellRegistry.get(spellId).orElse(null));
+    }
+
+    /**
+     * Builds the stack from a definition the caller already has. The creative tab uses this
+     * with a definition out of {@link com.tensura.client.ClientSpellCatalog}, since a client
+     * connected to a dedicated server has no SpellRegistry to look one up in.
+     */
+    public static ItemStack create(ResourceLocation spellId, @Nullable SpellDefinition def) {
         ItemStack stack = new ItemStack(com.tensura.registry.TensuraItemRegistry.SPELL_ITEM.get());
         CompoundTag tag = new CompoundTag();
         tag.putString(NBT_SPELL_ID, spellId.toString());
         // Store school for client-side model selection (SpellRegistry is server-side only)
-        SpellRegistry.get(spellId).ifPresent(def -> {
+        if (def != null) {
             tag.putString(NBT_SCHOOL, def.school);
             if (def.delivery.hold_to_channel) {
                 tag.putBoolean(NBT_HOLD_TO_CHANNEL, true);
@@ -79,9 +89,15 @@ public class SpellItem extends Item {
                 tag.putInt(NBT_CHANNEL_WINDUP, def.cast_time_ticks);
                 tag.putInt(NBT_CHANNEL_DURATION, def.delivery.duration_ticks);
             }
-        });
+        }
         stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
         return stack;
+    }
+
+    /** Display rank of a school, for grouping spells in the creative tab. Unknown schools sort last. */
+    public static int schoolOrder(String school) {
+        int idx = SCHOOL_ORDER.indexOf(school);
+        return idx < 0 ? SCHOOL_ORDER.size() : idx;
     }
 
     @Nullable
@@ -120,18 +136,23 @@ public class SpellItem extends Item {
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         ResourceLocation id = getSpellId(stack);
         if (id == null) return;
-        SpellRegistry.get(id).ifPresent(def -> {
-            tooltip.add(Component.literal("School: " + def.school));
-            tooltip.add(Component.literal(def.cooldown_ticks > 0
-                    ? "Cooldown: " + (def.cooldown_ticks / 20) + "s"
-                    : "Cooldown: None"));
-            if (def.charges > 1) {
-                tooltip.add(Component.literal("Charges: " + def.charges));
-            }
-            tooltip.add(Component.literal("Range: " + (int) def.targeting.range + "m"));
-            tooltip.add(Component.literal(def.delivery.hold_to_channel
-                    ? "Use: Hold right-click" : "Use: Right-click"));
-        });
+        // On a client connected to a dedicated server SpellRegistry is empty, so fall back
+        // to the copy of the definitions that ships in the jar.
+        SpellDefinition def = SpellRegistry.get(id)
+                .or(() -> com.tensura.client.ClientSpellCatalog.get(id))
+                .orElse(null);
+        if (def == null) return;
+
+        tooltip.add(Component.literal("School: " + def.school));
+        tooltip.add(Component.literal(def.cooldown_ticks > 0
+                ? "Cooldown: " + (def.cooldown_ticks / 20) + "s"
+                : "Cooldown: None"));
+        if (def.charges > 1) {
+            tooltip.add(Component.literal("Charges: " + def.charges));
+        }
+        tooltip.add(Component.literal("Range: " + (int) def.targeting.range + "m"));
+        tooltip.add(Component.literal(def.delivery.hold_to_channel
+                ? "Use: Hold right-click" : "Use: Right-click"));
     }
 
     @Override
