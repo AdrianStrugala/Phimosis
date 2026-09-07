@@ -28,35 +28,37 @@ RAYS = {
   fairy: %w[fairy_wind draining_kiss charm dazzling_gleam moonblast]
 }.freeze
 
-CUSTOM_ICONS = %w[
-  flamethrower surf toxic_spikes close_combat shadow_sneak psybeam volt_tackle
-  fire_spin rock_slide recover dark_pulse aqua_jet aurora_veil blizzard
-  draco_meteor electro_ball ember future_sight hydro_pump ice_beam iron_defense
-  quick_attack rest string_shot sucker_punch thunder tri_attack vine_whip
-  whirlpool pin_missile u_turn x_scissor bug_buzz mud_shot bulldoze dig
-  earth_power earthquake fairy_wind draining_kiss charm dazzling_gleam moonblast
-  gust air_cutter aerial_ace tailwind hurricane swift hyper_voice
-].freeze
-
-DELIVERY_NAMES = {
-  "beam" => "beam", "channel_beam" => "channeled beam",
-  "channel_cone" => "channeled cone", "cloud" => "lingering cloud",
-  "counter" => "counter stance", "dash" => "dash",
-  "delayed" => "delayed strike", "delayed_area" => "delayed area",
-  "explosion" => "caster-centered explosion", "instant" => "instant cast",
-  "melee_combo" => "melee combo", "meteor" => "meteor strike",
-  "moving_zone" => "moving zone", "projectile" => "projectile",
-  "protective_aura" => "protective aura", "ricochet_beam" => "ricochet beam",
-  "self" => "self cast", "teleport_strike" => "teleport strike",
-  "trap" => "placed trap", "vortex" => "vortex", "wave" => "traveling wave"
+EFFECT_NAMES = {
+  "minecraft:darkness" => "blinds", "minecraft:nausea" => "disorients",
+  "minecraft:poison" => "poisons", "minecraft:slowness" => "slows",
+  "minecraft:speed" => "hastens", "minecraft:weakness" => "weakens",
+  "minecraft:wither" => "withers", "tensura:asleep" => "puts enemies to sleep",
+  "tensura:frozen" => "chills", "tensura:paralyzed" => "paralyzes"
 }.freeze
 
-EFFECT_NAMES = {
-  "minecraft:darkness" => "Darkness", "minecraft:nausea" => "Nausea",
-  "minecraft:poison" => "Poison", "minecraft:slowness" => "Slowness",
-  "minecraft:speed" => "Speed", "minecraft:weakness" => "Weakness",
-  "minecraft:wither" => "Wither", "tensura:asleep" => "Sleep",
-  "tensura:frozen" => "Chill", "tensura:paralyzed" => "Paralysis"
+DESCRIPTION_OVERRIDES = {
+  "toxic_spikes" => "Scatter poisonous spikes across the ground. The first trigger poisons; repeated triggers turn the poison Toxic.",
+  "u_turn" => "Dash through an enemy with Bug energy, then return to where you started.",
+  "future_sight" => "Mark an area with Psychic energy. After a short delay, it erupts and catches anyone still inside.",
+  "sucker_punch" => "Prepare a Dark counter. If an enemy attacks, blink behind them and strike first.",
+  "rest" => "Fall asleep to fully restore your health and clear harmful effects.",
+  "recover" => "Focus your energy to restore a large amount of health.",
+  "aurora_veil" => "Raise an icy aurora around you that protects you and nearby allies from damage.",
+  "tailwind" => "Summon a guiding wind that makes you and nearby allies move faster.",
+  "tri_attack" => "Fire three homing blasts that may burn, chill, or paralyze their target.",
+  "ember" => "Flick a small ember at an enemy and set them ablaze.",
+  "electro_ball" => "Launch a crackling Electric orb that hits harder when you outpace your target.",
+  "ice_shard" => "Hurl a razor-sharp shard of Ice from long range that may slow enemies.",
+  "rock_throw" => "Hurl a heavy rock at an enemy from long range.",
+  "frost_nova" => "Release a burst of freezing air that slows and weakens nearby enemies.",
+  "bubble_beam" => "Launch a stream of bubbles from long range that may slow enemies.",
+  "water_pulse" => "Launch a pulsing orb of Water from long range that may slow enemies.",
+  "solar_beam" => "Launch a devastating blast of Nature energy from long range.",
+  "dragon_pulse" => "Launch a concentrated blast of Dragon energy from long range.",
+  "ice_beam" => "Unleash a piercing Ice beam from long range. Soaked enemies are frozen on hit.",
+  "moonblast" => "Launch a Fairy blast that explodes across an area and weakens enemies. Takes a short moment to cast.",
+  "dazzling_gleam" => "Release a wide burst of Fairy light around you. Also clears Poison or Chill from you.",
+  "draining_kiss" => "Send a homing Fairy kiss at an enemy and restore health from the damage dealt."
 }.freeze
 
 def read_json(name)
@@ -71,106 +73,106 @@ def title_for(spell)
   spell.split("_").map(&:capitalize).join(" ")
 end
 
-def number(value)
-  numeric = value.to_f
-  numeric == numeric.to_i ? numeric.to_i.to_s : format("%.1f", numeric)
-end
-
-def seconds(ticks)
-  value = ticks.to_f / 20.0
-  "#{number(value)}s"
-end
-
-def effect_name(effect_id)
-  EFFECT_NAMES.fetch(effect_id) do
-    effect_id.to_s.split(":").last.to_s.split("_").map(&:capitalize).join(" ")
-  end
-end
-
-def effect_level(amplifier)
-  level = amplifier.to_i + 1
-  level > 1 ? " #{level}" : ""
-end
-
-def chance_suffix(chance)
-  value = chance.nil? ? 1.0 : chance.to_f
-  value < 1.0 ? ", #{(value * 100).round}% chance" : ""
-end
-
-def recipient_suffix(impact)
-  impact["recipient"] == "caster" ? " on self" : ""
-end
-
-def impact_text(definition, impact)
-  suffix = recipient_suffix(impact)
+def impact_text(impact)
+  self_effect = impact["recipient"] == "caster"
   case impact["type"]
-  when "damage"
-    power = definition.fetch("power", -1).to_f
-    return "Weapon-scaled damage#{suffix}" if power < 0
-    damage = power * impact.fetch("damage_multiplier", 1).to_f
-    delivery = definition.fetch("delivery", {})
-    repeated = delivery["projectile_count"].to_i > 1 || delivery["combo_hits"].to_i > 1 ||
-      %w[channel_beam channel_cone].include?(delivery["type"])
-    "#{number(damage)} damage#{repeated ? " per hit" : ""}#{suffix}"
-  when "speed_scaled_damage"
-    "Speed-scaled damage up to #{number(impact.fetch("amount", definition["power"]))}"
+  when "damage" then nil
+  when "speed_scaled_damage" then "Deals more damage when you outpace your target"
   when "status_effect"
-    name = effect_name(impact["effect"])
-    "#{name}#{effect_level(impact["amplifier"])} for #{seconds(impact["duration"])}#{chance_suffix(impact["chance"])}#{suffix}"
-  when "fire"
-    "Burns for #{number(impact["seconds"])}s"
-  when "knockback" then "Knockback"
-  when "pull" then "Pulls targets"
-  when "heal" then "Heals #{number(impact["amount"])} HP#{suffix}"
-  when "heal_fraction" then "Heals #{(impact["amount"].to_f * 100).round}% max HP#{suffix}"
-  when "heal_damage_fraction" then "Heals #{(impact["amount"].to_f * 100).round}% of damage dealt#{suffix}"
-  when "full_heal" then "Fully heals#{suffix}"
-  when "recoil" then "#{number(impact["amount"])} recoil damage"
-  when "cleanse" then "Removes all harmful effects#{suffix}"
+    verb = EFFECT_NAMES.fetch(impact["effect"], "afflicts")
+    subject = self_effect ? "you" : "enemies"
+    impact.fetch("chance", 1).to_f < 1 ? "sometimes #{verb} #{subject}" : "#{verb} #{subject}"
+  when "fire" then "sets enemies ablaze"
+  when "knockback" then "knocks enemies back"
+  when "pull" then "pulls enemies inward"
+  when "heal", "heal_fraction" then "restores your health"
+  when "heal_damage_fraction" then "restores health from damage dealt"
+  when "full_heal" then "fully restores your health"
+  when "recoil" then "deals recoil damage to you"
+  when "cleanse" then "clears harmful effects from you"
   when "cleanse_one"
-    names = Array(impact["effects"]).map { |effect| effect_name(effect) }.join(" or ")
-    "Removes one #{names} effect#{suffix}"
-  when "interrupt_cast" then "Interrupts casting"
-  when "wet" then "Applies Wet for #{seconds(impact["duration"])}"
-  when "freeze_if_wet" then "Chills Wet targets for #{seconds(impact["duration"])}"
-  when "paralyze_if_wet" then "Paralyzes Wet targets for #{seconds(impact["duration"])}"
-  when "damage_reduction" then "Reduces damage by #{(impact["reduction"].to_f * 100).round}%#{suffix}"
-  when "expose" then "Exposed for #{seconds(impact["duration"])}#{suffix}"
-  when "guard" then "Guards the next hit#{suffix}"
-  when "tri_status" then "Randomly burns, paralyzes, or freezes"
-  else title_for(impact["type"].to_s)
+    "clears Poison or Chill from you"
+  when "interrupt_cast" then "interrupts casting"
+  when "wet" then "soaks enemies"
+  when "freeze_if_wet" then "chills soaked enemies"
+  when "paralyze_if_wet" then "paralyzes soaked enemies"
+  when "damage_reduction" then "reduces incoming damage"
+  when "expose" then self_effect ? "leaves you Exposed afterward" : "leaves enemies Exposed"
+  when "guard" then "blocks the next hit"
+  when "tri_status" then "may burn, chill, or paralyze"
   end
 end
 
-def spell_details(definition)
+def range_phrase(definition)
   targeting = definition.fetch("targeting", {})
+  range = targeting["range"].to_f
+  return "" if range <= 0
+  return " at close range" if range <= 7
+  return " at medium range" if range <= 15
+
+  " from long range"
+end
+
+def with_article(type, noun)
+  article = type.match?(/\A[aeiou]/i) ? "an" : "a"
+  "#{article} #{type} #{noun}"
+end
+
+def spell_action(definition)
   delivery = definition.fetch("delivery", {})
-  delivery_name = DELIVERY_NAMES.fetch(delivery["type"], title_for(delivery["type"].to_s))
-  targeting_parts = [delivery_name.capitalize]
-  targeting_parts << "#{number(targeting["range"])} block range" if targeting["range"].to_f > 0
-  targeting_parts << "#{number(targeting["radius"])} block radius" if targeting["radius"].to_f > 0
-  targeting_parts << "#{targeting["max_targets"]} targets" if targeting["max_targets"].to_i > 1
-  targeting_parts << "1 target" if targeting["max_targets"].to_i == 1
-  targeting_parts << "#{delivery["projectile_count"]} projectiles" if delivery["projectile_count"].to_i > 1
-  targeting_parts << "#{delivery["combo_hits"]} hits" if delivery["combo_hits"].to_i > 1
-  if %w[channel_beam channel_cone].include?(delivery["type"]) &&
-      delivery["tick_interval_ticks"].to_i > 0
-    pulses = (delivery["duration_ticks"].to_f / delivery["tick_interval_ticks"]).ceil
-    targeting_parts << "#{pulses} pulses"
+  type = title_for(definition.fetch("pokemon_type", definition["school"]).to_s)
+  range = range_phrase(definition)
+  area = definition.dig("targeting", "radius").to_f > 1.5
+  many = delivery["projectile_count"].to_i > 1
+  case delivery["type"]
+  when "projectile"
+    return "Launch a volley of #{type} projectiles#{range}" if many
+    return "Launch #{with_article(type, "blast")}#{range} that explodes on impact" if area
+    "Launch #{with_article(type, "projectile")}#{range}"
+  when "beam" then "Unleash a piercing #{type} beam#{range}"
+  when "channel_beam" then "Channel a sustained #{type} beam#{range}"
+  when "channel_cone" then "Channel a wide cone of #{type} energy#{range}"
+  when "cloud" then "Create a lingering cloud of #{type} energy#{range}"
+  when "counter" then "Take a counter stance and punish the next attacker"
+  when "dash" then "Dash forward in a burst of #{type} energy#{range}"
+  when "delayed" then "Mark an enemy for a delayed #{type} strike#{range}"
+  when "delayed_area" then "Mark an area for a delayed #{type} blast#{range}"
+  when "explosion" then "Detonate a massive #{type} blast around you"
+  when "melee_combo" then "Rush an enemy with a rapid #{type} combo#{range}"
+  when "meteor" then "Call down a barrage of #{type} strikes#{range}"
+  when "moving_zone" then "Summon a roaming storm of #{type} energy"
+  when "protective_aura" then "Wrap yourself and nearby allies in #{with_article(type, "barrier")}"
+  when "ricochet_beam" then "Fire #{with_article(type, "beam")} that leaps to another enemy#{range}"
+  when "self" then "Focus #{type} energy within yourself"
+  when "teleport_strike" then "Blink behind an enemy and strike with #{type} energy#{range}"
+  when "trap" then "Scatter #{with_article(type, "trap")}#{range}"
+  when "vortex" then "Create a swirling #{type} vortex#{range}"
+  when "wave" then "Send a surging wave of #{type} energy forward"
+  else
+    definition.dig("targeting", "type") == "self" ?
+      "Empower yourself with #{type} energy" : "Strike enemies with a burst of #{type} energy#{range}"
   end
-  targeting_parts << "#{seconds(delivery["duration_ticks"])} duration" if delivery["duration_ticks"].to_i > 0
+end
 
-  effects = Array(definition["impact"]).map { |impact| impact_text(definition, impact) }
-  effects << "Poison on first trigger; Toxic on repeat" if delivery["type"] == "trap"
+def spell_description(spell, definition)
+  return DESCRIPTION_OVERRIDES[spell] if DESCRIPTION_OVERRIDES.key?(spell)
 
-  timing = ["#{seconds(definition["cooldown_ticks"])} cooldown"]
-  timing << "#{seconds(definition["cast_time_ticks"])} cast" if definition["cast_time_ticks"].to_i > 0
-  timing << "#{definition["charges"]} charges" if definition["charges"].to_i > 1
-  if definition["charge_recovery_ticks"].to_i > 0
-    timing << "#{seconds(definition["charge_recovery_ticks"])} charge recovery"
+  sentences = ["#{spell_action(definition)}."]
+  effects = Array(definition["impact"]).map { |impact| impact_text(impact) }.compact.uniq
+  unless effects.empty?
+    effect_sentence = if effects.size == 1
+      effects.first
+    elsif effects.size == 2
+      effects.join(" and ")
+    else
+      "#{effects[0...-1].join(", ")}, and #{effects.last}"
+    end
+    effect_sentence = effect_sentence.sub(/\A./) { |character| character.upcase }
+    sentences << "#{effect_sentence}."
   end
-
-  "#{targeting_parts.join(", ")}. #{effects.join("; ")}. #{timing.join(", ")}."
+  sentences << "Takes a short moment to cast." if definition["cast_time_ticks"].to_i > 5
+  sentences << "Can be used twice before recharging." if definition["charges"].to_i > 1
+  sentences.join(" ")
 end
 
 definitions = read_json("definitions.json")
@@ -179,28 +181,29 @@ ordered_definitions = { "devour_core" => definitions.fetch("devour_core") }
 RAYS.each do |type, spells|
   spells.each do |spell|
     spell_definition = JSON.parse(File.read(File.join(SPELL_DIR, "#{spell}.json")))
-    details = spell_details(spell_definition)
+    description = spell_description(spell, spell_definition)
     owned_id = "#{spell}_owned"
     owned = definitions.fetch(owned_id) do
       {
         "title" => title_for(spell),
-        "description" => "Absorbed. An absorbed #{type.to_s.capitalize}-type Pokemon ability.",
-        "icon" => { "type" => "item", "data" => { "item" => "minecraft:nether_star" } },
-        "size" => 1.3,
+        "icon" => {
+          "type" => "texture",
+          "data" => { "texture" => "tensura:textures/gui/blank.png" }
+        },
+        "size" => 0.1,
         "rewards" => [],
-        "cost" => 1
+        "cost" => 0,
+        "frame" => {
+          "type" => "texture",
+          "data" => {
+            "unlocked" => "tensura:textures/gui/blank.png",
+            "available" => "tensura:textures/gui/blank.png",
+            "locked" => "tensura:textures/gui/blank.png",
+            "excluded" => "tensura:textures/gui/blank.png"
+          }
+        }
       }
     end
-    if CUSTOM_ICONS.include?(spell)
-      owned["icon"] = {
-        "type" => "item",
-        "data" => { "item" => "tensura:spell_icon_#{spell}" }
-      }
-    end
-    category = spell_definition["category"].to_s
-    category_text = category.empty? ? "spell" : "#{category} spell"
-    owned["description"] =
-      "Absorbed #{type.to_s.capitalize}-type #{category_text}. #{details}"
     ordered_definitions[owned_id] = owned
 
     ordered_definitions[spell] = definitions.fetch(spell) do
@@ -215,11 +218,20 @@ RAYS.each do |type, spells|
             "data" => { "command" => "tensura devour_recover @s #{spell}" }
           }
         ],
-        "cost" => 0
+        "cost" => 0,
+        "frame" => {
+          "type" => "texture",
+          "data" => {
+            "locked" => "tensura:textures/gui/unowned.png",
+            "available" => "tensura:textures/gui/owned.png",
+            "unlocked" => "tensura:textures/gui/owned.png",
+            "excluded" => "tensura:textures/gui/unowned.png"
+          }
+        }
       }
     end
-    ordered_definitions[spell]["description"] =
-      "Dispenses another copy of #{title_for(spell)}. #{details}"
+    ordered_definitions[spell]["title"] = title_for(spell)
+    ordered_definitions[spell]["description"] = description
   end
 end
 
@@ -241,7 +253,12 @@ RAYS.values.each_with_index do |spells, ray_index|
     x = (Math.cos(angle) * radius).round
     y = (Math.sin(angle) * radius).round
     owned_id = "#{spell}_owned"
-    skills[owned_id] = { "x" => x, "y" => y, "definition" => owned_id }
+    skills[owned_id] = {
+      "x" => x,
+      "y" => y,
+      "definition" => owned_id,
+      "root" => true
+    }
     skills[spell] = { "x" => x, "y" => y, "definition" => spell }
 
     connections << [previous_owned || "devour_core", owned_id]

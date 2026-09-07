@@ -81,8 +81,11 @@ spells.each do |spell|
   fail_validation("#{spell} has no Devour owned node") unless definitions.key?(owned_id)
   fail_validation("#{spell} has no Devour dispenser") unless definitions.key?(spell)
   expected_icon = "tensura:spell_icon_#{spell}"
-  actual_icon = definitions.dig(owned_id, "icon", "data", "item")
+  actual_icon = definitions.dig(spell, "icon", "data", "item")
   fail_validation("#{spell} Devour icon is #{actual_icon}") unless actual_icon == expected_icon
+  fail_validation("#{spell} owned marker is visible") unless
+    definitions.dig(owned_id, "icon", "data", "texture") == "tensura:textures/gui/blank.png" &&
+      definitions.dig(owned_id, "size") == 0.1
   fail_validation("#{spell} Devour pair is not overlaid") unless
     skills.dig(owned_id, "x") == skills.dig(spell, "x") &&
     skills.dig(owned_id, "y") == skills.dig(spell, "y")
@@ -169,14 +172,16 @@ fail_validation("expected 18 Devour rays, got #{ray_count}") unless ray_count ==
 spell_files = Dir[File.join(SPELL_DIR, "*.json")]
 spell_files.each do |path|
   spell = File.basename(path, ".json")
-  owned_description = definitions.dig("#{spell}_owned", "description").to_s
-  dispenser_description = definitions.dig(spell, "description").to_s
-  fail_validation("#{spell} owned node lacks a detailed description") unless
-    owned_description.start_with?("Absorbed ") && owned_description.include?("cooldown") &&
-      owned_description.length >= 70 && !owned_description.match?(/\s{2,}/)
-  fail_validation("#{spell} dispenser lacks spell details") unless
-    dispenser_description.start_with?("Dispenses another copy") &&
-      dispenser_description.include?("cooldown") && dispenser_description.length >= 60
+  fail_validation("#{spell} owned marker is not an independent root") unless
+    skills.dig("#{spell}_owned", "root") == true
+  expected_title = spell.split("_").map(&:capitalize).join(" ")
+  title = definitions.dig(spell, "title").to_s
+  description = definitions.dig(spell, "description").to_s
+  fail_validation("#{spell} still has a technical tree title") unless title == expected_title
+  fail_validation("#{spell} lacks a player-friendly description") unless
+    description.length.between?(35, 160) && description.end_with?(".") &&
+      !description.match?(/\d|cooldown|block range|duration_ticks|damage_multiplier|Dispenses|Absorbed/) &&
+      !description.match?(/\s{2,}/)
 end
 
 puts "Done spells: #{spells.size}"
@@ -185,5 +190,5 @@ puts "Unique cast geometry profiles: #{profile_signatures.values.uniq.size}"
 puts "Cast geometry families: #{families.size}"
 puts "Unique 32x32 icons: #{texture_hashes.size}"
 puts "Devour rays: #{ray_count}"
-puts "Detailed Devour descriptions: #{spell_files.size}"
+puts "Player-friendly Devour descriptions: #{spell_files.size}"
 puts "All done-done checks passed."

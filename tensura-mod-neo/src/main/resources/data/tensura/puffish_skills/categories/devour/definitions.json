@@ -8,7 +8,9 @@
         "item": "minecraft:ender_eye"
       }
     },
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0
   },
   "tackle_owned": {
@@ -20,7 +22,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -33,8 +37,8 @@
     }
   },
   "tackle": {
-    "title": "Tackle Dispenser",
-    "description": "Dispenses another copy of Tackle. Instant cast, 3 block range. Weapon-scaled damage. 2s cooldown.",
+    "title": "Tackle",
+    "description": "Strike enemies with a burst of Physical energy at close range.",
     "icon": {
       "type": "item",
       "data": {
@@ -69,7 +73,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -82,8 +88,8 @@
     }
   },
   "quick_attack": {
-    "title": "Quick Attack Dispenser",
-    "description": "Dispenses another copy of Quick Attack. Dash, 6 block range, 1 target, 0.2s duration. 8 damage. 5s cooldown, 2 charges, 5s charge recovery.",
+    "title": "Quick Attack",
+    "description": "Dash forward in a burst of Normal energy at close range. Can be used twice before recharging.",
     "icon": {
       "type": "item",
       "data": {
@@ -118,7 +124,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -131,8 +139,8 @@
     }
   },
   "swift": {
-    "title": "Swift Dispenser",
-    "description": "Dispenses another copy of Swift. Projectile, 20 block range, 1 target, 3 projectiles. 4 damage per hit. 8s cooldown.",
+    "title": "Swift",
+    "description": "Launch a volley of Normal projectiles from long range.",
     "icon": {
       "type": "item",
       "data": {
@@ -167,7 +175,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -180,8 +190,8 @@
     }
   },
   "tri_attack": {
-    "title": "Tri Attack Dispenser",
-    "description": "Dispenses another copy of Tri Attack. Projectile, 18 block range, 1 target, 3 projectiles. 5.0 damage per hit; Randomly burns, paralyzes, or freezes. 12s cooldown.",
+    "title": "Tri Attack",
+    "description": "Fire three homing blasts that may burn, chill, or paralyze their target.",
     "icon": {
       "type": "item",
       "data": {
@@ -216,7 +226,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -229,8 +241,8 @@
     }
   },
   "recover": {
-    "title": "Recover Dispenser",
-    "description": "Dispenses another copy of Recover. Self cast. Heals 50% max HP. 15s cooldown, 1s cast.",
+    "title": "Recover",
+    "description": "Focus your energy to restore a large amount of health.",
     "icon": {
       "type": "item",
       "data": {
@@ -265,7 +277,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -278,8 +292,8 @@
     }
   },
   "hyper_voice": {
-    "title": "Hyper Voice Dispenser",
-    "description": "Dispenses another copy of Hyper Voice. Channeled cone, 12 block range, 12 targets, 4 pulses, 0.8s duration. 4.5 damage per hit; Knockback; Interrupts casting. 14s cooldown, 0.4s cast.",
+    "title": "Hyper Voice",
+    "description": "Channel a wide cone of Normal energy at medium range. Knocks enemies back and interrupts casting. Takes a short moment to cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -314,7 +328,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -327,8 +343,8 @@
     }
   },
   "hyper_beam": {
-    "title": "Hyper Beam Dispenser",
-    "description": "Dispenses another copy of Hyper Beam. Beam, 30 block range. Weapon-scaled damage. 20s cooldown.",
+    "title": "Hyper Beam",
+    "description": "Unleash a piercing Physical beam from long range.",
     "icon": {
       "type": "item",
       "data": {
@@ -363,7 +379,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -376,8 +394,8 @@
     }
   },
   "explosion": {
-    "title": "EXPLOSION Dispenser",
-    "description": "Dispenses another copy of Explosion. Caster-centered explosion, 9 block range, 9 block radius. Weapon-scaled damage; Burns for 6s; Knockback. 30s cooldown.",
+    "title": "Explosion",
+    "description": "Detonate a massive Fire blast around you. Sets enemies ablaze and knocks enemies back.",
     "icon": {
       "type": "item",
       "data": {
@@ -412,7 +430,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -425,8 +445,8 @@
     }
   },
   "ember": {
-    "title": "Ember Dispenser",
-    "description": "Dispenses another copy of Ember. Projectile, 14 block range, 1 target. 6 damage; Burns for 3s. 3s cooldown.",
+    "title": "Ember",
+    "description": "Flick a small ember at an enemy and set them ablaze.",
     "icon": {
       "type": "item",
       "data": {
@@ -461,7 +481,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -474,8 +496,8 @@
     }
   },
   "will_o_wisp": {
-    "title": "Will-O-Wisp Dispenser",
-    "description": "Dispenses another copy of Will O Wisp. Lingering cloud, 16 block range, 3 block radius. Burns for 10s; Weakness 2 for 10s. 9s cooldown.",
+    "title": "Will O Wisp",
+    "description": "Create a lingering cloud of Fire energy from long range. Sets enemies ablaze and weakens enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -510,7 +532,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -523,8 +547,8 @@
     }
   },
   "flamethrower": {
-    "title": "Flamethrower Dispenser",
-    "description": "Dispenses another copy of Flamethrower. Channeled cone, 12 block range, 8 targets, 6 pulses, 1.2s duration. 2.3 damage per hit; Burns for 3s. 9s cooldown.",
+    "title": "Flamethrower",
+    "description": "Channel a wide cone of Fire energy at medium range. Sets enemies ablaze.",
     "icon": {
       "type": "item",
       "data": {
@@ -559,7 +583,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -572,8 +598,8 @@
     }
   },
   "fire_spin": {
-    "title": "Fire Spin Dispenser",
-    "description": "Dispenses another copy of Fire Spin. Vortex, 16 block range, 3.5 block radius, 8 targets, 5s duration. 2 damage; Burns for 2s. 12s cooldown.",
+    "title": "Fire Spin",
+    "description": "Create a swirling Fire vortex from long range. Sets enemies ablaze.",
     "icon": {
       "type": "item",
       "data": {
@@ -608,7 +634,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -621,8 +649,8 @@
     }
   },
   "fire_blast": {
-    "title": "Fire Blast Dispenser",
-    "description": "Dispenses another copy of Fire Blast. Instant cast, 6 block range. Weapon-scaled damage; Burns for 6s. 11s cooldown.",
+    "title": "Fire Blast",
+    "description": "Strike enemies with a burst of Fire energy at close range. Sets enemies ablaze.",
     "icon": {
       "type": "item",
       "data": {
@@ -657,7 +685,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -670,8 +700,8 @@
     }
   },
   "overheat": {
-    "title": "Overheat Dispenser",
-    "description": "Dispenses another copy of Overheat. Instant cast, 10 block range. Weapon-scaled damage; Burns for 8s. 15s cooldown.",
+    "title": "Overheat",
+    "description": "Strike enemies with a burst of Fire energy at medium range. Sets enemies ablaze.",
     "icon": {
       "type": "item",
       "data": {
@@ -706,7 +736,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -719,8 +751,8 @@
     }
   },
   "sacred_fire": {
-    "title": "Sacred Fire Dispenser",
-    "description": "Dispenses another copy of Sacred Fire. Projectile, 18 block range. Weapon-scaled damage; Burns for 6s; Weakness 2 for 5s, 50% chance. 13s cooldown.",
+    "title": "Sacred Fire",
+    "description": "Launch a Fire projectile from long range. Sets enemies ablaze and sometimes weakens enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -755,7 +787,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -768,8 +802,8 @@
     }
   },
   "water_gun": {
-    "title": "Water Gun Dispenser",
-    "description": "Dispenses another copy of Water Gun. Beam, 14 block range. Weapon-scaled damage; Knockback. 3s cooldown.",
+    "title": "Water Gun",
+    "description": "Unleash a piercing Water beam at medium range. Knocks enemies back.",
     "icon": {
       "type": "item",
       "data": {
@@ -804,7 +838,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -817,8 +853,8 @@
     }
   },
   "aqua_jet": {
-    "title": "Aqua Jet Dispenser",
-    "description": "Dispenses another copy of Aqua Jet. Dash, 8 block range, 1 target, 0.2s duration. 10 damage; Applies Wet for 5s. 6s cooldown.",
+    "title": "Aqua Jet",
+    "description": "Dash forward in a burst of Water energy at medium range. Soaks enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -853,7 +889,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -866,8 +904,8 @@
     }
   },
   "bubble_beam": {
-    "title": "Bubble Beam Dispenser",
-    "description": "Dispenses another copy of Bubble Beam. Projectile, 16 block range. Weapon-scaled damage; Slowness 2 for 6s, 50% chance. 5s cooldown.",
+    "title": "Bubble Beam",
+    "description": "Launch a stream of bubbles from long range that may slow enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -902,7 +940,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -915,8 +955,8 @@
     }
   },
   "water_pulse": {
-    "title": "Water Pulse Dispenser",
-    "description": "Dispenses another copy of Water Pulse. Projectile, 16 block range. Weapon-scaled damage; Slowness for 4s, 30% chance. 6s cooldown.",
+    "title": "Water Pulse",
+    "description": "Launch a pulsing orb of Water from long range that may slow enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -951,7 +991,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -964,8 +1006,8 @@
     }
   },
   "whirlpool": {
-    "title": "Whirlpool Dispenser",
-    "description": "Dispenses another copy of Whirlpool. Vortex, 18 block range, 4 block radius, 12 targets, 5s duration. 2.8 damage; Applies Wet for 6s. 15s cooldown.",
+    "title": "Whirlpool",
+    "description": "Create a swirling Water vortex from long range. Soaks enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -1000,7 +1042,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1013,8 +1057,8 @@
     }
   },
   "surf": {
-    "title": "Surf Dispenser",
-    "description": "Dispenses another copy of Surf. Traveling wave, 16 block range, 1.5 block radius, 12 targets, 1s duration. 20 damage; Applies Wet for 5s. 18s cooldown.",
+    "title": "Surf",
+    "description": "Send a surging wave of Water energy forward. Soaks enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -1049,7 +1093,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1062,8 +1108,8 @@
     }
   },
   "hydro_pump": {
-    "title": "Hydro Pump Dispenser",
-    "description": "Dispenses another copy of Hydro Pump. Channeled beam, 22 block range, 6 targets, 6 pulses, 1.2s duration. 4.2 damage per hit; Knockback; Applies Wet for 5s. 20s cooldown, 0.8s cast.",
+    "title": "Hydro Pump",
+    "description": "Channel a sustained Water beam from long range. Knocks enemies back and soaks enemies. Takes a short moment to cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -1098,7 +1144,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1111,8 +1159,8 @@
     }
   },
   "scald": {
-    "title": "Scald Dispenser",
-    "description": "Dispenses another copy of Scald. Projectile, 16 block range. Weapon-scaled damage; Burns for 3s; Weakness for 4s, 30% chance. 7s cooldown.",
+    "title": "Scald",
+    "description": "Launch a Water projectile from long range. Sets enemies ablaze and sometimes weakens enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -1147,7 +1195,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1160,8 +1210,8 @@
     }
   },
   "thundershock": {
-    "title": "Thundershock Dispenser",
-    "description": "Dispenses another copy of Thundershock. Projectile, 14 block range. Weapon-scaled damage; Slowness for 2s, 10% chance. 3s cooldown.",
+    "title": "Thundershock",
+    "description": "Launch a Lightning projectile at medium range. Sometimes slows enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -1196,7 +1246,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1209,8 +1261,8 @@
     }
   },
   "electro_ball": {
-    "title": "Electro Ball Dispenser",
-    "description": "Dispenses another copy of Electro Ball. Projectile, 20 block range, 1 target. Speed-scaled damage up to 18. 8s cooldown.",
+    "title": "Electro Ball",
+    "description": "Launch a crackling Electric orb that hits harder when you outpace your target.",
     "icon": {
       "type": "item",
       "data": {
@@ -1245,7 +1297,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1258,8 +1312,8 @@
     }
   },
   "thunderbolt": {
-    "title": "Thunderbolt Dispenser",
-    "description": "Dispenses another copy of Thunderbolt. Projectile, 20 block range. Weapon-scaled damage; Slowness for 3s, 30% chance. 8s cooldown.",
+    "title": "Thunderbolt",
+    "description": "Launch a Lightning projectile from long range. Sometimes slows enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -1294,7 +1348,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1307,8 +1363,8 @@
     }
   },
   "discharge": {
-    "title": "Discharge Dispenser",
-    "description": "Dispenses another copy of Discharge. Lingering cloud, 8 block range, 8 block radius. Weapon-scaled damage; Slowness 2 for 4s, 50% chance. 10s cooldown.",
+    "title": "Discharge",
+    "description": "Create a lingering cloud of Lightning energy at medium range. Sometimes slows enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -1343,7 +1399,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1356,8 +1414,8 @@
     }
   },
   "thunder": {
-    "title": "Thunder Dispenser",
-    "description": "Dispenses another copy of Thunder. Delayed area, 24 block range, 3 block radius, 8 targets. 26 damage; Paralyzes Wet targets for 5s. 22s cooldown.",
+    "title": "Thunder",
+    "description": "Mark an area for a delayed Electric blast from long range. Paralyzes soaked enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -1392,7 +1450,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1405,8 +1465,8 @@
     }
   },
   "volt_tackle": {
-    "title": "Volt Tackle Dispenser",
-    "description": "Dispenses another copy of Volt Tackle. Dash, 10 block range, 1 target, 0.2s duration. 24 damage; 8 recoil damage; Knockback; Paralysis for 3s, 10% chance. 15s cooldown.",
+    "title": "Volt Tackle",
+    "description": "Dash forward in a burst of Electric energy at medium range. Deals recoil damage to you, knocks enemies back, and sometimes paralyzes enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -1441,7 +1501,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1454,8 +1516,8 @@
     }
   },
   "vine_whip": {
-    "title": "Vine Whip Dispenser",
-    "description": "Dispenses another copy of Vine Whip. Instant cast, 10 block range, 1 target. 7 damage; Pulls targets. 4s cooldown.",
+    "title": "Vine Whip",
+    "description": "Strike enemies with a burst of Grass energy at medium range. Pulls enemies inward.",
     "icon": {
       "type": "item",
       "data": {
@@ -1490,7 +1552,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1503,8 +1567,8 @@
     }
   },
   "leech_seed": {
-    "title": "Leech Seed Dispenser",
-    "description": "Dispenses another copy of Leech Seed. Lingering cloud, 14 block range, 4 block radius. Weapon-scaled damage; Heals 6 HP; Poison for 6s, 80% chance. 10s cooldown.",
+    "title": "Leech Seed",
+    "description": "Create a lingering cloud of Nature energy at medium range. Restores your health and sometimes poisons enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -1539,7 +1603,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1552,8 +1618,8 @@
     }
   },
   "razor_leaf": {
-    "title": "Razor Leaf Dispenser",
-    "description": "Dispenses another copy of Razor Leaf. Projectile, 16 block range. Weapon-scaled damage; Poison for 2s, 30% chance. 5s cooldown.",
+    "title": "Razor Leaf",
+    "description": "Launch a Nature projectile from long range. Sometimes poisons enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -1588,7 +1654,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1601,8 +1669,8 @@
     }
   },
   "leaf_blade": {
-    "title": "Leaf Blade Dispenser",
-    "description": "Dispenses another copy of Leaf Blade. Instant cast, 12 block range. Weapon-scaled damage; Weakness for 3s, 20% chance. 7s cooldown.",
+    "title": "Leaf Blade",
+    "description": "Strike enemies with a burst of Nature energy at medium range. Sometimes weakens enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -1637,7 +1705,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1650,8 +1720,8 @@
     }
   },
   "energy_ball": {
-    "title": "Energy Ball Dispenser",
-    "description": "Dispenses another copy of Energy Ball. Instant cast, 7 block range. Weapon-scaled damage; Weakness 2 for 5s, 50% chance. 8s cooldown.",
+    "title": "Energy Ball",
+    "description": "Strike enemies with a burst of Nature energy at close range. Sometimes weakens enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -1686,7 +1756,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1699,8 +1771,8 @@
     }
   },
   "petal_blizzard": {
-    "title": "Petal Blizzard Dispenser",
-    "description": "Dispenses another copy of Petal Blizzard. Instant cast, 6 block range. Weapon-scaled damage; Knockback. 9s cooldown.",
+    "title": "Petal Blizzard",
+    "description": "Strike enemies with a burst of Nature energy at close range. Knocks enemies back.",
     "icon": {
       "type": "item",
       "data": {
@@ -1735,7 +1807,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1748,8 +1822,8 @@
     }
   },
   "solar_beam": {
-    "title": "Solar Beam Dispenser",
-    "description": "Dispenses another copy of Solar Beam. Projectile, 30 block range. Weapon-scaled damage. 13s cooldown.",
+    "title": "Solar Beam",
+    "description": "Launch a devastating blast of Nature energy from long range.",
     "icon": {
       "type": "item",
       "data": {
@@ -1784,7 +1858,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1797,8 +1873,8 @@
     }
   },
   "nature_burst": {
-    "title": "Nature Burst Dispenser",
-    "description": "Dispenses another copy of Nature Burst. Instant cast, 6 block range. Weapon-scaled damage; Heals 4 HP; Poison for 4s, 40% chance. 8s cooldown.",
+    "title": "Nature Burst",
+    "description": "Strike enemies with a burst of Nature energy at close range. Restores your health and sometimes poisons enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -1833,7 +1909,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1846,8 +1924,8 @@
     }
   },
   "powder_snow": {
-    "title": "Powder Snow Dispenser",
-    "description": "Dispenses another copy of Powder Snow. Instant cast, 5 block range. Weapon-scaled damage; Slowness 2 for 4s. 4s cooldown.",
+    "title": "Powder Snow",
+    "description": "Strike enemies with a burst of Ice energy at close range. Slows enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -1882,7 +1960,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1895,8 +1975,8 @@
     }
   },
   "ice_shard": {
-    "title": "Ice Shard Dispenser",
-    "description": "Dispenses another copy of Ice Shard. Projectile, 18 block range. Weapon-scaled damage; Slowness for 3s, 40% chance. 4s cooldown.",
+    "title": "Ice Shard",
+    "description": "Hurl a razor-sharp shard of Ice from long range that may slow enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -1931,7 +2011,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1944,8 +2026,8 @@
     }
   },
   "ice_beam": {
-    "title": "Ice Beam Dispenser",
-    "description": "Dispenses another copy of Ice Beam. Beam, 20 block range, 6 targets. 15 damage; Chills Wet targets for 3s. 13s cooldown.",
+    "title": "Ice Beam",
+    "description": "Unleash a piercing Ice beam from long range. Soaked enemies are frozen on hit.",
     "icon": {
       "type": "item",
       "data": {
@@ -1980,7 +2062,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -1993,8 +2077,8 @@
     }
   },
   "frost_nova": {
-    "title": "Frost Nova Dispenser",
-    "description": "Dispenses another copy of Frost Nova. Instant cast, 8 block range. Weapon-scaled damage; Slowness 3 for 10s; Weakness 2 for 6s. 10s cooldown.",
+    "title": "Frost Nova",
+    "description": "Release a burst of freezing air that slows and weakens nearby enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -2029,7 +2113,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -2042,8 +2128,8 @@
     }
   },
   "aurora_veil": {
-    "title": "Aurora Veil Dispenser",
-    "description": "Dispenses another copy of Aurora Veil. Protective aura, 6 block radius, 8s duration. Reduces damage by 25%. 20s cooldown.",
+    "title": "Aurora Veil",
+    "description": "Raise an icy aurora around you that protects you and nearby allies from damage.",
     "icon": {
       "type": "item",
       "data": {
@@ -2078,7 +2164,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -2091,8 +2179,8 @@
     }
   },
   "blizzard": {
-    "title": "Blizzard Dispenser",
-    "description": "Dispenses another copy of Blizzard. Moving zone, 18 block range, 5 block radius, 12 targets, 6s duration. 7.3 damage; Chills Wet targets for 3s. 22s cooldown.",
+    "title": "Blizzard",
+    "description": "Summon a roaming storm of Ice energy. Chills soaked enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -2127,7 +2215,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -2140,8 +2230,8 @@
     }
   },
   "mach_punch": {
-    "title": "Mach Punch Dispenser",
-    "description": "Dispenses another copy of Mach Punch. Instant cast, 8 block range. Weapon-scaled damage; Knockback. 2.5s cooldown.",
+    "title": "Mach Punch",
+    "description": "Strike enemies with a burst of Physical energy at medium range. Knocks enemies back.",
     "icon": {
       "type": "item",
       "data": {
@@ -2176,7 +2266,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -2189,8 +2281,8 @@
     }
   },
   "close_combat": {
-    "title": "Close Combat Dispenser",
-    "description": "Dispenses another copy of Close Combat. Melee combo, 3 block range, 1 target, 3 hits. 8.0 damage per hit; Knockback; Exposed for 4s on self. 16s cooldown.",
+    "title": "Close Combat",
+    "description": "Rush an enemy with a rapid Fighting combo at close range. Knocks enemies back and leaves you Exposed afterward.",
     "icon": {
       "type": "item",
       "data": {
@@ -2225,7 +2317,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -2238,8 +2332,8 @@
     }
   },
   "focus_blast": {
-    "title": "Focus Blast Dispenser",
-    "description": "Dispenses another copy of Focus Blast. Projectile, 20 block range. Weapon-scaled damage; Knockback; Weakness 2 for 5s, 50% chance. 11s cooldown.",
+    "title": "Focus Blast",
+    "description": "Launch a Physical projectile from long range. Knocks enemies back and sometimes weakens enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -2274,7 +2368,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -2287,8 +2383,8 @@
     }
   },
   "seismic_slam": {
-    "title": "Seismic Slam Dispenser",
-    "description": "Dispenses another copy of Seismic Slam. Instant cast, 5 block range. Weapon-scaled damage; Knockback; Slowness 2 for 6s, 70% chance. 9s cooldown.",
+    "title": "Seismic Slam",
+    "description": "Strike enemies with a burst of Earth energy at close range. Knocks enemies back and sometimes slows enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -2323,7 +2419,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -2336,8 +2434,8 @@
     }
   },
   "poison_sting": {
-    "title": "Poison Sting Dispenser",
-    "description": "Dispenses another copy of Poison Sting. Projectile, 14 block range. Weapon-scaled damage; Poison for 6s, 60% chance. 3s cooldown.",
+    "title": "Poison Sting",
+    "description": "Launch a Poison projectile at medium range. Sometimes poisons enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -2372,7 +2470,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -2385,8 +2485,8 @@
     }
   },
   "poison_strike": {
-    "title": "Poison Strike Dispenser",
-    "description": "Dispenses another copy of Poison Strike. Projectile, 16 block range. Weapon-scaled damage; Poison 2 for 10s, 90% chance. 7s cooldown.",
+    "title": "Poison Strike",
+    "description": "Launch a Poison projectile from long range. Sometimes poisons enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -2421,7 +2521,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -2434,8 +2536,8 @@
     }
   },
   "toxic_spikes": {
-    "title": "Toxic Spikes Dispenser",
-    "description": "Dispenses another copy of Toxic Spikes. Placed trap, 12 block range, 1.2 block radius, 3 projectiles, 20s duration. Poison on first trigger; Toxic on repeat. 15s cooldown.",
+    "title": "Toxic Spikes",
+    "description": "Scatter poisonous spikes across the ground. The first trigger poisons; repeated triggers turn the poison Toxic.",
     "icon": {
       "type": "item",
       "data": {
@@ -2470,7 +2572,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -2483,8 +2587,8 @@
     }
   },
   "sludge_bomb": {
-    "title": "Sludge Bomb Dispenser",
-    "description": "Dispenses another copy of Sludge Bomb. Lingering cloud, 16 block range, 5 block radius. Weapon-scaled damage; Poison 2 for 8s, 30% chance. 8s cooldown.",
+    "title": "Sludge Bomb",
+    "description": "Create a lingering cloud of Poison energy from long range. Sometimes poisons enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -2519,7 +2623,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -2532,8 +2638,8 @@
     }
   },
   "toxic": {
-    "title": "Toxic Dispenser",
-    "description": "Dispenses another copy of Toxic. Lingering cloud, 14 block range, 3 block radius. Wither 2 for 10s. 12s cooldown.",
+    "title": "Toxic",
+    "description": "Create a lingering cloud of Poison energy at medium range. Withers enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -2568,7 +2674,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -2581,8 +2689,8 @@
     }
   },
   "mud_shot": {
-    "title": "Mud Shot Dispenser",
-    "description": "Dispenses another copy of Mud Shot. Projectile, 16 block range, 1 target. 7 damage; Slowness for 4s; Exposed for 4s. 4s cooldown.",
+    "title": "Mud Shot",
+    "description": "Launch a Ground projectile from long range. Slows enemies and leaves enemies Exposed.",
     "icon": {
       "type": "item",
       "data": {
@@ -2617,7 +2725,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -2630,8 +2740,8 @@
     }
   },
   "bulldoze": {
-    "title": "Bulldoze Dispenser",
-    "description": "Dispenses another copy of Bulldoze. Traveling wave, 10 block range, 10 targets, 0.6s duration. 11 damage; Slowness for 5s; Knockback. 8s cooldown.",
+    "title": "Bulldoze",
+    "description": "Send a surging wave of Ground energy forward. Slows enemies and knocks enemies back.",
     "icon": {
       "type": "item",
       "data": {
@@ -2666,7 +2776,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -2679,8 +2791,8 @@
     }
   },
   "dig": {
-    "title": "Dig Dispenser",
-    "description": "Dispenses another copy of Dig. Teleport strike, 14 block range, 1 target. 16 damage; Knockback. 12s cooldown, 0.6s cast.",
+    "title": "Dig",
+    "description": "Blink behind an enemy and strike with Ground energy at medium range. Knocks enemies back. Takes a short moment to cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -2715,7 +2827,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -2728,8 +2842,8 @@
     }
   },
   "earth_power": {
-    "title": "Earth Power Dispenser",
-    "description": "Dispenses another copy of Earth Power. Delayed area, 15 block range, 3 block radius, 8 targets. 18 damage; Exposed for 5s. 14s cooldown, 0.5s cast.",
+    "title": "Earth Power",
+    "description": "Mark an area for a delayed Ground blast at medium range. Leaves enemies Exposed. Takes a short moment to cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -2764,7 +2878,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -2777,8 +2893,8 @@
     }
   },
   "earthquake": {
-    "title": "Earthquake Dispenser",
-    "description": "Dispenses another copy of Earthquake. Instant cast, 10 block range, 10 block radius, 16 targets. 23 damage; Knockback; Slowness 2 for 4s. 20s cooldown, 0.8s cast.",
+    "title": "Earthquake",
+    "description": "Strike enemies with a burst of Ground energy at medium range. Knocks enemies back and slows enemies. Takes a short moment to cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -2813,7 +2929,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -2826,8 +2944,8 @@
     }
   },
   "gust": {
-    "title": "Gust Dispenser",
-    "description": "Dispenses another copy of Gust. Channeled cone, 9 block range, 8 targets, 1 pulses, 0.1s duration. 6 damage per hit; Knockback. 3s cooldown.",
+    "title": "Gust",
+    "description": "Channel a wide cone of Flying energy at medium range. Knocks enemies back.",
     "icon": {
       "type": "item",
       "data": {
@@ -2862,7 +2980,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -2875,8 +2995,8 @@
     }
   },
   "air_cutter": {
-    "title": "Air Cutter Dispenser",
-    "description": "Dispenses another copy of Air Cutter. Projectile, 20 block range, 1 target, 3 projectiles. 3.4 damage per hit. 6s cooldown.",
+    "title": "Air Cutter",
+    "description": "Launch a volley of Flying projectiles from long range.",
     "icon": {
       "type": "item",
       "data": {
@@ -2911,7 +3031,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -2924,8 +3046,8 @@
     }
   },
   "aerial_ace": {
-    "title": "Aerial Ace Dispenser",
-    "description": "Dispenses another copy of Aerial Ace. Teleport strike, 14 block range, 1 target. 12 damage. 7s cooldown.",
+    "title": "Aerial Ace",
+    "description": "Blink behind an enemy and strike with Flying energy at medium range.",
     "icon": {
       "type": "item",
       "data": {
@@ -2960,7 +3082,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -2973,8 +3097,8 @@
     }
   },
   "tailwind": {
-    "title": "Tailwind Dispenser",
-    "description": "Dispenses another copy of Tailwind. Protective aura, 7 block radius, 12 targets, 8s duration. Speed for 2s. 18s cooldown.",
+    "title": "Tailwind",
+    "description": "Summon a guiding wind that makes you and nearby allies move faster.",
     "icon": {
       "type": "item",
       "data": {
@@ -3009,7 +3133,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -3022,8 +3148,8 @@
     }
   },
   "hurricane": {
-    "title": "Hurricane Dispenser",
-    "description": "Dispenses another copy of Hurricane. Vortex, 18 block range, 5 block radius, 12 targets, 5s duration. 4.4 damage; Pulls targets. 20s cooldown, 0.8s cast.",
+    "title": "Hurricane",
+    "description": "Create a swirling Flying vortex from long range. Pulls enemies inward. Takes a short moment to cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -3058,7 +3184,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -3071,8 +3199,8 @@
     }
   },
   "aerial_strike": {
-    "title": "Aerial Strike Dispenser",
-    "description": "Dispenses another copy of Aerial Strike. Projectile, 20 block range. Weapon-scaled damage; Knockback. 6s cooldown.",
+    "title": "Aerial Strike",
+    "description": "Launch a Wind projectile from long range. Knocks enemies back.",
     "icon": {
       "type": "item",
       "data": {
@@ -3107,7 +3235,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -3120,8 +3250,8 @@
     }
   },
   "confusion": {
-    "title": "Confusion Dispenser",
-    "description": "Dispenses another copy of Confusion. Projectile, 14 block range. Weapon-scaled damage; Nausea for 5s, 30% chance. 4s cooldown.",
+    "title": "Confusion",
+    "description": "Launch a Psychic projectile at medium range. Sometimes disorients enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -3156,7 +3286,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -3169,8 +3301,8 @@
     }
   },
   "psybeam": {
-    "title": "Psybeam Dispenser",
-    "description": "Dispenses another copy of Psybeam. Ricochet beam, 18 block range, 2 targets. 11 damage; Nausea for 4s, 20% chance. 8s cooldown.",
+    "title": "Psybeam",
+    "description": "Fire a Psychic beam that leaps to another enemy from long range. Sometimes disorients enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -3205,7 +3337,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -3218,8 +3352,8 @@
     }
   },
   "psychic": {
-    "title": "Psychic Dispenser",
-    "description": "Dispenses another copy of Psychic. Instant cast, 20 block range. Weapon-scaled damage; Knockback; Weakness for 4s, 40% chance. 8s cooldown.",
+    "title": "Psychic",
+    "description": "Strike enemies with a burst of Psychic energy from long range. Knocks enemies back and sometimes weakens enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -3254,7 +3388,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -3267,8 +3403,8 @@
     }
   },
   "rest": {
-    "title": "Rest Dispenser",
-    "description": "Dispenses another copy of Rest. Self cast. Removes all harmful effects; Fully heals; Sleep for 5s. 90s cooldown.",
+    "title": "Rest",
+    "description": "Fall asleep to fully restore your health and clear harmful effects.",
     "icon": {
       "type": "item",
       "data": {
@@ -3303,7 +3439,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -3316,8 +3454,8 @@
     }
   },
   "psychic_blast": {
-    "title": "Psychic Blast Dispenser",
-    "description": "Dispenses another copy of Psychic Blast. Instant cast, 10 block range. Weapon-scaled damage; Knockback; Weakness 2 for 8s, 60% chance. 11s cooldown.",
+    "title": "Psychic Blast",
+    "description": "Strike enemies with a burst of Psychic energy at medium range. Knocks enemies back and sometimes weakens enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -3352,7 +3490,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -3365,8 +3505,8 @@
     }
   },
   "future_sight": {
-    "title": "Future Sight Dispenser",
-    "description": "Dispenses another copy of Future Sight. Delayed strike, 24 block range, 1 target. 28 damage. 22s cooldown.",
+    "title": "Future Sight",
+    "description": "Mark an area with Psychic energy. After a short delay, it erupts and catches anyone still inside.",
     "icon": {
       "type": "item",
       "data": {
@@ -3401,7 +3541,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -3414,8 +3556,8 @@
     }
   },
   "string_shot": {
-    "title": "String Shot Dispenser",
-    "description": "Dispenses another copy of String Shot. Projectile, 14 block range, 1 target. Slowness 6 for 2s. 5s cooldown.",
+    "title": "String Shot",
+    "description": "Launch a Bug projectile at medium range. Slows enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -3450,7 +3592,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -3463,8 +3607,8 @@
     }
   },
   "pin_missile": {
-    "title": "Pin Missile Dispenser",
-    "description": "Dispenses another copy of Pin Missile. Projectile, 18 block range, 1 target, 5 projectiles. 2.4 damage per hit. 7s cooldown.",
+    "title": "Pin Missile",
+    "description": "Launch a volley of Bug projectiles from long range.",
     "icon": {
       "type": "item",
       "data": {
@@ -3499,7 +3643,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -3512,8 +3658,8 @@
     }
   },
   "u_turn": {
-    "title": "U Turn Dispenser",
-    "description": "Dispenses another copy of U Turn. Dash, 10 block range, 1 target, 0.4s duration. 11 damage. 9s cooldown.",
+    "title": "U Turn",
+    "description": "Dash through an enemy with Bug energy, then return to where you started.",
     "icon": {
       "type": "item",
       "data": {
@@ -3548,7 +3694,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -3561,8 +3709,8 @@
     }
   },
   "x_scissor": {
-    "title": "X Scissor Dispenser",
-    "description": "Dispenses another copy of X Scissor. Melee combo, 4.5 block range, 1 target, 2 hits. 6 damage per hit; Exposed for 5s. 11s cooldown.",
+    "title": "X Scissor",
+    "description": "Rush an enemy with a rapid Bug combo at close range. Leaves enemies Exposed.",
     "icon": {
       "type": "item",
       "data": {
@@ -3597,7 +3745,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -3610,8 +3760,8 @@
     }
   },
   "bug_buzz": {
-    "title": "Bug Buzz Dispenser",
-    "description": "Dispenses another copy of Bug Buzz. Channeled cone, 10 block range, 8 targets, 4 pulses, 1s duration. 3 damage per hit; Exposed for 4s; Interrupts casting. 15s cooldown.",
+    "title": "Bug Buzz",
+    "description": "Channel a wide cone of Bug energy at medium range. Leaves enemies Exposed and interrupts casting.",
     "icon": {
       "type": "item",
       "data": {
@@ -3646,7 +3796,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -3659,8 +3811,8 @@
     }
   },
   "rock_throw": {
-    "title": "Rock Throw Dispenser",
-    "description": "Dispenses another copy of Rock Throw. Projectile, 16 block range. Weapon-scaled damage. 4s cooldown.",
+    "title": "Rock Throw",
+    "description": "Hurl a heavy rock at an enemy from long range.",
     "icon": {
       "type": "item",
       "data": {
@@ -3695,7 +3847,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -3708,8 +3862,8 @@
     }
   },
   "rock_slide": {
-    "title": "Rock Slide Dispenser",
-    "description": "Dispenses another copy of Rock Slide. Meteor strike, 18 block range, 4 block radius, 8 targets, 5 projectiles. 15 damage per hit; Knockback; Slowness 2 for 2s, 30% chance. 12s cooldown, 0.5s cast.",
+    "title": "Rock Slide",
+    "description": "Call down a barrage of Rock strikes from long range. Knocks enemies back and sometimes slows enemies. Takes a short moment to cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -3744,7 +3898,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -3757,8 +3913,8 @@
     }
   },
   "stone_edge": {
-    "title": "Stone Edge Dispenser",
-    "description": "Dispenses another copy of Stone Edge. Instant cast, 16 block range. Weapon-scaled damage. 10s cooldown.",
+    "title": "Stone Edge",
+    "description": "Strike enemies with a burst of Earth energy from long range.",
     "icon": {
       "type": "item",
       "data": {
@@ -3793,7 +3949,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -3806,8 +3964,8 @@
     }
   },
   "night_shade": {
-    "title": "Night Shade Dispenser",
-    "description": "Dispenses another copy of Night Shade. Instant cast, 16 block range. Weapon-scaled damage; Darkness for 5s, 80% chance. 6s cooldown.",
+    "title": "Night Shade",
+    "description": "Strike enemies with a burst of Shadow energy from long range. Sometimes blinds enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -3842,7 +4000,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -3855,8 +4015,8 @@
     }
   },
   "shadow_sneak": {
-    "title": "Shadow Sneak Dispenser",
-    "description": "Dispenses another copy of Shadow Sneak. Teleport strike, 10 block range, 1 target. 9 damage. 6s cooldown.",
+    "title": "Shadow Sneak",
+    "description": "Blink behind an enemy and strike with Ghost energy at medium range.",
     "icon": {
       "type": "item",
       "data": {
@@ -3891,7 +4051,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -3904,8 +4066,8 @@
     }
   },
   "shadow_ball": {
-    "title": "Shadow Ball Dispenser",
-    "description": "Dispenses another copy of Shadow Ball. Projectile, 20 block range. Weapon-scaled damage; Weakness 2 for 5s, 50% chance. 8s cooldown.",
+    "title": "Shadow Ball",
+    "description": "Launch a Shadow projectile from long range. Sometimes weakens enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -3940,7 +4102,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -3953,8 +4117,8 @@
     }
   },
   "hex": {
-    "title": "Hex Dispenser",
-    "description": "Dispenses another copy of Hex. Instant cast, 16 block range. Weapon-scaled damage; Weakness 2 for 6s, 50% chance. 7s cooldown.",
+    "title": "Hex",
+    "description": "Strike enemies with a burst of Shadow energy from long range. Sometimes weakens enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -3989,7 +4153,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -4002,8 +4168,8 @@
     }
   },
   "dragon_breath": {
-    "title": "Dragon Breath Dispenser",
-    "description": "Dispenses another copy of Dragon Breath. Beam, 18 block range. Weapon-scaled damage; Burns for 5s; Poison for 3s, 50% chance. 10s cooldown.",
+    "title": "Dragon Breath",
+    "description": "Unleash a piercing Dragon beam from long range. Sets enemies ablaze and sometimes poisons enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -4038,7 +4204,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -4051,8 +4219,8 @@
     }
   },
   "dragon_pulse": {
-    "title": "Dragon Pulse Dispenser",
-    "description": "Dispenses another copy of Dragon Pulse. Projectile, 22 block range. Weapon-scaled damage. 9s cooldown.",
+    "title": "Dragon Pulse",
+    "description": "Launch a concentrated blast of Dragon energy from long range.",
     "icon": {
       "type": "item",
       "data": {
@@ -4087,7 +4255,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -4100,8 +4270,8 @@
     }
   },
   "draco_meteor": {
-    "title": "Draco Meteor Dispenser",
-    "description": "Dispenses another copy of Draco Meteor. Meteor strike, 24 block range, 5 block radius, 12 targets, 7 projectiles. 31 damage per hit; Knockback. 26s cooldown, 1.5s cast.",
+    "title": "Draco Meteor",
+    "description": "Call down a barrage of Dragon strikes from long range. Knocks enemies back. Takes a short moment to cast.",
     "icon": {
       "type": "item",
       "data": {
@@ -4136,7 +4306,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -4149,8 +4321,8 @@
     }
   },
   "outrage": {
-    "title": "Outrage Dispenser",
-    "description": "Dispenses another copy of Outrage. Instant cast, 14 block range. Weapon-scaled damage; Knockback; Nausea for 4s. 13s cooldown.",
+    "title": "Outrage",
+    "description": "Strike enemies with a burst of Dragon energy at medium range. Knocks enemies back and disorients enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -4185,7 +4357,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -4198,8 +4372,8 @@
     }
   },
   "dark_pulse": {
-    "title": "Dark Pulse Dispenser",
-    "description": "Dispenses another copy of Dark Pulse. Channeled beam, 16 block range, 4 targets, 3 pulses, 0.6s duration. 5.3 damage per hit; Nausea for 2.5s, 10% chance. 10s cooldown.",
+    "title": "Dark Pulse",
+    "description": "Channel a sustained Dark beam from long range. Sometimes disorients enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -4234,7 +4408,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -4247,8 +4423,8 @@
     }
   },
   "sucker_punch": {
-    "title": "Sucker Punch Dispenser",
-    "description": "Dispenses another copy of Sucker Punch. Counter stance, 5 block range, 1 target, 1s duration. 14 damage; Knockback. 10s cooldown.",
+    "title": "Sucker Punch",
+    "description": "Prepare a Dark counter. If an enemy attacks, blink behind them and strike first.",
     "icon": {
       "type": "item",
       "data": {
@@ -4283,7 +4459,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -4296,8 +4474,8 @@
     }
   },
   "foul_play": {
-    "title": "Foul Play Dispenser",
-    "description": "Dispenses another copy of Foul Play. Instant cast, 12 block range. Weapon-scaled damage; Weakness 3 for 10s. 8s cooldown.",
+    "title": "Foul Play",
+    "description": "Strike enemies with a burst of Shadow energy at medium range. Weakens enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -4332,7 +4510,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -4345,8 +4525,8 @@
     }
   },
   "iron_tail": {
-    "title": "Iron Tail Dispenser",
-    "description": "Dispenses another copy of Iron Tail. Instant cast, 10 block range. Weapon-scaled damage; Knockback; Weakness for 5s, 30% chance. 8s cooldown.",
+    "title": "Iron Tail",
+    "description": "Strike enemies with a burst of Steel energy at medium range. Knocks enemies back and sometimes weakens enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -4381,7 +4561,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -4394,8 +4576,8 @@
     }
   },
   "iron_defense": {
-    "title": "Iron Defense Dispenser",
-    "description": "Dispenses another copy of Iron Defense. Self cast. Guards the next hit on self. 18s cooldown.",
+    "title": "Iron Defense",
+    "description": "Focus Steel energy within yourself. Blocks the next hit.",
     "icon": {
       "type": "item",
       "data": {
@@ -4430,7 +4612,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -4443,8 +4627,8 @@
     }
   },
   "iron_strike": {
-    "title": "Iron Strike Dispenser",
-    "description": "Dispenses another copy of Iron Strike. Projectile, 14 block range. Weapon-scaled damage; Knockback. 8s cooldown.",
+    "title": "Iron Strike",
+    "description": "Launch a Steel projectile at medium range. Knocks enemies back.",
     "icon": {
       "type": "item",
       "data": {
@@ -4479,7 +4663,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -4492,8 +4678,8 @@
     }
   },
   "flash_cannon": {
-    "title": "Flash Cannon Dispenser",
-    "description": "Dispenses another copy of Flash Cannon. Beam, 20 block range. Weapon-scaled damage; Weakness 2 for 5s, 50% chance. 8s cooldown.",
+    "title": "Flash Cannon",
+    "description": "Unleash a piercing Steel beam from long range. Sometimes weakens enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -4528,7 +4714,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -4541,8 +4729,8 @@
     }
   },
   "fairy_wind": {
-    "title": "Fairy Wind Dispenser",
-    "description": "Dispenses another copy of Fairy Wind. Projectile, 18 block range, 1 target. 6 damage; Knockback. 3s cooldown.",
+    "title": "Fairy Wind",
+    "description": "Launch a Fairy projectile from long range. Knocks enemies back.",
     "icon": {
       "type": "item",
       "data": {
@@ -4577,7 +4765,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -4590,8 +4780,8 @@
     }
   },
   "draining_kiss": {
-    "title": "Draining Kiss Dispenser",
-    "description": "Dispenses another copy of Draining Kiss. Projectile, 14 block range, 1 target. 8 damage; Heals 75% of damage dealt on self. 6s cooldown.",
+    "title": "Draining Kiss",
+    "description": "Send a homing Fairy kiss at an enemy and restore health from the damage dealt.",
     "icon": {
       "type": "item",
       "data": {
@@ -4626,7 +4816,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -4639,8 +4831,8 @@
     }
   },
   "charm": {
-    "title": "Charm Dispenser",
-    "description": "Dispenses another copy of Charm. Channeled cone, 8 block range, 8 targets, 1 pulses, 0.1s duration. Weakness for 6s. 11s cooldown.",
+    "title": "Charm",
+    "description": "Channel a wide cone of Fairy energy at medium range. Weakens enemies.",
     "icon": {
       "type": "item",
       "data": {
@@ -4675,7 +4867,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -4688,8 +4882,8 @@
     }
   },
   "dazzling_gleam": {
-    "title": "Dazzling Gleam Dispenser",
-    "description": "Dispenses another copy of Dazzling Gleam. Instant cast, 6 block range, 6 block radius, 12 targets. 14 damage; Removes one Poison or Chill effect on self. 12s cooldown, 0.4s cast.",
+    "title": "Dazzling Gleam",
+    "description": "Release a wide burst of Fairy light around you. Also clears Poison or Chill from you.",
     "icon": {
       "type": "item",
       "data": {
@@ -4724,7 +4918,9 @@
       }
     },
     "size": 0.1,
-    "rewards": [],
+    "rewards": [
+
+    ],
     "cost": 0,
     "frame": {
       "type": "texture",
@@ -4737,8 +4933,8 @@
     }
   },
   "moonblast": {
-    "title": "Moonblast Dispenser",
-    "description": "Dispenses another copy of Moonblast. Projectile, 22 block range, 3 block radius, 6 targets. 23 damage; Weakness for 5s. 18s cooldown, 0.8s cast.",
+    "title": "Moonblast",
+    "description": "Launch a Fairy blast that explodes across an area and weakens enemies. Takes a short moment to cast.",
     "icon": {
       "type": "item",
       "data": {
