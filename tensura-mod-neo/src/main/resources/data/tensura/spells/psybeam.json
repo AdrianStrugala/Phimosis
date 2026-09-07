@@ -11,11 +11,13 @@
     "max_targets": 2
   },
   "delivery": {
-    "type": "ricochet_beam",
-    "bounce_count": 1
+    "type": "channel_beam",
+    "duration_ticks": 100,
+    "tick_interval_ticks": 4,
+    "hold_to_channel": true
   },
   "impact": [
-    { "type": "damage", "damage_multiplier": 1.0 },
+    { "type": "damage", "damage_multiplier": 0.1818181818 },
     {
       "type": "status_effect",
       "effect": "minecraft:nausea",
@@ -32,6 +34,7 @@
   },
   "sound": {
     "cast": "minecraft:block.amethyst_block.resonate",
+    "loop": "minecraft:block.beacon.ambient",
     "impact": "minecraft:entity.evoker.cast_spell"
   }
 }

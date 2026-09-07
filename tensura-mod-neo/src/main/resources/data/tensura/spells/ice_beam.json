@@ -11,10 +11,13 @@
     "max_targets": 6
   },
   "delivery": {
-    "type": "beam"
+    "type": "channel_beam",
+    "duration_ticks": 100,
+    "tick_interval_ticks": 4,
+    "hold_to_channel": true
   },
   "impact": [
-    { "type": "damage", "damage_multiplier": 1.0 },
+    { "type": "damage", "damage_multiplier": 0.1333333333 },
     {
       "type": "freeze_if_wet",
       "duration": 60,
@@ -30,6 +33,7 @@
   },
   "sound": {
     "cast": "minecraft:block.amethyst_block.chime",
+    "loop": "minecraft:block.powder_snow.step",
     "impact": "minecraft:block.glass.break"
   }
 }

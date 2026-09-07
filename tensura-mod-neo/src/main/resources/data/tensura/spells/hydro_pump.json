@@ -4,7 +4,6 @@
   "power": 25.0,
   "school": "water",
   "cooldown_ticks": 400,
-  "cast_time_ticks": 16,
   "targeting": {
     "type": "beam",
     "range": 22.0,
@@ -14,7 +13,8 @@
   "delivery": {
     "type": "channel_beam",
     "duration_ticks": 200,
-    "tick_interval_ticks": 4
+    "tick_interval_ticks": 4,
+    "hold_to_channel": true
   },
   "impact": [
     { "type": "damage", "damage_multiplier": 0.04 },

@@ -27,6 +27,11 @@ public class SpellItem extends Item {
     public static final String NBT_SCHOOL   = "School";
     public static final String NBT_CHANNEL_WINDUP = "ChannelWindup";
     public static final String NBT_CHANNEL_DURATION = "ChannelDuration";
+    public static final String NBT_HOLD_TO_CHANNEL = "HoldToChannel";
+
+    private static final java.util.Set<String> HELD_CHANNEL_SPELLS = java.util.Set.of(
+        "flamethrower", "ice_beam", "psybeam", "hydro_pump", "dragon_breath"
+    );
 
     private static final java.util.List<String> SCHOOL_ORDER = java.util.List.of(
         "physical", "lightning", "fire", "water", "ice",
@@ -63,7 +68,10 @@ public class SpellItem extends Item {
         // Store school for client-side model selection (SpellRegistry is server-side only)
         SpellRegistry.get(spellId).ifPresent(def -> {
             tag.putString(NBT_SCHOOL, def.school);
-            if ("channel_beam".equals(def.delivery.type) && def.cast_time_ticks > 0) {
+            if (def.delivery.hold_to_channel) {
+                tag.putBoolean(NBT_HOLD_TO_CHANNEL, true);
+                tag.putInt(NBT_CHANNEL_DURATION, def.delivery.duration_ticks);
+            } else if ("channel_beam".equals(def.delivery.type) && def.cast_time_ticks > 0) {
                 tag.putInt(NBT_CHANNEL_WINDUP, def.cast_time_ticks);
                 tag.putInt(NBT_CHANNEL_DURATION, def.delivery.duration_ticks);
             }
@@ -110,12 +118,15 @@ public class SpellItem extends Item {
         if (id == null) return;
         SpellRegistry.get(id).ifPresent(def -> {
             tooltip.add(Component.literal("School: " + def.school));
-            tooltip.add(Component.literal("Cooldown: " + (def.cooldown_ticks / 20) + "s"));
+            tooltip.add(Component.literal(def.cooldown_ticks > 0
+                    ? "Cooldown: " + (def.cooldown_ticks / 20) + "s"
+                    : "Cooldown: None"));
             if (def.charges > 1) {
                 tooltip.add(Component.literal("Charges: " + def.charges));
             }
             tooltip.add(Component.literal("Range: " + (int) def.targeting.range + "m"));
-            tooltip.add(Component.literal("Use: Right-click"));
+            tooltip.add(Component.literal(def.delivery.hold_to_channel
+                    ? "Use: Hold right-click" : "Use: Right-click"));
         });
     }
 
@@ -149,6 +160,16 @@ public class SpellItem extends Item {
         ResourceLocation id = getSpellId(stack);
         if (id == null) return InteractionResultHolder.fail(stack);
 
+        if (isHeldChannel(stack)) {
+            player.startUsingItem(hand);
+            if (!level.isClientSide && player instanceof ServerPlayer serverPlayer
+                    && !SpellExecutor.castHeldChannel(serverPlayer, id)) {
+                player.stopUsingItem();
+                return InteractionResultHolder.fail(stack);
+            }
+            return InteractionResultHolder.consume(stack);
+        }
+
         if (getChannelWindup(stack) > 0) {
             player.startUsingItem(hand);
             return InteractionResultHolder.consume(stack);
@@ -164,19 +185,22 @@ public class SpellItem extends Item {
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
+        if (isHeldChannel(stack)) return getHeldChannelDuration(stack);
         int windup = getChannelWindup(stack);
         return windup > 0 ? windup + getChannelDuration(stack) : 0;
     }
 
     @Override
     public UseAnim getUseAnimation(ItemStack stack) {
-        return getChannelWindup(stack) > 0 ? UseAnim.SPEAR : UseAnim.NONE;
+        return isHeldChannel(stack) || getChannelWindup(stack) > 0
+                ? UseAnim.SPEAR : UseAnim.NONE;
     }
 
     @Override
     public void onUseTick(Level level, LivingEntity entity, ItemStack stack,
                           int remainingUseDuration) {
         if (level.isClientSide || !(entity instanceof ServerPlayer player)) return;
+        if (isHeldChannel(stack)) return;
 
         int windup = getChannelWindup(stack);
         int elapsed = getUseDuration(stack, entity) - remainingUseDuration;
@@ -191,9 +215,48 @@ public class SpellItem extends Item {
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity,
                              int timeCharged) {
-        if (!level.isClientSide && entity instanceof ServerPlayer player) {
-            com.tensura.event.SpellRuntimeController.stopPlayerChannelBeam(player.getUUID());
+        finishHeldChannel(stack, level, entity);
+    }
+
+    @Override
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
+        finishHeldChannel(stack, level, entity);
+        return stack;
+    }
+
+    private static void finishHeldChannel(ItemStack stack, Level level, LivingEntity entity) {
+        if (level.isClientSide || !(entity instanceof ServerPlayer player)
+                || !isHeldChannel(stack)) return;
+        ResourceLocation spellId = getSpellId(stack);
+        if (spellId == null) return;
+        com.tensura.event.SpellRuntimeController.stopPlayerChannels(player.getUUID());
+        SpellExecutor.finishHeldChannel(player, spellId);
+    }
+
+    private static boolean isHeldChannel(ItemStack stack) {
+        CustomData data = stack.get(DataComponents.CUSTOM_DATA);
+        if (data != null && data.copyTag().getBoolean(NBT_HOLD_TO_CHANNEL)) return true;
+        ResourceLocation spellId = getSpellId(stack);
+        return spellId != null && HELD_CHANNEL_SPELLS.contains(spellId.getPath());
+    }
+
+    private static int getHeldChannelDuration(ItemStack stack) {
+        CustomData data = stack.get(DataComponents.CUSTOM_DATA);
+        if (data != null) {
+            CompoundTag tag = data.copyTag();
+            if (tag.contains(NBT_CHANNEL_DURATION)) {
+                int configured = tag.getInt(NBT_CHANNEL_DURATION);
+                return configured > 0 ? configured : Integer.MAX_VALUE;
+            }
         }
+        ResourceLocation spellId = getSpellId(stack);
+        if (spellId == null) return 1;
+        return switch (spellId.getPath()) {
+            case "hydro_pump" -> 200;
+            case "dragon_breath" -> Integer.MAX_VALUE;
+            case "flamethrower", "ice_beam", "psybeam" -> 100;
+            default -> 1;
+        };
     }
 
     private static int getChannelWindup(ItemStack stack) {

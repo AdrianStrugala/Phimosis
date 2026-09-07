@@ -59,6 +59,7 @@ public class SpellDefinition {
         public int tick_interval_ticks = 0;
         public int recovery_ticks = 0;
         public boolean steerable = false;
+        public boolean hold_to_channel = false;
         public double movement_speed = 0.0;
         public double homing_strength = 0.0;
         public double pull_strength = 0.0;

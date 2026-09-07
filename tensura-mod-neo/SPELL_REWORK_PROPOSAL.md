@@ -70,7 +70,7 @@ Docelowe zalozenia:
 |---|---:|---|---|---|
 | `Ember` | 6 / 3 | Projectile | Szybki pocisk naklada Burn na 3 s. | Mala bryla zarzacego wegla, iskry i dym na trafieniu. |
 | `Flame Charge` | 9 / 6 | Dash | Ognista szarza; trafienie daje 20% predkosci na 3 s. | Ognista otoczka i plonacy slad gasnacy za graczem. |
-| `Flamethrower` | 14 / 9 | Channel cone | Strumien przez 1.2 s; kolejne ticki odnawiaja Burn. | Warstwowy ogien z bialym rdzeniem zamiast linii pojedynczych particles. |
+| `Flamethrower` | 14 / 9 | Held channel beam | Strumien zaczyna sie od razu i trwa podczas przytrzymania; cooldown startuje po puszczeniu. Kolejne ticki odnawiaja Burn. | Warstwowy ogien z bialym rdzeniem zamiast linii pojedynczych particles. |
 | `Fire Spin` | 12 / 14 | Vortex | Wir przez 5 s lekko przyciaga i podpala cele. | Teksturowany cylinder ognia z czytelnym pustym srodkiem. |
 | `Fire Blast` | 22 / 17 | Projectile AoE | Wolny duzy pocisk wybucha w promieniu 4 m i naklada Burn. | Symbol ognia formuje sie podczas lotu, potem rozpada na piec ramion eksplozji. |
 | `Fire Punch` | 13 / 7 | Arc strike | Mocny cios przed graczem; trafienie podpala cel na 3 s. Nie wymaga namierzonego przeciwnika. | Ognista rekawica, krotki luk zamachu i eksplozja iskier na kontakcie. |
@@ -85,7 +85,7 @@ Docelowe zalozenia:
 | `Aqua Jet` | 10 / 6 | Dash | Sterowalny dash; trafienie naklada Wet. | Wodna otoczka wokol gracza i rozbryzg na koncu. |
 | `Whirlpool` | 14 / 15 | Vortex | Lej przez 5 s przyciaga do centrum i naklada Wet. | Obracajaca sie woda z piankowym brzegiem i opadajacym srodkiem. |
 | `Surf` | 20 / 18 | Wave | Szeroka fala jedzie po podlozu, niesie cele i naklada Wet. | Model fali z grzebieniem; mokry slad znika po 2 s. |
-| `Hydro Pump` | 25 / 20 | Channel beam | Ladowanie 0.8 s; silny strumien odpycha wraz z kolejnymi tickami. | Gruba spirala wody, mgla przy bokach i duzy splash na przeszkodzie. |
+| `Hydro Pump` | 25 / 20 | Held channel beam | Strumien zaczyna sie od razu, odpycha przy kolejnych tickach, a cooldown startuje po puszczeniu. | Gruba spirala wody, mgla przy bokach i duzy splash na przeszkodzie. |
 
 ### Electric - 7
 
@@ -118,7 +118,7 @@ Docelowe zalozenia:
 | `Powder Snow` | 6 / 4 | Cone | Krotki podmuch naklada 1 Chill. | Mgla przy ziemi, drobny snieg i oszronienie trafionego celu. |
 | `Ice Shard` | 7 / 3 | Projectile | Bardzo szybki odlamek daje 1 Chill; dwa ladunki. | Ostry model lodu, zimna smuga i pekniecie przy trafieniu. |
 | `Icy Wind` | 10 / 9 | Cone | Szeroki podmuch naklada 2 Chill i odpycha lekkie cele. | Platki, mgla i kierunkowe smugi wiatru. |
-| `Ice Beam` | 15 / 13 | Beam | Daje 2 Chill; Wet cel zostaje natychmiast Frozen. | Niebiesko-bialy promien, narastajacy lod i efekt rozbicia. |
+| `Ice Beam` | 15 / 13 | Held channel beam | Promien trwa podczas przytrzymania, cooldown startuje po puszczeniu; Wet cel zostaje Frozen. | Niebiesko-bialy promien, narastajacy lod i efekt rozbicia. |
 | `Ice Punch` | 13 / 7 | Arc strike | Mocny cios przed graczem daje 2 Chill; Wet cel zostaje Frozen. Nie wymaga namierzonego przeciwnika. | Lodowa rekawica, luk szronu i pekajace krysztaly przy trafieniu. |
 | `Aurora Veil` | 0 / 20 | Self dome | Przez 8 s redukuje o 25% obrazenia sojusznikow wewnatrz kopuly. | Polprzezroczysta kurtyna zorzy z heksagonalnym refleksem przy trafieniu. |
 | `Blizzard` | 22 / 22 | Moving zone | Burza przez 6 s podaza powoli do celu i naklada Chill co 2 s. | Gesty lokalny snieg z wirem, lecz z widoczna granica zagrozenia. |
@@ -169,7 +169,7 @@ Docelowe zalozenia:
 | Spell | DMG / CD | Delivery | Mechanika RPG | Animacja i VFX |
 |---|---:|---|---|---|
 | `Confusion` | 6 / 5 | Telekinetic throw | Krotko podnosi cel, odrzuca do celownika i naklada Confused. | Fioletowe pierscienie wokol glowy i telekinetyczna fala. |
-| `Psybeam` | 11 / 8 | Ricochet beam | Odbija sie raz od bloku albo jednego dodatkowego celu. | Warstwowy teczowy promien z wyraznym punktem odbicia. |
+| `Psybeam` | 11 / 8 | Held channel beam | Promien trwa podczas przytrzymania, a cooldown startuje po puszczeniu. | Warstwowy teczowy promien skupiony na aktualnym kierunku celowania. |
 | `Psycho Cut` | 14 / 8 | Arc strike | Magiczne ostrze przecina obszar przed graczem i ignoruje 2 punkty pancerza. Nie wymaga namierzonego przeciwnika. | Fioletowy polksiezyc powstaje przy dloni i rozcina powietrze na krotkim dystansie. |
 | `Rest` | 0 / 90 | Self heal | Natychmiast przywraca pelne HP i oczyszcza negatywne statusy, po czym naklada Asleep na 5 s. Obrazenia moga obudzic dopiero po 2 s. | Gracz siada lub opuszcza ramiona, otacza go spokojna niebieska aura i trzy unoszace sie symbole snu. |
 | `Psychic` | 17 / 14 | Hold and throw | Przytrzymuje cel do 1.5 s; ponowne uzycie rzuca go w wybranym kierunku. | Przezroczysta aura i linie wskazujace kierunek rzutu. |
@@ -213,7 +213,7 @@ Docelowe zalozenia:
 
 | Spell | DMG / CD | Delivery | Mechanika RPG | Animacja i VFX |
 |---|---:|---|---|---|
-| `Dragon Breath` | 11 / 7 | Channel cone | Pelne trafienie daje 1 Paralysis. | Fioletowo-niebieski oddech z falujacym rdzeniem i iskrami. |
+| `Dragon Breath` | 11 / 0 | Held channel cone | Moze byc trzymany bez limitu i nie ma cooldownu; podczas kanalowania mocno spowalnia uzytkownika. | Fioletowo-niebieski oddech z falujacym rdzeniem i iskrami. |
 | `Dragon Claw` | 17 / 9 | Arc strike | Silne smocze ciecie przed graczem ma duzy knockback. Nie wymaga namierzonego przeciwnika. | Pazury z Magicule tworza szeroki luk, ktory rozpada sie na smocze luski. |
 | `Dragon Tail` | 13 / 9 | Melee sweep | Szeroki zamach z silnym odrzutem; przerywa cast. | Smoczy ogon energii podaza za obrotem ciala. |
 | `Dragon Rush` | 17 / 12 | Steerable dash | Sterowalna szarza; centralne trafienie daje Stagger. | Aura glowy smoka otacza gracza i rozpada sie na luski. |

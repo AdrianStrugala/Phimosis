@@ -5,15 +5,16 @@
   "school": "fire",
   "cooldown_ticks": 180,
   "targeting": {
-    "type": "cone",
+    "type": "beam",
     "range": 12.0,
+    "width": 1.0,
     "max_targets": 8
   },
   "delivery": {
-    "type": "channel_cone",
-    "duration_ticks": 24,
+    "type": "channel_beam",
+    "duration_ticks": 100,
     "tick_interval_ticks": 4,
-    "cone_angle": 45.0
+    "hold_to_channel": true
   },
   "impact": [
     { "type": "damage", "damage_multiplier": 0.1666666667 },

@@ -224,15 +224,41 @@ end
 fail_validation("Draining Kiss does not heal 75% of actual damage") unless
   draining_heal&.fetch("amount", nil) == 0.75 && executor.include?("healthBefore - target.getHealth()")
 
-hydro_pump = spell_definition.call("hydro_pump")
-fail_validation("Hydro Pump is not a held channel") unless
-  hydro_pump.dig("delivery", "type") == "channel_beam" &&
-    hydro_pump.dig("delivery", "duration_ticks").to_i >= 200 &&
-    runtime.include?("beam.ownerId.equals(beam.effectCasterId) && !owner.isUsingItem()") &&
-    java.include?("stopPlayerChannelBeam(player.getUUID())") &&
+held_channels = {
+  "flamethrower" => "channel_beam",
+  "ice_beam" => "channel_beam",
+  "psybeam" => "channel_beam",
+  "hydro_pump" => "channel_beam",
+  "dragon_breath" => "channel_cone"
+}
+held_channels.each do |spell, delivery|
+  definition = spell_definition.call(spell)
+  fail_validation("#{spell} is not an immediate held channel") unless
+    definition.dig("delivery", "type") == delivery &&
+      definition.dig("delivery", "hold_to_channel") == true &&
+      definition.fetch("cast_time_ticks", 0).to_i.zero? &&
+      (spell == "dragon_breath" || definition.dig("delivery", "duration_ticks").to_i >= 100)
+end
+fail_validation("held channels are not stopped on item release") unless
+  runtime.include?("definition.delivery.hold_to_channel") &&
+    java.include?("stopPlayerChannels(player.getUUID())") &&
     java.include?("UseAnim.SPEAR")
-fail_validation("channel cooldown incorrectly scales with held duration") unless
-  executor.include?("playerCooldowns.put(spellId, now + def.cooldown_ticks)")
+fail_validation("held-channel cooldown is not deferred until release") unless
+  java.include?("SpellExecutor.finishHeldChannel(player, spellId)") &&
+    executor.include?("public static void finishHeldChannel") &&
+    executor.include?("heldChannels.put(caster.getUUID(), spellId)")
+
+dragon_breath = spell_definition.call("dragon_breath")
+dragon_slow = dragon_breath.fetch("impact").find do |impact|
+  impact["type"] == "status_effect" && impact["recipient"] == "caster" &&
+    impact["effect"] == "minecraft:slowness"
+end
+fail_validation("Dragon Breath has a cooldown or lacks its strong self-slow") unless
+  dragon_breath["cooldown_ticks"].to_i.zero? &&
+    dragon_breath.dig("delivery", "duration_ticks").to_i.zero? &&
+    dragon_slow&.fetch("amplifier", 0).to_i >= 4 &&
+    dragon_slow&.fetch("duration", 0).to_i >
+      dragon_breath.dig("delivery", "tick_interval_ticks").to_i
 
 fail_validation("lingering clouds are not connected to the runtime controller") unless
   executor.include?("def.delivery.duration_ticks > 0") &&

@@ -41,29 +41,48 @@ public class SpellExecutor {
     private static final Map<UUID, Map<ResourceLocation, Long>> cooldowns = new HashMap<>();
     private static final Map<UUID, Map<ResourceLocation, ChargeState>> charges = new HashMap<>();
     private static final Map<UUID, Map<String, Long>> impactSoundTimes = new HashMap<>();
+    private static final Map<UUID, ResourceLocation> heldChannels = new HashMap<>();
 
     public static void clearPlayerState(UUID playerId) {
         cooldowns.remove(playerId);
         charges.remove(playerId);
         impactSoundTimes.remove(playerId);
+        heldChannels.remove(playerId);
     }
 
     public static void clearAllState() {
         cooldowns.clear();
         charges.clear();
         impactSoundTimes.clear();
+        heldChannels.clear();
     }
 
     public static boolean cast(ServerPlayer caster, ResourceLocation spellId) {
-        return cast(caster, spellId, false);
+        return cast(caster, spellId, false, false);
     }
 
     public static boolean castPrepared(ServerPlayer caster, ResourceLocation spellId) {
-        return cast(caster, spellId, true);
+        return cast(caster, spellId, true, false);
+    }
+
+    public static boolean castHeldChannel(ServerPlayer caster, ResourceLocation spellId) {
+        return cast(caster, spellId, true, true);
+    }
+
+    public static void finishHeldChannel(ServerPlayer caster, ResourceLocation spellId) {
+        if (!heldChannels.remove(caster.getUUID(), spellId)) return;
+        SpellDefinition definition = SpellRegistry.get(spellId).orElse(null);
+        int cooldownTicks = definition == null ? 0 : Math.max(0, definition.cooldown_ticks);
+        if (cooldownTicks > 0) {
+            long now = caster.level().getGameTime();
+            cooldowns.computeIfAbsent(caster.getUUID(), ignored -> new HashMap<>())
+                    .put(spellId, now + cooldownTicks);
+        }
+        PacketDistributor.sendToPlayer(caster, new CooldownSyncPacket(spellId, cooldownTicks));
     }
 
     private static boolean cast(ServerPlayer caster, ResourceLocation spellId,
-                                boolean skipCastTime) {
+                                boolean skipCastTime, boolean deferCooldown) {
         if (caster.hasEffect(TensuraMobEffects.ASLEEP)
             || caster.hasEffect(TensuraMobEffects.FROZEN)
             || caster.hasEffect(TensuraMobEffects.EXHAUSTED)) {
@@ -74,6 +93,7 @@ public class SpellExecutor {
             caster.sendSystemMessage(Component.literal("§7[Already casting]"));
             return false;
         }
+        if (deferCooldown && heldChannels.containsKey(caster.getUUID())) return false;
 
         SpellDefinition def = SpellRegistry.get(spellId).orElse(null);
         if (def == null) {
@@ -113,7 +133,9 @@ public class SpellExecutor {
         caster.swing(InteractionHand.MAIN_HAND, true);
         sendCastVfx(caster, def);
         playCastSound(caster, def);
-        if (chargeState != null) {
+        if (deferCooldown) {
+            heldChannels.put(caster.getUUID(), spellId);
+        } else if (chargeState != null) {
             int recoveryTicks = def.charge_recovery_ticks > 0
                 ? def.charge_recovery_ticks : def.cooldown_ticks;
             chargeState.consume(now, def.charges, recoveryTicks);
@@ -392,8 +414,9 @@ public class SpellExecutor {
             if ("channel_beam".equals(def.delivery.type)) {
                 t.invulnerableTime = 0;
             }
-            applyImpacts(owner, effectCaster, t, def);
+            applyImpacts(owner, effectCaster, t, def, true, false);
         }
+        applyImpacts(owner, effectCaster, effectCaster, def, true, true, false);
 
         // Lightning visual at end for lightning school
         if ("lightning".equals(def.school)) {
@@ -437,8 +460,9 @@ public class SpellExecutor {
         }
         for (LivingEntity target : targets) {
             target.invulnerableTime = 0;
-            applyImpacts(owner, effectCaster, target, def);
+            applyImpacts(owner, effectCaster, target, def, true, false);
         }
+        applyImpacts(owner, effectCaster, effectCaster, def, true, true, false);
         Vec3 end = origin.add(forward.scale(range));
         double radius = Math.tan(Math.toRadians(def.delivery.cone_angle * 0.5)) * range;
         SpellVfxDispatcher.send(level, "cone", def.visual.trail, def.school,
@@ -1031,6 +1055,13 @@ public class SpellExecutor {
     private static void applyImpacts(ServerPlayer owner, LivingEntity effectCaster,
                                      LivingEntity target, SpellDefinition def,
                                      boolean finalProjectile, Boolean casterOnly) {
+        applyImpacts(owner, effectCaster, target, def, finalProjectile, casterOnly, true);
+    }
+
+    private static void applyImpacts(ServerPlayer owner, LivingEntity effectCaster,
+                                     LivingEntity target, SpellDefinition def,
+                                     boolean finalProjectile, Boolean casterOnly,
+                                     boolean playFeedback) {
         boolean canHarm = SpellTargetingRules.canHarm(owner, effectCaster, target);
                         float damageDealt = 0.0F;
         for (SpellDefinition.Impact impact : def.impact) {
@@ -1189,7 +1220,7 @@ public class SpellExecutor {
                 case "guard" -> SpellRuntimeController.addGuard(recipient, impact.amount, impact.duration);
             }
         }
-        if (finalProjectile && target.level() instanceof ServerLevel level) {
+        if (playFeedback && finalProjectile && target.level() instanceof ServerLevel level) {
             Vec3 impactPosition = target.getBoundingBox().getCenter();
             double radius = def.targeting.radius > 0.0 ? def.targeting.radius : 1.0;
             SpellVfxDispatcher.send(level, "impact", def.visual.impact, def.school,
@@ -1202,7 +1233,7 @@ public class SpellExecutor {
                         effectCaster, !SpellTargetingRules.canHarm(owner, effectCaster, target));
                     }
         }
-        playImpactSound(owner, target, def);
+        if (playFeedback) playImpactSound(owner, target, def);
     }
 
     private static double applyExposedModifier(double damage, LivingEntity target,

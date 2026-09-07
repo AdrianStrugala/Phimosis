@@ -550,7 +550,7 @@
   },
   "flamethrower": {
     "title": "Flamethrower",
-    "description": "Channel a wide cone of Fire energy at medium range. Sets enemies ablaze.",
+    "description": "Hold to breathe a stream of fire. It starts recharging when you release it.",
     "icon": {
       "type": "item",
       "data": {
@@ -1113,7 +1113,7 @@
   },
   "hydro_pump": {
     "title": "Hydro Pump",
-    "description": "Channel a sustained Water beam from long range. Knocks enemies back and soaks enemies. Takes a short moment to cast.",
+    "description": "Hold to fire a powerful Water stream that repeatedly pushes enemies back. It starts recharging when released.",
     "icon": {
       "type": "item",
       "data": {
@@ -2032,7 +2032,7 @@
   },
   "ice_beam": {
     "title": "Ice Beam",
-    "description": "Unleash a piercing Ice beam from long range. Soaked enemies are frozen on hit.",
+    "description": "Hold to channel a piercing Ice beam. Soaked enemies freeze on hit, and recharging starts when released.",
     "icon": {
       "type": "item",
       "data": {
@@ -3307,7 +3307,7 @@
   },
   "psybeam": {
     "title": "Psybeam",
-    "description": "Fire a Psychic beam that leaps to another enemy from long range. Sometimes disorients enemies.",
+    "description": "Hold to channel a disorienting Psychic beam. It starts recharging when you release it.",
     "icon": {
       "type": "item",
       "data": {
@@ -4174,7 +4174,7 @@
   },
   "dragon_breath": {
     "title": "Dragon Breath",
-    "description": "Unleash a piercing Dragon beam from long range. Sets enemies ablaze and sometimes poisons enemies.",
+    "description": "Hold to breathe Dragon energy indefinitely without recharging. Your movement is heavily slowed while channeling.",
     "icon": {
       "type": "item",
       "data": {

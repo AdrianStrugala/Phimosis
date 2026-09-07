@@ -131,7 +131,7 @@ public class SpellRuntimeController {
 
     public static boolean startChannelBeam(ServerPlayer owner, LivingEntity effectCaster,
                                            LivingEntity target, SpellDefinition definition) {
-        int duration = Math.max(1, definition.delivery.duration_ticks);
+        int duration = channelDuration(definition);
         CHANNEL_BEAMS.add(new ActiveChannelBeam(effectCaster.level().dimension(), owner.getUUID(),
                 effectCaster.getUUID(), target == null ? null : target.getUUID(),
                 definition, duration));
@@ -140,18 +140,25 @@ public class SpellRuntimeController {
         return true;
     }
 
-    public static void stopPlayerChannelBeam(UUID playerId) {
+    public static void stopPlayerChannels(UUID playerId) {
         CHANNEL_BEAMS.removeIf(beam -> beam.ownerId.equals(playerId)
                 && beam.effectCasterId.equals(playerId));
+        CHANNEL_CONES.removeIf(cone -> cone.ownerId.equals(playerId)
+                && cone.effectCasterId.equals(playerId));
     }
 
     public static boolean startChannelCone(ServerPlayer owner, LivingEntity effectCaster,
                                            SpellDefinition definition) {
-        int duration = Math.max(1, definition.delivery.duration_ticks);
+        int duration = channelDuration(definition);
         CHANNEL_CONES.add(new ActiveChannelCone(effectCaster.level().dimension(),
                 owner.getUUID(), effectCaster.getUUID(), definition, duration));
         SpellExecutor.playLoopSound(effectCaster, definition);
         return true;
+    }
+
+    private static int channelDuration(SpellDefinition definition) {
+        return definition.delivery.hold_to_channel && definition.delivery.duration_ticks <= 0
+            ? Integer.MAX_VALUE : Math.max(1, definition.delivery.duration_ticks);
     }
 
     public static boolean startWave(ServerPlayer owner, LivingEntity effectCaster,
@@ -546,7 +553,8 @@ public class SpellRuntimeController {
                     ? null : level.getEntity(beam.targetId);
                 if (level == null || owner == null || owner.level() != level
                     || !(source instanceof LivingEntity effectCaster) || !effectCaster.isAlive()
-                    || (beam.ownerId.equals(beam.effectCasterId) && !owner.isUsingItem())
+                    || (beam.ownerId.equals(beam.effectCasterId)
+                        && beam.definition.delivery.hold_to_channel && !owner.isUsingItem())
                     || --beam.remainingTicks < 0) {
                 iterator.remove();
                 continue;
@@ -574,6 +582,8 @@ public class SpellRuntimeController {
             Entity source = level == null ? null : level.getEntity(cone.effectCasterId);
             if (level == null || owner == null || owner.level() != level
                     || !(source instanceof LivingEntity effectCaster) || !effectCaster.isAlive()
+                    || (cone.ownerId.equals(cone.effectCasterId)
+                        && cone.definition.delivery.hold_to_channel && !owner.isUsingItem())
                     || --cone.remainingTicks < 0) {
                 iterator.remove();
                 continue;
