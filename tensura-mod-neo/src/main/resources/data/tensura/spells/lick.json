@@ -1,0 +1,16 @@
+{
+  "pokemon_type": "ghost",
+  "category": "physical",
+  "power": 5.0,
+  "school": "shadow",
+  "cooldown_ticks": 80,
+  "targeting": { "type": "cone", "range": 3.0, "max_targets": 3 },
+  "delivery": { "type": "arc_strike", "cone_angle": 70.0 },
+  "impact": [
+    { "type": "damage" },
+    { "type": "status_effect", "effect": "tensura:paralyzed", "duration": 50 },
+    { "type": "status_effect", "effect": "minecraft:nausea", "duration": 40 }
+  ],
+  "visual": { "cast_animation": "lick_sweep_cast", "trail": "spectral_tongue_arc", "impact": "lick_smoke" },
+  "sound": { "cast": "minecraft:entity.allay.hurt", "impact": "minecraft:entity.phantom.bite" }
+}

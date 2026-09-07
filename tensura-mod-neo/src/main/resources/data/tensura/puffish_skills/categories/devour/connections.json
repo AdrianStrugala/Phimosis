@@ -65,6 +65,14 @@
   ],
   [
     "ember_owned",
+    "flame_charge_owned"
+  ],
+  [
+    "flame_charge_owned",
+    "flame_charge"
+  ],
+  [
+    "flame_charge_owned",
     "flamethrower_owned"
   ],
   [
@@ -89,6 +97,14 @@
   ],
   [
     "fire_blast_owned",
+    "fire_punch_owned"
+  ],
+  [
+    "fire_punch_owned",
+    "fire_punch"
+  ],
+  [
+    "fire_punch_owned",
     "overheat_owned"
   ],
   [
@@ -145,14 +161,22 @@
   ],
   [
     "devour_core",
-    "thundershock_owned"
+    "thunder_shock_owned"
   ],
   [
-    "thundershock_owned",
-    "thundershock"
+    "thunder_shock_owned",
+    "thunder_shock"
   ],
   [
-    "thundershock_owned",
+    "thunder_shock_owned",
+    "spark_owned"
+  ],
+  [
+    "spark_owned",
+    "spark"
+  ],
+  [
+    "spark_owned",
     "electro_ball_owned"
   ],
   [
@@ -169,6 +193,14 @@
   ],
   [
     "discharge_owned",
+    "thunder_punch_owned"
+  ],
+  [
+    "thunder_punch_owned",
+    "thunder_punch"
+  ],
+  [
+    "thunder_punch_owned",
     "thunder_owned"
   ],
   [
@@ -217,6 +249,14 @@
   ],
   [
     "leaf_blade_owned",
+    "giga_drain_owned"
+  ],
+  [
+    "giga_drain_owned",
+    "giga_drain"
+  ],
+  [
+    "giga_drain_owned",
     "petal_blizzard_owned"
   ],
   [
@@ -230,14 +270,6 @@
   [
     "solar_beam_owned",
     "solar_beam"
-  ],
-  [
-    "solar_beam_owned",
-    "nature_burst_owned"
-  ],
-  [
-    "nature_burst_owned",
-    "nature_burst"
   ],
   [
     "devour_core",
@@ -257,6 +289,14 @@
   ],
   [
     "ice_shard_owned",
+    "icy_wind_owned"
+  ],
+  [
+    "icy_wind_owned",
+    "icy_wind"
+  ],
+  [
+    "icy_wind_owned",
     "ice_beam_owned"
   ],
   [
@@ -265,14 +305,14 @@
   ],
   [
     "ice_beam_owned",
-    "frost_nova_owned"
+    "ice_punch_owned"
   ],
   [
-    "frost_nova_owned",
-    "frost_nova"
+    "ice_punch_owned",
+    "ice_punch"
   ],
   [
-    "frost_nova_owned",
+    "ice_punch_owned",
     "aurora_veil_owned"
   ],
   [
@@ -297,6 +337,30 @@
   ],
   [
     "mach_punch_owned",
+    "force_palm_owned"
+  ],
+  [
+    "force_palm_owned",
+    "force_palm"
+  ],
+  [
+    "force_palm_owned",
+    "drain_punch_owned"
+  ],
+  [
+    "drain_punch_owned",
+    "drain_punch"
+  ],
+  [
+    "drain_punch_owned",
+    "seismic_toss_owned"
+  ],
+  [
+    "seismic_toss_owned",
+    "seismic_toss"
+  ],
+  [
+    "seismic_toss_owned",
     "close_combat_owned"
   ],
   [
@@ -312,14 +376,6 @@
     "focus_blast"
   ],
   [
-    "focus_blast_owned",
-    "seismic_slam_owned"
-  ],
-  [
-    "seismic_slam_owned",
-    "seismic_slam"
-  ],
-  [
     "devour_core",
     "poison_sting_owned"
   ],
@@ -329,14 +385,22 @@
   ],
   [
     "poison_sting_owned",
-    "poison_strike_owned"
+    "acid_spray_owned"
   ],
   [
-    "poison_strike_owned",
-    "poison_strike"
+    "acid_spray_owned",
+    "acid_spray"
   ],
   [
-    "poison_strike_owned",
+    "acid_spray_owned",
+    "venoshock_owned"
+  ],
+  [
+    "venoshock_owned",
+    "venoshock"
+  ],
+  [
+    "venoshock_owned",
     "toxic_spikes_owned"
   ],
   [
@@ -457,6 +521,14 @@
   ],
   [
     "psybeam_owned",
+    "psycho_cut_owned"
+  ],
+  [
+    "psycho_cut_owned",
+    "psycho_cut"
+  ],
+  [
+    "psycho_cut_owned",
     "psychic_owned"
   ],
   [
@@ -537,6 +609,14 @@
   ],
   [
     "rock_throw_owned",
+    "smack_down_owned"
+  ],
+  [
+    "smack_down_owned",
+    "smack_down"
+  ],
+  [
+    "smack_down_owned",
     "rock_slide_owned"
   ],
   [
@@ -553,6 +633,14 @@
   ],
   [
     "devour_core",
+    "lick_owned"
+  ],
+  [
+    "lick_owned",
+    "lick"
+  ],
+  [
+    "lick_owned",
     "night_shade_owned"
   ],
   [
@@ -561,6 +649,14 @@
   ],
   [
     "night_shade_owned",
+    "shadow_claw_owned"
+  ],
+  [
+    "shadow_claw_owned",
+    "shadow_claw"
+  ],
+  [
+    "shadow_claw_owned",
     "shadow_sneak_owned"
   ],
   [
@@ -593,6 +689,22 @@
   ],
   [
     "dragon_breath_owned",
+    "dragon_claw_owned"
+  ],
+  [
+    "dragon_claw_owned",
+    "dragon_claw"
+  ],
+  [
+    "dragon_claw_owned",
+    "dragon_tail_owned"
+  ],
+  [
+    "dragon_tail_owned",
+    "dragon_tail"
+  ],
+  [
+    "dragon_tail_owned",
     "dragon_pulse_owned"
   ],
   [
@@ -617,6 +729,30 @@
   ],
   [
     "devour_core",
+    "bite_owned"
+  ],
+  [
+    "bite_owned",
+    "bite"
+  ],
+  [
+    "bite_owned",
+    "crunch_owned"
+  ],
+  [
+    "crunch_owned",
+    "crunch"
+  ],
+  [
+    "crunch_owned",
+    "snarl_owned"
+  ],
+  [
+    "snarl_owned",
+    "snarl"
+  ],
+  [
+    "snarl_owned",
     "dark_pulse_owned"
   ],
   [
@@ -641,6 +777,30 @@
   ],
   [
     "devour_core",
+    "bullet_punch_owned"
+  ],
+  [
+    "bullet_punch_owned",
+    "bullet_punch"
+  ],
+  [
+    "bullet_punch_owned",
+    "metal_claw_owned"
+  ],
+  [
+    "metal_claw_owned",
+    "metal_claw"
+  ],
+  [
+    "metal_claw_owned",
+    "iron_head_owned"
+  ],
+  [
+    "iron_head_owned",
+    "iron_head"
+  ],
+  [
+    "iron_head_owned",
     "iron_defense_owned"
   ],
   [
@@ -649,14 +809,6 @@
   ],
   [
     "iron_defense_owned",
-    "iron_strike_owned"
-  ],
-  [
-    "iron_strike_owned",
-    "iron_strike"
-  ],
-  [
-    "iron_strike_owned",
     "flash_cannon_owned"
   ],
   [

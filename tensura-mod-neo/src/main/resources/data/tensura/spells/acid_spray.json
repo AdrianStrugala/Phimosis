@@ -1,0 +1,16 @@
+{
+  "pokemon_type": "poison",
+  "category": "special",
+  "power": 7.0,
+  "school": "poison",
+  "cooldown_ticks": 140,
+  "targeting": { "type": "cone", "range": 6.0, "max_targets": 6 },
+  "delivery": { "type": "arc_strike", "cone_angle": 70.0 },
+  "impact": [
+    { "type": "damage" },
+    { "type": "expose", "duration": 80 },
+    { "type": "status_effect", "effect": "minecraft:poison", "duration": 80 }
+  ],
+  "visual": { "cast_animation": "acid_spray_cast", "trail": "acid_spray_cone", "impact": "acid_sizzle" },
+  "sound": { "cast": "minecraft:entity.llama.spit", "impact": "minecraft:block.fire.extinguish" }
+}

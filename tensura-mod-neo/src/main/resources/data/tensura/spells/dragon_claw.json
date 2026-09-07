@@ -1,0 +1,15 @@
+{
+  "pokemon_type": "dragon",
+  "category": "physical",
+  "power": 17.0,
+  "school": "dragon",
+  "cooldown_ticks": 180,
+  "targeting": { "type": "cone", "range": 4.0, "max_targets": 5 },
+  "delivery": { "type": "arc_strike", "cone_angle": 100.0 },
+  "impact": [
+    { "type": "damage" },
+    { "type": "knockback", "strength": 2.2 }
+  ],
+  "visual": { "cast_animation": "dragon_claw_swing", "trail": "dragon_claw_arc", "impact": "dragon_scale_burst" },
+  "sound": { "cast": "minecraft:entity.ender_dragon.growl", "impact": "minecraft:entity.player.attack.knockback" }
+}

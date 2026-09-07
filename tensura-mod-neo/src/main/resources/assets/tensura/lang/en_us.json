@@ -6,5 +6,7 @@
   "effect.tensura.paralyzed": "Paralyzed",
   "effect.tensura.exhausted": "Exhausted",
   "effect.tensura.exposed": "Exposed",
-  "effect.tensura.toxic": "Toxic"
+  "effect.tensura.toxic": "Toxic",
+  "effect.tensura.grounded": "Grounded",
+  "effect.tensura.special_weakened": "Special Weakened"
 }

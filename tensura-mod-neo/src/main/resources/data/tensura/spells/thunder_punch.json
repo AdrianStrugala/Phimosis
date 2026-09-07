@@ -1,0 +1,15 @@
+{
+  "pokemon_type": "electric",
+  "category": "physical",
+  "power": 13.0,
+  "school": "lightning",
+  "cooldown_ticks": 140,
+  "targeting": { "type": "cone", "range": 4.0, "max_targets": 4 },
+  "delivery": { "type": "arc_strike", "cone_angle": 90.0 },
+  "impact": [
+    { "type": "damage" },
+    { "type": "paralyze_if_wet", "duration": 70, "chance": 0.45 }
+  ],
+  "visual": { "cast_animation": "thunder_punch_swing", "trail": "thunder_punch_arc", "impact": "thunder_punch_branches" },
+  "sound": { "cast": "minecraft:entity.player.attack.sweep", "impact": "minecraft:entity.lightning_bolt.impact" }
+}

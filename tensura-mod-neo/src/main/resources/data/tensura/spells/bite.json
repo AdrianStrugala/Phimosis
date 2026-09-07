@@ -1,0 +1,15 @@
+{
+  "pokemon_type": "dark",
+  "category": "physical",
+  "power": 8.0,
+  "school": "shadow",
+  "cooldown_ticks": 80,
+  "targeting": { "type": "aim", "range": 3.5, "max_targets": 1 },
+  "delivery": { "type": "dash", "distance": 3.5, "duration_ticks": 3 },
+  "impact": [
+    { "type": "damage" },
+    { "type": "rear_stagger", "duration": 8 }
+  ],
+  "visual": { "cast_animation": "bite_lunge_cast", "trail": "bite_lunge", "impact": "shadow_jaws" },
+  "sound": { "cast": "minecraft:entity.fox.bite", "impact": "minecraft:entity.player.attack.crit" }
+}

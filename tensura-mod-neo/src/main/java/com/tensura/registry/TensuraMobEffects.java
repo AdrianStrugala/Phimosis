@@ -48,4 +48,12 @@ public class TensuraMobEffects {
     public static final DeferredHolder<MobEffect, MobEffect> TOXIC =
             MOB_EFFECTS.register("toxic",
                     () -> new MobEffect(MobEffectCategory.HARMFUL, 0x8E3AAE) {});
+
+    public static final DeferredHolder<MobEffect, MobEffect> GROUNDED =
+            MOB_EFFECTS.register("grounded",
+                    () -> new MobEffect(MobEffectCategory.HARMFUL, 0x8C7557) {});
+
+    public static final DeferredHolder<MobEffect, MobEffect> SPECIAL_WEAKENED =
+            MOB_EFFECTS.register("special_weakened",
+                    () -> new MobEffect(MobEffectCategory.HARMFUL, 0x5A465E) {});
 }

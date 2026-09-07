@@ -93,8 +93,8 @@ tylko raz. `devour_recover` robi oba: waliduje stan i przezbraja przycisk.
 
 ### 6. Ikony dispenserów
 
-Preferowane `tensura:spell_icon_<spell>`. Obecnie takich ikon jest 70 na 88 spelli —
-reszta używa itemów waniliowych i to jest w porządku jako stan przejściowy.
+Preferowane `tensura:spell_icon_<spell>`. Obecnie takich ikon sa 93 na 107 spelli —
+reszta uzywa itemow waniliowych i to jest w porzadku jako stan przejsciowy.
 
 Ikony są rejestrowane **pętlą po `SpellItem.CUSTOM_ICON_ORDER`**, nie osobnymi
 wywołaniami `ITEMS.register("spell_icon_…")`. Szukanie literałów w rejestrze daje

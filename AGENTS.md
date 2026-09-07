@@ -44,15 +44,21 @@ okresl jednoznacznie, za co odpowiada.
 Stan zweryfikowany 2026-09-07:
 
 - plan docelowy: 110 unikalnych spelli w `SPELL_REWORK_PROPOSAL.md`;
-- implementacja done-done: 70 spelli;
-- drzewko Devour: 18 rays i 88 par spell/dispenser;
-- customowe ikony: 70;
-- unikalne profile cast VFX: 70, w 8 rodzinach geometrii;
+- implementacja done-done: 93 spelle;
+- drzewko Devour: 18 rays i 107 par spell/dispenser;
+- customowe ikony: 93;
+- unikalne profile cast VFX: 93, w 8 rodzinach geometrii;
 - `energy_ball`, `explosion`, `iron_tail`, `sacred_fire`, `scald`, `sludge_bomb`,
   `thunderbolt`, `water_pulse` i `will_o_wisp` zostaly trwale usuniete z runtime,
   mapowan i Devour;
-- nowa rodzina `arc_strike` jest tylko zaplanowana, nie jest wdrozona;
-- dziesiec dodatkow do planu 110 nie zostalo jeszcze wdrozonych jako jeden pakiet.
+- `iron_strike`, `frost_nova`, `nature_burst`, `poison_strike`, `seismic_slam`
+  i `thundershock` zostaly zastapione kanonicznymi ID z migracja zapisanych danych;
+- wspolny delivery `arc_strike` jest wdrozony i respektuje kierunek, zasieg oraz
+  przeszkody;
+- istnieje 105 z 110 kanonicznych definicji; brakuje `dragon_rush`,
+  `phantom_force`, `rock_tomb`, `stealth_rock` i `trick_room`;
+- dwie dodatkowe pary Devour to nadal legacy `aerial_strike` i `psychic_blast`,
+  dlatego liczby definicji/Devour nie sa liczba pokrycia kanonicznego rosteru.
 
 Checkpoint jest wskazowka startowa, nie zamiennikiem walidacji. Po zmianie rosteru,
 generatorow, ikon, mapowan, VFX albo Devour zaktualizuj go dopiero po przejsciu

@@ -60,7 +60,7 @@ TARGETS = {
   "whirlpool" => :whirlpool,
   "x_scissor" => :scissor,
   "water_gun" => :water_nozzle,
-  "thundershock" => :small_spark,
+  "thunder_shock" => :small_spark,
   "psychic" => :psychic_eye,
   "confusion" => :confusion_spiral,
   "razor_leaf" => :razor_leaves,
@@ -75,10 +75,33 @@ TARGETS = {
   "stone_edge" => :stone_spires,
   "discharge" => :electric_field,
   "dragon_pulse" => :dragon_orb,
-  "iron_strike" => :steel_charge,
+  "bullet_punch" => :steel_charge,
   "mach_punch" => :speed_fist,
   "focus_blast" => :focus_orb,
-  "shadow_ball" => :shadow_orb
+  "shadow_ball" => :shadow_orb,
+  "fire_punch" => :fist,
+  "acid_spray" => :poison_needle,
+  "bite" => :fist,
+  "crunch" => :shadow_orb,
+  "dragon_claw" => :scissor,
+  "dragon_tail" => :return,
+  "drain_punch" => :fist,
+  "flame_charge" => :volt_dash,
+  "force_palm" => :fist,
+  "giga_drain" => :vine,
+  "ice_punch" => :fist,
+  "icy_wind" => :gust,
+  "iron_head" => :steel_charge,
+  "lick" => :vine,
+  "metal_claw" => :scissor,
+  "psycho_cut" => :leaf_sword,
+  "seismic_toss" => :thrown_rock,
+  "shadow_claw" => :scissor,
+  "smack_down" => :falling_rocks,
+  "snarl" => :voice,
+  "spark" => :volt_dash,
+  "thunder_punch" => :fist,
+  "venoshock" => :shadow_orb
 }.freeze
 
 REDRAW = %w[
@@ -94,9 +117,12 @@ ICON_ORDER = %w[
   whirlpool pin_missile u_turn x_scissor bug_buzz mud_shot bulldoze dig
   earth_power earthquake fairy_wind draining_kiss charm dazzling_gleam moonblast
   gust air_cutter aerial_ace tailwind hurricane swift hyper_voice water_gun
-  thundershock psychic confusion razor_leaf leaf_blade poison_sting rock_throw
+  thunder_shock psychic confusion razor_leaf leaf_blade poison_sting rock_throw
   ice_shard fire_blast bubble_beam petal_blizzard solar_beam stone_edge discharge
-  dragon_pulse iron_strike mach_punch focus_blast shadow_ball
+  dragon_pulse bullet_punch mach_punch focus_blast shadow_ball fire_punch
+  acid_spray bite crunch dragon_claw dragon_tail drain_punch flame_charge force_palm
+  giga_drain ice_punch icy_wind iron_head lick metal_claw psycho_cut seismic_toss
+  shadow_claw smack_down snarl spark thunder_punch venoshock
 ].freeze
 
 PALETTES = {
@@ -173,9 +199,17 @@ class Canvas
     end
   end
 
-  def render(symbol)
+  def render(symbol, signature = nil)
     send(symbol)
+    add_signature(signature) if signature
     @pixels
+  end
+
+  def add_signature(signature)
+    bits = Zlib.crc32(signature)
+    (4..27).each_with_index do |x, index|
+      pixel(x, 28, bits[index].zero? ? @primary : @secondary)
+    end
   end
 
   private
@@ -643,7 +677,7 @@ TARGETS.each do |spell, symbol|
 
   definition = JSON.parse(File.read(File.join(SPELL_DIR, "#{spell}.json")))
   palette = PALETTES.fetch(definition.fetch("pokemon_type"))
-  write_png(output, Canvas.new(*palette).render(symbol))
+  write_png(output, Canvas.new(*palette).render(symbol, spell))
   generated << spell
 end
 

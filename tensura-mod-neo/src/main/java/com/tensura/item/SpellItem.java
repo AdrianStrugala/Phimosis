@@ -1,6 +1,7 @@
 package com.tensura.item;
 
 import com.tensura.engine.SpellExecutor;
+import com.tensura.engine.SpellIdAliases;
 import com.tensura.engine.SpellRegistry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -49,11 +50,15 @@ public class SpellItem extends Item {
         "x_scissor", "bug_buzz", "mud_shot", "bulldoze", "dig", "earth_power",
         "earthquake", "fairy_wind", "draining_kiss", "charm", "dazzling_gleam",
         "moonblast", "gust", "air_cutter", "aerial_ace", "tailwind", "hurricane",
-        "swift", "hyper_voice", "water_gun", "thundershock", "psychic", "confusion",
+        "swift", "hyper_voice", "water_gun", "thunder_shock", "psychic", "confusion",
         "razor_leaf", "leaf_blade", "poison_sting", "rock_throw", "ice_shard",
         "fire_blast", "bubble_beam", "petal_blizzard", "solar_beam", "stone_edge",
-        "discharge", "dragon_pulse", "iron_strike", "mach_punch", "focus_blast",
-        "shadow_ball"
+        "discharge", "dragon_pulse", "bullet_punch", "mach_punch", "focus_blast",
+        "shadow_ball", "fire_punch", "acid_spray", "bite", "crunch", "dragon_claw",
+        "dragon_tail", "drain_punch", "flame_charge", "force_palm", "giga_drain",
+        "ice_punch", "icy_wind", "iron_head", "lick", "metal_claw", "psycho_cut",
+        "seismic_toss", "shadow_claw", "smack_down", "snarl", "spark",
+        "thunder_punch", "venoshock"
     );
 
     public SpellItem(Properties props) {
@@ -85,7 +90,7 @@ public class SpellItem extends Item {
         if (data == null) return null;
         CompoundTag tag = data.copyTag();
         if (!tag.contains(NBT_SPELL_ID)) return null;
-        return ResourceLocation.tryParse(tag.getString(NBT_SPELL_ID));
+        return SpellIdAliases.canonicalize(ResourceLocation.tryParse(tag.getString(NBT_SPELL_ID)));
     }
 
     public static float getSchoolIndex(ItemStack stack) {

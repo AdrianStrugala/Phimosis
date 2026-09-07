@@ -48,6 +48,8 @@ public class SpellDefinition {
          * "melee_combo" — applies a timed sequence of close-range hits
          * "teleport_strike" — teleports behind an aimed target and strikes
          * "ricochet_beam" — instant beam that redirects to one extra target
+         * "arc_strike"  — instant targetless melee arc in front of the caster
+         * "grab"        — targeted close-range impact that throws the victim
          */
         public String type = "projectile";
         public double speed = 1.5;
@@ -77,6 +79,9 @@ public class SpellDefinition {
         public String recipient = "target";
         // damage
         public double damage_multiplier = 1.0;
+        public double conditional_multiplier = 1.0;
+        public double armor_penetration = 0.0;
+        public double max_distance = 0.0;
         // status_effect
         public String effect = "";
         public List<String> effects = List.of();

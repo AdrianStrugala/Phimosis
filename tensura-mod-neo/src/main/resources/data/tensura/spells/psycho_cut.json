@@ -1,0 +1,14 @@
+{
+  "pokemon_type": "psychic",
+  "category": "physical",
+  "power": 14.0,
+  "school": "psychic",
+  "cooldown_ticks": 160,
+  "targeting": { "type": "cone", "range": 4.0, "max_targets": 5 },
+  "delivery": { "type": "arc_strike", "cone_angle": 95.0 },
+  "impact": [
+    { "type": "damage", "armor_penetration": 2.0 }
+  ],
+  "visual": { "cast_animation": "psycho_cut_swing", "trail": "psycho_cut_crescent", "impact": "psycho_cut_rift" },
+  "sound": { "cast": "minecraft:entity.player.attack.sweep", "impact": "minecraft:block.amethyst_block.break" }
+}

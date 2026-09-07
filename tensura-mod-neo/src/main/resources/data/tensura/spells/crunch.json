@@ -1,0 +1,15 @@
+{
+  "pokemon_type": "dark",
+  "category": "physical",
+  "power": 16.0,
+  "school": "shadow",
+  "cooldown_ticks": 180,
+  "targeting": { "type": "aim", "range": 4.0, "max_targets": 1 },
+  "delivery": { "type": "dash", "distance": 4.0, "duration_ticks": 4 },
+  "impact": [
+    { "type": "damage" },
+    { "type": "expose", "duration": 100, "chance": 0.65 }
+  ],
+  "visual": { "cast_animation": "crunch_lunge_cast", "trail": "crunch_shadow_lunge", "impact": "crushing_jaws" },
+  "sound": { "cast": "minecraft:entity.ravager.roar", "impact": "minecraft:entity.generic.big_fall" }
+}

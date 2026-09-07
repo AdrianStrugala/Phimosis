@@ -482,8 +482,24 @@ definicji, mapowan Cobblemon, wpisow Devour ani trybu `Legacy Skill`.
 | `seismic_slam` | `seismic_toss`; Seismic Slam nie jest kanonicznym ruchem. |
 | `thundershock` | `thunder_shock`; poprawny kanoniczny zapis to Thunder Shock. |
 
-Przy odczycie dawnego `SpellId` migrator zamienia ID zgodnie z tabela. Zasada ta
-nie obejmuje ID wymienionych w sekcji `Usuniete z projektu`.
+Migrator odczytu itemow i danych Predator obsluguje obecnie szesc wykonanych zmian:
+`iron_strike -> bullet_punch`, `frost_nova -> icy_wind`,
+`nature_burst -> giga_drain`, `poison_strike -> venoshock`,
+`seismic_slam -> seismic_toss` oraz `thundershock -> thunder_shock`.
+`aerial_strike` i `psychic_blast` nadal istnieja jako legacy i wymagaja osobnej
+migracji. Zasada ta nie obejmuje ID wymienionych w sekcji `Usuniete z projektu`.
+
+## Aktualny zakres implementacji - 2026-09-07
+
+- 93 spelle sa done-done: maja definicje, bezposrednie mapowanie, customowa ikone,
+	unikalny profil cast VFX i pare Devour;
+- istnieje 105 z 110 kanonicznych definicji;
+- wspolny `arc_strike`, warunkowy damage Poison/Toxic, lancuch Wet, grounding,
+	oslabienie special damage, penetracja pancerza oraz grab/throw sa wdrozone;
+- pozostaly `dragon_rush`, `phantom_force`, `rock_tomb`, `stealth_rock` i
+	`trick_room`;
+- `aerial_strike` i `psychic_blast` sa dodatkowymi legacy definicjami poza rosterem
+	110 i nie sa liczone jako kanoniczne pokrycie.
 
 ## 9. Kolejnosc implementacji
 

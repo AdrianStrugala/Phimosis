@@ -7,10 +7,18 @@ ROOT = File.expand_path("..", __dir__)
 JAVA_ICON_FILE = File.join(ROOT, "src/main/java/com/tensura/item/SpellItem.java")
 MAPPER_FILE = File.join(ROOT, "src/main/java/com/tensura/spell/CobblemonMoveMapper.java")
 EXECUTOR_FILE = File.join(ROOT, "src/main/java/com/tensura/engine/SpellExecutor.java")
+IMPACT_APPLIER_FILE = File.join(ROOT, "src/main/java/com/tensura/engine/SpellImpactApplier.java")
+FEEDBACK_FILE = File.join(ROOT, "src/main/java/com/tensura/engine/SpellFeedback.java")
+PROJECTILE_DELIVERY_FILE = File.join(ROOT,
+  "src/main/java/com/tensura/engine/SpellProjectileDelivery.java")
+BEAM_DELIVERY_FILE = File.join(ROOT,
+  "src/main/java/com/tensura/engine/SpellBeamDelivery.java")
 MOVEMENT_FILE = File.join(ROOT, "src/main/java/com/tensura/event/SpellMovementController.java")
 PROJECTILE_FILE = File.join(ROOT, "src/main/java/com/tensura/entity/SpellProjectile.java")
 RUNTIME_FILE = File.join(ROOT, "src/main/java/com/tensura/event/SpellRuntimeController.java")
 VFX_FILE = File.join(ROOT, "src/main/java/com/tensura/client/ProgrammaticSpellFx.java")
+ALIASES_FILE = File.join(ROOT, "src/main/java/com/tensura/engine/SpellIdAliases.java")
+STATUS_FILE = File.join(ROOT, "src/main/java/com/tensura/event/SpellStatusEvents.java")
 SPELL_DIR = File.join(ROOT, "src/main/resources/data/tensura/spells")
 MODEL_DIR = File.join(ROOT, "src/main/resources/assets/tensura/models/item")
 TEXTURE_DIR = File.join(ROOT, "src/main/resources/assets/tensura/textures/item/spell")
@@ -35,6 +43,8 @@ DELIVERY_VFX = {
   "melee_combo" => [%w[impact], %w[aftermath]],
   "teleport_strike" => [%w[trail], %w[impact]],
   "ricochet_beam" => [%w[trail], %w[impact]],
+  "arc_strike" => [%w[trail], %w[impact]],
+  "grab" => [%w[trail], %w[impact]],
   "meteor" => [%w[projectile], %w[telegraph], %w[impact]],
   "instant" => [%w[impact]],
   "self" => [%w[impact], %w[aftermath]]
@@ -53,24 +63,31 @@ java = File.read(JAVA_ICON_FILE)
 icon_block = java[/CUSTOM_ICON_ORDER = java\.util\.List\.of\((.*?)\n    \);/m, 1]
 fail_validation("CUSTOM_ICON_ORDER not found") unless icon_block
 spells = icon_block.scan(/"([a-z0-9_]+)"/).flatten
-fail_validation("expected 70 custom icon spells, got #{spells.size}") unless spells.size == 70
+fail_validation("expected 93 custom icon spells, got #{spells.size}") unless spells.size == 93
 fail_validation("duplicate custom icon spell") unless spells.uniq.size == spells.size
 
 promoted_spells = %w[
-  water_gun thundershock psychic confusion razor_leaf leaf_blade poison_sting
+  water_gun thunder_shock psychic confusion razor_leaf leaf_blade poison_sting
   rock_throw ice_shard fire_blast bubble_beam petal_blizzard solar_beam
-  stone_edge discharge dragon_pulse iron_strike mach_punch focus_blast shadow_ball
+  stone_edge discharge dragon_pulse bullet_punch mach_punch focus_blast shadow_ball
+  acid_spray bite crunch dragon_claw dragon_tail drain_punch fire_punch flame_charge
+  force_palm giga_drain ice_punch icy_wind iron_head lick metal_claw psycho_cut
+  seismic_toss shadow_claw smack_down snarl spark thunder_punch venoshock
 ]
 missing_promotions = promoted_spells - spells
 fail_validation("missing promoted spells: #{missing_promotions.join(', ')}") unless
   missing_promotions.empty?
 
 mapper = File.read(MAPPER_FILE)
-executor = File.read(EXECUTOR_FILE)
+executor = [EXECUTOR_FILE, IMPACT_APPLIER_FILE, FEEDBACK_FILE,
+  PROJECTILE_DELIVERY_FILE, BEAM_DELIVERY_FILE]
+  .map { |file| File.read(file) }.join("\n")
 movement = File.read(MOVEMENT_FILE)
 projectile = File.read(PROJECTILE_FILE)
 runtime = File.read(RUNTIME_FILE)
 vfx = File.read(VFX_FILE)
+aliases = File.read(ALIASES_FILE)
+status_events = File.read(STATUS_FILE)
 definitions = JSON.parse(File.read(File.join(DEVOUR_DIR, "definitions.json")))
 skills = JSON.parse(File.read(File.join(DEVOUR_DIR, "skills.json")))
 connections = JSON.parse(File.read(File.join(DEVOUR_DIR, "connections.json")))
@@ -175,8 +192,7 @@ fail_validation("U-turn is not configured to return") unless
 fail_validation("grouped projectiles do not reset target i-frames") unless
   projectile.include?("target.invulnerableTime = 0")
 fail_validation("channel beams do not bypass target i-frames") unless
-  executor.include?('if ("channel_beam".equals(def.delivery.type))') &&
-    executor.include?("t.invulnerableTime = 0")
+  executor.match?(/"channel_beam"\.equals\([^)]*\.delivery\.type\).*?target\.invulnerableTime = 0/m)
 fail_validation("channel cones do not bypass target i-frames") unless
   executor.match?(/castRuntimeCone.*?target\.invulnerableTime = 0/m)
 fail_validation("persistent zones do not bypass target i-frames") unless
@@ -201,7 +217,7 @@ fail_validation("Moonblast lacks projectile AoE") unless
     moonblast.dig("targeting", "radius").to_f > 0.0 &&
     moonblast.dig("targeting", "max_targets").to_i > 1 &&
     projectile.include?("applyProjectileSplash") && executor.include?("entity != directTarget") &&
-    executor.include?("applyImpacts(owner, effectCaster, directTarget, def, true, false)")
+  executor.match?(/applyImpacts\(owner, effectCaster, directTarget,\s*\w+, true, false\)/)
 
 dazzling_cleanse = impacts.call("dazzling_gleam").find do |impact|
   impact["type"] == "cleanse_one" && impact["recipient"] == "caster"
@@ -259,17 +275,73 @@ fail_validation("Dragon Breath has a cooldown or lacks its strong self-slow") un
     dragon_slow&.fetch("duration", 0).to_i >
       dragon_breath.dig("delivery", "tick_interval_ticks").to_i
 
+%w[fire_punch thunder_punch ice_punch dragon_claw shadow_claw psycho_cut].each do |spell|
+  fail_validation("#{spell} is not a targetless arc strike") unless
+    spell_definition.call(spell).dig("delivery", "type") == "arc_strike"
+end
+fail_validation("arc strikes do not check facing and block obstruction") unless
+  executor.include?("minimumDot") && executor.include?("ClipContext.Block.COLLIDER")
+
+%w[bullet_punch psycho_cut].each do |spell|
+  damage = impacts.call(spell).find { |impact| impact["type"] == "damage" }
+  fail_validation("#{spell} lacks two-point armor penetration") unless
+    damage&.fetch("armor_penetration", 0).to_f == 2.0
+end
+fail_validation("armor penetration is not applied transiently") unless
+  executor.include?("addTransientModifier") && executor.include?("ARMOR_PENETRATION_ID")
+
+venoshock_damage = impacts.call("venoshock").find { |impact| impact["type"] == "damage" }
+fail_validation("Venoshock lacks doubled Poison/Toxic damage") unless
+  venoshock_damage&.fetch("conditional_multiplier", 0).to_f == 2.0 &&
+    venoshock_damage.fetch("effects", []).sort == %w[minecraft:poison tensura:toxic]
+fail_validation("Electric Wet chaining is incomplete") unless
+  %w[spark thunder_shock].all? do |spell|
+    impacts.call(spell).any? { |impact| impact["type"] == "chain_damage" }
+  end && executor.include?('case "chain_damage"')
+
+snarl_weakness = impacts.call("snarl").find do |impact|
+  impact["type"] == "status_effect" && impact["effect"] == "tensura:special_weakened"
+end
+fail_validation("Snarl does not reduce only special spell damage for five seconds") unless
+  snarl_weakness&.fetch("duration", 0).to_i == 100 &&
+    executor.include?('"special".equals(definition.category)') && executor.include?("*= 0.8F")
+fail_validation("Smack Down does not enforce three seconds of grounding") unless
+  impacts.call("smack_down").any? do |impact|
+    impact["type"] == "ground" && impact["duration"].to_i == 60
+  end && status_events.include?("tickGrounded") && status_events.include?("stopFallFlying")
+
+fail_validation("Seismic Toss lacks its grab/throw delivery") unless
+  spell_definition.call("seismic_toss").dig("delivery", "type") == "grab" &&
+    impacts.call("seismic_toss").any? { |impact| impact["type"] == "throw" } &&
+    executor.include?('case "grab"') && executor.include?('case "throw"')
+metal_guard = impacts.call("metal_claw").find { |impact| impact["type"] == "guard" }
+fail_validation("Metal Claw grants Guard before both hits connect") unless
+  spell_definition.call("metal_claw").dig("delivery", "combo_hits").to_i == 2 &&
+    metal_guard&.fetch("final_hit_only", false)
+
+legacy_replacements = {
+  "iron_strike" => "bullet_punch", "frost_nova" => "icy_wind",
+  "nature_burst" => "giga_drain", "poison_strike" => "venoshock",
+  "seismic_slam" => "seismic_toss", "thundershock" => "thunder_shock"
+}
+legacy_replacements.each do |legacy, replacement|
+  fail_validation("legacy definition still exists: #{legacy}") if
+    File.exist?(File.join(SPELL_DIR, "#{legacy}.json"))
+  fail_validation("missing saved-data migration #{legacy} -> #{replacement}") unless
+    aliases.include?(%Q{"#{legacy}", "#{replacement}"})
+end
+
 fail_validation("lingering clouds are not connected to the runtime controller") unless
-  executor.include?("def.delivery.duration_ticks > 0") &&
-    executor.include?("SpellRuntimeController.startMovingZone(caster, caster, def, cloudPos, Vec3.ZERO)")
+  executor.include?("definition.delivery.duration_ticks > 0") &&
+    executor.match?(/SpellRuntimeController\.startMovingZone\(\s*caster, caster, definition, cloudPosition, Vec3\.ZERO\)/m)
 fail_validation("fire impacts ignore configured chance") unless
   executor.include?("target.getRandom().nextDouble() <= impact.chance")
 fail_validation("travel sounds are not wired for players and companions") unless
-  executor.include?("def.sound.travel") &&
-    executor.scan("if (started) playTravelSound").size >= 2
+  executor.include?("sound.travel") &&
+    executor.scan("if (started) SpellFeedback.playTravelSound").size >= 2
 fail_validation("looping impact sounds are not rate-limited") unless
-  executor.include?("impactSoundTimes") && executor.include?("now - lastPlayed < 10") &&
-    executor.match?(/playImpactSound\(owner, target, def\);\s*}\s*\n\s*private static double applyExposedModifier/)
+  executor.include?("IMPACT_SOUND_TIMES") && executor.include?("now - lastPlayed < 10") &&
+    executor.include?("playImpactSound(owner, target, definition);")
 
 fail_validation("delayed areas do not use school-aware particles") unless
   runtime.match?(/tickDelayedAreas.*?runtimeParticle\(area\.definition\.school\)/m)

@@ -23,6 +23,7 @@ public class SpellStatusEvents {
     public void onPlayerTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         tickToxic(player);
+        tickGrounded(player);
         boolean immobilized = player.hasEffect(TensuraMobEffects.ASLEEP)
                 || player.hasEffect(TensuraMobEffects.FROZEN);
         if (!immobilized && !player.hasEffect(TensuraMobEffects.PARALYZED)) return;
@@ -43,6 +44,7 @@ public class SpellStatusEvents {
         if (!(event.getEntity() instanceof LivingEntity living) || living instanceof ServerPlayer) return;
         if (living.level().isClientSide) return;
         tickToxic(living);
+        tickGrounded(living);
         boolean immobilized = living.hasEffect(TensuraMobEffects.ASLEEP)
                 || living.hasEffect(TensuraMobEffects.FROZEN);
         if (!immobilized && !living.hasEffect(TensuraMobEffects.PARALYZED)) return;
@@ -108,6 +110,19 @@ public class SpellStatusEvents {
             level.sendParticles(ParticleTypes.WITCH,
                     living.getX(), living.getY() + living.getBbHeight() * 0.5,
                     living.getZ(), 6, 0.3, 0.45, 0.3, 0.03);
+        }
+    }
+
+    private static void tickGrounded(LivingEntity living) {
+        if (!living.hasEffect(TensuraMobEffects.GROUNDED)) return;
+        if (living instanceof ServerPlayer player) {
+            player.getAbilities().flying = false;
+            player.stopFallFlying();
+        }
+        Vec3 movement = living.getDeltaMovement();
+        if (!living.onGround() && movement.y > -0.8) {
+            living.setDeltaMovement(movement.x, -0.8, movement.z);
+            living.hurtMarked = true;
         }
     }
 }

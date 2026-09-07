@@ -1,0 +1,18 @@
+{
+  "pokemon_type": "poison",
+  "category": "special",
+  "power": 11.0,
+  "school": "poison",
+  "cooldown_ticks": 160,
+  "targeting": { "type": "aim", "range": 18.0, "radius": 3.0, "max_targets": 6 },
+  "delivery": { "type": "projectile", "speed": 1.35 },
+  "impact": [
+    {
+      "type": "damage",
+      "effects": ["minecraft:poison", "tensura:toxic"],
+      "conditional_multiplier": 2.0
+    }
+  ],
+  "visual": { "cast_animation": "venoshock_compress", "projectile": "venoshock_orb", "trail": "venoshock_drops", "impact": "venoshock_splash" },
+  "sound": { "cast": "minecraft:entity.witch.throw", "impact": "minecraft:block.slime_block.break" }
+}

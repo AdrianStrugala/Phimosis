@@ -1,0 +1,15 @@
+{
+  "pokemon_type": "ghost",
+  "category": "physical",
+  "power": 15.0,
+  "school": "shadow",
+  "cooldown_ticks": 160,
+  "targeting": { "type": "cone", "range": 4.0, "max_targets": 5 },
+  "delivery": { "type": "arc_strike", "cone_angle": 95.0 },
+  "impact": [
+    { "type": "damage" },
+    { "type": "expose", "duration": 80, "chance": 0.35 }
+  ],
+  "visual": { "cast_animation": "shadow_claw_swing", "trail": "shadow_claw_rends", "impact": "shadow_claw_smoke" },
+  "sound": { "cast": "minecraft:entity.player.attack.sweep", "impact": "minecraft:entity.phantom.hurt" }
+}

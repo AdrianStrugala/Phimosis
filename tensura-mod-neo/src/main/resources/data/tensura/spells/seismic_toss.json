@@ -1,0 +1,15 @@
+{
+  "pokemon_type": "fighting",
+  "category": "physical",
+  "power": 14.0,
+  "school": "physical",
+  "cooldown_ticks": 260,
+  "targeting": { "type": "aim", "range": 3.0, "max_targets": 1 },
+  "delivery": { "type": "grab" },
+  "impact": [
+    { "type": "damage" },
+    { "type": "throw", "strength": 2.2, "amount": 0.75 }
+  ],
+  "visual": { "cast_animation": "seismic_toss_heave", "trail": "seismic_toss_arc", "impact": "seismic_toss_land" },
+  "sound": { "cast": "minecraft:entity.player.attack.strong", "impact": "minecraft:entity.generic.big_fall" }
+}

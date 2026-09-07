@@ -392,7 +392,7 @@
       "predicate": {
         "tensura:icon": 52
       },
-      "model": "tensura:item/spell_thundershock"
+      "model": "tensura:item/spell_thunder_shock"
     },
     {
       "predicate": {
@@ -482,7 +482,7 @@
       "predicate": {
         "tensura:icon": 67
       },
-      "model": "tensura:item/spell_iron_strike"
+      "model": "tensura:item/spell_bullet_punch"
     },
     {
       "predicate": {
@@ -501,6 +501,144 @@
         "tensura:icon": 70
       },
       "model": "tensura:item/spell_shadow_ball"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 71
+      },
+      "model": "tensura:item/spell_fire_punch"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 72
+      },
+      "model": "tensura:item/spell_acid_spray"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 73
+      },
+      "model": "tensura:item/spell_bite"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 74
+      },
+      "model": "tensura:item/spell_crunch"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 75
+      },
+      "model": "tensura:item/spell_dragon_claw"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 76
+      },
+      "model": "tensura:item/spell_dragon_tail"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 77
+      },
+      "model": "tensura:item/spell_drain_punch"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 78
+      },
+      "model": "tensura:item/spell_flame_charge"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 79
+      },
+      "model": "tensura:item/spell_force_palm"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 80
+      },
+      "model": "tensura:item/spell_giga_drain"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 81
+      },
+      "model": "tensura:item/spell_ice_punch"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 82
+      },
+      "model": "tensura:item/spell_icy_wind"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 83
+      },
+      "model": "tensura:item/spell_iron_head"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 84
+      },
+      "model": "tensura:item/spell_lick"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 85
+      },
+      "model": "tensura:item/spell_metal_claw"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 86
+      },
+      "model": "tensura:item/spell_psycho_cut"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 87
+      },
+      "model": "tensura:item/spell_seismic_toss"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 88
+      },
+      "model": "tensura:item/spell_shadow_claw"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 89
+      },
+      "model": "tensura:item/spell_smack_down"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 90
+      },
+      "model": "tensura:item/spell_snarl"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 91
+      },
+      "model": "tensura:item/spell_spark"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 92
+      },
+      "model": "tensura:item/spell_thunder_punch"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 93
+      },
+      "model": "tensura:item/spell_venoshock"
     }
   ]
 }

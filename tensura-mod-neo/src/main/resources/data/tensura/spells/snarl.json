@@ -1,0 +1,15 @@
+{
+  "pokemon_type": "dark",
+  "category": "special",
+  "power": 10.0,
+  "school": "shadow",
+  "cooldown_ticks": 160,
+  "targeting": { "type": "cone", "range": 7.0, "max_targets": 7 },
+  "delivery": { "type": "arc_strike", "cone_angle": 100.0 },
+  "impact": [
+    { "type": "damage" },
+    { "type": "status_effect", "effect": "tensura:special_weakened", "duration": 100 }
+  ],
+  "visual": { "cast_animation": "snarl_wave_cast", "trail": "snarl_sound_cone", "impact": "snarl_head_lines" },
+  "sound": { "cast": "minecraft:entity.ravager.roar", "impact": "minecraft:entity.warden.heartbeat" }
+}
