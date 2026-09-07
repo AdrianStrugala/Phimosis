@@ -348,9 +348,10 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:netherite_sword"
+        "item": "minecraft:dispenser"
       }
     },
+    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -371,7 +372,7 @@
     }
   },
   "explosion_owned": {
-    "title": "EXPLOSION",
+    "title": "Explosion",
     "icon": {
       "type": "texture",
       "data": {
@@ -399,9 +400,10 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:tnt"
+        "item": "minecraft:dispenser"
       }
     },
+    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -705,9 +707,10 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:magma_block"
+        "item": "minecraft:dispenser"
       }
     },
+    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -960,9 +963,10 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:prismarine_shard"
+        "item": "minecraft:dispenser"
       }
     },
+    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
@@ -1878,9 +1882,10 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:chorus_flower"
+        "item": "minecraft:dispenser"
       }
     },
+    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",

@@ -1,9 +1,12 @@
 # Rework pochlonietych spelli
 
 Status: propozycja projektowa
-Zakres: 100 spelli, mechaniki RPG, balans, VFX, animacje i migracja
+Zakres: 110 spelli, mechaniki RPG, balans, VFX, animacje i migracja
 
-## Stan implementacji - 2026-09-04
+## Historyczny stan implementacji - 2026-09-04
+
+To snapshot z podanej daty, nie biezacy tracker wdrozenia. Aktualny checkpoint
+oraz zasady jego walidacji sa w `../AGENTS.md`.
 
 Wdrozone:
 
@@ -37,19 +40,19 @@ Obecny system ma wiele nazw, ale niewiele odmiennych zachowan. Rework nie powini
 
 Docelowe zalozenia:
 
-- Roster zawiera dokladnie 100 ruchow o kanonicznych nazwach i typach Pokemon.
+- Roster zawiera dokladnie 110 ruchow o kanonicznych nazwach i typach Pokemon.
 - Obslugujemy wszystkie 18 typow: `normal`, `fire`, `water`, `electric`, `grass`, `ice`, `fighting`, `poison`, `ground`, `flying`, `psychic`, `bug`, `rock`, `ghost`, `dragon`, `dark`, `steel`, `fairy`.
 - Pokemon przekazuje tylko spell o tej samej nazwie i typie co ruch w jego movesecie. Usuwamy fallback zmieniajacy nieobslugiwany ruch w inny spell.
-- Okolo 25% rosteru pozostaje pociskami. Roznia sie predkoscia, liczba, torem, naprowadzaniem, przebiciem i efektem trafienia, a nie tylko kolorem.
+- Okolo 23% rosteru pozostaje pociskami. Roznia sie predkoscia, liczba, torem, naprowadzaniem, przebiciem i efektem trafienia, a nie tylko kolorem.
 - Pozostale spelle wykorzystuja dash, melee, beam, channel, cone, wave, vortex, persistent zone, trap, counter, teleport i delayed cast.
 - Obrazenia spelli nie zaleza od cooldownu zwyklego ataku Minecrafta.
 - Friendly fire jest domyslnie wylaczony dla gracza, jego Pokemonow i obywateli tej samej kolonii.
 
-## 2. Docelowy roster - 100 spelli
+## 2. Docelowy roster - 110 spelli
 
 `DMG` oznacza bazowe HP przed pancerzem, a `CD` czas odnowienia w sekundach. Wartosci sa punktem startowym do testow balansu.
 
-### Normal - 6
+### Normal - 7
 
 | Spell | DMG / CD | Delivery | Mechanika RPG | Animacja i VFX |
 |---|---:|---|---|---|
@@ -58,9 +61,10 @@ Docelowe zalozenia:
 | `Swift` | 12 / 8 | Homing projectile | Trzy gwiazdy po 4 DMG; naprowadzanie slabnie za przeszkoda. | Obracajace sie modele gwiazd z jasnym lukiem. |
 | `Tri Attack` | 15 / 12 | Projectile volley | Trzy pociski; ostatni naklada Burn, Chill albo Paralysis zalezne od aktywnej sekwencji. | Czerwony trojkat, niebieski romb i zolty okrag leca w ciasnej formacji. |
 | `Hyper Voice` | 18 / 14 | Cone | Fala dzwieku przebija cele i przerywa przygotowywany cast. | Koncentryczne teksturowane fale od ust gracza i drganie powietrza. |
+| `Recover` | 0 / 15 | Self heal | Cast 1 s przywraca 50% maksymalnego zdrowia. | Zielono-zlota aura zbiera sie przy klatce piersiowej i zostawia spokojny afterglow. |
 | `Hyper Beam` | 32 / 25 | Channel beam | Ladowanie 1.4 s, przebija cele; po uzyciu Exhausted na 4 s. | Rosnaca kula miedzy dlonmi, szeroki promien i fala uderzeniowa. |
 
-### Fire - 6
+### Fire - 7
 
 | Spell | DMG / CD | Delivery | Mechanika RPG | Animacja i VFX |
 |---|---:|---|---|---|
@@ -69,6 +73,7 @@ Docelowe zalozenia:
 | `Flamethrower` | 14 / 9 | Channel cone | Strumien przez 1.2 s; kolejne ticki odnawiaja Burn. | Warstwowy ogien z bialym rdzeniem zamiast linii pojedynczych particles. |
 | `Fire Spin` | 12 / 14 | Vortex | Wir przez 5 s lekko przyciaga i podpala cele. | Teksturowany cylinder ognia z czytelnym pustym srodkiem. |
 | `Fire Blast` | 22 / 17 | Projectile AoE | Wolny duzy pocisk wybucha w promieniu 4 m i naklada Burn. | Symbol ognia formuje sie podczas lotu, potem rozpada na piec ramion eksplozji. |
+| `Fire Punch` | 13 / 7 | Arc strike | Mocny cios przed graczem; trafienie podpala cel na 3 s. Nie wymaga namierzonego przeciwnika. | Ognista rekawica, krotki luk zamachu i eksplozja iskier na kontakcie. |
 | `Overheat` | 28 / 22 | Cone burst | Szeroki wybuch przed graczem; Exhausted na 6 s. | Bialy rdzen, pomaranczowy front ciepla i gesty dym po eksplozji. |
 
 ### Water - 6
@@ -82,7 +87,7 @@ Docelowe zalozenia:
 | `Surf` | 20 / 18 | Wave | Szeroka fala jedzie po podlozu, niesie cele i naklada Wet. | Model fali z grzebieniem; mokry slad znika po 2 s. |
 | `Hydro Pump` | 25 / 20 | Channel beam | Ladowanie 0.8 s; silny strumien odpycha wraz z kolejnymi tickami. | Gruba spirala wody, mgla przy bokach i duzy splash na przeszkodzie. |
 
-### Electric - 6
+### Electric - 7
 
 | Spell | DMG / CD | Delivery | Mechanika RPG | Animacja i VFX |
 |---|---:|---|---|---|
@@ -91,9 +96,10 @@ Docelowe zalozenia:
 | `Electro Ball` | 8-18 / 8 | Homing projectile | Obrazenia rosna wraz z przewaga predkosci rzucajacego. | Kula gestnieje i rosnie zalezne od wyliczonej mocy. |
 | `Volt Tackle` | 23 / 16 | Dash | Dluga szarza z duzym Stagger; rzucajacy otrzymuje 25% recoil. | Gruba powloka pradu, jasny impact frame i iskry cofajace sie do gracza. |
 | `Discharge` | 16 / 14 | Radial burst | Wet cele przewodza atak do jednego kolejnego celu. | Pierscien elektryczny po ziemi i lancuchy miedzy jednostkami. |
+| `Thunder Punch` | 13 / 7 | Arc strike | Mocny cios przed graczem; daje Paralysis, a Wet cel zawsze otrzymuje pelny efekt. Nie wymaga namierzonego przeciwnika. | Elektryczna rekawica, gesty luk pradu i rozgalezienia na trafieniu. |
 | `Thunder` | 26 / 22 | Delayed | Uderzenie po telegraphie 1 s; Wet gwarantuje pelny buildup Paralysis. | Znacznik na ziemi, blysk chmur i gruby bolt z afterglow. |
 
-### Grass - 6
+### Grass - 7
 
 | Spell | DMG / CD | Delivery | Mechanika RPG | Animacja i VFX |
 |---|---:|---|---|---|
@@ -101,10 +107,11 @@ Docelowe zalozenia:
 | `Razor Leaf` | 11 / 7 | Projectile fan | Wachlarz pieciu lisci; jeden cel moze dostac maksymalnie trzy trafienia. | Modele lisci wiruja po lekko zakrzywionych torach. |
 | `Leech Seed` | 4 / 14 | Projectile status | Seeded na 8 s; co sekunde przenosi 2 HP do rzucajacego. | Nasiono kielkuje na celu, a zielona wstega wraca do gracza. |
 | `Giga Drain` | 14 / 13 | Channel tether | Kanal przez 1.5 s leczy za 60% faktycznie zadanych obrazen. | Kilka zielonych wsteg wyciaga energie z celu do klatki piersiowej gracza. |
+| `Leaf Blade` | 15 / 8 | Arc strike | Szerokie ciecie przed graczem naklada Exposed. Nie wymaga namierzonego przeciwnika. | Lisciane ostrze wydluza sie z dloni, zostawiajac zielony luk i platki. |
 | `Petal Blizzard` | 17 / 15 | Moving zone | Burza platkow otacza gracza przez 4 s i odpycha pobliskie cele. | Gesty wir modeli platkow z okazjonalnymi jasnymi cieciami. |
 | `Solar Beam` | 27 / 22 | Channel beam | Ladowanie 1.8 s, w swietle dnia 1 s; przebija cele. | Swiatlo zbiera sie z gory w orb, potem tworzy zielono-zloty beam. |
 
-### Ice - 6
+### Ice - 7
 
 | Spell | DMG / CD | Delivery | Mechanika RPG | Animacja i VFX |
 |---|---:|---|---|---|
@@ -112,6 +119,7 @@ Docelowe zalozenia:
 | `Ice Shard` | 7 / 3 | Projectile | Bardzo szybki odlamek daje 1 Chill; dwa ladunki. | Ostry model lodu, zimna smuga i pekniecie przy trafieniu. |
 | `Icy Wind` | 10 / 9 | Cone | Szeroki podmuch naklada 2 Chill i odpycha lekkie cele. | Platki, mgla i kierunkowe smugi wiatru. |
 | `Ice Beam` | 15 / 13 | Beam | Daje 2 Chill; Wet cel zostaje natychmiast Frozen. | Niebiesko-bialy promien, narastajacy lod i efekt rozbicia. |
+| `Ice Punch` | 13 / 7 | Arc strike | Mocny cios przed graczem daje 2 Chill; Wet cel zostaje Frozen. Nie wymaga namierzonego przeciwnika. | Lodowa rekawica, luk szronu i pekajace krysztaly przy trafieniu. |
 | `Aurora Veil` | 0 / 20 | Self dome | Przez 8 s redukuje o 25% obrazenia sojusznikow wewnatrz kopuly. | Polprzezroczysta kurtyna zorzy z heksagonalnym refleksem przy trafieniu. |
 | `Blizzard` | 22 / 22 | Moving zone | Burza przez 6 s podaza powoli do celu i naklada Chill co 2 s. | Gesty lokalny snieg z wirem, lecz z widoczna granica zagrozenia. |
 
@@ -156,12 +164,13 @@ Docelowe zalozenia:
 | `Tailwind` | 0 / 18 | Moving aura | Przez 8 s sojusznicy w poblizu maja 25% predkosci ruchu. | Kierunkowe wstegi powietrza oplataja nogi druzyny. |
 | `Hurricane` | 22 / 20 | Vortex | Tornado przez 5 s przyciaga, unosi i wyrzuca na koncu. | Teksturowany lej z odlamkami; kierunek wyrzutu jest pokazany wczesniej. |
 
-### Psychic - 6
+### Psychic - 7
 
 | Spell | DMG / CD | Delivery | Mechanika RPG | Animacja i VFX |
 |---|---:|---|---|---|
 | `Confusion` | 6 / 5 | Telekinetic throw | Krotko podnosi cel, odrzuca do celownika i naklada Confused. | Fioletowe pierscienie wokol glowy i telekinetyczna fala. |
 | `Psybeam` | 11 / 8 | Ricochet beam | Odbija sie raz od bloku albo jednego dodatkowego celu. | Warstwowy teczowy promien z wyraznym punktem odbicia. |
+| `Psycho Cut` | 14 / 8 | Arc strike | Magiczne ostrze przecina obszar przed graczem i ignoruje 2 punkty pancerza. Nie wymaga namierzonego przeciwnika. | Fioletowy polksiezyc powstaje przy dloni i rozcina powietrze na krotkim dystansie. |
 | `Rest` | 0 / 90 | Self heal | Natychmiast przywraca pelne HP i oczyszcza negatywne statusy, po czym naklada Asleep na 5 s. Obrazenia moga obudzic dopiero po 2 s. | Gracz siada lub opuszcza ramiona, otacza go spokojna niebieska aura i trzy unoszace sie symbole snu. |
 | `Psychic` | 17 / 14 | Hold and throw | Przytrzymuje cel do 1.5 s; ponowne uzycie rzuca go w wybranym kierunku. | Przezroczysta aura i linie wskazujace kierunek rzutu. |
 | `Trick Room` | 0 / 24 | Zone | Przez 8 s szybkie jednostki sa spowolnione, a wolne przyspieszone. | Odwrocona przezroczysta kostka z siatka i rotujacymi rogami. |
@@ -177,43 +186,47 @@ Docelowe zalozenia:
 | `X-Scissor` | 18 / 12 | Melee arcs | Dwa przecinajace sie ciecia; trafienie oboma daje Exposed. | Dwa duze slashe ukladaja sie w znak X. |
 | `Bug Buzz` | 16 / 13 | Channel cone | Fala przez 1 s przerywa cast i daje Exposed na 4 s. | Gesty wzor fal dzwiekowych przypominajacy skrzydla owada. |
 
-### Rock - 5
+### Rock - 6
 
 | Spell | DMG / CD | Delivery | Mechanika RPG | Animacja i VFX |
 |---|---:|---|---|---|
 | `Rock Throw` | 8 / 4 | Projectile | Ciezki lobowany kamien z malym knockbackiem. | Obracajacy sie model kamienia, pyl i odlamki na bloku. |
 | `Smack Down` | 9 / 7 | Homing projectile | Sciaga lecacy cel na ziemie i blokuje lot na 3 s. | Glaz uderza z gory; powietrzny cel ciagnie za soba pyl podczas upadku. |
 | `Rock Tomb` | 12 / 11 | Trap zone | Trzy skaly zamykaja obszar, spowalniajac wyjscie przez 4 s. | Glazy wyrastaja po bokach, ale nie tworza trwalych blokow. |
+| `Stealth Rock` | 7 / 16 | Trap | Trzy skalne pulapki trwaja 20 s i rania przeciwnika przy kazdym ponownym wejsciu. | Prawie ukryte kamienne runy wyrzucaja ostre odlamki po aktywacji. |
 | `Rock Slide` | 15 / 12 | Delayed line | Trzy spadajace glazy; srodkowy powoduje Stagger. | Cienie na ziemi rosna przed upadkiem, glazy pekaja na kawalki. |
 | `Stone Edge` | 23 / 17 | Ground line | Linia kolcow przebija 4 punkty pancerza. | Sekwencyjnie wyrastajace ostre skaly i fala pylu. |
 
-### Ghost - 6
+### Ghost - 7
 
 | Spell | DMG / CD | Delivery | Mechanika RPG | Animacja i VFX |
 |---|---:|---|---|---|
 | `Lick` | 5 / 4 | Melee arc | Krotki zasieg; daje 1 Paralysis i Confused na 2 s. | Widmowy luk przypominajacy jezyk znika w dymie za celem. |
 | `Shadow Sneak` | 9 / 6 | Teleport strike | Teleport do cienia celu w zasiegu 10 m i szybkie ciecie. | Gracz rozpada sie w cien, ktory plynie po ziemi i sklada sie za celem. |
+| `Shadow Claw` | 15 / 8 | Arc strike | Widmowe pazury uderzaja przed graczem i moga nalozyc Exposed. Nie wymagaja namierzonego przeciwnika. | Trzy ciemne slady pazurow rozrywaja przestrzen i zostawiaja fioletowy dym. |
 | `Night Shade` | 8-16 / 8 | Instant mark | Obrazenia rosna z maksymalnym HP celu, z limitem przeciw bossom. | Ciemna sylwetka celu odrywa sie i uderza z powrotem. |
 | `Hex` | 10-20 / 10 | Instant curse | Podwojone obrazenia, jezeli cel ma negatywny status. | Runy statusow sa wciagane do fioletowego znaku klatwy. |
 | `Shadow Ball` | 18 / 13 | Projectile | Przenika jednego przeciwnika i wybucha na drugim albo bloku. | Ciemny rdzen, spiralny trail i implozja zamiast zwyklego wybuchu. |
 | `Phantom Force` | 24 / 18 | Delayed teleport | Gracz znika na 1 s, po czym uderza za celem; miejsce wyjscia ma telegraph. | Zapadniecie w portal-cien i pionowe rozdarcie przestrzeni przy powrocie. |
 
-### Dragon - 6
+### Dragon - 7
 
 | Spell | DMG / CD | Delivery | Mechanika RPG | Animacja i VFX |
 |---|---:|---|---|---|
 | `Dragon Breath` | 11 / 7 | Channel cone | Pelne trafienie daje 1 Paralysis. | Fioletowo-niebieski oddech z falujacym rdzeniem i iskrami. |
+| `Dragon Claw` | 17 / 9 | Arc strike | Silne smocze ciecie przed graczem ma duzy knockback. Nie wymaga namierzonego przeciwnika. | Pazury z Magicule tworza szeroki luk, ktory rozpada sie na smocze luski. |
 | `Dragon Tail` | 13 / 9 | Melee sweep | Szeroki zamach z silnym odrzutem; przerywa cast. | Smoczy ogon energii podaza za obrotem ciala. |
 | `Dragon Rush` | 17 / 12 | Steerable dash | Sterowalna szarza; centralne trafienie daje Stagger. | Aura glowy smoka otacza gracza i rozpada sie na luski. |
 | `Dragon Pulse` | 18 / 12 | Projectile | Spiralny pocisk przebija do trzech celow. | Dwie helisy oplataja jasny rdzen pocisku. |
 | `Outrage` | 27 / 19 | Forced combo | Trzy szarze w ciagu 3 s; po zakonczeniu Confused na 4 s. | Coraz silniejsza smocza aura i trzy rozne kierunki ciecia. |
 | `Draco Meteor` | 31 / 26 | Delayed meteor | Cast 1.5 s, meteory spadaja przez 2 s; potem Exhausted na 6 s. | Modele meteorow z ogonem, cienie uderzen i rozrzut skal. |
 
-### Dark - 5
+### Dark - 6
 
 | Spell | DMG / CD | Delivery | Mechanika RPG | Animacja i VFX |
 |---|---:|---|---|---|
 | `Bite` | 8 / 4 | Lunge melee | Trafienie od tylu powoduje Stagger. | Dwie polprzezroczyste szczeki zaciskaja sie na celu. |
+| `Crunch` | 16 / 9 | Lunge melee | Ciezkie ugryzienie z duza szansa nalozenia Exposed. | Wielkie szczeki z ciemnej energii zaciskaja sie i zostawiaja peknieta aure. |
 | `Snarl` | 10 / 8 | Cone | Cel zadaje 20% mniej special damage przez 5 s. | Ciemna fala dzwieku i ostre, zanikajace linie wokol glowy celu. |
 | `Sucker Punch` | 14 / 10 | Counter | Postawa 1 s; kontruje przeciwnika, gdy ten zaczyna atak albo cast. | Ciemny blysk na graczu i natychmiastowy afterimage przy kontrze. |
 | `Dark Pulse` | 16 / 11 | Expanding ring | Pierscien odpycha i przerywa przygotowywane casty. | Czarno-fioletowa fala z ostrymi krawedziami i pulsujacym dzwiekiem. |
@@ -245,11 +258,11 @@ Docelowy udzial archetypow:
 
 | Rodzina | Liczba | Udzial |
 |---|---:|---:|
-| Prosty, wielokrotny lub homing projectile | 25 | 25% |
-| Dash, teleport, burrow i melee | 24 | 24% |
-| Beam, channel i cone | 20 | 20% |
-| Zone, aura, vortex, trap i wave | 16 | 16% |
-| Delayed, mark, counter, grab, self i instant control | 15 | 15% |
+| Prosty, wielokrotny lub homing projectile | 25 | 23% |
+| Dash, teleport, burrow, melee i arc strike | 32 | 29% |
+| Beam, channel i cone | 20 | 18% |
+| Zone, aura, vortex, trap i wave | 17 | 15% |
+| Delayed, mark, counter, grab, self i instant control | 16 | 15% |
 
 Pociski pozostaja wazne, ale nie dominuja rosteru. Nawet w tej grupie wystepuja: salwy, wachlarze, homing, lob, pocisk przebijajacy, sekwencja podtrzymywana, orb skalowany predkoscia i pocisk eksplodujacy.
 
@@ -289,6 +302,7 @@ final_damage = power * category_modifier * target_mitigation
 | `cone` | Stozek przed graczem dla oddechow, sprayow i fal dzwieku. |
 | `dash` | Przemieszcza rzucajacego i sprawdza trafienia na calej trasie. |
 | `melee_arc` | Krotki luk albo combo w zasiegu walki wrecz. |
+| `arc_strike` | Zawsze wykonuje krotki zamach przed rzucajacym bez wymaganego celu. Trafia jednostki w zasiegu 3-4 blokow i respektuje przeszkody; Claw, Blade, Cut i elemental Punch korzystaja ze wspolnej kolizji, ale maja VFX i impacty swojej szkoly. |
 | `zone` | Serwerowa encja obszaru tickujaca przez zadany czas. |
 | `trap` | Obszar aktywowany przez wejscie przeciwnika. |
 | `vortex` | Strefa przyciagajaca do swojego srodka. |
@@ -522,10 +536,10 @@ Po kazdej paczce testujemy PvE, companion cast, multiplayer, friendly fire oraz 
 
 ## 10. Kryteria akceptacji
 
-- Roster ma 100 spelli i wszystkie nazwy sa kanonicznymi ruchami Pokemon.
+- Roster ma 110 spelli i wszystkie nazwy sa kanonicznymi ruchami Pokemon.
 - Kazdy spell zachowuje kanoniczny typ ruchu.
 - Skill absorbowany z Pokemona ma taka sama nazwe jak ruch w jego movesecie.
-- Nie wiecej niz 30% rosteru to pociski; obecny roster ma 25%.
+- Nie wiecej niz 30% rosteru to pociski; docelowy roster ma okolo 23%.
 - Kazdy z 18 typow ma unikalna role i co najmniej piec spelli.
 - Kazdy mocny atak obszarowy ma telegraph widoczny przed obrazeniami.
 - Pull, Rooted, Frozen i Stagger dzialaja na moby i graczy z diminishing returns.
