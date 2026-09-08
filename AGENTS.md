@@ -35,6 +35,8 @@ liczby ukonczonych spelli.
 | `tensura-mod-neo/PHOTON_VFX_AUTHORING.md` | Kontrakt VFX | runtime Photon, anchory, kierunki i eksport `.fx` | komplet aktualnych profili wszystkich spelli |
 | `tensura-mod-neo/ANIMATION_FIX_PLAN.md` | Plan diagnostyczny | kolejnosc rozwazanych napraw animacji | wynik ostatniego testu |
 | `tensura-mod-neo/ANIMATION_FIX_TRACKER.md` | Tracker eksperymentow | ostatni zapisany wynik testu animacji | stan spelli i rosteru |
+| `tensura-mod-neo/SPELL_FOCUS_SPEC.md` | Spec katalizatora zaklec | projekt itemu katalizatora, radiala, pakietow i migracji datapacka; stan zastany kodu na 2026-09-08 | niezmienniki drzewka Devour (patrz `DEVOUR_TREE_CONTRACT.md`) i cokolwiek wdrozonego |
+| `PUBLIC_SERVER_LAUNCH.md` | Plan otwarcia serwera publicznego | blokery przed otwarciem, lista modow i infrastruktury, warstwa play-by-forum | biezaca konfiguracja serwera 2k37 i stan modow w `mods/` |
 
 Gdy powstaje nowy dokument projektowy lub tracker, dopisz go do tej tabeli i
 okresl jednoznacznie, za co odpowiada.
