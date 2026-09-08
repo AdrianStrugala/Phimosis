@@ -14,6 +14,7 @@ import com.tensura.event.SpellRuntimeController;
 import com.tensura.event.SpellStatusEvents;
 import com.tensura.event.TensuraAttributeEffects;
 import com.tensura.gui.RecallStationScreen;
+import com.tensura.item.SpellFocusItem;
 import com.tensura.item.SpellItem;
 import com.tensura.network.NetworkHandler;
 import com.tensura.registry.TensuraAttributes;
@@ -109,6 +110,16 @@ public class TensuraMod {
                     TensuraItemRegistry.SPELL_ITEM.get(),
                     ResourceLocation.fromNamespaceAndPath(MOD_ID, "icon"),
                     (stack, level, entity, seed) -> SpellItem.getIconIndex(stack)
+                );
+                ItemProperties.register(
+                        TensuraItemRegistry.SPELL_FOCUS.get(),
+                        ResourceLocation.fromNamespaceAndPath(MOD_ID, "school"),
+                        (stack, level, entity, seed) -> SpellFocusItem.getSchoolIndex(stack)
+                );
+                ItemProperties.register(
+                        TensuraItemRegistry.SPELL_FOCUS.get(),
+                        ResourceLocation.fromNamespaceAndPath(MOD_ID, "icon"),
+                        (stack, level, entity, seed) -> SpellFocusItem.getIconIndex(stack)
                 );
             });
         }

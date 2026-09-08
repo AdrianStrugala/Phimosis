@@ -1,17 +1,21 @@
 package com.tensura.client;
 
-import com.tensura.gui.PredatorCodexScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-import java.util.List;
-
 @OnlyIn(Dist.CLIENT)
 public class ClientPacketHandlers {
 
-    public static void openCodex(List<ResourceLocation> absorbed) {
-        Minecraft.getInstance().setScreen(new PredatorCodexScreen(absorbed));
+    /**
+     * Opens the catalyst radial with one spell waiting to be dropped into a slot. Fired after
+     * a click on a Devour tree node; without a catalyst on the player the server has already
+     * said so on chat, so there is nothing to show.
+     */
+    public static void openRadialForAssign(ResourceLocation spellId) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null) return;
+        mc.setScreen(new SpellRadialScreen(spellId, -1));
     }
 }

@@ -35,7 +35,7 @@ liczby ukonczonych spelli.
 | `docs/contracts/photon-vfx-authoring.md` | Kontrakt VFX | runtime Photon, anchory, kierunki i eksport `.fx` | komplet aktualnych profili wszystkich spelli |
 | `docs/trackers/animation-fix-plan.md` | Plan diagnostyczny | kolejnosc rozwazanych napraw animacji | wynik ostatniego testu |
 | `docs/trackers/animation-fix-tracker.md` | Tracker eksperymentow | ostatni zapisany wynik testu animacji | stan spelli i rosteru |
-| `docs/specs/spell-focus.md` | Spec katalizatora zaklec | projekt itemu katalizatora, radiala, pakietow i migracji datapacka; stan zastany kodu na 2026-09-08 | niezmienniki drzewka Devour (patrz `docs/contracts/devour-tree.md`) i cokolwiek wdrozonego |
+| `docs/specs/spell-focus.md` | Spec katalizatora zaklec | projekt katalizatora, radiala, pakietow i migracji datapacka; sekcja 0 mowi, co z tego jest wdrozone w 2.0.38 | niezmienniki drzewka Devour (patrz `docs/contracts/devour-tree.md`) oraz wynik playtestu, ktorego jeszcze nie bylo |
 | `docs/operations/public-server-launch.md` | Plan otwarcia serwera publicznego | blokery przed otwarciem, lista modow i infrastruktury, warstwa play-by-forum | biezaca konfiguracja serwera 2k37 i stan modow w `mods/` |
 
 Gdy powstaje nowy dokument projektowy lub tracker, dopisz go do tej tabeli i

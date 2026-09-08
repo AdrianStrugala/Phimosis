@@ -5,7 +5,9 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.tensura.data.PredatorAbsorption;
 import com.tensura.data.PredatorData;
 import com.tensura.engine.SpellRegistry;
+import com.tensura.item.SpellCasting;
 import com.tensura.item.SpellItem;
+import com.tensura.network.OpenRadialPacket;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -16,6 +18,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 
@@ -52,7 +55,7 @@ public class TensuraCommands {
                         )
                     )
                 )
-                // Devour tree inner button: hand out a copy, then re-arm the node
+                // Devour tree inner button: open the catalyst radial, then re-arm the node
                 .then(Commands.literal("devour_recover")
                     .then(Commands.argument("player", EntityArgument.player())
                         .then(Commands.argument("spell", StringArgumentType.word())
@@ -106,8 +109,9 @@ public class TensuraCommands {
     }
 
     /**
-     * Reward of the devour tree's inner button. Hands out a copy if the spell is absorbed,
-     * then re-locks that button so it can be clicked again.
+     * Reward of the devour tree's inner button. Opens the catalyst radial with this spell on
+     * the cursor if the player has absorbed it, then re-locks that button so it can be
+     * clicked again.
      *
      * The re-lock is deferred to the next server task on purpose: this runs from inside
      * puffish's own unlock handling, and locking the skill in the middle of that would
@@ -117,14 +121,17 @@ public class TensuraCommands {
         ResourceLocation id = ResourceLocation.tryParse("tensura:" + spellName);
         if (id == null || SpellRegistry.get(id).isEmpty()) return 0;
 
-        if (PredatorData.hasAbsorbed(target, id)) {
-            target.addItem(SpellItem.create(id));
-            target.sendSystemMessage(Component.literal(
-                    "§a[Predator] Odzyskano: §e" + PredatorAbsorption.prettyName(id)));
-        } else {
+        if (!PredatorData.hasAbsorbed(target, id)) {
             target.sendSystemMessage(Component.literal(
                     "§c[Predator] Nie pochłonąłeś jeszcze §e" + PredatorAbsorption.prettyName(id)
                     + "§c! Zabij odpowiedniego Pokémona."));
+        } else if (SpellCasting.findFocus(target) == null) {
+            // Nothing to assign to — say so rather than opening an empty screen.
+            target.sendSystemMessage(Component.literal(
+                    "§c[Katalizator] Weź katalizator do ręki lub w drugą rękę, żeby przypisać §e"
+                    + PredatorAbsorption.prettyName(id)));
+        } else {
+            PacketDistributor.sendToPlayer(target, new OpenRadialPacket(id));
         }
 
         target.getServer().execute(() -> {
@@ -134,8 +141,7 @@ public class TensuraCommands {
     }
 
     /**
-     * Hands the player a copy of a spell they have already absorbed. Same guarantee as
-     * the Predator Codex — never grants a spell that is not in the absorbed list.
+     * Marks every known spell as absorbed and lights up the whole devour tree. Admin tool.
      */
     private static int absorbAll(CommandSourceStack src, ServerPlayer target) {
         int newly = 0;

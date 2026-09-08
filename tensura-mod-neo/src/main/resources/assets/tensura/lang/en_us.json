@@ -9,5 +9,8 @@
   "effect.tensura.exposed": "Exposed",
   "effect.tensura.toxic": "Toxic",
   "effect.tensura.grounded": "Grounded",
-  "effect.tensura.special_weakened": "Special Weakened"
+  "effect.tensura.special_weakened": "Special Weakened",
+  "item.tensura.spell_focus": "Spell Catalyst",
+  "key.categories.tensura": "Tensura",
+  "key.tensura.open_radial": "Spell Catalyst — hold to choose"
 }

@@ -1,7 +1,7 @@
 package com.tensura.registry;
 
 import com.tensura.TensuraMod;
-import com.tensura.item.PredatorCodexItem;
+import com.tensura.item.SpellFocusItem;
 import com.tensura.item.SpellItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
@@ -20,9 +20,12 @@ public class TensuraItemRegistry {
     public static final DeferredHolder<Item, SpellItem> SPELL_ITEM =
             ITEMS.register("spell_item", () -> new SpellItem(new Item.Properties().stacksTo(1)));
 
-    public static final DeferredHolder<Item, PredatorCodexItem> PREDATOR_CODEX =
-            ITEMS.register("predator_codex",
-                    () -> new PredatorCodexItem(new Item.Properties().stacksTo(1)));
+    /** Slots are fixed at five for now; more tiers can register alongside this one. */
+    public static final int FOCUS_SLOTS = 5;
+
+    public static final DeferredHolder<Item, SpellFocusItem> SPELL_FOCUS =
+            ITEMS.register("spell_focus",
+                    () -> new SpellFocusItem(new Item.Properties().stacksTo(1), FOCUS_SLOTS));
 
     public static final DeferredHolder<Item, BlockItem> RECALL_STATION =
             ITEMS.register("recall_station", () ->

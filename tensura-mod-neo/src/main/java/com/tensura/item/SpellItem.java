@@ -1,6 +1,5 @@
 package com.tensura.item;
 
-import com.tensura.engine.SpellExecutor;
 import com.tensura.engine.SpellDefinition;
 import com.tensura.engine.SpellIdAliases;
 import com.tensura.engine.SpellRegistry;
@@ -8,7 +7,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -129,7 +127,7 @@ public class SpellItem extends Item {
     public Component getName(ItemStack stack) {
         ResourceLocation id = getSpellId(stack);
         if (id == null) return Component.literal("Unknown Skill");
-        return Component.literal(formatName(id.getPath()));
+        return Component.literal(SpellCasting.formatName(id.getPath()));
     }
 
     @Override
@@ -184,78 +182,51 @@ public class SpellItem extends Item {
         ItemStack stack = player.getItemInHand(hand);
         ResourceLocation id = getSpellId(stack);
         if (id == null) return InteractionResultHolder.fail(stack);
-
-        if (isHeldChannel(stack)) {
-            player.startUsingItem(hand);
-            if (!level.isClientSide && player instanceof ServerPlayer serverPlayer
-                    && !SpellExecutor.castHeldChannel(serverPlayer, id)) {
-                player.stopUsingItem();
-                return InteractionResultHolder.fail(stack);
-            }
-            return InteractionResultHolder.consume(stack);
-        }
-
-        if (getChannelWindup(stack) > 0) {
-            player.startUsingItem(hand);
-            return InteractionResultHolder.consume(stack);
-        }
-
-        if (level.isClientSide) return InteractionResultHolder.success(stack);
-
-        if (player instanceof ServerPlayer sp) {
-            SpellExecutor.cast(sp, id);
-        }
-        return InteractionResultHolder.success(stack);
+        return SpellCasting.use(level, player, hand, stack, id, channelOf(stack));
     }
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
-        if (isHeldChannel(stack)) return getHeldChannelDuration(stack);
-        int windup = getChannelWindup(stack);
-        return windup > 0 ? windup + getChannelDuration(stack) : 0;
+        return SpellCasting.useDuration(channelOf(stack));
     }
 
     @Override
     public UseAnim getUseAnimation(ItemStack stack) {
-        return isHeldChannel(stack) || getChannelWindup(stack) > 0
-                ? UseAnim.SPEAR : UseAnim.NONE;
+        return SpellCasting.useAnimation(channelOf(stack));
     }
 
     @Override
     public void onUseTick(Level level, LivingEntity entity, ItemStack stack,
                           int remainingUseDuration) {
-        if (level.isClientSide || !(entity instanceof ServerPlayer player)) return;
-        if (isHeldChannel(stack)) return;
-
-        int windup = getChannelWindup(stack);
-        int elapsed = getUseDuration(stack, entity) - remainingUseDuration;
-        if (windup > 0 && elapsed == windup) {
-            ResourceLocation spellId = getSpellId(stack);
-            if (spellId == null || !SpellExecutor.castPrepared(player, spellId)) {
-                player.stopUsingItem();
-            }
-        }
+        SpellCasting.onUseTick(level, entity, stack, remainingUseDuration,
+                getSpellId(stack), channelOf(stack));
     }
 
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity,
                              int timeCharged) {
-        finishHeldChannel(stack, level, entity);
+        SpellCasting.finishHeldChannel(level, entity, getSpellId(stack), channelOf(stack));
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
-        finishHeldChannel(stack, level, entity);
+        SpellCasting.finishHeldChannel(level, entity, getSpellId(stack), channelOf(stack));
         return stack;
     }
 
-    private static void finishHeldChannel(ItemStack stack, Level level, LivingEntity entity) {
-        if (level.isClientSide || !(entity instanceof ServerPlayer player)
-                || !isHeldChannel(stack)) return;
-        ResourceLocation spellId = getSpellId(stack);
-        if (spellId == null) return;
-        com.tensura.event.SpellRuntimeController.stopPlayerChannels(player.getUUID());
-        SpellExecutor.finishHeldChannel(player, spellId);
+    /**
+     * Channel timings for this stack, read from the NBT written at creation time with the
+     * fallbacks that keep stacks predating those keys working. The focus resolves the same
+     * thing from the spell definition instead — see {@link SpellCasting#fromDefinition}.
+     */
+    private static SpellCasting.Channel channelOf(ItemStack stack) {
+        if (isHeldChannel(stack)) {
+            return new SpellCasting.Channel(true, 0, getHeldChannelDuration(stack));
+        }
+        int windup = getChannelWindup(stack);
+        return windup > 0
+                ? new SpellCasting.Channel(false, windup, getChannelDuration(stack))
+                : SpellCasting.Channel.NONE;
     }
 
     private static boolean isHeldChannel(ItemStack stack) {
@@ -305,16 +276,4 @@ public class SpellItem extends Item {
         return Math.max(1, configured > 0 ? configured : 24);
     }
 
-    private static String formatName(String path) {
-        String[] parts = path.split("_");
-        StringBuilder sb = new StringBuilder();
-        for (String part : parts) {
-            if (!part.isEmpty()) {
-                sb.append(Character.toUpperCase(part.charAt(0)));
-                sb.append(part.substring(1));
-                sb.append(' ');
-            }
-        }
-        return sb.toString().trim();
-    }
 }

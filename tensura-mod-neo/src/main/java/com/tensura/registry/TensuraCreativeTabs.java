@@ -32,9 +32,9 @@ public class TensuraCreativeTabs {
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SPELLS =
             TABS.register("spells", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.tensura.spells"))
-                    .icon(() -> new ItemStack(TensuraItemRegistry.PREDATOR_CODEX.get()))
+                    .icon(() -> new ItemStack(TensuraItemRegistry.SPELL_FOCUS.get()))
                     .displayItems((params, output) -> {
-                        output.accept(TensuraItemRegistry.PREDATOR_CODEX.get());
+                        output.accept(TensuraItemRegistry.SPELL_FOCUS.get());
                         output.accept(TensuraItemRegistry.RECALL_STATION.get());
                         for (Map.Entry<ResourceLocation, SpellDefinition> entry : sortedSpells()) {
                             output.accept(SpellItem.create(entry.getKey(), entry.getValue()));

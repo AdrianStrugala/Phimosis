@@ -1,9 +1,34 @@
 # Katalizator zaklęć — spec implementacyjna
 
 **Data:** 2026-09-08
-**Status:** do przedyskutowania, nie zatwierdzony
+**Status:** wdrożony w 2.0.38 (kroki 1–5), czeka na playtest
 **Dotyczy:** tensura-mod-neo (NeoForge 1.21.1) + datapack `predator_skills`
 **Dokument siostrzany:** [start serwera publicznego](../operations/public-server-launch.md)
+
+---
+
+## 0. Stan wdrozenia
+
+Zbudowane i wgrane na TEST oraz klienta jako `tensura-2.0.38.jar` (2026-09-08).
+**Produkcja nietknięta** — 2k37 nadal ma 2.0.18.
+
+| Krok | Stan |
+|---|---|
+| 0. Migracja datapacka | **Częściowo** — na TEST zdjęta zawartość pakietu ze świata, `pack.mcmeta` zostawiony. Pełne usunięcie + `/datapack disable` na produkcji nadal do zrobienia pod nadzorem |
+| 1. `SpellCasting` | Zrobione — `SpellItem` i katalizator dzielą jedną ścieżkę rzucania |
+| 2. `SpellFocusItem` + receptura + Shift+scroll | Zrobione |
+| 3. `SpellRadialScreen` na `R` | Zrobione |
+| 4. `devourRecover` → `OpenRadialPacket` + `AttuneSpellPacket` | Zrobione |
+| 5. Wycięcie Kodeksu | Zrobione |
+| 6. Offhand | `findFocus` zrobione; przełączniki Epic Knights **nie ruszone** (config produkcji) |
+
+**Nie zweryfikowane w grze.** Kompiluje się, `validateSkillTrees` przechodzi, klasy
+i assety są w jarze — ale nikt tego jeszcze nie uruchomił. Kryteria akceptacji
+w sekcji 12 są nadal do odhaczenia.
+
+Decyzje użytkownika, które zmieniły ten spec względem pierwotnej wersji:
+jeden katalizator zamiast trzech tierów (5 slotów, receptura ze slime ballem),
+pochłonięcie **nadal dropi** `SpellItem`, wycięcie Kodeksu wchodzi od razu.
 
 ---
 
@@ -56,24 +81,28 @@ nietknięta.
 | Skąd przypisanie | Klik node'a w drzewku Puffisha |
 | Czy radial ma pulę zaklęć | **Nie** — niepotrzebna, przypisanie zawsze startuje z drzewka |
 | Kodeks Predatora | **Usunięty** |
-| Katalizator | Craftowalny, w trzech tierach |
-| Stare `SpellItem` | Zostają castowalne; nowe egzemplarze nie są już wydawane |
+| Katalizator | Craftowalny, jeden item, 5 slotów |
+| Stare `SpellItem` | Zostają castowalne; pochłonięcie nadal je dropi |
 | Drzewko | Jedyne miejsce progresji i przeglądania |
 
 ---
 
 ## 4. Item
 
-Trzy zarejestrowane itemy dzielące jedną klasę `SpellFocusItem`, `maxSlots`
-w konstruktorze. Trzy itemy zamiast tieru w NBT, bo receptury i modele są wtedy trywialne.
+Jeden item `tensura:spell_focus`, `stacksTo(1)`, **5 slotów**. Liczba slotów siedzi
+w konstruktorze `SpellFocusItem`, więc kolejne tiery to dopisanie wpisów w rejestrze,
+bez zmian w logice.
 
-| Item | Sloty | Charakter receptury |
-|---|---|---|
-| `spell_focus_simple` | 3 | Wczesna gra, tanie materiały |
-| `spell_focus_reinforced` | 5 | Materiały z pochłaniania / Ice and Fire |
-| `spell_focus_arch` | 8 | Późna gra, składnik z bossa lub questa FTB Quests |
+Receptura — proste materiały plus slime ball, który jest tu składnikiem obowiązkowym:
 
-`stacksTo(1)`.
+```
+ G      G = minecraft:gold_ingot
+GSG     S = minecraft:slime_ball
+ G
+```
+
+Pusty katalizator używa tekstury slime balla; po przypisaniu zaklęcia model przełącza
+się na ikonę aktywnego zaklęcia przez te same nadpisania, których używa `SpellItem`.
 
 ### NBT
 
@@ -272,7 +301,7 @@ niezmienniki: `../contracts/devour-tree.md`, który jest dla tego drzewka
 | `network/OpenRadialPacket.java` | S→C |
 | `network/SetActiveSpellPacket.java` | C→S |
 | `network/AttuneSpellPacket.java` | C→S |
-| `data/tensura/recipes/spell_focus_*.json` | Trzy receptury, wzorzec: `recall_station.json` |
+| `data/tensura/recipes/spell_focus.json` | Receptura, wzorzec: `recall_station.json` |
 
 ### Zmienione
 
@@ -305,7 +334,7 @@ nie objaw.
 2. `SpellFocusItem` + receptury + `SetActiveSpellPacket` + `R`. **Grywalne po tym kroku.**
 3. `SpellRadialScreen` — wybór aktywnego.
 4. `devourRecover` → `OpenRadialPacket` + `AttuneSpellPacket`; tryb przypisania w radialu.
-5. Wycięcie Kodeksu i dropu `SpellItem`.
+5. Wycięcie Kodeksu. Drop `SpellItem` przy pochłonięciu **zostaje** (decyzja użytkownika).
 6. Offhand: `findFocus` + przełączniki Epic Knights + playtest bronią, którą realnie gracie.
 
 ---
@@ -313,7 +342,7 @@ nie objaw.
 ## 12. Kryteria akceptacji
 
 - [ ] Drzewko pod `K` pokazuje 215 node'ów devour, log mówi `loaded successfully`
-- [ ] Katalizator craftuje się w trzech tierach, ma 3/5/8 slotów
+- [ ] Katalizator craftuje się (4 sztabki złota + slime ball) i ma 5 slotów
 - [ ] `R` otwiera radial; puszczenie na wycinku zmienia aktywne zaklęcie
 - [ ] PPM rzuca aktywne zaklęcie; pusty slot nic nie robi
 - [ ] Kanał (`flamethrower`) działa z katalizatora tak samo jak z `SpellItem`
@@ -329,6 +358,8 @@ nie objaw.
 
 ## Otwarte pytania
 
-- Czy pochłonięcie nadal dropi `SpellItem`, czy tylko zapala node (sekcja 6)?
-- Konkretne receptury trzech tierów.
-- Koszty node'ów devour — płaskie czy zależne od siły zaklęcia?
+- Czy po playteście drop `SpellItem` przy pochłonięciu ma zostać wycięty.
+- Czy dochodzą kolejne tiery katalizatora i na jakich materiałach.
+
+(Koszty node'ów devour przestały być pytaniem — sekcja 9 wyjaśnia, dlaczego muszą
+zostać zerowe.)
