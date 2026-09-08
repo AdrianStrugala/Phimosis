@@ -5,7 +5,7 @@
 Villager-Pokemon (MineColonies citizen z modelem Cobblemon Pokemon) nie gra animacji chodzenia.
 Był ~30 nieudanych prób naprawy. Potrzebujemy systematycznie przetestować wiele podejść.
 
-Plik do trackowania wyników: `ANIMATION_FIX_TRACKER.md`  
+Plik do trackowania wyników: `animation-fix-tracker.md`  
 Plik do edycji: `src/main/java/com/tensura/client/PokemonCitizenRenderHandler.java`
 
 ---
@@ -158,4 +158,4 @@ Zamiast `mc.getEntityRenderDispatcher().render(fake, ...)`, pobierz renderer bez
 2. Skopiuj JAR do serwera (`D:\Serv Phimosis 2k37\mods\`) lub klienta
 3. Wejdź do gry, znajdź villager-Pokemon, każ mu chodzić (pathfinding do jakiegoś celu)
 4. Obserwuj czy nogi się ruszają podczas ruchu
-5. Zanotuj wynik w `ANIMATION_FIX_TRACKER.md`
+5. Zanotuj wynik w `animation-fix-tracker.md`

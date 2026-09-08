@@ -11,6 +11,11 @@ This repository contains two distinct Minecraft projects:
 
 Most active development happens in `tensura-mod-neo/`.
 
+Design documents live in `docs/`, grouped by role: `contracts/` (invariants enforced by
+validators), `specs/` (designs awaiting implementation), `operations/` (server-side plans),
+`trackers/` (experiment logs). `AGENTS.md` holds the authoritative register of what each
+document is and is not a source of truth for.
+
 ## Build Commands (Tensura Mod)
 
 All commands run from `tensura-mod-neo/`:

@@ -1,5 +1,5 @@
 // Waliduje drzewka Puffish przeciw schematowi puffish_skills 0.17.3 i kontraktowi
-// drzewka devour. Uzasadnienie kazdej reguly: DEVOUR_TREE_CONTRACT.md
+// drzewka devour. Uzasadnienie kazdej reguly: docs/contracts/devour-tree.md
 //
 // Puffish odrzuca CALY namespace przy pojedynczym bledzie - jeden zly plik gasi
 // obie kategorie i gracz widzi puste okno pod K. Dlatego lapiemy to na buildzie,

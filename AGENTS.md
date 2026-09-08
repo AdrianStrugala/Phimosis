@@ -30,13 +30,13 @@ liczby ukonczonych spelli.
 | Dokument | Rola | Autorytatywny dla | Nie jest autorytatywny dla |
 |---|---|---|---|
 | `CLAUDE.md` | Ogolny opis repo i komendy | struktura projektow, deploy | biezacy roster i postep spelli |
-| `tensura-mod-neo/SPELL_REWORK_PROPOSAL.md` | Plan docelowy | kanoniczny roster 110 i projekt przyszlych mechanik | aktualnie wdrozone spelle; sekcja stanu moze byc historycznym snapshotem |
-| `tensura-mod-neo/DEVOUR_TREE_CONTRACT.md` | Kontrakt Puffish Skills | pary `_owned`/dispenser, `root: true`, koszt 0, nagrody i schemat 0.17.3 | aktualna liczba spelli i ikon, dopoki nie potwierdzi jej walidator |
-| `tensura-mod-neo/PHOTON_VFX_AUTHORING.md` | Kontrakt VFX | runtime Photon, anchory, kierunki i eksport `.fx` | komplet aktualnych profili wszystkich spelli |
-| `tensura-mod-neo/ANIMATION_FIX_PLAN.md` | Plan diagnostyczny | kolejnosc rozwazanych napraw animacji | wynik ostatniego testu |
-| `tensura-mod-neo/ANIMATION_FIX_TRACKER.md` | Tracker eksperymentow | ostatni zapisany wynik testu animacji | stan spelli i rosteru |
-| `tensura-mod-neo/SPELL_FOCUS_SPEC.md` | Spec katalizatora zaklec | projekt itemu katalizatora, radiala, pakietow i migracji datapacka; stan zastany kodu na 2026-09-08 | niezmienniki drzewka Devour (patrz `DEVOUR_TREE_CONTRACT.md`) i cokolwiek wdrozonego |
-| `PUBLIC_SERVER_LAUNCH.md` | Plan otwarcia serwera publicznego | blokery przed otwarciem, lista modow i infrastruktury, warstwa play-by-forum | biezaca konfiguracja serwera 2k37 i stan modow w `mods/` |
+| `docs/specs/spell-rework.md` | Plan docelowy | kanoniczny roster 110 i projekt przyszlych mechanik | aktualnie wdrozone spelle; sekcja stanu moze byc historycznym snapshotem |
+| `docs/contracts/devour-tree.md` | Kontrakt Puffish Skills | pary `_owned`/dispenser, `root: true`, koszt 0, nagrody i schemat 0.17.3 | aktualna liczba spelli i ikon, dopoki nie potwierdzi jej walidator |
+| `docs/contracts/photon-vfx-authoring.md` | Kontrakt VFX | runtime Photon, anchory, kierunki i eksport `.fx` | komplet aktualnych profili wszystkich spelli |
+| `docs/trackers/animation-fix-plan.md` | Plan diagnostyczny | kolejnosc rozwazanych napraw animacji | wynik ostatniego testu |
+| `docs/trackers/animation-fix-tracker.md` | Tracker eksperymentow | ostatni zapisany wynik testu animacji | stan spelli i rosteru |
+| `docs/specs/spell-focus.md` | Spec katalizatora zaklec | projekt itemu katalizatora, radiala, pakietow i migracji datapacka; stan zastany kodu na 2026-09-08 | niezmienniki drzewka Devour (patrz `docs/contracts/devour-tree.md`) i cokolwiek wdrozonego |
+| `docs/operations/public-server-launch.md` | Plan otwarcia serwera publicznego | blokery przed otwarciem, lista modow i infrastruktury, warstwa play-by-forum | biezaca konfiguracja serwera 2k37 i stan modow w `mods/` |
 
 Gdy powstaje nowy dokument projektowy lub tracker, dopisz go do tej tabeli i
 okresl jednoznacznie, za co odpowiada.
@@ -45,7 +45,7 @@ okresl jednoznacznie, za co odpowiada.
 
 Stan zweryfikowany 2026-09-07:
 
-- plan docelowy: 110 unikalnych spelli w `SPELL_REWORK_PROPOSAL.md`;
+- plan docelowy: 110 unikalnych spelli w `docs/specs/spell-rework.md`;
 - implementacja done-done: 93 spelle;
 - drzewko Devour: 18 rays i 107 par spell/dispenser;
 - customowe ikony: 93;

@@ -119,5 +119,5 @@ tasks.named('build').configure {
     }
 }
 
-// Walidacja drzewek Puffish - patrz DEVOUR_TREE_CONTRACT.md
+// Walidacja drzewek Puffish - patrz docs/contracts/devour-tree.md
 apply from: 'gradle/skill-tree-validation.gradle'

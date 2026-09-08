@@ -3,7 +3,7 @@
 **Data:** 2026-09-08
 **Status:** do przedyskutowania, nie zatwierdzony
 **Dotyczy:** serwer 2k37 (NeoForge 1.21.1)
-**Dokument siostrzany:** [katalizator — spec implementacyjna](tensura-mod-neo/SPELL_FOCUS_SPEC.md)
+**Dokument siostrzany:** [katalizator — spec implementacyjna](../specs/spell-focus.md)
 
 ---
 
@@ -60,10 +60,10 @@ się z griefu w legalny najazd. To jest gotowa mechanika wojenna, nie tylko łat
 `world/datapacks/predator_skills/` przesłania kopię w jarze. Żywa kategoria `devour`
 ma 67 node'ów i **zero nagród**, więc `tensura devour_recover` nie jest wołane nigdy —
 klik w drzewku nie robi nic. Procedura naprawy jest krokiem 0
-w [specu katalizatora](tensura-mod-neo/SPELL_FOCUS_SPEC.md).
+w [specu katalizatora](../specs/spell-focus.md).
 
 (Zerowe koszty w devour to osobna sprawa i są **zamierzone** — patrz
-`tensura-mod-neo/DEVOUR_TREE_CONTRACT.md`. Bramką jest pochłonięcie, nie punkty.)
+`../contracts/devour-tree.md`. Bramką jest pochłonięcie, nie punkty.)
 
 ### 2.3 Drobne, ale do zrobienia przed otwarciem
 

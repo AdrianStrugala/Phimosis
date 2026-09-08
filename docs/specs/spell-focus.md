@@ -3,7 +3,7 @@
 **Data:** 2026-09-08
 **Status:** do przedyskutowania, nie zatwierdzony
 **Dotyczy:** tensura-mod-neo (NeoForge 1.21.1) + datapack `predator_skills`
-**Dokument siostrzany:** [start serwera publicznego](../PUBLIC_SERVER_LAUNCH.md)
+**Dokument siostrzany:** [start serwera publicznego](../operations/public-server-launch.md)
 
 ---
 
@@ -38,7 +38,7 @@ podstawą, na której spec się opiera.
 | Prawda o pochłoniętych | `PredatorData` w `PERSISTED_NBT_TAG` (przeżywa śmierć), `hasAbsorbed`/`markAbsorbed` |
 | Drzewko | Każde zaklęcie ma **dwa node'y**: `<spell>_owned` (znacznik) i `<spell>` (przycisk, **re-lockuje się sam**) |
 | Hook drzewka | Nagroda `puffish_skills:command` → `tensura devour_recover @s <spell>` na 107 node'ach |
-| Kontrakt drzewka | `DEVOUR_TREE_CONTRACT.md` + walidator `validateSkillTrees` pod `check` |
+| Kontrakt drzewka | `../contracts/devour-tree.md` + walidator `validateSkillTrees` pod `check` |
 | `devourRecover` | Waliduje `hasAbsorbed`, wydaje `SpellItem`, odracza `lockDispenser` o jeden tick |
 | Keybindy | **Nie ma ani jednego** — `RegisterKeyMappingsEvent` to grunt zerowy |
 | Receptury | Jedna, `recipes/recall_station.json` — wzorzec dla katalizatora |
@@ -254,7 +254,7 @@ jest usterka — gracz nie dostanie zaklęcia, którego nie pochłonął, bo `de
 odmawia.
 
 Chcesz kosztów — najpierw dodaj źródła XP do `experience.json`. Szczegóły i pozostałe
-niezmienniki: `DEVOUR_TREE_CONTRACT.md`, który jest dla tego drzewka
+niezmienniki: `../contracts/devour-tree.md`, który jest dla tego drzewka
 źródłem prawdy ważniejszym niż ten spec.
 
 ---
