@@ -58,6 +58,8 @@ Stan zweryfikowany 2026-09-09:
   ID z migracja zapisanych danych;
 - wspolny delivery `arc_strike` jest wdrozony i respektuje kierunek, zasieg oraz
   przeszkody;
+- `CobblemonMoveMapper` mapuje ruch tylko na spell o identycznym ID i pomija ruchy
+  bez definicji; nie ma tabeli aliasow ani fallbacku typu/power;
 - istnieje 110 z 110 kanonicznych definicji; `dragon_rush`, `phantom_force`,
   `rock_tomb`, `stealth_rock` i `trick_room` maja komplet mechanik runtime,
   mapowan, ikon, profili VFX i wpisow Devour;

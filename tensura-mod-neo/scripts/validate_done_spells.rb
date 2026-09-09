@@ -96,6 +96,12 @@ fail_validation("missing promoted spells: #{missing_promotions.join(', ')}") unl
   missing_promotions.empty?
 
 mapper = File.read(MAPPER_FILE)
+fail_validation("Cobblemon mapper does not use same-named spell IDs") unless
+  mapper.include?('TensuraMod.MOD_ID + ":" + name')
+fail_validation("Cobblemon mapper does not reject unsupported moves") unless
+  mapper.include?("SpellRegistry.get(spellId).isPresent()")
+fail_validation("Cobblemon mapper still contains custom aliases or type fallback") if
+  mapper.include?("NAME_MAP") || mapper.include?("typeFallback") || mapper.match?(/\bn\("/)
 spell_casting = File.read(SPELL_CASTING_FILE)
 executor = [EXECUTOR_FILE, IMPACT_APPLIER_FILE, FEEDBACK_FILE,
   PROJECTILE_DELIVERY_FILE, BEAM_DELIVERY_FILE]
@@ -154,9 +160,6 @@ spells.each do |spell|
 
     fail_validation("#{spell} #{delivery} lacks reachable #{alternatives.join('/')} VFX")
   end
-
-  self_mapping = /n\("#{Regexp.escape(spell)}",\s*"#{Regexp.escape(spell)}"\);/
-  fail_validation("#{spell} has no direct Cobblemon mapping") unless mapper.match?(self_mapping)
 
   owned_id = "#{spell}_owned"
   fail_validation("#{spell} has no Devour owned node") unless definitions.key?(owned_id)
@@ -462,8 +465,8 @@ legacy_replacements.each do |legacy, replacement|
     File.exist?(File.join(SPELL_DIR, "#{legacy}.json"))
   fail_validation("missing saved-data migration #{legacy} -> #{replacement}") unless
     aliases.include?(%Q{"#{legacy}", "#{replacement}"})
-  fail_validation("legacy spell is still a Cobblemon mapping target: #{legacy}") if
-    mapper.match?(/n\("[^"]+",\s*"#{legacy}"\);/)
+  fail_validation("legacy spell is still referenced by the Cobblemon mapper: #{legacy}") if
+    mapper.include?(legacy)
   fail_validation("legacy spell is still present in Devour: #{legacy}") if
     definitions.key?(legacy) || definitions.key?("#{legacy}_owned") ||
       skills.key?(legacy) || skills.key?("#{legacy}_owned")
