@@ -78,7 +78,7 @@ public class WorkforceTownHallWindow extends AbstractWindowTownHall {
                 WorkforceSnapshotPacket.WorkplaceEntry workplace = workplaces.get(index);
                 String marker = index == selectedWorkplace ? "▶ " : "";
                 row.findPaneOfTypeByID("workplaceRow", Button.class).setText(Component.literal(
-                        marker + workplace.name() + "  " + workplace.assignedWorkers()
+                        marker + workplaceLabel(workplace) + "  " + workplace.assignedWorkers()
                                 + "/" + workplace.capacity()));
             }
         });
@@ -112,6 +112,16 @@ public class WorkforceTownHallWindow extends AbstractWindowTownHall {
                 recall.setVisible(citizen.canRecall());
             }
         });
+    }
+
+    /**
+     * MineColonies hands out a translation key from getBuildingDisplayName, not a finished
+     * string, so it has to be resolved here — otherwise the list renders raw keys like
+     * "com.minecolonies.building.barracks".
+     */
+    private static String workplaceLabel(WorkforceSnapshotPacket.WorkplaceEntry workplace) {
+        return Component.translatable(workplace.buildingNameKey()).getString()
+                + " · " + workplace.jobName();
     }
 
     private void selectWorkplace(Button button) {

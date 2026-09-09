@@ -44,10 +44,12 @@ public final class WorkforceService {
                                 // getModule(int) is keyed by ModuleProducer runtime ID, not by
                                 // list position, so the round trip must send the runtime ID.
                                 module.getProducer().getRuntimeID(),
-                                building.getBuildingDisplayName() + " · " + formatJobName(module),
+                                // Raw key, translated on the client (see WorkplaceEntry).
+                                building.getBuildingDisplayName(),
+                                formatJobName(module),
                                 module.getAssignedCitizen().size(),
                                 module.getModuleMax())))
-                .sorted(Comparator.comparing(WorkforceSnapshotPacket.WorkplaceEntry::name,
+                .sorted(Comparator.comparing(WorkforceSnapshotPacket.WorkplaceEntry::jobName,
                                 String.CASE_INSENSITIVE_ORDER)
                         .thenComparingInt(entry -> entry.position().getX())
                         .thenComparingInt(entry -> entry.position().getZ()))

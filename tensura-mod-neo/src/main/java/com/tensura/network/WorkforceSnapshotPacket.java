@@ -16,8 +16,13 @@ import java.util.List;
 public record WorkforceSnapshotPacket(int colonyId, List<WorkplaceEntry> workplaces,
                                       List<CitizenEntry> citizens) implements CustomPacketPayload {
 
-    public record WorkplaceEntry(BlockPos position, int moduleIndex, String name,
-                                 int assignedWorkers, int capacity) {}
+    /**
+     * {@code buildingNameKey} is MineColonies' raw translation key (getBuildingDisplayName).
+     * It is sent untranslated so the client resolves it in the viewer's own language — the
+     * server would otherwise bake in its locale and players saw the bare key on screen.
+     */
+    public record WorkplaceEntry(BlockPos position, int moduleIndex, String buildingNameKey,
+                                 String jobName, int assignedWorkers, int capacity) {}
 
     public record CitizenEntry(int citizenId, String citizenName, String species,
                                BlockPos homePosition, BlockPos workPosition, int workModuleIndex,
@@ -44,7 +49,8 @@ public record WorkforceSnapshotPacket(int colonyId, List<WorkplaceEntry> workpla
         for (WorkplaceEntry workplace : packet.workplaces()) {
             buffer.writeBlockPos(workplace.position());
             buffer.writeVarInt(workplace.moduleIndex());
-            buffer.writeUtf(workplace.name());
+            buffer.writeUtf(workplace.buildingNameKey());
+            buffer.writeUtf(workplace.jobName());
             buffer.writeVarInt(workplace.assignedWorkers());
             buffer.writeVarInt(workplace.capacity());
         }
@@ -66,7 +72,8 @@ public record WorkforceSnapshotPacket(int colonyId, List<WorkplaceEntry> workpla
         List<WorkplaceEntry> workplaces = new ArrayList<>();
         int workplaceCount = buffer.readVarInt();
         for (int index = 0; index < workplaceCount; index++) {
-            workplaces.add(new WorkplaceEntry(buffer.readBlockPos(), buffer.readVarInt(), buffer.readUtf(),
+            workplaces.add(new WorkplaceEntry(buffer.readBlockPos(), buffer.readVarInt(),
+                    buffer.readUtf(), buffer.readUtf(),
                     buffer.readVarInt(), buffer.readVarInt()));
         }
 
