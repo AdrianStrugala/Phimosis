@@ -57,7 +57,10 @@ public class SpellItem extends Item {
         "dragon_tail", "drain_punch", "flame_charge", "force_palm", "giga_drain",
         "ice_punch", "icy_wind", "iron_head", "lick", "metal_claw", "psycho_cut",
         "seismic_toss", "shadow_claw", "smack_down", "snarl", "spark",
-        "thunder_punch", "venoshock"
+        "thunder_punch", "venoshock", "tackle", "hyper_beam", "overheat",
+        "leech_seed", "powder_snow", "toxic", "night_shade", "hex",
+        "dragon_breath", "outrage", "foul_play", "flash_cannon", "dragon_rush",
+        "phantom_force", "rock_tomb", "stealth_rock", "trick_room"
     );
 
     public SpellItem(Properties props) {

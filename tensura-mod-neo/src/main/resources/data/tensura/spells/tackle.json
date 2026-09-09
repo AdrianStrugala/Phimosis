@@ -1,9 +1,14 @@
 {
+  "pokemon_type": "normal",
+  "category": "physical",
+  "power": 7.0,
   "school": "physical",
-  "cooldown_ticks": 40,
-  "targeting": { "type": "aim", "range": 3 },
-  "delivery": { "type": "instant", "speed": 1.0 },
+  "cooldown_ticks": 60,
+  "targeting": { "type": "aim", "range": 5.0, "width": 1.0, "max_targets": 1 },
+  "delivery": { "type": "dash", "speed": 1.5, "distance": 5.0, "duration_ticks": 4 },
   "impact": [
-    { "type": "damage", "damage_multiplier": 1.2 }
-  ]
+    { "type": "damage" }
+  ],
+  "visual": { "cast_animation": "tackle_charge", "trail": "normal_rush", "impact": "body_impact" },
+  "sound": { "cast": "minecraft:entity.player.attack.sweep", "impact": "minecraft:entity.player.attack.strong" }
 }

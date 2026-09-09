@@ -1,0 +1,15 @@
+{
+  "pokemon_type": "rock",
+  "category": "physical",
+  "power": 12.0,
+  "school": "earth",
+  "cooldown_ticks": 220,
+  "targeting": { "type": "area", "range": 12.0, "radius": 2.5 },
+  "delivery": { "type": "trap", "projectile_count": 3, "duration_ticks": 80 },
+  "impact": [
+    { "type": "damage" },
+    { "type": "status_effect", "effect": "minecraft:slowness", "duration": 80, "amplifier": 1 }
+  ],
+  "visual": { "cast_animation": "rock_tomb_cast", "telegraph": "rock_tomb_warning", "impact": "rock_tomb_crush", "aftermath": "rock_tomb_formation" },
+  "sound": { "cast": "minecraft:block.stone.place", "impact": "minecraft:block.stone.break" }
+}

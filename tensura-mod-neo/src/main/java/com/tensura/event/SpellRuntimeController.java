@@ -51,6 +51,10 @@ public class SpellRuntimeController {
     private static final List<ActiveTrap> TRAPS = new ArrayList<>();
     private static final List<ActiveMeleeCombo> MELEE_COMBOS = new ArrayList<>();
     private static final List<ProtectiveAura> PROTECTIVE_AURAS = new ArrayList<>();
+    private static final List<ActiveLeechSeed> LEECH_SEEDS = new ArrayList<>();
+    private static final List<ActiveDashCombo> DASH_COMBOS = new ArrayList<>();
+    private static final List<DelayedTeleportStrike> DELAYED_TELEPORT_STRIKES = new ArrayList<>();
+    private static final List<ActiveZone> ZONES = new ArrayList<>();
     private static final Map<UUID, ActiveCounter> COUNTERS = new HashMap<>();
     private static final Map<UUID, GuardState> GUARDS = new HashMap<>();
     private static final Map<UUID, MeteorGroup> METEOR_GROUPS = new HashMap<>();
@@ -245,6 +249,64 @@ public class SpellRuntimeController {
         return true;
     }
 
+    public static void startLeechSeed(ServerPlayer owner, LivingEntity effectCaster,
+                                      LivingEntity target, int durationTicks,
+                                      double amountPerTick) {
+        LEECH_SEEDS.removeIf(seed -> seed.targetId.equals(target.getUUID()));
+        LEECH_SEEDS.add(new ActiveLeechSeed(effectCaster.level().dimension(),
+                owner.getUUID(), effectCaster.getUUID(), target.getUUID(),
+                Math.max(20, durationTicks), Math.max(0.5, amountPerTick)));
+    }
+
+            public static boolean startDashCombo(ServerPlayer owner, LivingEntity effectCaster,
+                             LivingEntity target, SpellDefinition definition) {
+            DASH_COMBOS.removeIf(combo -> combo.effectCasterId.equals(effectCaster.getUUID()));
+            DASH_COMBOS.add(new ActiveDashCombo(effectCaster.level().dimension(),
+                owner.getUUID(), effectCaster.getUUID(),
+                target == null ? null : target.getUUID(), definition,
+                Math.max(1, definition.delivery.combo_hits)));
+            return true;
+            }
+
+            public static boolean startDelayedTeleportStrike(ServerPlayer owner,
+                                      LivingEntity effectCaster,
+                                      LivingEntity target,
+                                      SpellDefinition definition) {
+            if (!SpellTargetingRules.canHarm(owner, effectCaster, target)) return false;
+            int delay = Math.max(1, definition.delivery.delay_ticks);
+            DELAYED_TELEPORT_STRIKES.removeIf(strike ->
+                strike.effectCasterId.equals(effectCaster.getUUID()));
+            DELAYED_TELEPORT_STRIKES.add(new DelayedTeleportStrike(
+                effectCaster.level().dimension(), owner.getUUID(), effectCaster.getUUID(),
+                target.getUUID(), definition, delay));
+            effectCaster.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY,
+                delay, 0, false, false, true));
+            if (effectCaster.level() instanceof ServerLevel level) {
+                Vec3 exit = target.getBoundingBox().getCenter();
+                SpellVfxDispatcher.send(level, "telegraph", definition.visual.telegraph,
+                    definition.school, exit, exit, Math.max(1.0, definition.targeting.width),
+                    delay, target, false);
+            }
+            return true;
+            }
+
+            public static boolean startZone(ServerPlayer owner, LivingEntity effectCaster,
+                            SpellDefinition definition, Vec3 center) {
+            int duration = Math.max(1, definition.delivery.duration_ticks);
+            ZONES.add(new ActiveZone(effectCaster.level().dimension(), owner.getUUID(),
+                effectCaster.getUUID(), center, definition, duration));
+            SpellExecutor.playLoopSound(effectCaster, definition);
+            if (effectCaster.level() instanceof ServerLevel level) {
+                SpellVfxDispatcher.send(level, "zone", definition.visual.telegraph,
+                    definition.school, center, center, definition.targeting.radius,
+                    Math.min(20, duration), effectCaster, false);
+                SpellVfxDispatcher.send(level, "zone", definition.visual.aftermath,
+                    definition.school, center, center, definition.targeting.radius,
+                    duration, effectCaster, false);
+            }
+            return true;
+            }
+
     public static boolean startCompanionCast(ServerPlayer owner, PokemonEntity companion,
                                              LivingEntity target, ResourceLocation spellId,
                                              SpellDefinition definition) {
@@ -337,6 +399,10 @@ public class SpellRuntimeController {
         tickTraps(event.getServer());
         tickMeleeCombos(event.getServer());
         tickProtectiveAuras(event.getServer());
+        tickLeechSeeds(event.getServer());
+        tickDashCombos(event.getServer());
+        tickDelayedTeleportStrikes(event.getServer());
+        tickZones(event.getServer());
         tickGuards(event.getServer());
         tickPendingCasts(event.getServer());
         tickPendingCompanionCasts(event.getServer());
@@ -424,6 +490,14 @@ public class SpellRuntimeController {
             || combo.effectCasterId.equals(playerId));
         PROTECTIVE_AURAS.removeIf(aura -> aura.ownerId.equals(playerId)
                 || aura.effectCasterId.equals(playerId));
+        LEECH_SEEDS.removeIf(seed -> seed.ownerId.equals(playerId)
+            || seed.effectCasterId.equals(playerId));
+        DASH_COMBOS.removeIf(combo -> combo.ownerId.equals(playerId)
+            || combo.effectCasterId.equals(playerId));
+        DELAYED_TELEPORT_STRIKES.removeIf(strike -> strike.ownerId.equals(playerId)
+            || strike.effectCasterId.equals(playerId));
+        ZONES.removeIf(zone -> zone.ownerId.equals(playerId)
+            || zone.effectCasterId.equals(playerId));
         COUNTERS.entrySet().removeIf(entry -> entry.getKey().equals(playerId)
                 || entry.getValue().ownerId.equals(playerId));
         GUARDS.remove(playerId);
@@ -444,6 +518,10 @@ public class SpellRuntimeController {
         TRAPS.clear();
         MELEE_COMBOS.clear();
         PROTECTIVE_AURAS.clear();
+        LEECH_SEEDS.clear();
+        DASH_COMBOS.clear();
+        DELAYED_TELEPORT_STRIKES.clear();
+        ZONES.clear();
         COUNTERS.clear();
         GUARDS.clear();
         METEOR_GROUPS.clear();
@@ -813,7 +891,7 @@ public class SpellRuntimeController {
             double radius = trap.definition.targeting.radius > 0.0
                 ? trap.definition.targeting.radius : 1.25;
             if (trap.remainingTicks % 8 == 0) {
-            level.sendParticles(ParticleTypes.WITCH,
+            level.sendParticles(runtimeParticle(trap.definition.school),
                 trap.center.x, trap.center.y + 0.12, trap.center.z,
                 4, radius * 0.45, 0.08, radius * 0.45, 0.01);
             }
@@ -825,13 +903,16 @@ public class SpellRuntimeController {
             for (LivingEntity target : targets) {
             currentOccupants.add(target.getUUID());
             if (trap.occupants.contains(target.getUUID())) continue;
-            int triggerCount = trap.triggerCounts.merge(target.getUUID(), 1, Integer::sum);
-            if (triggerCount == 1) {
-                target.addEffect(new MobEffectInstance(MobEffects.POISON,
-                    120, 0, false, true, true));
-            } else {
-                target.addEffect(new MobEffectInstance(TensuraMobEffects.TOXIC,
-                    200, Math.min(2, triggerCount - 2), false, true, true));
+            if (trap.definition.impact.isEmpty()) {
+                int triggerCount = trap.triggerCounts.merge(
+                        target.getUUID(), 1, Integer::sum);
+                if (triggerCount == 1) {
+                    target.addEffect(new MobEffectInstance(MobEffects.POISON,
+                            120, 0, false, true, true));
+                } else {
+                    target.addEffect(new MobEffectInstance(TensuraMobEffects.TOXIC,
+                            200, Math.min(2, triggerCount - 2), false, true, true));
+                }
             }
             SpellExecutor.applyImpacts(owner, effectCaster, target, trap.definition);
             }
@@ -945,6 +1026,140 @@ public class SpellRuntimeController {
             }
         }
         return reduction;
+    }
+
+    private static void tickLeechSeeds(MinecraftServer server) {
+        Iterator<ActiveLeechSeed> iterator = LEECH_SEEDS.iterator();
+        while (iterator.hasNext()) {
+            ActiveLeechSeed seed = iterator.next();
+            ServerLevel level = server.getLevel(seed.dimension);
+            ServerPlayer owner = server.getPlayerList().getPlayer(seed.ownerId);
+            Entity source = level == null ? null : level.getEntity(seed.effectCasterId);
+            Entity targetEntity = level == null ? null : level.getEntity(seed.targetId);
+            if (level == null || owner == null || owner.level() != level
+                    || !(source instanceof LivingEntity effectCaster) || !effectCaster.isAlive()
+                    || !(targetEntity instanceof LivingEntity target) || !target.isAlive()
+                    || !SpellTargetingRules.canHarm(owner, effectCaster, target)
+                    || --seed.remainingTicks < 0) {
+                iterator.remove();
+                continue;
+            }
+            if (seed.remainingTicks % 20 == 0) {
+                float healthBefore = target.getHealth();
+                target.hurt(target.damageSources().magic(), (float) seed.amountPerTick);
+                effectCaster.heal(Math.max(0.0F, healthBefore - target.getHealth()));
+                level.sendParticles(ParticleTypes.HAPPY_VILLAGER,
+                        target.getX(), target.getY() + target.getBbHeight() * 0.6,
+                        target.getZ(), 6, 0.25, 0.35, 0.25, 0.02);
+                SpellVfxDispatcher.send(level, "beam", "leech_seed_drain", "nature",
+                        target.getBoundingBox().getCenter(),
+                        effectCaster.getBoundingBox().getCenter(),
+                        0.25, 8, effectCaster, false);
+            }
+            if (seed.remainingTicks == 0) iterator.remove();
+        }
+    }
+
+    private static void tickDashCombos(MinecraftServer server) {
+        Iterator<ActiveDashCombo> iterator = DASH_COMBOS.iterator();
+        while (iterator.hasNext()) {
+            ActiveDashCombo combo = iterator.next();
+            ServerLevel level = server.getLevel(combo.dimension);
+            ServerPlayer owner = server.getPlayerList().getPlayer(combo.ownerId);
+            Entity source = level == null ? null : level.getEntity(combo.effectCasterId);
+            Entity targetEntity = level == null || combo.targetId == null
+                    ? null : level.getEntity(combo.targetId);
+            if (level == null || owner == null || owner.level() != level
+                    || !(source instanceof LivingEntity effectCaster) || !effectCaster.isAlive()) {
+                iterator.remove();
+                continue;
+            }
+            if (combo.ticksUntilDash-- > 0) continue;
+            if (combo.remainingDashes <= 0) {
+                effectCaster.addEffect(new MobEffectInstance(MobEffects.CONFUSION,
+                        Math.max(1, combo.definition.delivery.recovery_ticks),
+                        0, false, true, true));
+                iterator.remove();
+                continue;
+            }
+            boolean started;
+            if (effectCaster instanceof ServerPlayer player) {
+                started = SpellMovementController.startDash(player, combo.definition);
+            } else if (effectCaster instanceof PokemonEntity companion
+                    && targetEntity instanceof LivingEntity target && target.isAlive()) {
+                started = SpellMovementController.startDash(
+                        owner, companion, target, combo.definition);
+            } else {
+                started = false;
+            }
+            if (!started) {
+                iterator.remove();
+                continue;
+            }
+            combo.remainingDashes--;
+            combo.ticksUntilDash = Math.max(1, combo.definition.delivery.combo_interval_ticks);
+        }
+    }
+
+    private static void tickDelayedTeleportStrikes(MinecraftServer server) {
+        Iterator<DelayedTeleportStrike> iterator = DELAYED_TELEPORT_STRIKES.iterator();
+        while (iterator.hasNext()) {
+            DelayedTeleportStrike strike = iterator.next();
+            ServerLevel level = server.getLevel(strike.dimension);
+            ServerPlayer owner = server.getPlayerList().getPlayer(strike.ownerId);
+            Entity source = level == null ? null : level.getEntity(strike.effectCasterId);
+            Entity targetEntity = level == null ? null : level.getEntity(strike.targetId);
+            if (level == null || owner == null || owner.level() != level
+                    || !(source instanceof LivingEntity effectCaster) || !effectCaster.isAlive()
+                    || !(targetEntity instanceof LivingEntity target) || !target.isAlive()
+                    || !SpellTargetingRules.canHarm(owner, effectCaster, target)) {
+                if (source instanceof LivingEntity living) {
+                    living.removeEffect(MobEffects.INVISIBILITY);
+                }
+                iterator.remove();
+                continue;
+            }
+            if (--strike.remainingTicks > 0) continue;
+            effectCaster.removeEffect(MobEffects.INVISIBILITY);
+            SpellExecutor.castRuntimeTeleportStrike(
+                    owner, effectCaster, target, strike.definition);
+            iterator.remove();
+        }
+    }
+
+    private static void tickZones(MinecraftServer server) {
+        Iterator<ActiveZone> iterator = ZONES.iterator();
+        while (iterator.hasNext()) {
+            ActiveZone zone = iterator.next();
+            ServerLevel level = server.getLevel(zone.dimension);
+            ServerPlayer owner = server.getPlayerList().getPlayer(zone.ownerId);
+            Entity source = level == null ? null : level.getEntity(zone.effectCasterId);
+            if (level == null || owner == null || owner.level() != level
+                    || !(source instanceof LivingEntity effectCaster) || !effectCaster.isAlive()
+                    || --zone.remainingTicks < 0) {
+                iterator.remove();
+                continue;
+            }
+            double radius = zone.definition.targeting.radius > 0.0
+                    ? zone.definition.targeting.radius : 6.0;
+            if (zone.remainingTicks % 5 == 0) {
+                level.sendParticles(ParticleTypes.ENCHANT,
+                        zone.center.x, zone.center.y + 1.0, zone.center.z,
+                        10, radius * 0.7, 1.5, radius * 0.7, 0.02);
+            }
+            int interval = Math.max(1, zone.definition.delivery.tick_interval_ticks);
+            if (zone.remainingTicks % interval == 0) {
+                for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class,
+                        new AABB(zone.center, zone.center).inflate(radius, 3.0, radius),
+                        LivingEntity::isAlive)) {
+                    SpellExecutor.applyImpacts(owner, effectCaster, target, zone.definition);
+                }
+            }
+            if (zone.remainingTicks > 0 && zone.remainingTicks % 20 == 0) {
+                SpellExecutor.playLoopSound(effectCaster, zone.definition);
+            }
+            if (zone.remainingTicks == 0) iterator.remove();
+        }
     }
 
     private static void tickGuards(MinecraftServer server) {
@@ -1231,6 +1446,87 @@ public class SpellRuntimeController {
             this.dimension = dimension;
             this.ownerId = ownerId;
             this.effectCasterId = effectCasterId;
+            this.definition = definition;
+            this.remainingTicks = remainingTicks;
+        }
+    }
+
+    private static class ActiveLeechSeed {
+        private final ResourceKey<Level> dimension;
+        private final UUID ownerId;
+        private final UUID effectCasterId;
+        private final UUID targetId;
+        private int remainingTicks;
+        private final double amountPerTick;
+
+        private ActiveLeechSeed(ResourceKey<Level> dimension, UUID ownerId,
+                                UUID effectCasterId, UUID targetId,
+                                int remainingTicks, double amountPerTick) {
+            this.dimension = dimension;
+            this.ownerId = ownerId;
+            this.effectCasterId = effectCasterId;
+            this.targetId = targetId;
+            this.remainingTicks = remainingTicks;
+            this.amountPerTick = amountPerTick;
+        }
+    }
+
+    private static class ActiveDashCombo {
+        private final ResourceKey<Level> dimension;
+        private final UUID ownerId;
+        private final UUID effectCasterId;
+        private final UUID targetId;
+        private final SpellDefinition definition;
+        private int remainingDashes;
+        private int ticksUntilDash;
+
+        private ActiveDashCombo(ResourceKey<Level> dimension, UUID ownerId,
+                                UUID effectCasterId, UUID targetId,
+                                SpellDefinition definition, int remainingDashes) {
+            this.dimension = dimension;
+            this.ownerId = ownerId;
+            this.effectCasterId = effectCasterId;
+            this.targetId = targetId;
+            this.definition = definition;
+            this.remainingDashes = remainingDashes;
+        }
+    }
+
+    private static class DelayedTeleportStrike {
+        private final ResourceKey<Level> dimension;
+        private final UUID ownerId;
+        private final UUID effectCasterId;
+        private final UUID targetId;
+        private final SpellDefinition definition;
+        private int remainingTicks;
+
+        private DelayedTeleportStrike(ResourceKey<Level> dimension, UUID ownerId,
+                                      UUID effectCasterId, UUID targetId,
+                                      SpellDefinition definition, int remainingTicks) {
+            this.dimension = dimension;
+            this.ownerId = ownerId;
+            this.effectCasterId = effectCasterId;
+            this.targetId = targetId;
+            this.definition = definition;
+            this.remainingTicks = remainingTicks;
+        }
+    }
+
+    private static class ActiveZone {
+        private final ResourceKey<Level> dimension;
+        private final UUID ownerId;
+        private final UUID effectCasterId;
+        private final Vec3 center;
+        private final SpellDefinition definition;
+        private int remainingTicks;
+
+        private ActiveZone(ResourceKey<Level> dimension, UUID ownerId,
+                           UUID effectCasterId, Vec3 center,
+                           SpellDefinition definition, int remainingTicks) {
+            this.dimension = dimension;
+            this.ownerId = ownerId;
+            this.effectCasterId = effectCasterId;
+            this.center = center;
             this.definition = definition;
             this.remainingTicks = remainingTicks;
         }

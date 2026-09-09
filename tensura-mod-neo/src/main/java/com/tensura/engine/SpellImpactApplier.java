@@ -10,7 +10,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -141,6 +143,46 @@ public final class SpellImpactApplier {
                             Math.max(1, damage), impact.armor_penetration);
                     damageDealt += Math.max(0.0F, healthBefore - target.getHealth());
                 }
+                    case "health_scaled_damage" -> {
+                        if (!canHarm) continue;
+                        double maximumPower = Math.max(definition.power, impact.amount);
+                        double scaledPower = Math.min(maximumPower,
+                            definition.power + target.getMaxHealth() * 0.1);
+                        float healthBefore = target.getHealth();
+                        hurtWithSpellDamage(owner, effectCaster, target, definition,
+                            (float) Math.max(1.0, applyExposedModifier(
+                                scaledPower, target, definition)
+                                * impact.damage_multiplier),
+                            impact.armor_penetration);
+                        damageDealt += Math.max(0.0F, healthBefore - target.getHealth());
+                    }
+                    case "status_scaled_damage" -> {
+                        if (!canHarm) continue;
+                        boolean afflicted = target.getActiveEffects().stream().anyMatch(instance ->
+                            instance.getEffect().value().getCategory() == MobEffectCategory.HARMFUL);
+                        double multiplier = afflicted ? impact.conditional_multiplier : 1.0;
+                        float healthBefore = target.getHealth();
+                        hurtWithSpellDamage(owner, effectCaster, target, definition,
+                            (float) Math.max(1.0, applyExposedModifier(
+                                definition.power, target, definition)
+                                * impact.damage_multiplier * multiplier),
+                            impact.armor_penetration);
+                        damageDealt += Math.max(0.0F, healthBefore - target.getHealth());
+                    }
+                    case "target_attack_scaled_damage" -> {
+                        if (!canHarm) continue;
+                        AttributeInstance attack = target.getAttribute(Attributes.ATTACK_DAMAGE);
+                        double maximumPower = Math.max(definition.power, impact.amount);
+                        double scaledPower = Math.min(maximumPower, definition.power
+                            + (attack == null ? 0.0 : Math.max(0.0, attack.getValue())));
+                        float healthBefore = target.getHealth();
+                        hurtWithSpellDamage(owner, effectCaster, target, definition,
+                            (float) Math.max(1.0, applyExposedModifier(
+                                scaledPower, target, definition)
+                                * impact.damage_multiplier),
+                            impact.armor_penetration);
+                        damageDealt += Math.max(0.0F, healthBefore - target.getHealth());
+                    }
                 case "status_effect" -> {
                     if (Math.random() <= impact.chance && !impact.effect.isEmpty()) {
                         BuiltInRegistries.MOB_EFFECT.getHolder(ResourceLocation.parse(impact.effect))
@@ -176,14 +218,20 @@ public final class SpellImpactApplier {
                 }
                 case "stagger" -> {
                     if (!canHarm) continue;
-                    target.setDeltaMovement(Vec3.ZERO);
-                    target.hurtMarked = true;
-                    SpellRuntimeController.interruptPendingCast(target);
-                    BuiltInRegistries.MOB_EFFECT.getHolder(
-                                    ResourceLocation.withDefaultNamespace("slowness"))
-                            .ifPresent(holder -> target.addEffect(new MobEffectInstance(holder,
-                                    Math.max(1, impact.duration), Math.max(1, impact.amplifier),
-                                    false, impact.show_particles, impact.show_icon)));
+                    applyStagger(target, impact);
+                }
+                case "central_stagger" -> {
+                    if (!canHarm) continue;
+                    Vec3 forward = effectCaster.getLookAngle().multiply(1.0, 0.0, 1.0);
+                    Vec3 offset = target.position().subtract(effectCaster.position())
+                            .multiply(1.0, 0.0, 1.0);
+                    if (forward.lengthSqr() > 1.0E-6 && offset.lengthSqr() > 1.0E-6) {
+                        Vec3 right = new Vec3(-forward.z, 0.0, forward.x).normalize();
+                        double centralWidth = Math.max(0.75, target.getBbWidth() * 0.5);
+                        if (Math.abs(offset.dot(right)) <= centralWidth) {
+                            applyStagger(target, impact);
+                        }
+                    }
                 }
                 case "rear_stagger" -> {
                     if (!canHarm) continue;
@@ -305,7 +353,31 @@ public final class SpellImpactApplier {
                 case "toxic" -> {
                     if (canHarm) {
                         recipient.addEffect(new MobEffectInstance(TensuraMobEffects.TOXIC,
-                                impact.duration, impact.amplifier, false,
+                                recipient.getMaxHealth() >= 100.0F
+                                        ? Math.min(120, impact.duration) : impact.duration,
+                                impact.amplifier, false,
+                                impact.show_particles, impact.show_icon));
+                    }
+                }
+                case "leech_seed" -> {
+                    if (canHarm) {
+                        SpellRuntimeController.startLeechSeed(owner, effectCaster, target,
+                                impact.duration, impact.amount);
+                    }
+                }
+                case "invert_speed" -> {
+                    AttributeInstance movement = recipient.getAttribute(Attributes.MOVEMENT_SPEED);
+                    if (movement == null) continue;
+                    int duration = Math.max(2, impact.duration);
+                    if (movement.getBaseValue() >= 0.12) {
+                        recipient.removeEffect(MobEffects.MOVEMENT_SPEED);
+                        recipient.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,
+                                duration, Math.max(0, impact.amplifier), false,
+                                impact.show_particles, impact.show_icon));
+                    } else {
+                        recipient.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
+                        recipient.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED,
+                                duration, Math.max(0, impact.amplifier), false,
                                 impact.show_particles, impact.show_icon));
                     }
                 }
@@ -373,6 +445,15 @@ public final class SpellImpactApplier {
         } finally {
             armor.removeModifier(ARMOR_PENETRATION_ID);
         }
+    }
+
+    private static void applyStagger(LivingEntity target, SpellDefinition.Impact impact) {
+        target.setDeltaMovement(Vec3.ZERO);
+        target.hurtMarked = true;
+        SpellRuntimeController.interruptPendingCast(target);
+        target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,
+                Math.max(1, impact.duration), Math.max(1, impact.amplifier),
+                false, impact.show_particles, impact.show_icon));
     }
 
     private static boolean hasAnyEffect(LivingEntity target, List<String> effectIds) {

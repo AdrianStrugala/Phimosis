@@ -1,11 +1,15 @@
 {
+  "pokemon_type": "grass",
+  "category": "status",
+  "power": 4.0,
   "school": "nature",
-  "cooldown_ticks": 200,
-  "targeting": { "type": "aim", "range": 14, "radius": 4 },
-  "delivery": { "type": "cloud", "speed": 1.0 },
+  "cooldown_ticks": 280,
+  "targeting": { "type": "aim", "range": 16.0, "width": 0.7, "max_targets": 1 },
+  "delivery": { "type": "projectile", "speed": 1.1, "homing_strength": 0.12 },
   "impact": [
-    { "type": "damage", "damage_multiplier": 0.8 },
-    { "type": "heal", "amount": 6.0 },
-    { "type": "status_effect", "effect": "minecraft:poison", "duration": 120, "amplifier": 0, "chance": 0.8 }
-  ]
+    { "type": "damage" },
+    { "type": "leech_seed", "duration": 160, "amount": 2.0 }
+  ],
+  "visual": { "cast_animation": "leech_seed_cast", "projectile": "leech_seed_pod", "trail": "leech_seed_vine", "impact": "leech_seed_sprout", "aftermath": "leech_seed_drain" },
+  "sound": { "cast": "minecraft:block.grass.place", "travel": "minecraft:block.azalea_leaves.hit", "impact": "minecraft:block.cave_vines.place" }
 }

@@ -182,6 +182,7 @@ public class CobblemonMoveMapper {
         n("psybeam",            "psybeam");
         n("psychic",            "psychic");
         n("psycho_cut",         "psycho_cut");
+        n("trick_room",         "trick_room");
         n("zen_headbutt",       "confusion");
         n("extrasensory",       "psybeam");
         n("stored_power",       "psychic_blast");
@@ -213,8 +214,8 @@ public class CobblemonMoveMapper {
         n("hex",                "hex");
         n("foul_play",          "foul_play");
         n("shadow_claw",        "shadow_claw");
-        n("phantom_force",      "shadow_ball");
-        n("shadow_force",       "shadow_ball");
+        n("phantom_force",      "phantom_force");
+        n("shadow_force",       "phantom_force");
         n("spectral_thief",     "foul_play");
         n("moongeist_beam",     "shadow_ball");
         n("shadow_sneak",       "shadow_sneak");
@@ -252,7 +253,7 @@ public class CobblemonMoveMapper {
         n("dragon_claw",        "dragon_claw");
         n("spacial_rend",       "draco_meteor");
         n("roar_of_time",       "draco_meteor");
-        n("dragon_rush",        "dragon_pulse");
+        n("dragon_rush",        "dragon_rush");
         n("twister",            "gust");
         n("dragon_tail",        "dragon_tail");
         n("dragon_darts",       "dragon_pulse");
@@ -291,9 +292,10 @@ public class CobblemonMoveMapper {
         // ═══════════════════════════════════════════════════════════════════
         n("rock_throw",         "rock_throw");
         n("rock_slide",         "rock_slide");
+        n("rock_tomb",          "rock_tomb");
         n("stone_edge",         "stone_edge");
         n("rock_blast",         "rock_throw");
-        n("stealth_rock",       "rock_throw");
+        n("stealth_rock",       "stealth_rock");
         n("rock_wrecker",       "stone_edge");
         n("ancient_power",      "rock_slide");
         n("power_gem",          "rock_slide");

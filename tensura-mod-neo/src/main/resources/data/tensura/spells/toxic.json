@@ -1,9 +1,14 @@
 {
+  "pokemon_type": "poison",
+  "category": "status",
+  "power": 0.0,
   "school": "poison",
-  "cooldown_ticks": 240,
-  "targeting": { "type": "aim", "range": 14, "radius": 3 },
-  "delivery": { "type": "cloud", "speed": 1.0 },
+  "cooldown_ticks": 400,
+  "targeting": { "type": "aim", "range": 18.0, "width": 0.8, "max_targets": 1 },
+  "delivery": { "type": "projectile", "speed": 0.9, "homing_strength": 0.18 },
   "impact": [
-    { "type": "status_effect", "effect": "minecraft:wither", "duration": 200, "amplifier": 1, "chance": 1.0 }
-  ]
+    { "type": "toxic", "duration": 200, "amplifier": 0 }
+  ],
+  "visual": { "cast_animation": "toxic_cast", "projectile": "toxic_droplet", "trail": "toxic_fume", "impact": "toxic_splash" },
+  "sound": { "cast": "minecraft:entity.llama.spit", "travel": "minecraft:block.brewing_stand.brew", "impact": "minecraft:entity.spider.hurt" }
 }

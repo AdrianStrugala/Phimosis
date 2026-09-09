@@ -246,6 +246,23 @@ public final class ProgrammaticSpellFx {
             case "spark_dash_cast" -> new CastProfile(CastFamily.DASH, 15);
             case "thunder_punch_swing" -> new CastProfile(CastFamily.SWEEP, 19);
             case "venoshock_compress" -> new CastProfile(CastFamily.FOCUS, 13);
+            case "tackle_charge" -> new CastProfile(CastFamily.DASH, 16);
+            case "hyper_beam_charge" -> new CastProfile(CastFamily.CHANNEL, 14);
+            case "overheat_release" -> new CastProfile(CastFamily.BURST, 11);
+            case "leech_seed_cast" -> new CastProfile(CastFamily.FOCUS, 14);
+            case "powder_snow_cast" -> new CastProfile(CastFamily.SWEEP, 20);
+            case "toxic_cast" -> new CastProfile(CastFamily.VOLLEY, 16);
+            case "night_shade_cast" -> new CastProfile(CastFamily.FOCUS, 15);
+            case "hex_cast" -> new CastProfile(CastFamily.FOCUS, 16);
+            case "dragon_breath_channel" -> new CastProfile(CastFamily.CHANNEL, 15);
+            case "outrage_frenzy" -> new CastProfile(CastFamily.DASH, 17);
+            case "foul_play_cast" -> new CastProfile(CastFamily.STANCE, 5);
+            case "flash_cannon_charge" -> new CastProfile(CastFamily.CHANNEL, 16);
+            case "dragon_rush_charge" -> new CastProfile(CastFamily.DASH, 18);
+            case "phantom_force_vanish" -> new CastProfile(CastFamily.DASH, 19);
+            case "rock_tomb_cast" -> new CastProfile(CastFamily.GROUND, 10);
+            case "stealth_rock_cast" -> new CastProfile(CastFamily.GROUND, 11);
+            case "trick_room_cast" -> new CastProfile(CastFamily.STANCE, 6);
             default -> new CastProfile(CastFamily.BURST, 0);
         };
         }

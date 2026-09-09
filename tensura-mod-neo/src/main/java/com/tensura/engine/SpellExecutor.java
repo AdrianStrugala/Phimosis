@@ -139,11 +139,16 @@ public class SpellExecutor {
     public static boolean executeDelivery(ServerPlayer caster, ResourceLocation spellId, SpellDefinition def) {
         boolean started = switch (def.delivery.type) {
             case "dash" -> SpellMovementController.startDash(caster, def);
+            case "dash_combo" -> SpellRuntimeController.startDashCombo(
+                caster, caster, SpellTargetResolver.rayCast(
+                    caster, def.targeting.range), def);
             case "vortex" -> castVortex(caster, def);
             case "delayed" -> castDelayed(caster, def);
             case "delayed_area" -> castDelayedArea(caster, def);
             case "moving_zone" -> castMovingZone(caster, def);
             case "protective_aura" -> SpellRuntimeController.startProtectiveAura(caster, caster, def);
+                case "zone" -> SpellRuntimeController.startZone(
+                    caster, caster, def, caster.position());
             case "counter" -> SpellRuntimeController.startCounter(caster, def);
             case "channel_beam" -> SpellRuntimeController.startChannelBeam(caster, def);
                 case "channel_cone" -> SpellRuntimeController.startChannelCone(caster, caster, def);
@@ -222,6 +227,8 @@ public class SpellExecutor {
             && !SpellTargetingRules.canHarm(owner, companion, target)) return false;
         boolean started = switch (def.delivery.type) {
             case "dash" -> SpellMovementController.startDash(owner, companion, target, def);
+            case "dash_combo" -> SpellRuntimeController.startDashCombo(
+                    owner, companion, target, def);
             case "vortex" -> SpellRuntimeController.startVortex(owner, companion, def, target.position());
             case "delayed" -> SpellRuntimeController.startDelayed(owner, companion, target, def);
             case "delayed_area" -> SpellRuntimeController.startDelayedArea(
@@ -229,6 +236,8 @@ public class SpellExecutor {
             case "moving_zone" -> startCompanionMovingZone(owner, companion, target, def);
             case "protective_aura" -> SpellRuntimeController.startProtectiveAura(
                     owner, companion, def);
+                case "zone" -> SpellRuntimeController.startZone(
+                    owner, companion, def, companion.position());
             case "counter" -> SpellRuntimeController.startCounter(owner, companion, def);
             case "channel_beam" -> SpellRuntimeController.startChannelBeam(
                     owner, companion, target, def);
@@ -350,7 +359,21 @@ public class SpellExecutor {
         }
 
         private static boolean castTeleportStrike(ServerPlayer owner, LivingEntity effectCaster,
-                               LivingEntity target, SpellDefinition def) {
+                                                  LivingEntity target, SpellDefinition def) {
+        if (target == null || !SpellTargetingRules.canHarm(owner, effectCaster, target)) {
+            return false;
+        }
+        if (def.delivery.delay_ticks > 0) {
+            return SpellRuntimeController.startDelayedTeleportStrike(
+                    owner, effectCaster, target, def);
+        }
+        return castRuntimeTeleportStrike(owner, effectCaster, target, def);
+        }
+
+    public static boolean castRuntimeTeleportStrike(ServerPlayer owner,
+                                                     LivingEntity effectCaster,
+                                                     LivingEntity target,
+                                                     SpellDefinition def) {
         if (!(effectCaster.level() instanceof ServerLevel level) || target == null
             || !SpellTargetingRules.canHarm(owner, effectCaster, target)) return false;
         Vec3 oldPosition = effectCaster.position();
@@ -371,7 +394,7 @@ public class SpellExecutor {
             Math.max(1.0, def.targeting.width), 10, effectCaster, false);
         applyImpacts(owner, effectCaster, target, def);
         return true;
-        }
+    }
 
         private static Vec3 findTeleportDestination(LivingEntity effectCaster, LivingEntity target) {
         Vec3 targetFacing = new Vec3(target.getLookAngle().x, 0.0, target.getLookAngle().z);

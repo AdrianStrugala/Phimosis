@@ -38,11 +38,11 @@
   },
   "tackle": {
     "title": "Tackle",
-    "description": "Strike enemies with a burst of Physical energy at close range.",
+    "description": "Charge forward and stop when your body slam connects with the first enemy.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:iron_sword"
+        "item": "tensura:spell_icon_tackle"
       }
     },
     "rewards": [
@@ -344,11 +344,11 @@
   },
   "hyper_beam": {
     "title": "Hyper Beam",
-    "description": "Unleash a piercing Physical beam from long range.",
+    "description": "Charge a devastating piercing beam, then become Exhausted after firing.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_hyper_beam"
       }
     },
     "size": 0.7,
@@ -704,11 +704,11 @@
   },
   "overheat": {
     "title": "Overheat",
-    "description": "Strike enemies with a burst of Fire energy at medium range. Sets enemies ablaze.",
+    "description": "Release a broad blast of flame that burns enemies and leaves you Exhausted.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dispenser"
+        "item": "tensura:spell_icon_overheat"
       }
     },
     "size": 0.7,
@@ -1473,11 +1473,11 @@
   },
   "leech_seed": {
     "title": "Leech Seed",
-    "description": "Create a lingering cloud of Nature energy at medium range. Restores your health and sometimes poisons enemies.",
+    "description": "Plant a seed that repeatedly drains health from the enemy back to its caster.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:wheat_seeds"
+        "item": "tensura:spell_icon_leech_seed"
       }
     },
     "rewards": [
@@ -1780,11 +1780,11 @@
   },
   "powder_snow": {
     "title": "Powder Snow",
-    "description": "Strike enemies with a burst of Ice energy at close range. Slows enemies.",
+    "description": "Sweep a short cone of powder snow that damages and chills every enemy caught inside.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:snowball"
+        "item": "tensura:spell_icon_powder_snow"
       }
     },
     "rewards": [
@@ -2654,11 +2654,11 @@
   },
   "toxic": {
     "title": "Toxic",
-    "description": "Create a lingering cloud of Poison energy at medium range. Withers enemies.",
+    "description": "Launch a homing toxic droplet whose poison grows stronger as it remains active.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:wither_rose"
+        "item": "tensura:spell_icon_toxic"
       }
     },
     "rewards": [
@@ -3497,6 +3497,58 @@
       }
     }
   },
+  "trick_room_owned": {
+    "title": "Trick Room",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "trick_room": {
+    "title": "Trick Room",
+    "description": "Create an inverted room where fast creatures slow down and slow creatures speed up.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_trick_room"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s trick_room"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
   "psychic_blast_owned": {
     "title": "Psychic Blast",
     "icon": {
@@ -3957,6 +4009,110 @@
       }
     }
   },
+  "rock_tomb_owned": {
+    "title": "Rock Tomb",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "rock_tomb": {
+    "title": "Rock Tomb",
+    "description": "Raise three temporary rock formations that crush and slow enemies entering the area.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_rock_tomb"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s rock_tomb"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
+  "stealth_rock_owned": {
+    "title": "Stealth Rock",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "stealth_rock": {
+    "title": "Stealth Rock",
+    "description": "Scatter hidden rock traps that damage enemies again whenever they leave and re-enter.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_stealth_rock"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s stealth_rock"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
   "rock_slide_owned": {
     "title": "Rock Slide",
     "icon": {
@@ -4136,11 +4292,11 @@
   },
   "night_shade": {
     "title": "Night Shade",
-    "description": "Strike enemies with a burst of Shadow energy from long range. Sometimes blinds enemies.",
+    "description": "Turn an enemy's shadow against it, dealing more damage to targets with greater health.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:black_dye"
+        "item": "tensura:spell_icon_night_shade"
       }
     },
     "rewards": [
@@ -4341,11 +4497,11 @@
   },
   "hex": {
     "title": "Hex",
-    "description": "Strike enemies with a burst of Shadow energy from long range. Sometimes weakens enemies.",
+    "description": "Curse an enemy for twice the damage while it is suffering from a harmful effect.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:wither_skeleton_skull"
+        "item": "tensura:spell_icon_hex"
       }
     },
     "rewards": [
@@ -4353,6 +4509,58 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s hex"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
+  "phantom_force_owned": {
+    "title": "Phantom Force",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "phantom_force": {
+    "title": "Phantom Force",
+    "description": "Vanish briefly, telegraph your return, then reappear behind the target and strike.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_phantom_force"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s phantom_force"
         }
       }
     ],
@@ -4396,7 +4604,7 @@
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:dragon_breath"
+        "item": "tensura:spell_icon_dragon_breath"
       }
     },
     "rewards": [
@@ -4508,6 +4716,58 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s dragon_tail"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
+  "dragon_rush_owned": {
+    "title": "Dragon Rush",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "dragon_rush": {
+    "title": "Dragon Rush",
+    "description": "Steer a Dragon-powered charge whose central impact staggers enemies.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_dragon_rush"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s dragon_rush"
         }
       }
     ],
@@ -4649,11 +4909,11 @@
   },
   "outrage": {
     "title": "Outrage",
-    "description": "Strike enemies with a burst of Dragon energy at medium range. Knocks enemies back and disorients enemies.",
+    "description": "Enter a forced sequence of three Dragon charges, then become briefly Confused.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:nether_star"
+        "item": "tensura:spell_icon_outrage"
       }
     },
     "rewards": [
@@ -4958,11 +5218,11 @@
   },
   "foul_play": {
     "title": "Foul Play",
-    "description": "Strike enemies with a burst of Shadow energy at medium range. Weakens enemies.",
+    "description": "Make an enemy's own attack strength determine how hard the shadow strike hits.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:netherite_ingot"
+        "item": "tensura:spell_icon_foul_play"
       }
     },
     "rewards": [
@@ -5216,11 +5476,11 @@
   },
   "flash_cannon": {
     "title": "Flash Cannon",
-    "description": "Unleash a piercing Steel beam from long range. Sometimes weakens enemies.",
+    "description": "Charge a piercing Steel beam that leaves every struck enemy Exposed.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "minecraft:netherite_ingot"
+        "item": "tensura:spell_icon_flash_cannon"
       }
     },
     "rewards": [

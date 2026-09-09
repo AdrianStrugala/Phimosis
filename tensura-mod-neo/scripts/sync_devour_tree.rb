@@ -24,11 +24,11 @@ RAYS = {
   poison: %w[poison_sting acid_spray venoshock toxic_spikes toxic],
   ground: %w[mud_shot bulldoze dig earth_power earthquake],
   flying: %w[gust air_cutter aerial_ace tailwind hurricane aerial_strike],
-  psychic: %w[confusion psybeam psycho_cut psychic rest psychic_blast future_sight],
+  psychic: %w[confusion psybeam psycho_cut psychic rest trick_room psychic_blast future_sight],
   bug: %w[string_shot pin_missile u_turn x_scissor bug_buzz],
-  rock: %w[rock_throw smack_down rock_slide stone_edge],
-  ghost: %w[lick night_shade shadow_claw shadow_sneak shadow_ball hex],
-  dragon: %w[dragon_breath dragon_claw dragon_tail dragon_pulse draco_meteor outrage],
+  rock: %w[rock_throw smack_down rock_tomb stealth_rock rock_slide stone_edge],
+  ghost: %w[lick night_shade shadow_claw shadow_sneak shadow_ball hex phantom_force],
+  dragon: %w[dragon_breath dragon_claw dragon_tail dragon_rush dragon_pulse draco_meteor outrage],
   dark: %w[bite crunch snarl dark_pulse sucker_punch foul_play],
   steel: %w[bullet_punch metal_claw iron_head iron_defense flash_cannon],
   fairy: %w[fairy_wind draining_kiss charm dazzling_gleam moonblast]
@@ -91,7 +91,23 @@ DESCRIPTION_OVERRIDES = {
   "spark" => "Dash with Electric energy. A soaked target conducts damage to another nearby enemy.",
   "thunder_punch" => "Swing an Electric fist that paralyzes soaked enemies without fail.",
   "thunder_shock" => "Fire a quick Electric bolt that can leap to one nearby soaked enemy.",
-  "venoshock" => "Launch a Poison orb that explodes and deals double damage to poisoned or Toxic enemies."
+  "venoshock" => "Launch a Poison orb that explodes and deals double damage to poisoned or Toxic enemies.",
+  "tackle" => "Charge forward and stop when your body slam connects with the first enemy.",
+  "hyper_beam" => "Charge a devastating piercing beam, then become Exhausted after firing.",
+  "overheat" => "Release a broad blast of flame that burns enemies and leaves you Exhausted.",
+  "leech_seed" => "Plant a seed that repeatedly drains health from the enemy back to its caster.",
+  "powder_snow" => "Sweep a short cone of powder snow that damages and chills every enemy caught inside.",
+  "toxic" => "Launch a homing toxic droplet whose poison grows stronger as it remains active.",
+  "night_shade" => "Turn an enemy's shadow against it, dealing more damage to targets with greater health.",
+  "hex" => "Curse an enemy for twice the damage while it is suffering from a harmful effect.",
+  "outrage" => "Enter a forced sequence of three Dragon charges, then become briefly Confused.",
+  "foul_play" => "Make an enemy's own attack strength determine how hard the shadow strike hits.",
+  "flash_cannon" => "Charge a piercing Steel beam that leaves every struck enemy Exposed.",
+  "dragon_rush" => "Steer a Dragon-powered charge whose central impact staggers enemies.",
+  "phantom_force" => "Vanish briefly, telegraph your return, then reappear behind the target and strike.",
+  "rock_tomb" => "Raise three temporary rock formations that crush and slow enemies entering the area.",
+  "stealth_rock" => "Scatter hidden rock traps that damage enemies again whenever they leave and re-enter.",
+  "trick_room" => "Create an inverted room where fast creatures slow down and slow creatures speed up."
 }.freeze
 
 def read_json(name)

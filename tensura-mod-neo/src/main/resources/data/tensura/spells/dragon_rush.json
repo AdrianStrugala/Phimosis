@@ -1,0 +1,15 @@
+{
+  "pokemon_type": "dragon",
+  "category": "physical",
+  "power": 17.0,
+  "school": "dragon",
+  "cooldown_ticks": 240,
+  "targeting": { "type": "aim", "range": 10.0, "width": 1.35, "max_targets": 3 },
+  "delivery": { "type": "dash", "speed": 1.7, "distance": 10.0, "duration_ticks": 8, "steerable": true },
+  "impact": [
+    { "type": "damage" },
+    { "type": "central_stagger", "duration": 24, "amplifier": 4 }
+  ],
+  "visual": { "cast_animation": "dragon_rush_charge", "trail": "dragon_rush_aura", "impact": "dragon_rush_break" },
+  "sound": { "cast": "minecraft:entity.ender_dragon.growl", "travel": "minecraft:entity.ender_dragon.flap", "impact": "minecraft:entity.player.attack.knockback" }
+}

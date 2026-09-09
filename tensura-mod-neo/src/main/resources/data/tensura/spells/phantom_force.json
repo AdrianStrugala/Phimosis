@@ -1,0 +1,14 @@
+{
+  "pokemon_type": "ghost",
+  "category": "physical",
+  "power": 24.0,
+  "school": "shadow",
+  "cooldown_ticks": 360,
+  "targeting": { "type": "aim", "range": 12.0, "width": 1.0, "max_targets": 1 },
+  "delivery": { "type": "teleport_strike", "delay_ticks": 20 },
+  "impact": [
+    { "type": "damage" }
+  ],
+  "visual": { "cast_animation": "phantom_force_vanish", "telegraph": "phantom_exit_rift", "trail": "phantom_void_path", "impact": "phantom_force_rend", "aftermath": "phantom_afterimage" },
+  "sound": { "cast": "minecraft:entity.enderman.teleport", "travel": "minecraft:block.portal.travel", "impact": "minecraft:entity.player.attack.crit" }
+}

@@ -545,6 +545,14 @@
   ],
   [
     "rest_owned",
+    "trick_room_owned"
+  ],
+  [
+    "trick_room_owned",
+    "trick_room"
+  ],
+  [
+    "trick_room_owned",
     "psychic_blast_owned"
   ],
   [
@@ -617,6 +625,22 @@
   ],
   [
     "smack_down_owned",
+    "rock_tomb_owned"
+  ],
+  [
+    "rock_tomb_owned",
+    "rock_tomb"
+  ],
+  [
+    "rock_tomb_owned",
+    "stealth_rock_owned"
+  ],
+  [
+    "stealth_rock_owned",
+    "stealth_rock"
+  ],
+  [
+    "stealth_rock_owned",
     "rock_slide_owned"
   ],
   [
@@ -680,6 +704,14 @@
     "hex"
   ],
   [
+    "hex_owned",
+    "phantom_force_owned"
+  ],
+  [
+    "phantom_force_owned",
+    "phantom_force"
+  ],
+  [
     "devour_core",
     "dragon_breath_owned"
   ],
@@ -705,6 +737,14 @@
   ],
   [
     "dragon_tail_owned",
+    "dragon_rush_owned"
+  ],
+  [
+    "dragon_rush_owned",
+    "dragon_rush"
+  ],
+  [
+    "dragon_rush_owned",
     "dragon_pulse_owned"
   ],
   [

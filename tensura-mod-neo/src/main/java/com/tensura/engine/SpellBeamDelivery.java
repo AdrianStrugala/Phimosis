@@ -124,6 +124,8 @@ final class SpellBeamDelivery {
             SpellImpactApplier.applyImpacts(
                     owner, effectCaster, targets.get(index), definition);
         }
+        SpellImpactApplier.applyImpacts(
+                owner, effectCaster, effectCaster, definition, true, true, false);
         Vec3 end = origin.add(forward.scale(range));
         double radius = Math.tan(Math.toRadians(angle * 0.5)) * range;
         SpellVfxDispatcher.send(level, "cone", definition.visual.trail,

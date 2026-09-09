@@ -101,7 +101,24 @@ TARGETS = {
   "snarl" => :voice,
   "spark" => :volt_dash,
   "thunder_punch" => :fist,
-  "venoshock" => :shadow_orb
+  "venoshock" => :shadow_orb,
+  "tackle" => :combat_burst,
+  "hyper_beam" => :sun_beam,
+  "overheat" => :fire_star,
+  "leech_seed" => :vine,
+  "powder_snow" => :snowstorm,
+  "toxic" => :toxic_spikes,
+  "night_shade" => :shadow_orb,
+  "hex" => :confusion_spiral,
+  "dragon_breath" => :flame_breath,
+  "outrage" => :combat_burst,
+  "foul_play" => :shadow_sneak,
+  "flash_cannon" => :focus_orb,
+  "dragon_rush" => :volt_dash,
+  "phantom_force" => :shadow_sneak,
+  "rock_tomb" => :stone_spires,
+  "stealth_rock" => :toxic_spikes,
+  "trick_room" => :curtain
 }.freeze
 
 REDRAW = %w[
@@ -122,7 +139,9 @@ ICON_ORDER = %w[
   dragon_pulse bullet_punch mach_punch focus_blast shadow_ball fire_punch
   acid_spray bite crunch dragon_claw dragon_tail drain_punch flame_charge force_palm
   giga_drain ice_punch icy_wind iron_head lick metal_claw psycho_cut seismic_toss
-  shadow_claw smack_down snarl spark thunder_punch venoshock
+  shadow_claw smack_down snarl spark thunder_punch venoshock tackle hyper_beam
+  overheat leech_seed powder_snow toxic night_shade hex dragon_breath outrage
+  foul_play flash_cannon dragon_rush phantom_force rock_tomb stealth_rock trick_room
 ].freeze
 
 PALETTES = {

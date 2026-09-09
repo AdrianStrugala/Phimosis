@@ -1,0 +1,14 @@
+{
+  "pokemon_type": "psychic",
+  "category": "status",
+  "power": 0.0,
+  "school": "psychic",
+  "cooldown_ticks": 480,
+  "targeting": { "type": "self", "range": 0.0, "radius": 8.0 },
+  "delivery": { "type": "zone", "duration_ticks": 160, "tick_interval_ticks": 10 },
+  "impact": [
+    { "type": "invert_speed", "duration": 15, "amplifier": 1, "show_particles": false }
+  ],
+  "visual": { "cast_animation": "trick_room_cast", "telegraph": "trick_room_grid", "impact": "trick_room_shift", "aftermath": "trick_room_cube" },
+  "sound": { "cast": "minecraft:block.enchantment_table.use", "loop": "minecraft:block.amethyst_block.resonate", "impact": "minecraft:block.amethyst_block.chime" }
+}

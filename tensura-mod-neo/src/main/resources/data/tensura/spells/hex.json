@@ -1,10 +1,14 @@
 {
+  "pokemon_type": "ghost",
+  "category": "special",
+  "power": 10.0,
   "school": "shadow",
-  "cooldown_ticks": 140,
-  "targeting": { "type": "aim", "range": 16 },
-  "delivery": { "type": "instant", "speed": 1.0 },
+  "cooldown_ticks": 200,
+  "targeting": { "type": "aim", "range": 16.0, "max_targets": 1 },
+  "delivery": { "type": "instant" },
   "impact": [
-    { "type": "damage", "damage_multiplier": 3.5 },
-    { "type": "status_effect", "effect": "minecraft:weakness", "duration": 120, "amplifier": 1, "chance": 0.5 }
-  ]
+    { "type": "status_scaled_damage", "conditional_multiplier": 2.0 }
+  ],
+  "visual": { "cast_animation": "hex_cast", "impact": "hex_curse" },
+  "sound": { "cast": "minecraft:block.respawn_anchor.ambient", "impact": "minecraft:entity.evoker.cast_spell" }
 }

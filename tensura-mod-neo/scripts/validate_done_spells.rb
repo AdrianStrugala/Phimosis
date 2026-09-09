@@ -5,6 +5,7 @@ require "json"
 
 ROOT = File.expand_path("..", __dir__)
 JAVA_ICON_FILE = File.join(ROOT, "src/main/java/com/tensura/item/SpellItem.java")
+SPELL_CASTING_FILE = File.join(ROOT, "src/main/java/com/tensura/item/SpellCasting.java")
 MAPPER_FILE = File.join(ROOT, "src/main/java/com/tensura/spell/CobblemonMoveMapper.java")
 EXECUTOR_FILE = File.join(ROOT, "src/main/java/com/tensura/engine/SpellExecutor.java")
 IMPACT_APPLIER_FILE = File.join(ROOT, "src/main/java/com/tensura/engine/SpellImpactApplier.java")
@@ -19,6 +20,7 @@ RUNTIME_FILE = File.join(ROOT, "src/main/java/com/tensura/event/SpellRuntimeCont
 VFX_FILE = File.join(ROOT, "src/main/java/com/tensura/client/ProgrammaticSpellFx.java")
 ALIASES_FILE = File.join(ROOT, "src/main/java/com/tensura/engine/SpellIdAliases.java")
 STATUS_FILE = File.join(ROOT, "src/main/java/com/tensura/event/SpellStatusEvents.java")
+DEVOUR_GENERATOR_FILE = File.join(ROOT, "scripts/sync_devour_tree.rb")
 SPELL_DIR = File.join(ROOT, "src/main/resources/data/tensura/spells")
 MODEL_DIR = File.join(ROOT, "src/main/resources/assets/tensura/models/item")
 TEXTURE_DIR = File.join(ROOT, "src/main/resources/assets/tensura/textures/item/spell")
@@ -31,11 +33,13 @@ DELIVERY_VFX = {
   "channel_beam" => [%w[trail], %w[impact]],
   "channel_cone" => [%w[trail], %w[impact]],
   "dash" => [%w[trail], %w[impact]],
+  "dash_combo" => [%w[trail], %w[impact]],
   "delayed" => [%w[telegraph], %w[impact]],
   "delayed_area" => [%w[telegraph], %w[impact], %w[aftermath]],
   "moving_zone" => [%w[aftermath], %w[impact]],
   "cloud" => [%w[aftermath], %w[impact]],
   "protective_aura" => [%w[telegraph], %w[aftermath]],
+  "zone" => [%w[telegraph], %w[aftermath]],
   "counter" => [%w[telegraph], %w[impact]],
   "wave" => [%w[trail aftermath], %w[impact]],
   "trap" => [%w[telegraph], %w[aftermath]],
@@ -51,7 +55,7 @@ DELIVERY_VFX = {
 }.freeze
 
 LOOP_DELIVERIES = %w[
-  channel_beam channel_cone cloud moving_zone protective_aura vortex wave
+  channel_beam channel_cone cloud moving_zone protective_aura vortex wave zone
 ].freeze
 
 def fail_validation(message)
@@ -63,8 +67,18 @@ java = File.read(JAVA_ICON_FILE)
 icon_block = java[/CUSTOM_ICON_ORDER = java\.util\.List\.of\((.*?)\n    \);/m, 1]
 fail_validation("CUSTOM_ICON_ORDER not found") unless icon_block
 spells = icon_block.scan(/"([a-z0-9_]+)"/).flatten
-fail_validation("expected 93 custom icon spells, got #{spells.size}") unless spells.size == 93
+fail_validation("expected 110 custom icon spells, got #{spells.size}") unless spells.size == 110
 fail_validation("duplicate custom icon spell") unless spells.uniq.size == spells.size
+
+devour_generator = File.read(DEVOUR_GENERATOR_FILE)
+ray_block = devour_generator[/RAYS = \{(.*?)\n\}\.freeze/m, 1]
+fail_validation("Devour RAYS not found") unless ray_block
+ray_spells = ray_block.scan(/\w+: %w\[([^\]]+)\]/).flatten.flat_map(&:split)
+canonical_spells = ray_spells - %w[aerial_strike psychic_blast]
+fail_validation("expected 110 canonical spells, got #{canonical_spells.size}") unless
+  canonical_spells.size == 110 && canonical_spells.uniq.size == 110
+fail_validation("done-done roster differs from canonical roster") unless
+  spells.sort == canonical_spells.sort
 
 promoted_spells = %w[
   water_gun thunder_shock psychic confusion razor_leaf leaf_blade poison_sting
@@ -73,12 +87,16 @@ promoted_spells = %w[
   acid_spray bite crunch dragon_claw dragon_tail drain_punch fire_punch flame_charge
   force_palm giga_drain ice_punch icy_wind iron_head lick metal_claw psycho_cut
   seismic_toss shadow_claw smack_down snarl spark thunder_punch venoshock
+  tackle hyper_beam overheat leech_seed powder_snow toxic night_shade hex
+  dragon_breath outrage foul_play flash_cannon dragon_rush phantom_force
+  rock_tomb stealth_rock trick_room
 ]
 missing_promotions = promoted_spells - spells
 fail_validation("missing promoted spells: #{missing_promotions.join(', ')}") unless
   missing_promotions.empty?
 
 mapper = File.read(MAPPER_FILE)
+spell_casting = File.read(SPELL_CASTING_FILE)
 executor = [EXECUTOR_FILE, IMPACT_APPLIER_FILE, FEEDBACK_FILE,
   PROJECTILE_DELIVERY_FILE, BEAM_DELIVERY_FILE]
   .map { |file| File.read(file) }.join("\n")
@@ -256,10 +274,10 @@ held_channels.each do |spell, delivery|
 end
 fail_validation("held channels are not stopped on item release") unless
   runtime.include?("definition.delivery.hold_to_channel") &&
-    java.include?("stopPlayerChannels(player.getUUID())") &&
-    java.include?("UseAnim.SPEAR")
+    spell_casting.include?("stopPlayerChannels(player.getUUID())") &&
+    spell_casting.include?("UseAnim.SPEAR")
 fail_validation("held-channel cooldown is not deferred until release") unless
-  java.include?("SpellExecutor.finishHeldChannel(player, spellId)") &&
+  spell_casting.include?("SpellExecutor.finishHeldChannel(player, spellId)") &&
     executor.include?("public static void finishHeldChannel") &&
     executor.include?("heldChannels.put(caster.getUUID(), spellId)")
 
@@ -274,6 +292,114 @@ fail_validation("Dragon Breath has a cooldown or lacks its strong self-slow") un
     dragon_slow&.fetch("amplifier", 0).to_i >= 4 &&
     dragon_slow&.fetch("duration", 0).to_i >
       dragon_breath.dig("delivery", "tick_interval_ticks").to_i
+
+tackle = spell_definition.call("tackle")
+fail_validation("Tackle is not a first-target dash") unless
+  tackle.dig("delivery", "type") == "dash" &&
+    tackle.dig("targeting", "max_targets").to_i == 1
+
+hyper_beam = spell_definition.call("hyper_beam")
+fail_validation("Hyper Beam lacks charge, piercing beam, or exhaustion") unless
+  hyper_beam.dig("delivery", "type") == "channel_beam" &&
+    hyper_beam.fetch("cast_time_ticks", 0).to_i >= 28 &&
+    impacts.call("hyper_beam").any? do |impact|
+      impact["type"] == "status_effect" && impact["recipient"] == "caster" &&
+        impact["effect"] == "tensura:exhausted" && impact["duration"].to_i >= 80
+    end
+
+overheat = spell_definition.call("overheat")
+fail_validation("Overheat lacks its broad burst or self-exhaustion") unless
+  overheat.dig("delivery", "type") == "arc_strike" &&
+    overheat.dig("delivery", "cone_angle").to_f >= 100.0 &&
+    impacts.call("overheat").any? do |impact|
+      impact["recipient"] == "caster" && impact["effect"] == "tensura:exhausted" &&
+        impact["duration"].to_i >= 120
+    end && executor.match?(/castArcStrike.*?effectCaster, definition, true, true, false/m)
+
+fail_validation("Leech Seed lacks periodic health transfer") unless
+  impacts.call("leech_seed").any? do |impact|
+    impact["type"] == "leech_seed" && impact["duration"].to_i == 160 &&
+      impact["amount"].to_f == 2.0
+  end && runtime.include?("tickLeechSeeds") && runtime.include?("healthBefore - target.getHealth()")
+
+fail_validation("Powder Snow is not a chilling cone") unless
+  spell_definition.call("powder_snow").dig("delivery", "type") == "arc_strike" &&
+    impacts.call("powder_snow").any? do |impact|
+      impact["type"] == "status_effect" && impact["effect"] == "minecraft:slowness"
+    end
+
+toxic = spell_definition.call("toxic")
+fail_validation("Toxic lacks homing buildup with a boss duration cap") unless
+  toxic.dig("delivery", "type") == "projectile" &&
+    toxic.dig("delivery", "homing_strength").to_f > 0.0 &&
+    impacts.call("toxic").any? { |impact| impact["type"] == "toxic" } &&
+    executor.include?("recipient.getMaxHealth() >= 100.0F")
+
+fail_validation("Night Shade does not scale with target health") unless
+  impacts.call("night_shade").any? do |impact|
+    impact["type"] == "health_scaled_damage" && impact["amount"].to_f == 16.0
+  end && executor.include?("target.getMaxHealth() * 0.1")
+
+fail_validation("Hex does not double against harmful effects") unless
+  impacts.call("hex").any? do |impact|
+    impact["type"] == "status_scaled_damage" &&
+      impact["conditional_multiplier"].to_f == 2.0
+  end && executor.include?("MobEffectCategory.HARMFUL")
+
+outrage = spell_definition.call("outrage")
+fail_validation("Outrage is not a three-dash forced combo ending in Confusion") unless
+  outrage.dig("delivery", "type") == "dash_combo" &&
+    outrage.dig("delivery", "combo_hits").to_i == 3 &&
+    runtime.include?("tickDashCombos") && runtime.include?("MobEffects.CONFUSION")
+
+fail_validation("Foul Play does not scale from target attack") unless
+  impacts.call("foul_play").any? do |impact|
+    impact["type"] == "target_attack_scaled_damage" && impact["amount"].to_f == 23.0
+  end && executor.include?("target.getAttribute(Attributes.ATTACK_DAMAGE)")
+
+flash_cannon = spell_definition.call("flash_cannon")
+fail_validation("Flash Cannon lacks charge, piercing beam, or Exposed") unless
+  flash_cannon.dig("delivery", "type") == "beam" &&
+    flash_cannon.fetch("cast_time_ticks", 0).to_i >= 16 &&
+    impacts.call("flash_cannon").any? { |impact| impact["type"] == "expose" }
+
+dragon_rush = spell_definition.call("dragon_rush")
+fail_validation("Dragon Rush lacks steering or central Stagger") unless
+  dragon_rush.dig("delivery", "type") == "dash" &&
+    dragon_rush.dig("delivery", "steerable") == true &&
+    impacts.call("dragon_rush").any? { |impact| impact["type"] == "central_stagger" } &&
+    movement.include?("definition.delivery.steerable")
+
+phantom_force = spell_definition.call("phantom_force")
+fail_validation("Phantom Force lacks delayed invisibility and teleport strike") unless
+  phantom_force.dig("delivery", "type") == "teleport_strike" &&
+    phantom_force.dig("delivery", "delay_ticks").to_i >= 20 &&
+    runtime.include?("startDelayedTeleportStrike") &&
+    runtime.include?("MobEffects.INVISIBILITY") &&
+    runtime.include?("castRuntimeTeleportStrike")
+
+rock_tomb = spell_definition.call("rock_tomb")
+fail_validation("Rock Tomb lacks its temporary slowing trap formation") unless
+  rock_tomb.dig("delivery", "type") == "trap" &&
+    rock_tomb.dig("delivery", "projectile_count").to_i == 3 &&
+    rock_tomb.dig("delivery", "duration_ticks").to_i == 80 &&
+    impacts.call("rock_tomb").any? do |impact|
+      impact["type"] == "status_effect" && impact["effect"] == "minecraft:slowness"
+    end
+
+stealth_rock = spell_definition.call("stealth_rock")
+fail_validation("Stealth Rock lacks persistent re-entry damage") unless
+  stealth_rock.dig("delivery", "type") == "trap" &&
+    stealth_rock.dig("delivery", "duration_ticks").to_i == 400 &&
+    impacts.call("stealth_rock").any? { |impact| impact["type"] == "damage" } &&
+    runtime.include?("trap.occupants.clear()")
+
+trick_room = spell_definition.call("trick_room")
+fail_validation("Trick Room lacks its speed-inverting zone") unless
+  trick_room.dig("delivery", "type") == "zone" &&
+    trick_room.dig("delivery", "duration_ticks").to_i == 160 &&
+    impacts.call("trick_room").any? { |impact| impact["type"] == "invert_speed" } &&
+    runtime.include?("tickZones") && executor.include?("movement.getBaseValue() >= 0.12")
 
 %w[fire_punch thunder_punch ice_punch dragon_claw shadow_claw psycho_cut].each do |spell|
   fail_validation("#{spell} is not a targetless arc strike") unless

@@ -1,0 +1,14 @@
+{
+  "pokemon_type": "rock",
+  "category": "physical",
+  "power": 7.0,
+  "school": "earth",
+  "cooldown_ticks": 320,
+  "targeting": { "type": "area", "range": 12.0, "radius": 1.25 },
+  "delivery": { "type": "trap", "projectile_count": 3, "duration_ticks": 400 },
+  "impact": [
+    { "type": "damage" }
+  ],
+  "visual": { "cast_animation": "stealth_rock_cast", "telegraph": "stealth_rock_runes", "impact": "stealth_rock_shards", "aftermath": "stealth_rock_field" },
+  "sound": { "cast": "minecraft:block.pointed_dripstone.place", "impact": "minecraft:block.pointed_dripstone.break" }
+}
