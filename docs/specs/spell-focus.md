@@ -1,7 +1,7 @@
 # Katalizator zaklęć — spec implementacyjna
 
 **Data:** 2026-09-08
-**Status:** wdrożony, przeszedł pierwszy playtest (2.0.41)
+**Status:** wdrożony, przeszedł pierwszy playtest (2.0.42)
 **Dotyczy:** tensura-mod-neo (NeoForge 1.21.1) + datapack `predator_skills`
 **Dokument siostrzany:** [start serwera publicznego](../operations/public-server-launch.md)
 
@@ -9,7 +9,7 @@
 
 ## 0. Stan wdrozenia
 
-Zbudowane i wgrane na TEST oraz klienta jako `tensura-2.0.41.jar` (2026-09-09).
+Zbudowane i wgrane na TEST oraz klienta jako `tensura-2.0.42.jar` (2026-09-09).
 **Produkcja nietknięta** — 2k37 nadal ma 2.0.18.
 
 | Krok | Stan |
@@ -73,6 +73,20 @@ jest teraz generowany z nadpisań `spell_item.json` plus jawny `school: 0`.
 `validateResourceLayout` sprawdza dodatkowo, czy **oba** modele mają komplet
 nadpisań `tensura:icon` dla całego `CUSTOM_ICON_ORDER` — to jest ten strażnik,
 którego brakowało.
+
+### Tooltip pustego slotu i ikony drzewka (2.0.42)
+
+- **Tooltip po najechaniu na pusty slot.** Pusty wycinek był jedyną rzeczą w tym
+  UI, która nic o sobie nie mówiła. Teraz tłumaczy, że zaklęcia przypisuje się
+  z drzewka Devour pod `K`. W trybie przypisania treść jest inna — mówi wprost,
+  co zostanie tu wrzucone.
+- **Ikony w drzewku miały różne wielkości.** Nie wina katalizatora: do 2.0.40
+  15 węzłów używało ikon waniliowych, w tym `minecraft:dispenser`
+  i `minecraft:wither_skeleton_skull`, które są modelami bloków i renderują się
+  jako bryły 3D — obok płaskich dysków 32×32 wyglądały wyraźnie większe. Roster
+  110 dał wszystkim własne ikony; `validateSkillTrees` pilnuje teraz, żeby każdy
+  dispenser miał dokładnie `tensura:spell_icon_<spell>`. Jedyna ikona waniliowa,
+  jaka zostaje, to `devour_core`.
 
 ---
 

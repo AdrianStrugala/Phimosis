@@ -148,6 +148,26 @@ public class SpellRadialScreen extends Screen {
         if (pendingSpell != null) {
             renderIcon(graphics, displayStack(pendingSpell), mouseX + SLOT_HALF, mouseY + SLOT_HALF);
         }
+
+        // An empty slot is the one thing here that explains nothing about itself.
+        if (hovered >= 0 && spells.get(hovered) == null) {
+            graphics.renderComponentTooltip(font, emptySlotTooltip(), mouseX, mouseY);
+        }
+    }
+
+    private List<Component> emptySlotTooltip() {
+        if (pendingSpell != null) {
+            return List.of(
+                    Component.literal("§ePusty slot"),
+                    Component.literal("§7Kliknij, żeby przypisać tu §f"
+                            + SpellCasting.formatName(pendingSpell.getPath())));
+        }
+        return List.of(
+                Component.literal("§ePusty slot"),
+                Component.literal("§7Zaklęcia przypisujesz w drzewku Devour:"),
+                Component.literal("§7otwórz je klawiszem §fK§7 i kliknij zaklęcie,"),
+                Component.literal("§7które już pochłonąłeś."),
+                Component.literal("§8Wróci tu ten sam ekran z zaklęciem na kursorze."));
     }
 
     /** Draws an item centred on a point, scaled past the 16px items normally render at. */

@@ -156,6 +156,15 @@ tasks.register('validateSkillTrees') {
                         if (!cmds.contains(wanted)) {
                             errors << ('devour/' + spell + ': dispenser musi wywolywac ' + wanted)
                         }
+                        // Ikony waniliowe mieszaja sie wizualnie z customowymi: sprite typu
+                        // iron_sword jest cienki, a model bloku (dispenser, czaszka) rysuje sie
+                        // jako bryla 3D i wyglada wyraznie wieksza. Na jednym ekranie daje to
+                        // trzy rozne wielkosci ikon. Kazdy spell ma wlasny dysk 32x32.
+                        def icon = disp.icon?.data?.item
+                        if (icon != null && icon != 'tensura:spell_icon_' + spell) {
+                            errors << ('devour/' + spell + ': ikona ' + icon
+                                    + ' zamiast tensura:spell_icon_' + spell)
+                        }
                     }
                 }
             }
