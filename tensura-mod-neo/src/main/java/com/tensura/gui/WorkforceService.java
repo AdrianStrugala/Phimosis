@@ -3,8 +3,8 @@ package com.tensura.gui;
 import com.minecolonies.api.colony.IColony;
 import com.minecolonies.api.colony.ICitizenData;
 import com.minecolonies.api.colony.buildings.IBuilding;
-import com.minecolonies.api.colony.buildings.IBuildingWorker;
 import com.minecolonies.api.colony.buildings.modules.IAssignsJob;
+import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 import com.minecolonies.api.colony.permissions.Action;
 import com.tensura.data.ConversionHelper;
 import com.tensura.data.DynamicCitizenSpeciesData;
@@ -31,15 +31,19 @@ public final class WorkforceService {
 
         List<WorkforceSnapshotPacket.WorkplaceEntry> workplaces = colony.getServerBuildingManager()
                 .getBuildings().values().stream()
-                .filter(IBuildingWorker.class::isInstance)
-                .map(IBuildingWorker.class::cast)
+                // NOT filtered by IBuildingWorker: that interface extends IBuilding but has zero
+                // implementers in 1.21.1 (it still imports Forge's IItemHandler), so it matched
+                // nothing and the workplace list was always empty. A workplace is simply a built
+                // building that owns a job-assignment module.
                 .filter(IBuilding::isBuilt)
                 .flatMap(building -> building.getModules().stream()
                         .filter(IAssignsJob.class::isInstance)
                         .map(IAssignsJob.class::cast)
                         .map(module -> new WorkforceSnapshotPacket.WorkplaceEntry(
                                 building.getPosition(),
-                                building.getModules().indexOf(module),
+                                // getModule(int) is keyed by ModuleProducer runtime ID, not by
+                                // list position, so the round trip must send the runtime ID.
+                                module.getProducer().getRuntimeID(),
                                 building.getBuildingDisplayName() + " · " + formatJobName(module),
                                 module.getAssignedCitizen().size(),
                                 module.getModuleMax())))
@@ -78,9 +82,9 @@ public final class WorkforceService {
     private static int workModuleIndex(ICitizenData citizen) {
         IBuilding building = citizen.getWorkBuilding();
         if (building == null) return -1;
-        for (int index = 0; index < building.getModules().size(); index++) {
-            if (building.getModule(index) instanceof IAssignsJob module && module.hasAssignedCitizen(citizen)) {
-                return index;
+        for (IBuildingModule module : building.getModules()) {
+            if (module instanceof IAssignsJob job && job.hasAssignedCitizen(citizen)) {
+                return module.getProducer().getRuntimeID();
             }
         }
         return -1;

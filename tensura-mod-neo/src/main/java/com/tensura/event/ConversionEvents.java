@@ -18,6 +18,7 @@ import com.minecolonies.api.entity.citizen.Skill;
 import com.minecolonies.api.entity.citizen.citizenhandlers.ICitizenSkillHandler;
 import com.tensura.TensuraMod;
 import com.tensura.data.ConversionHelper;
+import net.minecraft.world.InteractionHand;
 import com.tensura.data.DynamicCitizenSpeciesData;
 import kotlin.Unit;
 import net.minecraft.core.BlockPos;
@@ -162,20 +163,26 @@ public class ConversionEvents {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onPlayerInteract(PlayerInteractEvent.EntityInteract event) {
         if (!(event.getItemStack().getItem() instanceof PokeBallItem)) return;
+        // Single hand only — EntityInteract fires per hand, so without this the whole recall
+        // ran twice for one right-click.
+        if (event.getHand() != InteractionHand.MAIN_HAND) return;
         if (!(event.getTarget() instanceof AbstractEntityCitizen citizen)) return;
         if (!(event.getEntity() instanceof ServerPlayer sender)) return;
         if (!(citizen.level() instanceof ServerLevel level)) return;
 
-        event.setCanceled(true);
-
         var dataView = citizen.getCitizenDataView();
-        if (dataView == null) {
-            sender.sendSystemMessage(Component.literal("§cNie można odczytać danych tego citizena."));
-            return;
-        }
+        if (dataView == null) return;
         int citizenId = dataView.getId();
 
         DynamicCitizenSpeciesData data = DynamicCitizenSpeciesData.get(level);
+
+        // Take over the interaction only for citizens that really are recallable Pokemon.
+        // Cancelling before this check blocked the ordinary citizen GUI for anyone merely
+        // holding a Pokeball.
+        boolean enrolled = data.contains(citizenId);
+        if (!enrolled && ConversionHelper.resolveSpecies(citizenId, citizen) == null) return;
+
+        event.setCanceled(true);
 
         IColony colony = citizen.getCitizenColonyHandler().getColony();
         if (colony == null) {
@@ -189,7 +196,6 @@ public class ConversionEvents {
             return;
         }
 
-        boolean enrolled = data.contains(citizenId);
         UUID recipientId = enrolled ? data.ownerMap.get(citizenId) : sender.getUUID();
         if (recipientId == null) {
             sender.sendSystemMessage(Component.literal("§cBrak informacji o właścicielu tego Pokémona."));

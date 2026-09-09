@@ -57,8 +57,11 @@ public class ConversionHelper {
             // Case B: non-enrolled
             String species = resolveSpecies(citizenId, citizen);
             if (species == null) return null;
-            String name = citizen.getName().getString();
-            boolean isFemale = citizen.isFemale();
+            // citizen is @Nullable: the GUI recall path runs with the entity unloaded, and
+            // resolveSpecies can still answer from the hardcoded map. Fall back to no nickname
+            // rather than dereferencing it.
+            String name = citizen == null ? null : citizen.getName().getString();
+            boolean isFemale = citizen != null && citizen.isFemale();
             return buildFreshPokemon(species, skills, name, isFemale);
         }
     }
@@ -113,7 +116,9 @@ public class ConversionHelper {
 
         Pokemon pokemon = new Pokemon();
         pokemon.setSpecies(speciesObj);
-        pokemon.setNickname(net.minecraft.network.chat.Component.literal(nickname));
+        if (nickname != null && !nickname.isBlank()) {
+            pokemon.setNickname(net.minecraft.network.chat.Component.literal(nickname));
+        }
         pokemon.setGender(isFemale ? com.cobblemon.mod.common.pokemon.Gender.FEMALE : com.cobblemon.mod.common.pokemon.Gender.MALE);
 
         // Level mirrors the average skill level (citizen skills range 0–100)

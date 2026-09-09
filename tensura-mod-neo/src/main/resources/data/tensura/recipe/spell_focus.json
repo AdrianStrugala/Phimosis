@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "tensura:spell_focus",
+    "id": "tensura:spell_focus",
     "count": 1
   }
 }

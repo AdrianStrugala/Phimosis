@@ -4,8 +4,8 @@ import com.minecolonies.api.colony.IColony;
 import com.minecolonies.api.colony.IColonyManager;
 import com.minecolonies.api.colony.ICitizenData;
 import com.minecolonies.api.colony.buildings.IBuilding;
-import com.minecolonies.api.colony.buildings.IBuildingWorker;
 import com.minecolonies.api.colony.buildings.modules.IAssignsJob;
+import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 import com.tensura.TensuraMod;
 import com.tensura.gui.WorkforceService;
 import net.minecraft.core.BlockPos;
@@ -44,16 +44,32 @@ public record AssignWorkplacePacket(int colonyId, int citizenId, BlockPos workpl
             IColony colony = IColonyManager.getInstance().getColonyByWorld(packet.colonyId(), player.serverLevel());
             if (colony == null || !WorkforceService.canAccess(player, colony)) return;
 
-            ICitizenData citizen = colony.getCitizenManager().getCitizen(packet.citizenId());
+            // getCivilian is the ICitizenManager lookup by id; there is no getCitizen(int).
+            ICitizenData citizen = colony.getCitizenManager().getCivilian(packet.citizenId());
             IBuilding building = colony.getServerBuildingManager().getBuilding(packet.workplace());
-                if (citizen == null || !(building instanceof IBuildingWorker workplace)
-                    || packet.moduleIndex() < 0 || packet.moduleIndex() >= workplace.getModules().size()
-                    || !(workplace.getModule(packet.moduleIndex()) instanceof IAssignsJob assignment)) return;
+            // moduleIndex carries a ModuleProducer runtime ID, which is exactly what getModule
+            // takes — no bounds check applies, an unknown ID simply resolves to null.
+            if (citizen == null || building == null
+                    || !(building.getModule(packet.moduleIndex()) instanceof IAssignsJob assignment)) return;
+
+            // A citizen holding a different job must be released first: AbstractJob.assignTo
+            // refuses to overwrite an existing assignment, and the GUI offers no unassign action.
+            unassignCurrentJob(citizen);
 
             if (!assignment.assignCitizen(citizen)) {
                 player.sendSystemMessage(Component.literal("§cNie można przypisać tego citizena do wybranego miejsca pracy."));
             }
             WorkforceService.sendSnapshot(player, colony);
         });
+    }
+
+    private static void unassignCurrentJob(ICitizenData citizen) {
+        IBuilding current = citizen.getWorkBuilding();
+        if (current == null) return;
+        for (IBuildingModule module : current.getModules()) {
+            if (module instanceof IAssignsJob job && job.hasAssignedCitizen(citizen)) {
+                job.removeCitizen(citizen);
+            }
+        }
     }
 }

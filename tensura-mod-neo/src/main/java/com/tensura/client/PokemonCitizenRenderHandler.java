@@ -30,6 +30,9 @@ public class PokemonCitizenRenderHandler {
     // Track entity IDs of our fake Pokemon so we can cancel their own render events
     private static final Set<Integer> fakeEntityIds = new HashSet<>();
     private static final Map<Integer, Long> lastRenderedTick = new HashMap<>();
+    // Separate from lastRenderedTick: that one is stamped on every render pass (cleanup uses it),
+    // while this gates the limb-swing advance to once per game tick.
+    private static final Map<Integer, Long> lastAnimTick = new HashMap<>();
     // Set to true while we are manually rendering a fake entity — prevents our handler from cancelling its own render
     private static boolean manualRendering = false;
 
@@ -80,6 +83,16 @@ public class PokemonCitizenRenderHandler {
         boolean moving = (dx * dx + dz * dz) > 0.0001
             || citizen.getDeltaMovement().horizontalDistanceSqr() > 0.0001
             || citizen.walkAnimation.speed(event.getPartialTick()) > 0.01f;
+
+        // Advance the fake's own limb swing once per tick. Selecting the walk pose is not enough:
+        // without this the fake's limbSwing stays at 0, so q.limb_swing never moves and the legs
+        // hold still while the model glides along.
+        long animTick = level.getGameTime();
+        if (lastAnimTick.getOrDefault(citizenId, -1L) != animTick) {
+            float walkSpeed = moving ? Math.min((float) Math.sqrt(dx * dx + dz * dz) * 4.0f, 1.0f) : 0.0f;
+            fake.walkAnimation.update(walkSpeed, 0.4f);
+            lastAnimTick.put(citizenId, animTick);
+        }
 
         if (moving) {
             float bodyDelta = Mth.wrapDegrees(citizen.yBodyRot - fake.yBodyRot);
@@ -200,6 +213,7 @@ public class PokemonCitizenRenderHandler {
     private static void removeFake(int citizenId) {
         PokemonEntity old = fakeEntities.remove(citizenId);
         lastRenderedTick.remove(citizenId);
+        lastAnimTick.remove(citizenId);
         if (old != null) {
             fakeEntityIds.remove(old.getId());
             old.discard();

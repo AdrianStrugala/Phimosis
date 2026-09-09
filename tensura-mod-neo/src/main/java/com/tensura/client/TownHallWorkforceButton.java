@@ -6,7 +6,7 @@ import com.ldtteam.blockui.controls.ButtonImage;
 import com.ldtteam.blockui.controls.Image;
 import com.ldtteam.blockui.views.BOWindow;
 import com.ldtteam.blockui.PaneBuilders;
-import com.minecolonies.core.client.gui.BuildingWindowAccessor;
+import com.minecolonies.api.colony.buildings.views.IBuildingView;
 import com.minecolonies.core.client.gui.townhall.AbstractWindowTownHall;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingTownHall;
 import com.tensura.TensuraMod;
@@ -16,6 +16,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ScreenEvent;
+
+import java.lang.reflect.Field;
 
 @EventBusSubscriber(modid = TensuraMod.MOD_ID, value = Dist.CLIENT)
 public final class TownHallWorkforceButton {
@@ -30,9 +32,19 @@ public final class TownHallWorkforceButton {
         BOWindow window = screen.getWindow();
         if (!(window instanceof AbstractWindowTownHall townHallWindow)
             || window.findPaneByID(BUTTON_ID) != null) return;
-        if (!(BuildingWindowAccessor.getBuildingView(townHallWindow)
-            instanceof BuildingTownHall.View townHall)) return;
+        if (!(buildingViewOf(townHallWindow) instanceof BuildingTownHall.View townHall)) return;
 
+        // This is an optional bookmark bolted onto someone else's screen. If BlockUI rejects
+        // anything we add, the town hall must still open — an unhandled throw here reaches
+        // Screen.init and takes the whole client down.
+        try {
+            injectButton(window, townHall);
+        } catch (RuntimeException e) {
+            TensuraMod.LOGGER.warn("[Tensura] Could not add the workforce button to the town hall screen", e);
+        }
+    }
+
+    private static void injectButton(BOWindow window, BuildingTownHall.View townHall) {
         Image ribbon = new Image();
         ribbon.setID(BUTTON_ID + "0");
         ribbon.setImage(ResourceLocation.fromNamespaceAndPath(
@@ -60,8 +72,49 @@ public final class TownHallWorkforceButton {
         button.setPosition(62, 237);
         button.setSize(17, 17);
         button.setHandler(clicked -> new WorkforceTownHallWindow(townHall).open());
+        // Attach before wiring the hover pane and tooltip: BlockUI resolves both through the
+        // target pane's parent window, and building a tooltip for a pane that has none throws
+        // "Hover pane does not have parent window specified" as the town hall screen opens.
+        window.addChild(button);
         button.setHoverPane(extension);
         PaneBuilders.singleLineTooltip(Component.literal("Pracownicy i recall"), button);
-        window.addChild(button);
+    }
+
+    /**
+     * Reads AbstractBuildingWindow#buildingView, which is protected with no public accessor.
+     *
+     * This used to live in a helper class declared in MineColonies' own
+     * com.minecolonies.core.client.gui package. That made tensura and minecolonies export the
+     * same package, and the JVM module system refuses to resolve a split package — the
+     * dedicated server died at boot with "Modules minecolonies and tensura export package
+     * com.minecolonies.core.client.gui". Reflection keeps every class inside com.tensura.
+     */
+    private static Field buildingViewField;
+    private static boolean buildingViewFieldResolved;
+
+    private static IBuildingView buildingViewOf(AbstractWindowTownHall window) {
+        if (!buildingViewFieldResolved) {
+            buildingViewFieldResolved = true;
+            for (Class<?> type = window.getClass(); type != null; type = type.getSuperclass()) {
+                try {
+                    Field field = type.getDeclaredField("buildingView");
+                    field.setAccessible(true);
+                    buildingViewField = field;
+                    break;
+                } catch (NoSuchFieldException ignored) {
+                    // keep walking up the hierarchy
+                } catch (RuntimeException e) {
+                    TensuraMod.LOGGER.warn("[Tensura] Cannot access buildingView, "
+                            + "workforce button disabled: {}", e.toString());
+                    break;
+                }
+            }
+        }
+        if (buildingViewField == null) return null;
+        try {
+            return buildingViewField.get(window) instanceof IBuildingView view ? view : null;
+        } catch (IllegalAccessException e) {
+            return null;
+        }
     }
 }

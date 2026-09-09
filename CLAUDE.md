@@ -59,6 +59,11 @@ After `./gradlew build`, the JAR is in `tensura-mod-neo/build/libs/`. Copy it to
 - **Cobblemon** (`/libs/cobblemon.jar`) — Pokemon are the source of absorbed skills
 - **MineColonies** (`/libs/minecolonies.jar`) — Colony/citizen mechanics and species system
 - **Kotlin for NeoForge** (`/libs/kotlinforforge.jar`) — Kotlin runtime support
+- **BlockUI** (`/libs/blockui.jar`) — MineColonies' GUI toolkit; required by the town hall workforce screen
+
+`libs/` is gitignored, so a fresh clone has none of these and `compileJava` fails with hundreds of
+"package does not exist" errors. Populate it by copying the matching mod jars out of a server's
+`mods/` folder under the short names above (e.g. `blockui-1.0.209-1.21.1.jar` → `libs/blockui.jar`).
 
 **Data persistence**: `PredatorData.java` handles per-player skill/predator state. `DynamicCitizenSpeciesData.java` tracks citizen species for MineColonies.
 
