@@ -1,0 +1,37 @@
+<window size="524 290">
+    <layout source="minecolonies:gui/townhall/windowtownhall.xml"/>
+
+    <image id="workforce0" pos="56 239" size="31 14"
+           source="minecolonies:textures/gui/bookmark_short_ribbon_04.png"/>
+    <button id="workforceExt" pos="-17 239" size="104 14"
+            source="minecolonies:textures/gui/bookmark_medium_ribbon_04.png" visible="false"
+            label="Pracownicy" textalign="MIDDLE_LEFT" textcolor="White" textoffset="8 1"/>
+    <button id="workforce" pos="62 237" size="17 17"
+            source="minecolonies:textures/gui/red_wax_citizens.png"/>
+
+    <text id="workforceTitle" pos="100 30" size="324 12" color="black"
+          textalign="MIDDLE" label="Pracownicy kolonii"/>
+    <text id="workforceStatus" pos="100 55" size="324 12" color="darkgray"
+          textalign="MIDDLE" label="Ładowanie..."/>
+
+        <text pos="100 70" size="145 11" color="black" label="Miejsca pracy"/>
+        <list id="workplaceList" pos="100 84" size="148 130">
+                <view size="148 20">
+                        <button id="workplaceRow" pos="0 0" size="145 18" color="black"
+                                        source="minecolonies:textures/gui/builderhut/builder_button_medium_large.png"/>
+                </view>
+        </list>
+
+        <text pos="276 70" size="148 11" color="black" label="Citizeni"/>
+        <list id="workforceCitizenList" pos="276 84" size="148 130">
+                <view size="148 42">
+                        <text id="citizenName" pos="0 0" size="148 11" color="black" textscale="0.75"/>
+                        <text id="citizenPokemon" pos="0 10" size="148 11" color="darkgray" textscale="0.65"/>
+                        <text id="citizenDetail" pos="0 21" size="70 11" color="darkgray" textscale="0.7"/>
+                        <button id="assignCitizen" pos="72 22" size="43 16" label="Praca" color="black"
+                                        source="minecolonies:textures/gui/builderhut/builder_button_very_small.png"/>
+                        <button id="recallCitizen" pos="118 22" size="29 16" label="R" color="black"
+                                        source="minecolonies:textures/gui/builderhut/builder_button_very_small.png"/>
+                </view>
+        </list>
+</window>

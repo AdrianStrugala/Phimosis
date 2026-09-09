@@ -12,6 +12,7 @@ import com.tensura.data.ConversionHelper;
 import com.tensura.data.DynamicCitizenSpeciesData;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.tensura.event.ColonyStartupEvents;
+import com.tensura.gui.WorkforceService;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -48,6 +49,7 @@ public record RecallCitizenPacket(int citizenId, int colonyId) implements Custom
 
             IColony colony = IColonyManager.getInstance().getColonyByWorld(pkt.colonyId(), level);
             if (colony == null) return;
+            if (!WorkforceService.canAccess(sender, colony)) return;
             if (!ConversionHelper.isColonyOwner(colony, sender)) {
                 sender.sendSystemMessage(Component.literal("§cTylko właściciel kolonii może przywracać jej citizenów."));
                 return;
@@ -96,7 +98,7 @@ public record RecallCitizenPacket(int citizenId, int colonyId) implements Custom
             String speciesName = capitalize(restoredPokemon.getSpecies().getName());
             data.remove(pkt.citizenId());
             ColonyStartupEvents.broadcastSpeciesMap(level);
-                TensuraMod.LOGGER.info("[Tensura] Recalled citizen #{} via RecallStation by colony owner {} for Pokemon owner {}",
+                TensuraMod.LOGGER.info("[Tensura] Recalled citizen #{} via Town Hall by colony manager {} for Pokemon owner {}",
                     pkt.citizenId(), sender.getUUID(), recipientId);
             ServerPlayer recipient = level.getServer().getPlayerList().getPlayer(recipientId);
             if (recipient != null) {
@@ -104,7 +106,8 @@ public record RecallCitizenPacket(int citizenId, int colonyId) implements Custom
             }
             if (!recipientId.equals(sender.getUUID())) {
                 sender.sendSystemMessage(Component.literal("§aPokémon wrócił do drużyny pierwotnego właściciela."));
-                }
+            }
+            WorkforceService.sendSnapshot(sender, colony);
         });
     }
 

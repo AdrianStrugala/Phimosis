@@ -14,7 +14,6 @@ import com.tensura.event.SpellMovementController;
 import com.tensura.event.SpellRuntimeController;
 import com.tensura.event.SpellStatusEvents;
 import com.tensura.event.TensuraAttributeEffects;
-import com.tensura.gui.RecallStationScreen;
 import com.tensura.item.SpellFocusItem;
 import com.tensura.item.SpellItem;
 import com.tensura.network.NetworkHandler;
@@ -23,7 +22,6 @@ import com.tensura.registry.TensuraBlockRegistry;
 import com.tensura.registry.TensuraCreativeTabs;
 import com.tensura.registry.TensuraEntityRegistry;
 import com.tensura.registry.TensuraItemRegistry;
-import com.tensura.registry.TensuraMenuRegistry;
 import com.tensura.registry.TensuraMobEffects;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -38,7 +36,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import org.apache.logging.log4j.LogManager;
@@ -55,7 +52,6 @@ public class TensuraMod {
 
         TensuraBlockRegistry.BLOCKS.register(modBus);
         TensuraItemRegistry.ITEMS.register(modBus);
-        TensuraMenuRegistry.MENUS.register(modBus);
         TensuraEntityRegistry.ENTITIES.register(modBus);
         TensuraAttributes.ATTRIBUTES.register(modBus);
         TensuraMobEffects.MOB_EFFECTS.register(modBus);
@@ -94,11 +90,6 @@ public class TensuraMod {
 
     @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientEvents {
-
-        @SubscribeEvent
-        public static void onRegisterMenuScreens(RegisterMenuScreensEvent event) {
-            event.register(TensuraMenuRegistry.RECALL_STATION.get(), RecallStationScreen::new);
-        }
 
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {

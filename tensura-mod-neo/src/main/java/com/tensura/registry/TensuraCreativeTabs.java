@@ -35,7 +35,6 @@ public class TensuraCreativeTabs {
                     .icon(() -> new ItemStack(TensuraItemRegistry.SPELL_FOCUS.get()))
                     .displayItems((params, output) -> {
                         output.accept(TensuraItemRegistry.SPELL_FOCUS.get());
-                        output.accept(TensuraItemRegistry.RECALL_STATION.get());
                         for (Map.Entry<ResourceLocation, SpellDefinition> entry : sortedSpells()) {
                             output.accept(SpellItem.create(entry.getKey(), entry.getValue()));
                         }

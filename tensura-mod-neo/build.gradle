@@ -60,7 +60,7 @@ dependencies {
 
     // MineColonies — for EntityCitizen type reference in rendering/commands
     implementation files('libs/minecolonies.jar')
-    runtimeOnly files('libs/blockui.jar')
+    implementation files('libs/blockui.jar')
     runtimeOnly files('libs/domum-ornamentum.jar')
     runtimeOnly files('libs/structurize.jar')
 
