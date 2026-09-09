@@ -645,6 +645,108 @@
         "tensura:icon": 93
       },
       "model": "tensura:item/spell_venoshock"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 94
+      },
+      "model": "tensura:item/spell_tackle"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 95
+      },
+      "model": "tensura:item/spell_hyper_beam"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 96
+      },
+      "model": "tensura:item/spell_overheat"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 97
+      },
+      "model": "tensura:item/spell_leech_seed"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 98
+      },
+      "model": "tensura:item/spell_powder_snow"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 99
+      },
+      "model": "tensura:item/spell_toxic"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 100
+      },
+      "model": "tensura:item/spell_night_shade"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 101
+      },
+      "model": "tensura:item/spell_hex"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 102
+      },
+      "model": "tensura:item/spell_dragon_breath"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 103
+      },
+      "model": "tensura:item/spell_outrage"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 104
+      },
+      "model": "tensura:item/spell_foul_play"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 105
+      },
+      "model": "tensura:item/spell_flash_cannon"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 106
+      },
+      "model": "tensura:item/spell_dragon_rush"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 107
+      },
+      "model": "tensura:item/spell_phantom_force"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 108
+      },
+      "model": "tensura:item/spell_rock_tomb"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 109
+      },
+      "model": "tensura:item/spell_stealth_rock"
+    },
+    {
+      "predicate": {
+        "tensura:icon": 110
+      },
+      "model": "tensura:item/spell_trick_room"
     }
   ]
 }

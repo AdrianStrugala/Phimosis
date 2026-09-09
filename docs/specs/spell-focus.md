@@ -1,7 +1,7 @@
 # Katalizator zaklęć — spec implementacyjna
 
 **Data:** 2026-09-08
-**Status:** wdrożony, przeszedł pierwszy playtest (2.0.40)
+**Status:** wdrożony, przeszedł pierwszy playtest (2.0.41)
 **Dotyczy:** tensura-mod-neo (NeoForge 1.21.1) + datapack `predator_skills`
 **Dokument siostrzany:** [start serwera publicznego](../operations/public-server-launch.md)
 
@@ -9,7 +9,7 @@
 
 ## 0. Stan wdrozenia
 
-Zbudowane i wgrane na TEST oraz klienta jako `tensura-2.0.40.jar` (2026-09-09).
+Zbudowane i wgrane na TEST oraz klienta jako `tensura-2.0.41.jar` (2026-09-09).
 **Produkcja nietknięta** — 2k37 nadal ma 2.0.18.
 
 | Krok | Stan |
@@ -62,6 +62,17 @@ Katalizator działa. Zgłoszone i poprawione:
   (puszczenie przycisku, więc przeciągnięcie do środka nadal czyści slot).
 - **Ikony w radialu 2×** (32 px zamiast 16 px), sloty 44 px, pierścień ściągnięty
   z 74 na 68 px. Wcześniej ikona zajmowała ćwiartkę tego, co panel na nią dawał.
+
+### Rozjazd ikon po rosterze 110 (2.0.41)
+
+Przy podbiciu rosteru z 93 na 110 zaklęć zregenerowany został tylko
+`spell_item.json`; `spell_focus.json` został na 93 nadpisaniach ikon, więc
+17 nowych zaklęć na katalizatorze pokazywałoby sam gem szkoły. Model katalizatora
+jest teraz generowany z nadpisań `spell_item.json` plus jawny `school: 0`.
+
+`validateResourceLayout` sprawdza dodatkowo, czy **oba** modele mają komplet
+nadpisań `tensura:icon` dla całego `CUSTOM_ICON_ORDER` — to jest ten strażnik,
+którego brakowało.
 
 ---
 
