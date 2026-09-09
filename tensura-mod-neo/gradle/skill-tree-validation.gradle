@@ -100,7 +100,7 @@ tasks.register('validateSkillTrees') {
                     }
                     def cmd = r.data?.command
                     if (cmd != null) {
-                        def m = cmd =~ /(?:givespell|devour_recover)\s+\S+\s+([a-z0-9_]+)/
+                        def m = cmd =~ /(?:unlock\s+spell|devour_recover)\s+\S+\s+([a-z0-9_]+)/
                         if (m.find() && !spells.contains(m.group(1))) {
                             errors << (cat + '/' + name + ': komenda odwoluje sie do nieistniejacego spella ' + m.group(1))
                         }

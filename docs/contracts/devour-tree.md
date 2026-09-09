@@ -87,9 +87,14 @@ kończy się komunikatem odmowy bez żadnej uprzedzającej wskazówki.
 
 ### 5. Dispenser musi mieć nagrodę `tensura devour_recover @s <spell>`
 
-Dokładnie ta komenda, nie `givespell`. `givespell` **omija sprawdzenie pochłonięcia**
-i nie wywołuje `lockDispenser`, więc węzeł zostałby trwale odblokowany i wydałby item
-tylko raz. `devour_recover` robi oba: waliduje stan i przezbraja przycisk.
+Dokładnie ta komenda, nie `unlock spell`. `unlock spell` **nadaje** pochłonięcie
+zamiast je sprawdzać i nie wywołuje `lockDispenser`, więc węzeł zostałby trwale
+odblokowany, a kliknięcie w drzewku samo przyznawałoby postęp. `devour_recover`
+robi oba: waliduje stan i przezbraja przycisk.
+
+(Do 2.0.42 rolę narzędzia admina pełniło `givespell`, które wydawało `SpellItem`.
+Zostało zastąpione przez `unlock spell` — przy katalizatorze zaklęcia nie są już
+itemami, więc wydanie itemu przestało oznaczać postęp.)
 
 ### 6. Ikony dispenserów
 

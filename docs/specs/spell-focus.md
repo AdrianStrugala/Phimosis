@@ -1,7 +1,7 @@
 # Katalizator zaklęć — spec implementacyjna
 
 **Data:** 2026-09-08
-**Status:** wdrożony, przeszedł pierwszy playtest (2.0.42)
+**Status:** wdrożony, przeszedł pierwszy playtest (2.0.43)
 **Dotyczy:** tensura-mod-neo (NeoForge 1.21.1) + datapack `predator_skills`
 **Dokument siostrzany:** [start serwera publicznego](../operations/public-server-launch.md)
 
@@ -9,7 +9,7 @@
 
 ## 0. Stan wdrozenia
 
-Zbudowane i wgrane na TEST oraz klienta jako `tensura-2.0.42.jar` (2026-09-09).
+Zbudowane i wgrane na TEST oraz klienta jako `tensura-2.0.43.jar` (2026-09-09).
 **Produkcja nietknięta** — 2k37 nadal ma 2.0.18.
 
 | Krok | Stan |
@@ -87,6 +87,27 @@ którego brakowało.
   110 dał wszystkim własne ikony; `validateSkillTrees` pilnuje teraz, żeby każdy
   dispenser miał dokładnie `tensura:spell_icon_<spell>`. Jedyna ikona waniliowa,
   jaka zostaje, to `devour_core`.
+
+### Komendy admina (2.0.43)
+
+Powierzchnia komend przeszła z „wydaj item" na „nadaj postęp", zgodnie z tym, że
+przy katalizatorze zaklęcia nie są już itemami.
+
+| Komenda | Działanie |
+|---|---|
+| `/tensura unlock spell <gracz> <zaklęcie>` | Zapisuje pochłonięcie w `PredatorData` i zapala znacznik w drzewku. Autouzupełnianie po ID zaklęć |
+| `/tensura unlock all <gracz>` | To samo dla całego rosteru |
+| `/tensura devour_recover <gracz> <zaklęcie>` | Wewnętrzna, wołana przez nagrodę węzła — nie do ręcznego użycia |
+| `/tensura convert <gatunek>` / `/tensura unconvert` | Bez zmian |
+
+Usunięte: `givespell`, `absorb_spell` (obie wydawały `SpellItem`) oraz
+`absorb_all`, którego rolę przejęło `unlock all`. `SpellItem` nadal da się wziąć
+z zakładki kreatywnej, jeśli będzie potrzebny do debugowania.
+
+Autouzupełnianie czyta `SpellRegistry` w momencie podpowiadania, więc nadąża za
+przeładowaniem datapacka. Provider nie jest zarejestrowany w `SuggestionProviders`,
+więc vanilla serializuje go jako `minecraft:ask_server` i klient dopytuje serwer —
+to jest właściwe zachowanie, bo tylko serwer zna aktualny rejestr.
 
 ---
 
