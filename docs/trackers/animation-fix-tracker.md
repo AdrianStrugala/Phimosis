@@ -8,11 +8,11 @@ Plik do edycji: `src/main/java/com/tensura/client/PokemonCitizenRenderHandler.ja
 
 ## Zidentyfikowane root causes
 
-### Bug A — POSE_TYPE utknęło na STAND
-- `PokemonEntity.POSE_TYPE` (SynchedEntityData) domyślnie = `PoseType.STAND`
-- `updatePoseType()` jest server-only w `PokemonServerDelegate` — nigdy nie działa dla client-only fake entity
-- Ustawienie `MOVING=true` NIE zmienia POSE_TYPE automatycznie po stronie klienta
-- Efekt: zawsze renderuje idle/stand, nigdy walk
+### Bug A — `PosableState.currentPose` utknęło na pozie stojącej
+- modele Cobblemon używają `PosableState`, nie vanilla `walkAnimation`
+- ustawienie `PokemonEntity.POSE_TYPE` aktualizuje fizykę encji, ale nie przełącza `currentPose`
+- `PokemonClientDelegate.tick()` w używanej wersji tylko zwiększa wiek animacji i obsługuje riding; nie wybiera WALK na podstawie `deltaMovement`
+- właściwym API przełączającym animację jest `PosableState.setPoseToFirstSuitable(PoseType)`
 
 ### Bug B — walkAnimation.speed = 0
 - `limbSwingAmount` pochodzi z `entity.walkAnimation.speed(partialTick)` w MobRenderer
@@ -28,86 +28,37 @@ Plik do edycji: `src/main/java/com/tensura/client/PokemonCitizenRenderHandler.ja
 |---|------|------------|-------|------------|
 | 1–30 | przed 2026-04-03 | ~30 wcześniejszych prób (nieudokumentowane) | ❌ | — |
 | 31 | 2026-04-03 | FIX A: set POSE_TYPE=WALK/STAND + FIX B: walkAnimation.update() | ❌ | walkAnimation nieistotne — Cobblemon używa Bedrock animations, nie vanilla limbSwing |
-| 32 | 2026-04-03 | FIX A + FIX B + sync `deltaMovement` z citizena | 🔄 do testu | Cobblemon delegate.tick() czyta deltaMovement do decyzji o POSE_TYPE |
+| 32 | 2026-04-03 | FIX A + FIX B + sync `deltaMovement` z citizena | ❌ | Bytecode używanej wersji potwierdza, że client delegate nie wybiera pozy z deltaMovement |
+| 33 | 2026-09-09 | Bezpośrednie `PosableState.setPoseToFirstSuitable`, rodziny WALK/FLY/SWIM i cleanup fake entities | 🔄 do playtestu | `./gradlew build --max-workers=1` oraz oba walidatory przeszły |
 
 ---
 
 ## Kluczowe odkrycie
 
 Cobblemon używa **własnego systemu Bedrock/blockbench animations** (`PosableState.currentPose`),
-nie vanilla `walkAnimation.speed`. `PokemonClientDelegate.tick()` decyduje o pozie na podstawie
-`entity.getDeltaMovement()`. Fake entity bez zsynchronizowanego `deltaMovement` zawsze widzi
-prędkość = 0 → zawsze STAND.
+nie vanilla `walkAnimation.speed`. Zmiana `POSE_TYPE` nie przełącza `currentPose`; trzeba wywołać
+`setPoseToFirstSuitable(WALK/STAND)` na delegacie fake entity.
 
 ## Aktualne podejście do testowania
 
-### Podejście 3b (aktywne) — deltaMovement + POSE_TYPE
+### Podejście 33 (aktywne) — bezpośrednie przełączenie `PosableState`
 
-Zmiana w `onRenderLivingPre`, po linii `fake.getEntityData().set(PokemonEntity.getMOVING(), moving);`:
+Zmiana w `onRenderLivingPre`, po ustawieniu `POSE_TYPE`:
 
 ```java
-// FIX A: Sync POSE_TYPE so Cobblemon selects walk animations
-PoseType targetPose = moving ? PoseType.WALK : PoseType.STAND;
-if (fake.entityData.get(PokemonEntity.getPOSE_TYPE()) != targetPose) {
-    fake.entityData.set(PokemonEntity.getPOSE_TYPE(), targetPose);
+PoseType targetPose = resolvePoseType(fake, moving);
+if (fake.getDelegate() instanceof PosableState posableState) {
+    posableState.setPoseToFirstSuitable(targetPose);
 }
 ```
 
-Import do dodania: `import com.cobblemon.mod.common.entity.PoseType;`
+### Playtest
 
-### Podejście B — Napraw walkAnimation (per-tick update)
-
-Dodać pole do klasy: `private static final Map<Integer, Long> lastAnimTick = new HashMap<>();`
-
-W `onRenderLivingPre`, po obliczeniu `dx`/`dz`/`moving`:
-
-```java
-// FIX B: Update walkAnimation once per tick (not per frame) with citizen's actual movement
-long currentTick = citizen.level().getGameTime();
-if (lastAnimTick.getOrDefault(citizenId, -1L) != currentTick) {
-    float walkSpeed = moving ? Math.min((float) Math.sqrt(dx * dx + dz * dz) * 4.0f, 1.0f) : 0.0f;
-    fake.walkAnimation.update(walkSpeed, 0.4f);
-    lastAnimTick.put(citizenId, currentTick);
-}
-```
-
-### Podejście C — calculateEntityAnimation() (najczystsze)
-
-Zamiast ręcznego liczenia, użyj publicznej metody MC po synchronizacji pozycji:
-
-```java
-long currentTick = citizen.level().getGameTime();
-if (lastAnimTick.getOrDefault(citizenId, -1L) != currentTick) {
-    fake.calculateEntityAnimation(false);
-    lastAnimTick.put(citizenId, currentTick);
-}
-```
-
-### Podejście D — Kopiuj walkAnimation przez reflection
-
-```java
-try {
-    java.lang.reflect.Field fSpeed    = WalkAnimationState.class.getDeclaredField("speed");
-    java.lang.reflect.Field fSpeedOld = WalkAnimationState.class.getDeclaredField("speedOld");
-    java.lang.reflect.Field fPosition = WalkAnimationState.class.getDeclaredField("position");
-    fSpeed.setAccessible(true); fSpeedOld.setAccessible(true); fPosition.setAccessible(true);
-    fSpeed.setFloat(fake.walkAnimation,    fSpeed.getFloat(citizen.walkAnimation));
-    fSpeedOld.setFloat(fake.walkAnimation, fSpeedOld.getFloat(citizen.walkAnimation));
-    fPosition.setFloat(fake.walkAnimation, fPosition.getFloat(citizen.walkAnimation));
-} catch (Exception e) {
-    fake.walkAnimation.setSpeed(citizen.walkAnimation.speed());
-}
-```
-
----
-
-## Kolejność testowania (rekomendowana)
-
-1. **Podejście A** (POSE_TYPE fix) — samodzielnie → sprawdź
-2. **Podejście A + B** — razem → sprawdź
-3. **Podejście A + C** (calculateEntityAnimation) → sprawdź
-4. **Podejście A + D** (reflection) → sprawdź
-5. Jeśli nadal nie działa → patrz plan `C:\Users\adist\.claude\plans\compiled-questing-beaver.md` (Podejście 6–8)
+1. Sprawdź gatunek z wyraźną animacją chodu na płaskim terenie.
+2. Sprawdź gatunek latający lub unoszący się, np. Magnetona.
+3. Potwierdź przejście `stand → walk → stand` bez resetowania animacji co klatkę.
+4. Sprawdź kilku citizenów jednocześnie oraz ponowne wejście do świata.
+5. Jeśli model nadal stoi, zanotuj gatunek i aktualne `currentPose`; nie wracaj do `walkAnimation`.
 
 ---
 

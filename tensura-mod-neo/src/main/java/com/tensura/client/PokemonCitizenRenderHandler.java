@@ -6,6 +6,7 @@ import com.cobblemon.mod.common.entity.PoseType;
 import com.cobblemon.mod.common.entity.pokemon.PokemonBehaviourFlag;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.pokemon.Pokemon;
+import com.cobblemon.mod.common.client.render.models.blockbench.PosableState;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.tensura.TensuraMod;
 import net.minecraft.client.Minecraft;
@@ -13,6 +14,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 
@@ -27,7 +29,7 @@ public class PokemonCitizenRenderHandler {
     private static final Map<Integer, PokemonEntity> fakeEntities = new HashMap<>();
     // Track entity IDs of our fake Pokemon so we can cancel their own render events
     private static final Set<Integer> fakeEntityIds = new HashSet<>();
-    private static final Map<Integer, Long> lastAnimTick = new HashMap<>();
+    private static final Map<Integer, Long> lastRenderedTick = new HashMap<>();
     // Set to true while we are manually rendering a fake entity — prevents our handler from cancelling its own render
     private static boolean manualRendering = false;
 
@@ -49,12 +51,22 @@ public class PokemonCitizenRenderHandler {
         if (species == null) return;
 
         Level level = citizen.level();
-        PokemonEntity fake = fakeEntities.computeIfAbsent(citizenId, id -> createFake(level, species));
+        PokemonEntity fake = fakeEntities.get(citizenId);
+        if (fake != null && (fake.level() != level || fake.isRemoved())) {
+            removeFake(citizenId);
+            fake = null;
+        }
+        if (fake == null) {
+            fake = createFake(level, species);
+            fakeEntities.put(citizenId, fake);
+        }
 
         if (!fake.getPokemon().getSpecies().getName().equalsIgnoreCase(species)) {
-            removeFake(citizenId, level);
-            fake = fakeEntities.computeIfAbsent(citizenId, id -> createFake(level, species));
+            removeFake(citizenId);
+            fake = createFake(level, species);
+            fakeEntities.put(citizenId, fake);
         }
+        lastRenderedTick.put(citizenId, level.getGameTime());
 
         // Sync transform
         fake.setPosRaw(citizen.getX(), citizen.getY(), citizen.getZ());
@@ -65,15 +77,9 @@ public class PokemonCitizenRenderHandler {
 
         double dx = citizen.getX() - citizen.xo;
         double dz = citizen.getZ() - citizen.zo;
-        boolean moving = (dx * dx + dz * dz) > 0.001;
-
-        // FIX B: Update walkAnimation once per tick with citizen's actual movement speed
-        long currentTick = citizen.level().getGameTime();
-        if (lastAnimTick.getOrDefault(citizenId, -1L) != currentTick) {
-            float walkSpeed = moving ? Math.min((float) Math.sqrt(dx * dx + dz * dz) * 4.0f, 1.0f) : 0.0f;
-            fake.walkAnimation.update(walkSpeed, 0.4f);
-            lastAnimTick.put(citizenId, currentTick);
-        }
+        boolean moving = (dx * dx + dz * dz) > 0.0001
+            || citizen.getDeltaMovement().horizontalDistanceSqr() > 0.0001
+            || citizen.walkAnimation.speed(event.getPartialTick()) > 0.01f;
 
         if (moving) {
             float bodyDelta = Mth.wrapDegrees(citizen.yBodyRot - fake.yBodyRot);
@@ -87,9 +93,12 @@ public class PokemonCitizenRenderHandler {
         fake.getEntityData().set(PokemonEntity.getMOVING(), moving);
 
         // FIX A: Sync POSE_TYPE so Cobblemon selects walk animations
-        PoseType targetPose = moving ? PoseType.WALK : PoseType.STAND;
+        PoseType targetPose = resolvePoseType(fake, moving);
         if (fake.getEntityData().get(PokemonEntity.getPOSE_TYPE()) != targetPose) {
             fake.getEntityData().set(PokemonEntity.getPOSE_TYPE(), targetPose);
+        }
+        if (fake.getDelegate() instanceof PosableState posableState) {
+            posableState.setPoseToFirstSuitable(targetPose);
         }
 
         boolean working = citizen.swingTime > 0 && !moving;
@@ -154,8 +163,43 @@ public class PokemonCitizenRenderHandler {
         return entity;
     }
 
-    private static void removeFake(int citizenId, Level level) {
+    private static PoseType resolvePoseType(PokemonEntity pokemon, boolean moving) {
+        var movement = pokemon.getBehaviour().getMoving();
+        if (!movement.getWalk().getCanWalk()) {
+            if (movement.getFly().getCanFly()) {
+                return moving ? PoseType.FLY : PoseType.HOVER;
+            }
+            if (movement.getSwim().getCanSwimInWater()) {
+                return moving ? PoseType.SWIM : PoseType.FLOAT;
+            }
+        }
+        return moving ? PoseType.WALK : PoseType.STAND;
+    }
+
+    @SubscribeEvent
+    public static void onClientTick(ClientTickEvent.Post event) {
+        Minecraft minecraft = Minecraft.getInstance();
+        Level level = minecraft.level;
+        if (level == null) {
+            for (Integer citizenId : Set.copyOf(fakeEntities.keySet())) {
+                removeFake(citizenId);
+            }
+            return;
+        }
+
+        long currentTick = level.getGameTime();
+        for (Integer citizenId : Set.copyOf(fakeEntities.keySet())) {
+            PokemonEntity fake = fakeEntities.get(citizenId);
+            Long lastSeen = lastRenderedTick.get(citizenId);
+            if (fake == null || fake.level() != level || lastSeen == null || currentTick - lastSeen > 20) {
+                removeFake(citizenId);
+            }
+        }
+    }
+
+    private static void removeFake(int citizenId) {
         PokemonEntity old = fakeEntities.remove(citizenId);
+        lastRenderedTick.remove(citizenId);
         if (old != null) {
             fakeEntityIds.remove(old.getId());
             old.discard();
@@ -163,8 +207,6 @@ public class PokemonCitizenRenderHandler {
     }
 
     public static void onCitizenRemoved(int citizenId) {
-        var mc = Minecraft.getInstance();
-        Level level = mc != null ? mc.level : null;
-        removeFake(citizenId, level);
+        removeFake(citizenId);
     }
 }

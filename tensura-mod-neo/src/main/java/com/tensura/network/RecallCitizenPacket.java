@@ -48,16 +48,20 @@ public record RecallCitizenPacket(int citizenId, int colonyId) implements Custom
 
             IColony colony = IColonyManager.getInstance().getColonyByWorld(pkt.colonyId(), level);
             if (colony == null) return;
+            if (!ConversionHelper.isColonyOwner(colony, sender)) {
+                sender.sendSystemMessage(Component.literal("§cTylko właściciel kolonii może przywracać jej citizenów."));
+                return;
+            }
 
             ICivilianData civilianData = colony.getCitizenManager().getCivilian(pkt.citizenId());
             if (civilianData == null) return;
 
             DynamicCitizenSpeciesData data = DynamicCitizenSpeciesData.get(level);
-
-            // Enrolled citizens: only the registered owner may recall
-            if (data.contains(pkt.citizenId())) {
-                UUID ownerUUID = data.ownerMap.get(pkt.citizenId());
-                if (ownerUUID == null || !ownerUUID.equals(sender.getUUID())) return;
+            boolean enrolled = data.contains(pkt.citizenId());
+            UUID recipientId = enrolled ? data.ownerMap.get(pkt.citizenId()) : sender.getUUID();
+            if (recipientId == null) {
+                sender.sendSystemMessage(Component.literal("§cBrak informacji o właścicielu tego Pokémona."));
+                return;
             }
 
             AbstractEntityCitizen citizenEntity = civilianData.getEntity()
@@ -69,26 +73,21 @@ public record RecallCitizenPacket(int citizenId, int colonyId) implements Custom
 
             Pokemon restoredPokemon = ConversionHelper.buildRecalledPokemon(
                     pkt.citizenId(), citizenEntity, skills, data, level.registryAccess());
-            if (restoredPokemon == null) return;
+            if (restoredPokemon == null) {
+                sender.sendSystemMessage(Component.literal("§cBrak poprawnych danych Pokémona dla tego citizena."));
+                return;
+            }
 
-            // Owner is sender for non-enrolled; stored UUID for enrolled
-            UUID ownerUUID = data.contains(pkt.citizenId())
-                    ? data.ownerMap.get(pkt.citizenId())
-                    : sender.getUUID();
-
-            ServerPlayer owner = level.getServer().getPlayerList().getPlayer(ownerUUID);
-            if (owner != null) {
-                try {
-                    PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(owner);
-                    if (!party.add(restoredPokemon)) {
-                        owner.sendSystemMessage(Component.literal("§cParty jest pełne! Zwolnij miejsce przed recall."));
-                        return;
-                    }
-                } catch (Exception e) {
-                    TensuraMod.LOGGER.warn("[Tensura] Failed to restore Pokemon on recall: {}", e.getMessage());
-                    sender.sendSystemMessage(Component.literal("§cBłąd podczas recall — spróbuj ponownie."));
+            try {
+                PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(recipientId, level.registryAccess());
+                if (!party.add(restoredPokemon)) {
+                    sender.sendSystemMessage(Component.literal("§cNie ma miejsca na przywróconego Pokémona."));
                     return;
                 }
+            } catch (Exception e) {
+                TensuraMod.LOGGER.warn("[Tensura] Failed to restore Pokemon on recall: {}", e.getMessage());
+                sender.sendSystemMessage(Component.literal("§cBłąd podczas recall — spróbuj ponownie."));
+                return;
             }
 
             if (citizenEntity != null) citizenEntity.discard();
@@ -97,11 +96,15 @@ public record RecallCitizenPacket(int citizenId, int colonyId) implements Custom
             String speciesName = capitalize(restoredPokemon.getSpecies().getName());
             data.remove(pkt.citizenId());
             ColonyStartupEvents.broadcastSpeciesMap(level);
-            TensuraMod.LOGGER.info("[Tensura] Recalled citizen #{} via RecallStation (owner={})", pkt.citizenId(), ownerUUID);
-
-            if (owner != null) {
-                owner.sendSystemMessage(Component.literal("\u00a7b" + speciesName + " powrócił do drużyny."));
+                TensuraMod.LOGGER.info("[Tensura] Recalled citizen #{} via RecallStation by colony owner {} for Pokemon owner {}",
+                    pkt.citizenId(), sender.getUUID(), recipientId);
+            ServerPlayer recipient = level.getServer().getPlayerList().getPlayer(recipientId);
+            if (recipient != null) {
+                recipient.sendSystemMessage(Component.literal("\u00a7b" + speciesName + " powrócił do drużyny."));
             }
+            if (!recipientId.equals(sender.getUUID())) {
+                sender.sendSystemMessage(Component.literal("§aPokémon wrócił do drużyny pierwotnego właściciela."));
+                }
         });
     }
 

@@ -12,12 +12,12 @@ Plik do edycji: `src/main/java/com/tensura/client/PokemonCitizenRenderHandler.ja
 
 ## Analiza root cause (na podstawie źródeł Cobblemon + MC 1.21)
 
-### Bug A — POSE_TYPE utknęło na STAND (priorytet #1)
+### Bug A — `PosableState.currentPose` utknęło na STAND (priorytet #1)
 
-`PokemonEntity.POSE_TYPE` to SynchedEntityData, domyślnie `PoseType.STAND`.  
-Cobblemon zmienia go w `PokemonServerDelegate.updatePoseType()` — metoda **server-only**, nigdy nie wywoływana dla fake entity istniejącego tylko po stronie klienta.  
-Obecny kod ustawia `MOVING=true`, ale Cobblemon **NIE** reaguje na MOVING automatycznie po stronie klienta — POSE_TYPE nie zmienia się.  
-Efekt: fake entity zawsze renderuje idle/stand pose, ignorując animacje chodzenia.
+Cobblemon renderuje przez własny `PosableState.currentPose`. Ustawienie `POSE_TYPE`
+na fake entity nie przełącza tego pola. Bytecode używanej wersji potwierdza też, że
+`PokemonClientDelegate.tick()` nie wyznacza pozy z `deltaMovement`; jedynie zwiększa
+wiek animacji i obsługuje riding. Efekt: fake entity pozostaje w animacji stand.
 
 ### Bug B — walkAnimation.speed = 0 (priorytet #2)
 
@@ -48,16 +48,17 @@ public void calculateEntityAnimation(boolean includeY)  // PUBLICZNE
 
 ## Podejścia do testowania (kolejno, zatrzymać gdy działa)
 
-### Podejście 1 — Napraw POSE_TYPE (tylko poza)
+### Podejście 1 — Przełącz właściwy `PosableState` (wdrożone, do playtestu)
 
 W `onRenderLivingPre`, po obliczeniu `moving`:
 ```java
-PoseType targetPose = moving ? PoseType.WALK : PoseType.STAND;
-if (fake.entityData.get(PokemonEntity.getPOSE_TYPE()) != targetPose) {
-    fake.entityData.set(PokemonEntity.getPOSE_TYPE(), targetPose);
+PoseType targetPose = resolvePoseType(fake, moving);
+if (fake.getDelegate() instanceof PosableState posableState) {
+    posableState.setPoseToFirstSuitable(targetPose);
 }
 ```
-Import: `com.cobblemon.mod.common.entity.PoseType`
+`resolvePoseType` wybiera `WALK/STAND`, `FLY/HOVER` albo `SWIM/FLOAT` na podstawie
+capabilities gatunku. Metoda sama nie resetuje animacji, gdy bieżąca poza jest już właściwa.
 
 ### Podejście 2 — Napraw walkAnimation (tylko amplituda)
 
@@ -76,11 +77,10 @@ if (lastAnimTick.getOrDefault(citizenId, -1L) != currentTick) {
 
 Połącz Podejście 1 i 2.
 
-### Podejście 3b — Sync deltaMovement z citizena
+### Podejście 3b — Sync deltaMovement z citizena (obalone)
 
-Cobblemon używa własnego systemu animacji Bedrock (nie vanilla `walkAnimation`).
-`PokemonClientDelegate.tick()` decyduje o POSE_TYPE na podstawie `entity.getDeltaMovement()`.
-Fake entity ma `deltaMovement = Vec3.ZERO` → delegate widzi brak ruchu → POSE_TYPE wraca na STAND.
+Synchronizacja wektora może być przydatna dla wyrażeń MoLang, ale nie przełącza pozy.
+`PokemonClientDelegate.tick()` w tej wersji nie czyta `deltaMovement` przy wyborze WALK/STAND.
 
 W `onRenderLivingPre`, przed `set(MOVING)`:
 ```java

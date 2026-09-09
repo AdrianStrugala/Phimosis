@@ -25,7 +25,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.bus.api.EventPriority;
@@ -60,6 +59,10 @@ public class ConversionEvents {
 
             ITownHall townHall = colony.getServerBuildingManager().getTownHall();
             if (townHall == null || !townHall.isInBuilding(playerPos)) return Unit.INSTANCE;
+            if (!ConversionHelper.isColonyOwner(colony, owner)) {
+                owner.sendSystemMessage(Component.literal("§cTylko właściciel kolonii może zamieniać Pokémony w citizenów."));
+                return Unit.INSTANCE;
+            }
 
             // ── Enroll ───────────────────────────────────────────────────────
             Pokemon poke = pokemon.getPokemon();
@@ -70,51 +73,81 @@ public class ConversionEvents {
             // Tag entity so CombatCompanionEvents skips companion AI
             pokemon.addTag("tensura:village_resident");
 
-            // Create citizen data
-            ICivilianData civilianData = colony.getCitizenManager().createAndRegisterCivilianData();
-            ICitizenData citizenData = (ICitizenData) civilianData;
-            int citizenId = civilianData.getId();
-
-            // Set citizen name and gender from Pokemon
-            String name = poke.getDisplayName(false).getString();
-            citizenData.setName(name);
-            boolean isFemale = poke.getGender() == com.cobblemon.mod.common.pokemon.Gender.FEMALE;
-            civilianData.setGender(isFemale);
-
-            // Map base stats + level → citizen skills
-            var baseStats = poke.getSpecies().getBaseStats();
-            int pokeLevel = poke.getLevel();
-            ICitizenSkillHandler skills = citizenData.getCitizenSkillHandler();
-            setSkill(skills, Skill.Stamina,    baseStats.getOrDefault(Stats.HP, 45),             pokeLevel);
-            setSkill(skills, Skill.Strength,   baseStats.getOrDefault(Stats.ATTACK, 45),         pokeLevel);
-            setSkill(skills, Skill.Athletics,  baseStats.getOrDefault(Stats.DEFENCE, 45),        pokeLevel);
-            setSkill(skills, Skill.Mana,       baseStats.getOrDefault(Stats.SPECIAL_ATTACK, 45), pokeLevel);
-            setSkill(skills, Skill.Knowledge,  baseStats.getOrDefault(Stats.SPECIAL_DEFENCE, 45),pokeLevel);
-            setSkill(skills, Skill.Agility,    baseStats.getOrDefault(Stats.SPEED, 45),          pokeLevel);
-            setSkill(skills, Skill.Dexterity,  baseStats.getOrDefault(Stats.SPEED, 45),          pokeLevel);
-
-            // Save to persistent data
-            DynamicCitizenSpeciesData data = DynamicCitizenSpeciesData.get(level);
-            data.add(citizenId, species, pokemonNbt, ownerUUID, colony.getID());
-
-            // Schedule removal of party slot + entity removal + spawn + broadcast (next tick)
+            // Defer storage mutation until Cobblemon has finished handling the send-out event.
             level.getServer().execute(() -> {
+                PlayerPartyStore party;
                 try {
-                    PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(owner);
-                    party.remove(poke);
+                    party = Cobblemon.INSTANCE.getStorage().getParty(owner);
                 } catch (Exception e) {
-                    TensuraMod.LOGGER.warn("[Tensura] Failed to remove Pokemon from party during enrollment: {}", e.getMessage());
+                    TensuraMod.LOGGER.warn("[Tensura] Failed to access party during enrollment: {}", e.getMessage());
+                    pokemon.removeTag("tensura:village_resident");
+                    return;
                 }
-                pokemon.remove(Entity.RemovalReason.DISCARDED);
 
-                // Spawn the citizen entity near the Town Hall
-                colony.getCitizenManager().spawnOrCreateCitizen(citizenData, level, playerPos);
+                boolean removedFromParty;
+                try {
+                    removedFromParty = party.remove(poke);
+                } catch (Exception e) {
+                    TensuraMod.LOGGER.warn("[Tensura] Failed to remove Pokemon from party during enrollment", e);
+                    removedFromParty = false;
+                }
+                if (!removedFromParty) {
+                    pokemon.removeTag("tensura:village_resident");
+                    owner.sendSystemMessage(Component.literal("§cNie udało się przenieść Pokémona do kolonii."));
+                    return;
+                }
+
+                ICivilianData civilianData = null;
+                int citizenId = -1;
+                DynamicCitizenSpeciesData data = DynamicCitizenSpeciesData.get(level);
+                try {
+                    civilianData = colony.getCitizenManager().createAndRegisterCivilianData();
+                    ICitizenData citizenData = (ICitizenData) civilianData;
+                    citizenId = civilianData.getId();
+
+                    citizenData.setName(poke.getDisplayName(false).getString());
+                    civilianData.setGender(poke.getGender() == com.cobblemon.mod.common.pokemon.Gender.FEMALE);
+
+                    var baseStats = poke.getSpecies().getBaseStats();
+                    int pokeLevel = poke.getLevel();
+                    ICitizenSkillHandler skills = citizenData.getCitizenSkillHandler();
+                    setSkill(skills, Skill.Stamina,    baseStats.getOrDefault(Stats.HP, 45),              pokeLevel);
+                    setSkill(skills, Skill.Strength,   baseStats.getOrDefault(Stats.ATTACK, 45),          pokeLevel);
+                    setSkill(skills, Skill.Athletics,  baseStats.getOrDefault(Stats.DEFENCE, 45),         pokeLevel);
+                    setSkill(skills, Skill.Mana,       baseStats.getOrDefault(Stats.SPECIAL_ATTACK, 45),  pokeLevel);
+                    setSkill(skills, Skill.Knowledge,  baseStats.getOrDefault(Stats.SPECIAL_DEFENCE, 45), pokeLevel);
+                    setSkill(skills, Skill.Agility,    baseStats.getOrDefault(Stats.SPEED, 45),           pokeLevel);
+                    setSkill(skills, Skill.Dexterity,  baseStats.getOrDefault(Stats.SPEED, 45),           pokeLevel);
+
+                    data.add(citizenId, species, pokemonNbt, ownerUUID, colony.getID());
+                    colony.getCitizenManager().spawnOrCreateCitizen(citizenData, level, playerPos);
+                    pokemon.remove(Entity.RemovalReason.DISCARDED);
+                } catch (Exception e) {
+                    if (citizenId >= 0) data.remove(citizenId);
+                    if (civilianData != null) colony.getCitizenManager().removeCivilian(civilianData);
+                    pokemon.removeTag("tensura:village_resident");
+                    boolean restoredToParty;
+                    try {
+                        restoredToParty = party.add(poke);
+                    } catch (Exception rollbackError) {
+                        TensuraMod.LOGGER.error("[Tensura] Enrollment rollback failed for {}", species, rollbackError);
+                        restoredToParty = false;
+                    }
+                    if (!restoredToParty) {
+                        TensuraMod.LOGGER.error("[Tensura] Enrollment rollback could not restore {} to the party", species);
+                    }
+                    TensuraMod.LOGGER.error("[Tensura] Enrollment failed for {}", species, e);
+                    owner.sendSystemMessage(Component.literal(restoredToParty
+                            ? "§cNie udało się utworzyć citizena; Pokémon został przywrócony."
+                            : "§4Nie udało się utworzyć citizena ani automatycznie przywrócić Pokémona. Sprawdź log serwera."));
+                    return;
+                }
 
                 // Push updated species map to all online players
                 ColonyStartupEvents.broadcastSpeciesMap(level);
 
                 TensuraMod.LOGGER.info("[Tensura] Enrolled {} as citizen #{} for player {}",
-                        species, citizenId, owner.getName().getString());
+                    species, citizenId, owner.getName().getString());
 
                 String displayName = capitalize(species);
                 owner.sendSystemMessage(Component.literal("\u00a76" + displayName + " zamieszkał w wiosce."));
@@ -128,64 +161,72 @@ public class ConversionEvents {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onPlayerInteract(PlayerInteractEvent.EntityInteract event) {
-        if (event.getHand() != InteractionHand.OFF_HAND) return;
         if (!(event.getItemStack().getItem() instanceof PokeBallItem)) return;
         if (!(event.getTarget() instanceof AbstractEntityCitizen citizen)) return;
-        if (!(event.getEntity() instanceof ServerPlayer)) return;
+        if (!(event.getEntity() instanceof ServerPlayer sender)) return;
         if (!(citizen.level() instanceof ServerLevel level)) return;
 
+        event.setCanceled(true);
+
         var dataView = citizen.getCitizenDataView();
-        if (dataView == null) return;
+        if (dataView == null) {
+            sender.sendSystemMessage(Component.literal("§cNie można odczytać danych tego citizena."));
+            return;
+        }
         int citizenId = dataView.getId();
 
         DynamicCitizenSpeciesData data = DynamicCitizenSpeciesData.get(level);
 
-        // Determine owner: enrolled citizens have a stored ownerUUID; for non-enrolled,
-        // the recalling player becomes the owner.
+        IColony colony = citizen.getCitizenColonyHandler().getColony();
+        if (colony == null) {
+            Integer storedColonyId = data.colonyIdMap.get(citizenId);
+            if (storedColonyId != null) {
+                colony = IColonyManager.getInstance().getColonyByWorld(storedColonyId, level);
+            }
+        }
+        if (colony == null || !ConversionHelper.isColonyOwner(colony, sender)) {
+            sender.sendSystemMessage(Component.literal("§cTylko właściciel kolonii może przywracać jej citizenów."));
+            return;
+        }
+
         boolean enrolled = data.contains(citizenId);
-        UUID ownerUUID = enrolled ? data.ownerMap.get(citizenId) : event.getEntity().getUUID();
-        Integer colonyId = enrolled ? data.colonyIdMap.get(citizenId) : null;
+        UUID recipientId = enrolled ? data.ownerMap.get(citizenId) : sender.getUUID();
+        if (recipientId == null) {
+            sender.sendSystemMessage(Component.literal("§cBrak informacji o właścicielu tego Pokémona."));
+            return;
+        }
 
         // For non-enrolled citizens we still need a mappable species — bail silently if none found
         var citizenSkills = citizen.getCitizenDataView() != null
                 ? citizen.getCitizenDataView().getCitizenSkillHandler() : null;
-        if (citizenSkills == null) return;
+        if (citizenSkills == null) {
+            sender.sendSystemMessage(Component.literal("§cNie można odczytać umiejętności tego citizena."));
+            return;
+        }
 
         Pokemon restoredPokemon = ConversionHelper.buildRecalledPokemon(
                 citizenId, citizen, citizenSkills, data, level.registryAccess());
-        if (restoredPokemon == null) return; // no species found — do nothing
-
-        // Cancel so the Pokeball item isn't thrown
-        event.setCanceled(true);
-
-        // Add to owner's party
-        ServerPlayer owner = level.getServer().getPlayerList().getPlayer(ownerUUID);
-        if (owner != null) {
-            try {
-                PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(owner);
-                party.add(restoredPokemon);
-            } catch (Exception e) {
-                TensuraMod.LOGGER.warn("[Tensura] Failed to restore Pokemon to party on recall: {}", e.getMessage());
-            }
+        if (restoredPokemon == null) {
+            sender.sendSystemMessage(Component.literal("§cBrak poprawnych danych Pokémona dla tego citizena."));
+            return;
         }
 
-        // Resolve colony and remove citizen
-        if (colonyId != null) {
-            IColony colony = IColonyManager.getInstance().getColonyByWorld(colonyId, level);
-            if (colony != null) {
-                ICivilianData civilianData = colony.getCitizenManager().getCivilian(citizenId);
-                if (civilianData != null) {
-                    citizen.remove(Entity.RemovalReason.DISCARDED);
-                    colony.getCitizenManager().removeCivilian(civilianData);
-                } else {
-                    citizen.remove(Entity.RemovalReason.DISCARDED);
-                }
-            } else {
-                citizen.remove(Entity.RemovalReason.DISCARDED);
+        try {
+            PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(recipientId, level.registryAccess());
+            if (!party.add(restoredPokemon)) {
+                sender.sendSystemMessage(Component.literal("§cNie ma miejsca na przywróconego Pokémona."));
+                return;
             }
-        } else {
-            // Non-enrolled: just remove the entity (no colony record to clean up)
-            citizen.remove(Entity.RemovalReason.DISCARDED);
+        } catch (Exception e) {
+            TensuraMod.LOGGER.warn("[Tensura] Failed to restore Pokemon to party on recall: {}", e.getMessage());
+            sender.sendSystemMessage(Component.literal("§cBłąd podczas recall — spróbuj ponownie."));
+            return;
+        }
+
+        citizen.remove(Entity.RemovalReason.DISCARDED);
+        ICivilianData civilianData = colony.getCitizenManager().getCivilian(citizenId);
+        if (civilianData != null) {
+            colony.getCitizenManager().removeCivilian(civilianData);
         }
 
         String speciesName = capitalize(restoredPokemon.getSpecies().getName());
@@ -195,10 +236,14 @@ public class ConversionEvents {
         }
         ColonyStartupEvents.broadcastSpeciesMap(level);
 
-        TensuraMod.LOGGER.info("[Tensura] Recalled citizen #{} (owner={})", citizenId, ownerUUID);
-
-        if (owner != null) {
-            owner.sendSystemMessage(Component.literal("\u00a7b" + speciesName + " powrócił do drużyny."));
+        TensuraMod.LOGGER.info("[Tensura] Recalled citizen #{} by colony owner {} for Pokemon owner {}",
+                citizenId, sender.getUUID(), recipientId);
+        ServerPlayer recipient = level.getServer().getPlayerList().getPlayer(recipientId);
+        if (recipient != null) {
+            recipient.sendSystemMessage(Component.literal("\u00a7b" + speciesName + " powrócił do drużyny."));
+        }
+        if (!recipientId.equals(sender.getUUID())) {
+            sender.sendSystemMessage(Component.literal("§aPokémon wrócił do drużyny pierwotnego właściciela."));
         }
     }
 
