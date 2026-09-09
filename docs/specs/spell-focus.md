@@ -20,7 +20,7 @@ Zbudowane i wgrane na TEST oraz klienta jako `tensura-2.0.39.jar` (2026-09-09).
 | 3. `SpellRadialScreen` na `R` | Zrobione |
 | 4. `devourRecover` → `OpenRadialPacket` + `AttuneSpellPacket` | Zrobione |
 | 5. Wycięcie Kodeksu | Zrobione |
-| 6. Offhand | `findFocus` zrobione; przełączniki Epic Knights włączone na TEST i kliencie, **produkcja nie ruszona** |
+| 6. Offhand | `findFocus` zrobione; config Epic Knights **celowo nietknięty** — patrz sekcja 7 |
 
 **Nie zweryfikowane w grze.** Kompiluje się, walidacje przechodzą, klasy i assety
 są w jarze — ale nikt tego jeszcze nie kliknął. Kryteria akceptacji w sekcji 12
@@ -50,6 +50,8 @@ pochłonięcie **nadal dropi** `SpellItem`, wycięcie Kodeksu wchodzi od razu.
 - Radial wraca do drzewka Devour zamiast do świata; polling klawisza obsługuje
   też przycisk myszy; wyczyszczenie aktywnego slotu przestawia wybór na pierwszy
   niepusty; tooltip mówi o Shift+scroll.
+- **Config Epic Knights cofnięty do domyślnego** na TEST i kliencie. Zalecenie
+  włączenia obu przełączników było błędne — sekcja 7 tłumaczy, dlaczego.
 
 ---
 
@@ -87,7 +89,7 @@ podstawą, na której spec się opiera.
 | Kontrakt drzewka | `../contracts/devour-tree.md` + walidator `validateSkillTrees` pod `check` |
 | `devourRecover` | Waliduje `hasAbsorbed`, wydaje `SpellItem`, odracza `lockDispenser` o jeden tick |
 | Keybindy | **Nie ma ani jednego** — `RegisterKeyMappingsEvent` to grunt zerowy |
-| Receptury | Jedna, `recipes/recall_station.json` — wzorzec dla katalizatora |
+| Receptury | Jedna, `recipe/recall_station.json` — wzorzec dla katalizatora |
 
 **Wniosek:** to jest refaktor UI, nie nowy silnik. Warstwa rzucania i walidacji zostaje
 nietknięta.
@@ -122,7 +124,8 @@ GSG     S = minecraft:slime_ball
  G
 ```
 
-Pusty katalizator używa tekstury slime balla; po przypisaniu zaklęcia model przełącza
+Pusty katalizator ma własną teksturę (`textures/item/spell_focus.png` — złoty
+pierścień ze slime rdzeniem, pod recepturę); po przypisaniu zaklęcia model przełącza
 się na ikonę aktywnego zaklęcia przez te same nadpisania, których używa `SpellItem`.
 
 ### NBT
@@ -199,30 +202,52 @@ Vanilla woła `use()` najpierw dla głównej ręki, a przy `PASS` dla offhandu.
 `SpellItem.use()` już przyjmuje `hand`, więc **z waniliowym mieczem działa to bez
 zmian w kodzie**.
 
-Konflikt jest w Epic Knights (`config/epicknights/weapons.json5`):
+### Epic Knights — nic nie zmieniamy w configu
 
-| Cecha | Liczba broni | Skutek |
+**Decyzja (2026-09-09): oba przełączniki zostają `false` na wszystkich trzech
+setupach.** Wcześniejsza wersja tej sekcji zalecała włączenie obu; to było błędne
+i zostało cofnięte.
+
+Reguła gry, ustalona przez użytkownika: **broń dwuręczna wyklucza drugą rękę i tyle.**
+Mod to egzekwuje sam — `MedievalWeaponItem.inventoryTick` nakłada
+`TWO_HANDED_PENALTY`, gdy `getTwoHanded() > 0` i offhand nie jest pusty. Katalizator
+liczy się jako „coś w offhandzie", więc dwuręczna broń + katalizator = debuff,
+zgodnie z zamysłem. `disableTwoHanded: true` zdejmowałoby tę zasadę z całej mapy,
+żeby obejść ją dla jednego itemu — dlatego nie.
+
+Blokowanie (`disableWeaponBlocking`) rozbija się o liczby. Z 28 broni melee:
+
+| Grupa | Liczba | Znaczenie dla katalizatora |
 |---|---|---|
-| `canBlock: true` | 13 | PPM idzie w blok, offhand nie dostaje `use()` |
-| `twoHanded: 1` | 9 | Zajmuje obie ręce |
-| `twoHanded: 2` | 6 | Jw. |
+| `canBlock: true` | 13 | PPM może pójść w blok zamiast w rzucanie |
+| …z tego **też dwuręczne** | 12 | Poza zakresem — przy dwuręcznej i tak nie nosisz katalizatora |
+| …z tego **jednoręczne** | 1 (`messerSword`) | Jedyny realny konflikt |
 
-`nobleSword`, `bastardSword` i `estoc` są w tej grupie.
+Czyli globalny przełącznik zabierałby blokowanie wszystkim, żeby naprawić **jedną
+broń**. Zła wymiana.
 
-**Rozwiązanie w configu, nie w kodzie** — `config/epicknights/general.json5`:
+Jak dokładnie wygląda ten konflikt przy `messerSword` (z bajtkodu 10.10):
 
+```java
+// MedievalWeaponItem.use
+if (canBlock(player) && blockingPriority) { startUsingItem(hand); return CONSUME; }
+return super.use(...);   // SwordItem.use → PASS → offhand dostaje use()
+
+// canBlock(Player) = canBlock() && player.getAttackStrengthScale(0f) == 1.0f
+// blockingPriority (inventoryTick) = zadna reka nie trzyma ShieldItem
 ```
-"disableTwoHanded": true,
-"disableWeaponBlocking": true,
-```
 
-Oba domyślnie `false`; komentarz w configu sam zaleca ich włączenie przy modach
-bojowych. Cena: blokowanie mieczem znika dla wszystkich, a katalizator w offhandzie
-i tak wyklucza tarczę. To świadomy trade-off buildu — mag-rycerz oddaje obronę za magię.
+Katalizator nie jest `ShieldItem`, więc `blockingPriority` jest `true`. Ale
+`canBlock(Player)` wymaga **pełnego paska ataku** — więc PPM rzuca zaraz po
+machnięciu, a blokuje, gdy stoisz wypoczęty. Migotanie zależne od timingu, gorsze
+niż konsekwentne „nie działa".
 
-**Stan (2026-09-09):** włączone na TEST i na kliencie. Na produkcji nadal `false` —
-to zmiana odczuwalna dla graczy, którzy dziś blokują mieczem, więc czeka na decyzję
-i na restart 2k37.
+**Jeśli `messerSword` kiedykolwiek zacznie przeszkadzać**, chirurgiczna poprawka to
+`"canBlock": false` przy tej jednej broni w `weapons.json5` — nie globalny
+przełącznik. Do zrobienia dopiero, gdy ktoś się na to natnie w playteście.
+
+Pozostałe 15 broni jednoręcznych bez blokowania i wszystkie bronie waniliowe
+działają z katalizatorem bez żadnej zmiany w configu.
 
 **Po stronie kodu:** `SpellCasting.findFocus(player)` — najpierw główna ręka, potem
 offhand. Potrzebne, żeby `R` i radial znajdowały katalizator niezależnie od slotu.
@@ -339,7 +364,6 @@ niezmienniki: `../contracts/devour-tree.md`, który jest dla tego drzewka
 | `SpellItem` | Logika przeniesiona do `SpellCasting`; item zostaje castowalny dla starych egzemplarzy |
 | `TensuraItemRegistry` | +`SPELL_FOCUS`, −`PREDATOR_CODEX` |
 | `gradle/skill-tree-validation.gradle` | Lista zarejestrowanych itemów czytana z rejestru zamiast przepisywana |
-| `config/epicknights/general.json5` | `disableTwoHanded`, `disableWeaponBlocking` → `true` (TEST i klient) |
 
 ### Usunięte
 
@@ -362,7 +386,7 @@ nie objaw.
 3. `SpellRadialScreen` — wybór aktywnego.
 4. `devourRecover` → `OpenRadialPacket` + `AttuneSpellPacket`; tryb przypisania w radialu.
 5. Wycięcie Kodeksu. Drop `SpellItem` przy pochłonięciu **zostaje** (decyzja użytkownika).
-6. Offhand: `findFocus` + przełączniki Epic Knights + playtest bronią, którą realnie gracie.
+6. Offhand: `findFocus` + playtest bronią, którą realnie gracie (config Epic Knights zostaje domyślny).
 
 ---
 
@@ -396,7 +420,6 @@ nie objaw.
   ścieżka bojowa (oba w tooltipie). Jeśli playtest pokaże, że to boli, alternatywą
   jest overlay na `RenderGuiEvent` z własnym czytaniem delty myszy — realna robota
   i nowa klasa błędów, więc nie robimy tego w ciemno.
-- Czy `disableTwoHanded`/`disableWeaponBlocking` wchodzą na produkcję.
 
 (Koszty node'ów devour przestały być pytaniem — sekcja 9 wyjaśnia, dlaczego muszą
 zostać zerowe.)
