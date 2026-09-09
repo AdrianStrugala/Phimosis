@@ -24,7 +24,9 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class CombatCompanionEvents {
@@ -37,6 +39,10 @@ public class CombatCompanionEvents {
     // ownerUUID → their active companion
     private static final Map<UUID, PokemonEntity> activeCompanions = new HashMap<>();
     private static final Map<UUID, Integer> targetPriorities = new HashMap<>();
+    // Companions already torn down for the current not-ready stretch. Not-ready is a sustained
+    // normal state (owner mounted, in a Cobblemon battle, out of range), so without this the
+    // suspendCompanion sweep would run its entity query every tick for the whole stretch.
+    private static final Set<UUID> suspendedCompanions = new HashSet<>();
 
     public static void registerCobblemonHooks() {
         // Called once from TensuraMod constructor (after mod init)
@@ -57,12 +63,7 @@ public class CombatCompanionEvents {
                 detachCompanion(owner.getUUID(), previous);
             }
 
-            // Attach goals (goalSelector/targetSelector public via accesstransformer.cfg)
-            pokemon.goalSelector.addGoal(2, new AllyFollowGoal(pokemon, owner, 1.2, 3, 24));
-            pokemon.goalSelector.addGoal(4, new CompanionSpellGoal(pokemon, owner));
-
-            pokemon.addTag("tensura:combat_companion");
-            activeCompanions.put(owner.getUUID(), pokemon);
+            attachCompanion(owner, pokemon);
 
             TensuraMod.LOGGER.debug("[Tensura] Companion AI attached to {} for {}",
                     pokemon.getPokemon().getSpecies().getName(), owner.getName().getString());
@@ -119,13 +120,31 @@ public class CombatCompanionEvents {
     public void onCompanionTick(EntityTickEvent.Post event) {
         if (!(event.getEntity() instanceof PokemonEntity companion)
                 || !companion.getTags().contains("tensura:combat_companion")) return;
-        if (!(companion.getOwner() instanceof ServerPlayer owner)
-                || activeCompanions.get(owner.getUUID()) != companion) return;
+        if (!(companion.getOwner() instanceof ServerPlayer owner)) return;
+
+        PokemonEntity registered = activeCompanions.get(owner.getUUID());
+        if (registered != companion) {
+            // Tagged but unregistered means this instance was reloaded after its level unloaded:
+            // the tag survives in NBT, the goals do not. Re-attach, unless the owner has sent out
+            // a different companion since — then this one is an orphan and loses its tag.
+            if (registered == null) {
+                attachCompanion(owner, companion);
+            } else {
+                companion.removeTag("tensura:combat_companion");
+            }
+            return;
+        }
+
+        if (!isReady(companion, owner)) {
+            if (suspendedCompanions.add(companion.getUUID())) {
+                suspendCompanion(owner.getUUID(), companion);
+            }
+            return;
+        }
+        suspendedCompanions.remove(companion.getUUID());
 
         LivingEntity target = companion.getTarget();
-        if (!isReady(companion, owner)) {
-            suspendCompanion(owner.getUUID(), companion);
-        } else if (target == null || !isValidTarget(owner, companion, target)) {
+        if (target == null || !isValidTarget(owner, companion, target)) {
             companion.setTarget(null);
             targetPriorities.remove(owner.getUUID());
             SpellCastController.clearCompanionState(companion.getUUID());
@@ -134,18 +153,25 @@ public class CombatCompanionEvents {
 
     @SubscribeEvent
     public void onCompanionDeath(LivingDeathEvent event) {
+        // Owner death is deliberately not a teardown: isReady() already gates on owner.isAlive(),
+        // so the companion suspends and resumes by itself once the owner respawns. Detaching here
+        // would leave a still-deployed Pokemon untagged and unreachable.
         if (event.getEntity() instanceof PokemonEntity companion) {
             detachByEntity(companion);
-        } else if (event.getEntity() instanceof ServerPlayer owner) {
-            detachByOwner(owner.getUUID());
         }
     }
 
     @SubscribeEvent
     public void onCompanionLeave(EntityLeaveLevelEvent event) {
-        if (event.getEntity() instanceof PokemonEntity companion) {
-            detachByEntity(companion);
-        }
+        if (!(event.getEntity() instanceof PokemonEntity companion)) return;
+        UUID ownerId = companion.getOwnerUUID();
+        if (ownerId == null || activeCompanions.get(ownerId) != companion) return;
+        // An unload is not a teardown. Drop the runtime state but keep the tag, so the reloaded
+        // instance is recognised in onCompanionTick and gets its goals back — removing it here
+        // would also strip it from the NBT this unload is about to write.
+        suspendCompanion(ownerId, companion);
+        suspendedCompanions.remove(companion.getUUID());
+        activeCompanions.remove(ownerId, companion);
     }
 
     @SubscribeEvent
@@ -162,6 +188,7 @@ public class CombatCompanionEvents {
     public void onServerStopped(ServerStoppedEvent event) {
         activeCompanions.clear();
         targetPriorities.clear();
+        suspendedCompanions.clear();
     }
 
     private static boolean isReady(PokemonEntity companion, ServerPlayer owner) {
@@ -202,12 +229,24 @@ public class CombatCompanionEvents {
         }
     }
 
+    private static void attachCompanion(ServerPlayer owner, PokemonEntity companion) {
+        // Goals are not persisted, so an entity reloaded from NBT arrives with an empty
+        // goalSelector and needs them added again.
+        // (goalSelector/targetSelector public via accesstransformer.cfg)
+        companion.goalSelector.addGoal(2, new AllyFollowGoal(companion, owner, 1.2, 3, 24));
+        companion.goalSelector.addGoal(4, new CompanionSpellGoal(companion, owner));
+        companion.addTag("tensura:combat_companion");
+        activeCompanions.put(owner.getUUID(), companion);
+        suspendedCompanions.remove(companion.getUUID());
+    }
+
     private static void detachCompanion(UUID ownerId, PokemonEntity companion) {
         suspendCompanion(ownerId, companion);
+        suspendedCompanions.remove(companion.getUUID());
         companion.ejectPassengers();
         companion.removeTag("tensura:combat_companion");
         activeCompanions.remove(ownerId, companion);
-        MountEvents.onCompanionRecalled(ownerId);
+        MountEvents.onCompanionRecalled(ownerId, companion);
     }
 
     private static void detachByEntity(PokemonEntity companion) {

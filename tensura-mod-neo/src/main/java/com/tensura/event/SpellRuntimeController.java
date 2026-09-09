@@ -3,6 +3,7 @@ package com.tensura.event;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.tensura.engine.SpellDefinition;
 import com.tensura.engine.SpellExecutor;
+import com.tensura.engine.SpellImpactApplier;
 import com.tensura.engine.SpellTargetingRules;
 import com.tensura.network.SpellVfxDispatcher;
 import com.tensura.registry.TensuraMobEffects;
@@ -938,7 +939,7 @@ public class SpellRuntimeController {
             }
             if (seed.remainingTicks % 20 == 0) {
                 float healthBefore = target.getHealth();
-                target.hurt(owner.damageSources().playerAttack(owner),
+                SpellImpactApplier.hurtAttributedToOwner(owner, effectCaster, target,
                         (float) seed.amountPerTick);
                 effectCaster.heal(Math.max(0.0F, healthBefore - target.getHealth()));
                 level.sendParticles(ParticleTypes.HAPPY_VILLAGER,

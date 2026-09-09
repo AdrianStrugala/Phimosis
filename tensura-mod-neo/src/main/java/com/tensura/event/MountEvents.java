@@ -133,8 +133,11 @@ public class MountEvents {
 
     // ── Called from CombatCompanionEvents when Pokémon is recalled ──────────
 
-    public static void onCompanionRecalled(UUID ownerUUID) {
-        cleanupRider(ownerUUID, null); // ejectPassengers is called by the caller
+    public static void onCompanionRecalled(UUID ownerUUID, PokemonEntity vehicle) {
+        // The vehicle must be passed in: cleanupRider restores the pre-mount noGravity flag on
+        // it, and without the reference a flying mount detached mid-ride (owner death, dimension
+        // change, entity unload) would stay weightless for the rest of its life.
+        cleanupRider(ownerUUID, vehicle); // ejectPassengers is called by the caller
     }
 
     // ── Movement ────────────────────────────────────────────────────────────

@@ -9,6 +9,7 @@ import com.tensura.event.ConversionEvents;
 import com.tensura.event.NoHungerEvents;
 import com.tensura.event.PredatorEvents;
 import com.tensura.event.PredatorSyncEvents;
+import com.tensura.event.SpellCastController;
 import com.tensura.event.SpellMovementController;
 import com.tensura.event.SpellRuntimeController;
 import com.tensura.event.SpellStatusEvents;

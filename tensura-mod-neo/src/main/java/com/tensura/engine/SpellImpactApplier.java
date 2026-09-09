@@ -49,6 +49,37 @@ public final class SpellImpactApplier {
         return COMPANION_DAMAGE_DEPTH.get() > 0;
     }
 
+    /**
+     * Deals damage credited to {@code owner} but originating from {@code effectCaster}.
+     * When the caster is a companion Pokemon the hurt call is bracketed by
+     * COMPANION_DAMAGE_DEPTH, so CombatCompanionEvents#onOwnerAttacks does not mistake it
+     * for the owner swinging and re-target the companion onto its own damage-over-time victim.
+     * Any code path that damages on the companion's behalf must go through here.
+     */
+    public static void hurtAttributedToOwner(ServerPlayer owner, LivingEntity effectCaster,
+                                             LivingEntity target, float damage) {
+        boolean companionDamage = effectCaster instanceof PokemonEntity;
+        if (companionDamage) pushCompanionDamage();
+        try {
+            target.hurt(owner.damageSources().playerAttack(owner), damage);
+        } finally {
+            if (companionDamage) popCompanionDamage();
+        }
+    }
+
+    private static void pushCompanionDamage() {
+        COMPANION_DAMAGE_DEPTH.set(COMPANION_DAMAGE_DEPTH.get() + 1);
+    }
+
+    private static void popCompanionDamage() {
+        int remainingDepth = COMPANION_DAMAGE_DEPTH.get() - 1;
+        if (remainingDepth == 0) {
+            COMPANION_DAMAGE_DEPTH.remove();
+        } else {
+            COMPANION_DAMAGE_DEPTH.set(remainingDepth);
+        }
+    }
+
     public static void applyImpacts(ServerPlayer caster, LivingEntity target,
                                     SpellDefinition definition) {
         applyImpacts(caster, caster, target, definition, true);
@@ -442,27 +473,15 @@ public final class SpellImpactApplier {
         }
         AttributeInstance armor = target.getAttribute(Attributes.ARMOR);
         boolean penetratesArmor = armor != null && armorPenetration > 0.0;
-        boolean companionDamage = effectCaster instanceof PokemonEntity;
         if (penetratesArmor) {
             armor.removeModifier(ARMOR_PENETRATION_ID);
             armor.addTransientModifier(new AttributeModifier(ARMOR_PENETRATION_ID,
                     -armorPenetration, AttributeModifier.Operation.ADD_VALUE));
         }
-        if (companionDamage) {
-            COMPANION_DAMAGE_DEPTH.set(COMPANION_DAMAGE_DEPTH.get() + 1);
-        }
         try {
-            target.hurt(owner.damageSources().playerAttack(owner), adjustedDamage);
+            hurtAttributedToOwner(owner, effectCaster, target, adjustedDamage);
         } finally {
             if (penetratesArmor) armor.removeModifier(ARMOR_PENETRATION_ID);
-            if (companionDamage) {
-                int remainingDepth = COMPANION_DAMAGE_DEPTH.get() - 1;
-                if (remainingDepth == 0) {
-                    COMPANION_DAMAGE_DEPTH.remove();
-                } else {
-                    COMPANION_DAMAGE_DEPTH.set(remainingDepth);
-                }
-            }
         }
     }
 

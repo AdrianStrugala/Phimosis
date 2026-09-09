@@ -14,7 +14,10 @@ import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Periodic spell casting by a companion Pokemon.
@@ -28,21 +31,32 @@ public class CompanionSpellGoal extends Goal {
     private static final double CLOSE_RANGE = 4.0;
 
     private final PokemonEntity companion;
-    private final ServerPlayer owner;
+    private final UUID ownerId;
     private long nextDecisionAt;
     private ResourceLocation lastSpell;
 
     public CompanionSpellGoal(PokemonEntity companion, ServerPlayer owner) {
         this.companion = companion;
-        this.owner = owner;
+        this.ownerId = owner.getUUID();
         setFlags(EnumSet.noneOf(Flag.class)); // doesn't block movement
+    }
+
+    /**
+     * Resolved per call rather than held: a ServerPlayer instance is replaced on respawn and on
+     * dimension change, and a stale one never reports alive again, which would silence the goal
+     * for the rest of the companion's life. Null also covers "owner is in another level".
+     */
+    private ServerPlayer owner() {
+        return companion.level().getPlayerByUUID(ownerId) instanceof ServerPlayer owner
+                && owner.isAlive() ? owner : null;
     }
 
     @Override
     public boolean canUse() {
         if (companion.isVehicle() || companion.isBattling()) return false;
         if (SpellCastController.isCompanionBusy(companion.getUUID())) return false;
-        if (!owner.isAlive() || owner.level() != companion.level()) return false;
+        ServerPlayer owner = owner();
+        if (owner == null) return false;
         if (companion.distanceToSqr(owner) > MAX_OWNER_DISTANCE * MAX_OWNER_DISTANCE) return false;
         LivingEntity target = companion.getTarget();
         return target != null && target.isAlive()
@@ -53,22 +67,28 @@ public class CompanionSpellGoal extends Goal {
     @Override
     public void start() {
         nextDecisionAt = companion.level().getGameTime() + DECISION_INTERVAL;
+        ServerPlayer owner = owner();
+        if (owner == null) return;
         LivingEntity target = companion.getTarget();
         if (target == null || !SpellTargetingRules.canCompanionTarget(owner, companion, target)) return;
 
+        // Deduplicated: a moveset can name the same spell twice, and duplicates would both
+        // survive the size() > 1 gate below and leave removeIf with an empty list.
         List<Candidate> candidates = new ArrayList<>();
+        Set<ResourceLocation> seen = new HashSet<>();
         for (ResourceLocation spellId : CobblemonMoveMapper.getSpellsForPokemon(companion)) {
+            if (!seen.add(spellId)) continue;
             SpellDefinition definition = SpellRegistry.get(spellId).orElse(null);
             if (definition != null && SpellExecutor.isCompanionSpellReady(companion, spellId)
                     && canUseSpell(definition, target)) {
                 candidates.add(new Candidate(spellId, definition));
             }
         }
-        if (candidates.isEmpty()) return;
 
         if (candidates.size() > 1 && lastSpell != null) {
             candidates.removeIf(candidate -> candidate.id.equals(lastSpell));
         }
+        if (candidates.isEmpty()) return;
         preferRangeAppropriateSpells(candidates, target);
         Candidate selected = candidates.get(companion.getRandom().nextInt(candidates.size()));
 
