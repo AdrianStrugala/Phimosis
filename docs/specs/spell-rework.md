@@ -331,7 +331,7 @@ final_damage = power * category_modifier * target_mitigation
 | `Wet` | Water combo tag na 5 s: wzmacnia Electric i Ice, oslabia pierwszy Burn. |
 | `Asleep` | Blokuje ruch, ataki i spelle. Obrazenia budza po minimalnym czasie ochronnym efektu. |
 
-Bossowie i gracze otrzymuja o 50% krotsze Rooted/Frozen i o 50% slabszy pull. Po twardym CC cel dostaje trzysekundowa odpornosc na kolejny Stagger oraz malejacy czas kolejnych unieruchomien przez 8 s. Companion uzywa tych samych zasad, ale zadaje 70% power i ma dodatkowo o 50% slabszy hard CC przeciw graczom.
+Bossowie i gracze otrzymuja o 50% krotsze Rooted/Frozen i o 50% slabszy pull. Po twardym CC cel dostaje trzysekundowa odpornosc na kolejny Stagger oraz malejacy czas kolejnych unieruchomien przez 8 s. Companion uzywa tych samych zasad i 100% power definicji spella, ale ma dodatkowo o 50% slabszy hard CC przeciw graczom.
 
 ## 5. Tozsamosc typow i synergie
 

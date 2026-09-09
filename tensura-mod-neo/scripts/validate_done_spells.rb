@@ -17,9 +17,17 @@ BEAM_DELIVERY_FILE = File.join(ROOT,
 MOVEMENT_FILE = File.join(ROOT, "src/main/java/com/tensura/event/SpellMovementController.java")
 PROJECTILE_FILE = File.join(ROOT, "src/main/java/com/tensura/entity/SpellProjectile.java")
 RUNTIME_FILE = File.join(ROOT, "src/main/java/com/tensura/event/SpellRuntimeController.java")
+CAST_CONTROLLER_FILE = File.join(ROOT,
+  "src/main/java/com/tensura/event/SpellCastController.java")
 VFX_FILE = File.join(ROOT, "src/main/java/com/tensura/client/ProgrammaticSpellFx.java")
 ALIASES_FILE = File.join(ROOT, "src/main/java/com/tensura/engine/SpellIdAliases.java")
 STATUS_FILE = File.join(ROOT, "src/main/java/com/tensura/event/SpellStatusEvents.java")
+COMPANION_EVENTS_FILE = File.join(ROOT,
+  "src/main/java/com/tensura/event/CombatCompanionEvents.java")
+COMPANION_GOAL_FILE = File.join(ROOT,
+  "src/main/java/com/tensura/goal/CompanionSpellGoal.java")
+TARGETING_RULES_FILE = File.join(ROOT,
+  "src/main/java/com/tensura/engine/SpellTargetingRules.java")
 DEVOUR_GENERATOR_FILE = File.join(ROOT, "scripts/sync_devour_tree.rb")
 SPELL_DIR = File.join(ROOT, "src/main/resources/data/tensura/spells")
 MODEL_DIR = File.join(ROOT, "src/main/resources/assets/tensura/models/item")
@@ -109,9 +117,67 @@ executor = [EXECUTOR_FILE, IMPACT_APPLIER_FILE, FEEDBACK_FILE,
 movement = File.read(MOVEMENT_FILE)
 projectile = File.read(PROJECTILE_FILE)
 runtime = File.read(RUNTIME_FILE)
+cast_controller = File.read(CAST_CONTROLLER_FILE)
 vfx = File.read(VFX_FILE)
 aliases = File.read(ALIASES_FILE)
 status_events = File.read(STATUS_FILE)
+companion_events = File.read(COMPANION_EVENTS_FILE)
+companion_goal = File.read(COMPANION_GOAL_FILE)
+targeting_rules = File.read(TARGETING_RULES_FILE)
+
+fail_validation("companion AI scans for nearby hostile mobs") if
+  companion_events.include?("NearestAttackableTargetGoal") ||
+    companion_events.include?("Monster.class") || companion_goal.include?("Monster.class")
+fail_validation("companion AI lacks the three reactive target priorities") unless
+  companion_events.include?("OWNER_TARGET_PRIORITY = 1") &&
+    companion_events.include?("COMPANION_DEFENSE_PRIORITY = 2") &&
+    companion_events.include?("OWNER_DEFENSE_PRIORITY = 3")
+fail_validation("companion AI does not suspend during Cobblemon battles") unless
+  companion_goal.include?("companion.isBattling()") &&
+    companion_events.include?("!companion.isBattling()") &&
+    cast_controller.include?("pokemon.isBattling()")
+fail_validation("companion moveset is frozen at send-out") unless
+  companion_goal.include?("CobblemonMoveMapper.getSpellsForPokemon(companion)")
+fail_validation("companion cooldown is not keyed by persistent Pokemon UUID") unless
+  executor.include?("companionCooldowns") &&
+    executor.include?("companion.getPokemon().getUuid()")
+fail_validation("companion cooldown still uses synthetic owner spell IDs") if
+  executor.include?('"companion_" + spellId.getPath()')
+fail_validation("companion channels are not capped at 40 ticks") unless
+  cast_controller.include?("COMPANION_CHANNEL_TICKS = 40") &&
+    executor.include?("startCompanionChannelBeam") &&
+    executor.include?("startCompanionChannelCone")
+fail_validation("companion lifecycle cleanup is incomplete") unless
+  companion_events.include?("suspendCompanion") &&
+    runtime.include?("clearCompanionState") &&
+    movement.include?("clearCompanionState")
+fail_validation("companion spell damage can target players") unless
+  targeting_rules.include?("target instanceof Player") &&
+    targeting_rules.include?("tensura:combat_companion")
+fail_validation("companion spell damage can feed back into reactive targeting") unless
+  executor.include?("isApplyingCompanionDamage") &&
+    companion_events.include?("SpellImpactApplier.isApplyingCompanionDamage()")
+fail_validation("companion instant area spells only hit one target") unless
+  executor.include?("castCompanionStandard") &&
+    executor.include?('"area".equals(def.targeting.type)') &&
+    executor.include?("for (LivingEntity areaTarget : targets)")
+fail_validation("companion channel cones do not lock their target") unless
+  cast_controller.include?("private final UUID targetId") &&
+    cast_controller.include?("castRuntimeCone(owner, effectCaster, target") &&
+    executor.include?("startCompanionChannelCone(\n                    owner, companion, target")
+fail_validation("companion targets do not expire outside the owner combat radius") unless
+  companion_events.include?("target.distanceToSqr(owner)") &&
+    companion_events.include?("MAX_COMBAT_DISTANCE")
+fail_validation("Trick Room can alter protected companion allies") unless
+  executor.include?("if (!canHarm && recipient != effectCaster) continue;")
+fail_validation("companion teleport cleanup leaves invisibility active") unless
+  runtime.match?(/clearCompanionState.*?clearTeleportStrikeInvisibility/m)
+fail_validation("companion dash cleanup leaves horizontal movement active") unless
+  movement.include?("stopDash(companion)") &&
+    movement.include?("pokemon.isBattling() || pokemon.isVehicle()")
+fail_validation("cast state leaked back into SpellRuntimeController") if
+  runtime.include?("PENDING_CASTS") || runtime.include?("CHANNEL_BEAMS") ||
+    runtime.include?("CHANNEL_CONES")
 definitions = JSON.parse(File.read(File.join(DEVOUR_DIR, "definitions.json")))
 skills = JSON.parse(File.read(File.join(DEVOUR_DIR, "skills.json")))
 connections = JSON.parse(File.read(File.join(DEVOUR_DIR, "connections.json")))
@@ -252,7 +318,8 @@ fail_validation("Dazzling Gleam lacks its targeted self-cleanse") unless
     impacts.call(spell).any? { |impact| impact["type"] == "interrupt_cast" }
 end
 fail_validation("interrupt impact is not connected to pending casts") unless
-  executor.include?("interruptPendingCast") && runtime.include?("PENDING_CASTS.remove(target.getUUID())")
+  executor.include?("interruptPendingCast") &&
+    cast_controller.include?("PENDING_CASTS.remove(target.getUUID())")
 
 draining_heal = impacts.call("draining_kiss").find do |impact|
   impact["type"] == "heal_damage_fraction" && impact["recipient"] == "caster"
@@ -276,7 +343,7 @@ held_channels.each do |spell, delivery|
       (spell == "dragon_breath" || definition.dig("delivery", "duration_ticks").to_i >= 100)
 end
 fail_validation("held channels are not stopped on item release") unless
-  runtime.include?("definition.delivery.hold_to_channel") &&
+  cast_controller.include?("definition.delivery.hold_to_channel") &&
     spell_casting.include?("stopPlayerChannels(player.getUUID())") &&
     spell_casting.include?("UseAnim.SPEAR")
 fail_validation("held-channel cooldown is not deferred until release") unless

@@ -36,6 +36,7 @@ liczby ukonczonych spelli.
 | `docs/trackers/animation-fix-plan.md` | Plan diagnostyczny | kolejnosc rozwazanych napraw animacji | wynik ostatniego testu |
 | `docs/trackers/animation-fix-tracker.md` | Tracker eksperymentow | ostatni zapisany wynik testu animacji | stan spelli i rosteru |
 | `docs/specs/spell-focus.md` | Spec katalizatora zaklec | projekt katalizatora, radiala, pakietow i migracji datapacka; sekcja 0 mowi, co z tego jest wdrozone w 2.0.38 | niezmienniki drzewka Devour (patrz `docs/contracts/devour-tree.md`) oraz wynik playtestu, ktorego jeszcze nie bylo |
+| `docs/specs/pokemon-world-combat.md` | Spec combat companiona | reaktywne targetowanie, wybor spelli, cooldowny, lifecycle i kryteria akceptacji walki Pokemonow poza battle Cobblemon | kanoniczny roster i balans definicji spelli |
 | `docs/operations/public-server-launch.md` | Plan otwarcia serwera publicznego | blokery przed otwarciem, lista modow i infrastruktury, warstwa play-by-forum | biezaca konfiguracja serwera 2k37 i stan modow w `mods/` |
 
 Gdy powstaje nowy dokument projektowy lub tracker, dopisz go do tej tabeli i
@@ -60,6 +61,9 @@ Stan zweryfikowany 2026-09-09:
   przeszkody;
 - `CobblemonMoveMapper` mapuje ruch tylko na spell o identycznym ID i pomija ruchy
   bez definicji; nie ma tabeli aliasow ani fallbacku typu/power;
+- reaktywny Pokemon world combat jest wdrozony bez skanowania pobliskich mobow:
+  reaguje na atak wlasciciela, atak Pokemona i cel trafiony przez wlasciciela,
+  uzywa 100% power oraz osobnych cooldownow UUID Pokemona; oczekuje playtestu;
 - istnieje 110 z 110 kanonicznych definicji; `dragon_rush`, `phantom_force`,
   `rock_tomb`, `stealth_rock` i `trick_room` maja komplet mechanik runtime,
   mapowan, ikon, profili VFX i wpisow Devour;

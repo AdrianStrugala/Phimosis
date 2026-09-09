@@ -8,7 +8,6 @@ import com.tensura.network.SpellVfxDispatcher;
 import com.tensura.registry.TensuraMobEffects;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -43,8 +42,6 @@ public class SpellRuntimeController {
 
     private static final List<ActiveVortex> VORTEXES = new ArrayList<>();
     private static final List<DelayedHit> DELAYED_HITS = new ArrayList<>();
-    private static final List<ActiveChannelBeam> CHANNEL_BEAMS = new ArrayList<>();
-    private static final List<ActiveChannelCone> CHANNEL_CONES = new ArrayList<>();
     private static final List<DelayedArea> DELAYED_AREAS = new ArrayList<>();
     private static final List<MovingZone> MOVING_ZONES = new ArrayList<>();
     private static final List<ActiveWave> WAVES = new ArrayList<>();
@@ -59,24 +56,6 @@ public class SpellRuntimeController {
     private static final Map<UUID, GuardState> GUARDS = new HashMap<>();
     private static final Map<UUID, MeteorGroup> METEOR_GROUPS = new HashMap<>();
     private static final Map<UUID, ProjectileGroup> PROJECTILE_GROUPS = new HashMap<>();
-    private static final Map<UUID, PendingCast> PENDING_CASTS = new HashMap<>();
-    private static final Map<UUID, PendingCompanionCast> PENDING_COMPANION_CASTS = new HashMap<>();
-
-    public static boolean isCasting(ServerPlayer caster) {
-        return PENDING_CASTS.containsKey(caster.getUUID());
-    }
-
-    public static void interruptPendingCast(LivingEntity target) {
-        PENDING_CASTS.remove(target.getUUID());
-    }
-
-    public static boolean startCast(ServerPlayer caster, ResourceLocation spellId,
-                                    SpellDefinition definition) {
-        if (PENDING_CASTS.containsKey(caster.getUUID())) return false;
-        PENDING_CASTS.put(caster.getUUID(), new PendingCast(spellId, definition,
-                caster.level().getGameTime() + Math.max(1, definition.cast_time_ticks)));
-        return true;
-    }
 
     public static boolean startVortex(ServerPlayer caster, SpellDefinition definition, Vec3 center) {
         return startVortex(caster, caster, definition, center);
@@ -127,42 +106,6 @@ public class SpellRuntimeController {
         COUNTERS.put(defender.getUUID(), new ActiveCounter(owner.getUUID(), definition,
                 defender.level().getGameTime() + duration));
         return true;
-    }
-
-    public static boolean startChannelBeam(ServerPlayer caster, SpellDefinition definition) {
-        return startChannelBeam(caster, caster, null, definition);
-    }
-
-    public static boolean startChannelBeam(ServerPlayer owner, LivingEntity effectCaster,
-                                           LivingEntity target, SpellDefinition definition) {
-        int duration = channelDuration(definition);
-        CHANNEL_BEAMS.add(new ActiveChannelBeam(effectCaster.level().dimension(), owner.getUUID(),
-                effectCaster.getUUID(), target == null ? null : target.getUUID(),
-                definition, duration));
-        SpellExecutor.playLoopSound(effectCaster, definition);
-        SpellExecutor.sendRuntimeBeamVfx(owner, effectCaster, target, definition);
-        return true;
-    }
-
-    public static void stopPlayerChannels(UUID playerId) {
-        CHANNEL_BEAMS.removeIf(beam -> beam.ownerId.equals(playerId)
-                && beam.effectCasterId.equals(playerId));
-        CHANNEL_CONES.removeIf(cone -> cone.ownerId.equals(playerId)
-                && cone.effectCasterId.equals(playerId));
-    }
-
-    public static boolean startChannelCone(ServerPlayer owner, LivingEntity effectCaster,
-                                           SpellDefinition definition) {
-        int duration = channelDuration(definition);
-        CHANNEL_CONES.add(new ActiveChannelCone(effectCaster.level().dimension(),
-                owner.getUUID(), effectCaster.getUUID(), definition, duration));
-        SpellExecutor.playLoopSound(effectCaster, definition);
-        return true;
-    }
-
-    private static int channelDuration(SpellDefinition definition) {
-        return definition.delivery.hold_to_channel && definition.delivery.duration_ticks <= 0
-            ? Integer.MAX_VALUE : Math.max(1, definition.delivery.duration_ticks);
     }
 
     public static boolean startWave(ServerPlayer owner, LivingEntity effectCaster,
@@ -314,16 +257,31 @@ public class SpellRuntimeController {
             return true;
             }
 
-    public static boolean startCompanionCast(ServerPlayer owner, PokemonEntity companion,
-                                             LivingEntity target, ResourceLocation spellId,
-                                             SpellDefinition definition) {
-        if (PENDING_COMPANION_CASTS.containsKey(companion.getUUID())) return false;
-        UUID targetId = "self".equals(definition.targeting.type)
-                ? companion.getUUID() : target.getUUID();
-        PENDING_COMPANION_CASTS.put(companion.getUUID(), new PendingCompanionCast(
-                companion.level().dimension(), owner.getUUID(), targetId, spellId, definition,
-                companion.level().getGameTime() + Math.max(1, definition.cast_time_ticks)));
-        return true;
+    public static void clearCompanionState(LivingEntity companion) {
+        UUID companionId = companion.getUUID();
+        VORTEXES.removeIf(vortex -> vortex.effectCasterId.equals(companionId));
+        DELAYED_HITS.removeIf(delayed -> delayed.effectCasterId.equals(companionId));
+        SpellCastController.clearCompanionState(companionId);
+        DELAYED_AREAS.removeIf(area -> area.effectCasterId.equals(companionId));
+        MOVING_ZONES.removeIf(zone -> zone.effectCasterId.equals(companionId));
+        WAVES.removeIf(wave -> wave.effectCasterId.equals(companionId));
+        TRAPS.removeIf(trap -> trap.effectCasterId.equals(companionId));
+        MELEE_COMBOS.removeIf(combo -> combo.effectCasterId.equals(companionId));
+        PROTECTIVE_AURAS.removeIf(aura -> aura.effectCasterId.equals(companionId));
+        LEECH_SEEDS.removeIf(seed -> seed.effectCasterId.equals(companionId));
+        DASH_COMBOS.removeIf(combo -> combo.effectCasterId.equals(companionId));
+        Iterator<DelayedTeleportStrike> strikes = DELAYED_TELEPORT_STRIKES.iterator();
+        while (strikes.hasNext()) {
+            DelayedTeleportStrike strike = strikes.next();
+            if (!strike.effectCasterId.equals(companionId)) continue;
+            clearTeleportStrikeInvisibility(companion, strike);
+            strikes.remove();
+        }
+        ZONES.removeIf(zone -> zone.effectCasterId.equals(companionId));
+        COUNTERS.remove(companionId);
+        GUARDS.remove(companionId);
+        METEOR_GROUPS.entrySet().removeIf(entry ->
+                entry.getValue().effectCasterId.equals(companionId));
     }
 
     public static void addGuard(LivingEntity target, double amount, int durationTicks) {
@@ -398,8 +356,6 @@ public class SpellRuntimeController {
     public void onServerTick(ServerTickEvent.Post event) {
         tickVortexes(event.getServer());
         tickDelayedHits(event.getServer());
-        tickChannelBeams(event.getServer());
-        tickChannelCones(event.getServer());
         tickDelayedAreas(event.getServer());
         tickMovingZones(event.getServer());
         tickWaves(event.getServer());
@@ -411,8 +367,6 @@ public class SpellRuntimeController {
         tickDelayedTeleportStrikes(event.getServer());
         tickZones(event.getServer());
         tickGuards(event.getServer());
-        tickPendingCasts(event.getServer());
-        tickPendingCompanionCasts(event.getServer());
 
         long now = event.getServer().overworld().getGameTime();
         COUNTERS.entrySet().removeIf(entry -> entry.getValue().expiresAt <= now);
@@ -481,10 +435,6 @@ public class SpellRuntimeController {
                 || vortex.effectCasterId.equals(playerId));
         DELAYED_HITS.removeIf(delayed -> delayed.ownerId.equals(playerId)
                 || delayed.effectCasterId.equals(playerId));
-        CHANNEL_BEAMS.removeIf(beam -> beam.ownerId.equals(playerId)
-                || beam.effectCasterId.equals(playerId));
-        CHANNEL_CONES.removeIf(cone -> cone.ownerId.equals(playerId)
-            || cone.effectCasterId.equals(playerId));
         DELAYED_AREAS.removeIf(area -> area.ownerId.equals(playerId)
                 || area.effectCasterId.equals(playerId));
         MOVING_ZONES.removeIf(zone -> zone.ownerId.equals(playerId)
@@ -508,17 +458,12 @@ public class SpellRuntimeController {
         COUNTERS.entrySet().removeIf(entry -> entry.getKey().equals(playerId)
                 || entry.getValue().ownerId.equals(playerId));
         GUARDS.remove(playerId);
-        PENDING_CASTS.remove(playerId);
-        PENDING_COMPANION_CASTS.entrySet().removeIf(entry ->
-                entry.getValue().ownerId.equals(playerId));
     }
 
     @SubscribeEvent
     public void onServerStopped(ServerStoppedEvent event) {
         VORTEXES.clear();
         DELAYED_HITS.clear();
-        CHANNEL_BEAMS.clear();
-        CHANNEL_CONES.clear();
         DELAYED_AREAS.clear();
         MOVING_ZONES.clear();
         WAVES.clear();
@@ -533,8 +478,6 @@ public class SpellRuntimeController {
         GUARDS.clear();
         METEOR_GROUPS.clear();
         PROJECTILE_GROUPS.clear();
-        PENDING_CASTS.clear();
-        PENDING_COMPANION_CASTS.clear();
         SpellExecutor.clearAllState();
     }
 
@@ -624,64 +567,6 @@ public class SpellRuntimeController {
                         target.getZ(), 35, 0.5, 0.8, 0.5, 0.08);
                 iterator.remove();
             }
-        }
-    }
-
-    private static void tickChannelBeams(MinecraftServer server) {
-        Iterator<ActiveChannelBeam> iterator = CHANNEL_BEAMS.iterator();
-        while (iterator.hasNext()) {
-            ActiveChannelBeam beam = iterator.next();
-            ServerLevel level = server.getLevel(beam.dimension);
-            ServerPlayer owner = server.getPlayerList().getPlayer(beam.ownerId);
-            Entity source = level == null ? null : level.getEntity(beam.effectCasterId);
-            Entity targetEntity = level == null || beam.targetId == null
-                    ? null : level.getEntity(beam.targetId);
-                if (level == null || owner == null || owner.level() != level
-                    || !(source instanceof LivingEntity effectCaster) || !effectCaster.isAlive()
-                    || (beam.ownerId.equals(beam.effectCasterId)
-                        && beam.definition.delivery.hold_to_channel && !owner.isUsingItem())
-                    || --beam.remainingTicks < 0) {
-                iterator.remove();
-                continue;
-            }
-
-            int interval = Math.max(1, beam.definition.delivery.tick_interval_ticks);
-            if (beam.remainingTicks > 0 && beam.remainingTicks % 20 == 0) {
-                SpellExecutor.playLoopSound(effectCaster, beam.definition);
-            }
-            if (beam.remainingTicks % interval == 0) {
-                LivingEntity target = targetEntity instanceof LivingEntity living && living.isAlive()
-                        ? living : null;
-                SpellExecutor.castRuntimeBeam(owner, effectCaster, target, beam.definition);
-            }
-            if (beam.remainingTicks == 0) iterator.remove();
-        }
-    }
-
-    private static void tickChannelCones(MinecraftServer server) {
-        Iterator<ActiveChannelCone> iterator = CHANNEL_CONES.iterator();
-        while (iterator.hasNext()) {
-            ActiveChannelCone cone = iterator.next();
-            ServerLevel level = server.getLevel(cone.dimension);
-            ServerPlayer owner = server.getPlayerList().getPlayer(cone.ownerId);
-            Entity source = level == null ? null : level.getEntity(cone.effectCasterId);
-            if (level == null || owner == null || owner.level() != level
-                    || !(source instanceof LivingEntity effectCaster) || !effectCaster.isAlive()
-                    || (cone.ownerId.equals(cone.effectCasterId)
-                        && cone.definition.delivery.hold_to_channel && !owner.isUsingItem())
-                    || --cone.remainingTicks < 0) {
-                iterator.remove();
-                continue;
-            }
-
-            int interval = Math.max(1, cone.definition.delivery.tick_interval_ticks);
-            if (cone.remainingTicks % interval == 0) {
-                SpellExecutor.castRuntimeCone(owner, effectCaster, cone.definition);
-            }
-            if (cone.remainingTicks > 0 && cone.remainingTicks % 20 == 0) {
-                SpellExecutor.playLoopSound(effectCaster, cone.definition);
-            }
-            if (cone.remainingTicks == 0) iterator.remove();
         }
     }
 
@@ -1199,68 +1084,6 @@ public class SpellRuntimeController {
         }
     }
 
-    private static void tickPendingCasts(MinecraftServer server) {
-        Iterator<Map.Entry<UUID, PendingCast>> iterator = PENDING_CASTS.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<UUID, PendingCast> entry = iterator.next();
-            ServerPlayer caster = server.getPlayerList().getPlayer(entry.getKey());
-            PendingCast pending = entry.getValue();
-            if (caster == null || !caster.isAlive()) {
-                iterator.remove();
-                continue;
-            }
-
-            long remaining = pending.completesAt - caster.level().getGameTime();
-            Vec3 movement = caster.getDeltaMovement();
-            caster.setDeltaMovement(0.0, Math.min(0.0, movement.y), 0.0);
-            caster.setSprinting(false);
-            caster.hurtMarked = true;
-            if (remaining % 5 == 0 && caster.level() instanceof ServerLevel level) {
-                level.sendParticles(ParticleTypes.DRAGON_BREATH,
-                        caster.getX(), caster.getY() + 1.0, caster.getZ(),
-                        8, 0.65, 0.8, 0.65, 0.03);
-            }
-            if (remaining <= 0) {
-                iterator.remove();
-                SpellExecutor.executeDelivery(caster, pending.spellId, pending.definition);
-            }
-        }
-    }
-
-    private static void tickPendingCompanionCasts(MinecraftServer server) {
-        Iterator<Map.Entry<UUID, PendingCompanionCast>> iterator =
-                PENDING_COMPANION_CASTS.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<UUID, PendingCompanionCast> entry = iterator.next();
-            PendingCompanionCast pending = entry.getValue();
-            ServerLevel level = server.getLevel(pending.dimension);
-            ServerPlayer owner = server.getPlayerList().getPlayer(pending.ownerId);
-            Entity source = level == null ? null : level.getEntity(entry.getKey());
-            Entity targetEntity = level == null ? null : level.getEntity(pending.targetId);
-                if (level == null || owner == null || owner.level() != level
-                    || !(source instanceof PokemonEntity companion) || !companion.isAlive()
-                    || !(targetEntity instanceof LivingEntity target) || !target.isAlive()) {
-                iterator.remove();
-                continue;
-            }
-
-            long remaining = pending.completesAt - companion.level().getGameTime();
-            Vec3 movement = companion.getDeltaMovement();
-            companion.setDeltaMovement(0.0, Math.min(0.0, movement.y), 0.0);
-            companion.hurtMarked = true;
-            if (remaining % 5 == 0) {
-                level.sendParticles(ParticleTypes.DRAGON_BREATH,
-                        companion.getX(), companion.getY() + 1.0, companion.getZ(),
-                        8, 0.65, 0.8, 0.65, 0.03);
-            }
-            if (remaining <= 0) {
-                iterator.remove();
-                SpellExecutor.executeCompanionDelivery(owner, companion, target,
-                        pending.spellId, pending.definition);
-            }
-        }
-    }
-
     private static class ActiveVortex {
         private final ResourceKey<Level> dimension;
         private final UUID ownerId;
@@ -1294,44 +1117,6 @@ public class SpellRuntimeController {
             this.ownerId = ownerId;
             this.effectCasterId = effectCasterId;
             this.targetId = targetId;
-            this.definition = definition;
-            this.remainingTicks = remainingTicks;
-        }
-    }
-
-    private static class ActiveChannelBeam {
-        private final ResourceKey<Level> dimension;
-        private final UUID ownerId;
-        private final UUID effectCasterId;
-        private final UUID targetId;
-        private final SpellDefinition definition;
-        private int remainingTicks;
-
-        private ActiveChannelBeam(ResourceKey<Level> dimension, UUID ownerId,
-                                  UUID effectCasterId, UUID targetId,
-                                  SpellDefinition definition, int remainingTicks) {
-            this.dimension = dimension;
-            this.ownerId = ownerId;
-            this.effectCasterId = effectCasterId;
-            this.targetId = targetId;
-            this.definition = definition;
-            this.remainingTicks = remainingTicks;
-        }
-    }
-
-    private static class ActiveChannelCone {
-        private final ResourceKey<Level> dimension;
-        private final UUID ownerId;
-        private final UUID effectCasterId;
-        private final SpellDefinition definition;
-        private int remainingTicks;
-
-        private ActiveChannelCone(ResourceKey<Level> dimension, UUID ownerId,
-                                  UUID effectCasterId, SpellDefinition definition,
-                                  int remainingTicks) {
-            this.dimension = dimension;
-            this.ownerId = ownerId;
-            this.effectCasterId = effectCasterId;
             this.definition = definition;
             this.remainingTicks = remainingTicks;
         }
@@ -1592,9 +1377,4 @@ public class SpellRuntimeController {
 
     public record ProjectileImpact(boolean allowed, boolean firstHit) {}
 
-    private record PendingCast(ResourceLocation spellId, SpellDefinition definition, long completesAt) {}
-
-    private record PendingCompanionCast(ResourceKey<Level> dimension, UUID ownerId, UUID targetId,
-                                        ResourceLocation spellId, SpellDefinition definition,
-                                        long completesAt) {}
 }

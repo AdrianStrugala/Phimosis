@@ -143,6 +143,10 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
         return projectile;
     }
 
+    public boolean isCastBy(UUID entityId) {
+        return entityId.equals(sourceEntityId);
+    }
+
     @Override
     public void tick() {
         super.tick();

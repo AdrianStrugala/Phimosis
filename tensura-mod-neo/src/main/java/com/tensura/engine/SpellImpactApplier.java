@@ -1,6 +1,8 @@
 package com.tensura.engine;
 
+import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.tensura.event.SpellRuntimeController;
+import com.tensura.event.SpellCastController;
 import com.tensura.network.SpellVfxDispatcher;
 import com.tensura.registry.TensuraMobEffects;
 import net.minecraft.core.Holder;
@@ -27,6 +29,8 @@ import java.util.UUID;
 public final class SpellImpactApplier {
 
     private static final Map<UUID, Map<String, Long>> IMPACT_SOUND_TIMES = new HashMap<>();
+        private static final ThreadLocal<Integer> COMPANION_DAMAGE_DEPTH =
+            ThreadLocal.withInitial(() -> 0);
     private static final ResourceLocation ARMOR_PENETRATION_ID =
             ResourceLocation.fromNamespaceAndPath("tensura", "spell_armor_penetration");
 
@@ -38,6 +42,11 @@ public final class SpellImpactApplier {
 
     static void clearAllState() {
         IMPACT_SOUND_TIMES.clear();
+        COMPANION_DAMAGE_DEPTH.remove();
+    }
+
+    public static boolean isApplyingCompanionDamage() {
+        return COMPANION_DAMAGE_DEPTH.get() > 0;
     }
 
     public static void applyImpacts(ServerPlayer caster, LivingEntity target,
@@ -241,14 +250,14 @@ public final class SpellImpactApplier {
                     if (facing.dot(toCaster) < -0.35) {
                         target.setDeltaMovement(Vec3.ZERO);
                         target.hurtMarked = true;
-                        SpellRuntimeController.interruptPendingCast(target);
+                        SpellCastController.interruptPendingCast(target);
                     }
                 }
                 case "throw" -> {
                     if (!canHarm) continue;
                     if (target.getMaxHealth() >= 100.0F) {
                         target.setDeltaMovement(Vec3.ZERO);
-                        SpellRuntimeController.interruptPendingCast(target);
+                        SpellCastController.interruptPendingCast(target);
                     } else {
                         Vec3 direction = effectCaster.getLookAngle().normalize();
                         target.setDeltaMovement(direction.x * impact.strength,
@@ -317,7 +326,7 @@ public final class SpellImpactApplier {
                     }
                 }
                 case "interrupt_cast" -> {
-                    if (canHarm) SpellRuntimeController.interruptPendingCast(recipient);
+                    if (canHarm) SpellCastController.interruptPendingCast(recipient);
                 }
                 case "wet" -> {
                     if (canHarm) {
@@ -366,6 +375,7 @@ public final class SpellImpactApplier {
                     }
                 }
                 case "invert_speed" -> {
+                    if (!canHarm && recipient != effectCaster) continue;
                     AttributeInstance movement = recipient.getAttribute(Attributes.MOVEMENT_SPEED);
                     if (movement == null) continue;
                     int duration = Math.max(2, impact.duration);
@@ -431,24 +441,35 @@ public final class SpellImpactApplier {
             adjustedDamage *= 0.8F;
         }
         AttributeInstance armor = target.getAttribute(Attributes.ARMOR);
-        if (armor == null || armorPenetration <= 0.0) {
-            target.hurt(owner.damageSources().playerAttack(owner), adjustedDamage);
-            return;
+        boolean penetratesArmor = armor != null && armorPenetration > 0.0;
+        boolean companionDamage = effectCaster instanceof PokemonEntity;
+        if (penetratesArmor) {
+            armor.removeModifier(ARMOR_PENETRATION_ID);
+            armor.addTransientModifier(new AttributeModifier(ARMOR_PENETRATION_ID,
+                    -armorPenetration, AttributeModifier.Operation.ADD_VALUE));
         }
-        armor.removeModifier(ARMOR_PENETRATION_ID);
-        armor.addTransientModifier(new AttributeModifier(ARMOR_PENETRATION_ID,
-                -armorPenetration, AttributeModifier.Operation.ADD_VALUE));
+        if (companionDamage) {
+            COMPANION_DAMAGE_DEPTH.set(COMPANION_DAMAGE_DEPTH.get() + 1);
+        }
         try {
             target.hurt(owner.damageSources().playerAttack(owner), adjustedDamage);
         } finally {
-            armor.removeModifier(ARMOR_PENETRATION_ID);
+            if (penetratesArmor) armor.removeModifier(ARMOR_PENETRATION_ID);
+            if (companionDamage) {
+                int remainingDepth = COMPANION_DAMAGE_DEPTH.get() - 1;
+                if (remainingDepth == 0) {
+                    COMPANION_DAMAGE_DEPTH.remove();
+                } else {
+                    COMPANION_DAMAGE_DEPTH.set(remainingDepth);
+                }
+            }
         }
     }
 
     private static void applyStagger(LivingEntity target, SpellDefinition.Impact impact) {
         target.setDeltaMovement(Vec3.ZERO);
         target.hurtMarked = true;
-        SpellRuntimeController.interruptPendingCast(target);
+        SpellCastController.interruptPendingCast(target);
         target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,
                 Math.max(1, impact.duration), Math.max(1, impact.amplifier),
                 false, impact.show_particles, impact.show_icon));

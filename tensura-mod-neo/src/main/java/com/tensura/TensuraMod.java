@@ -70,6 +70,7 @@ public class TensuraMod {
         NeoForge.EVENT_BUS.register(new PredatorEvents());
         NeoForge.EVENT_BUS.register(new PredatorSyncEvents());
         NeoForge.EVENT_BUS.register(new SpellMovementController());
+        NeoForge.EVENT_BUS.register(new SpellCastController());
         NeoForge.EVENT_BUS.register(new SpellRuntimeController());
         NeoForge.EVENT_BUS.register(new SpellStatusEvents());
         // ConversionEvents must be registered BEFORE CombatCompanionEvents

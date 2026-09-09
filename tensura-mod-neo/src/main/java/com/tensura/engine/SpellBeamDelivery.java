@@ -77,9 +77,17 @@ final class SpellBeamDelivery {
 
     static void castRuntimeCone(ServerPlayer owner, LivingEntity effectCaster,
                                 SpellDefinition definition) {
+        castRuntimeCone(owner, effectCaster, null, definition);
+    }
+
+    static void castRuntimeCone(ServerPlayer owner, LivingEntity effectCaster,
+                                LivingEntity lockedTarget, SpellDefinition definition) {
         if (!(effectCaster.level() instanceof ServerLevel level)) return;
         Vec3 origin = effectCaster.getEyePosition();
-        Vec3 forward = effectCaster.getLookAngle().normalize();
+        Vec3 forward = lockedTarget != null && lockedTarget.isAlive()
+                && SpellTargetingRules.canHarm(owner, effectCaster, lockedTarget)
+                ? lockedTarget.getBoundingBox().getCenter().subtract(origin).normalize()
+                : effectCaster.getLookAngle().normalize();
         double range = Math.max(1.0, definition.targeting.range);
         double minimumDot = Math.cos(Math.toRadians(
                 Math.max(1.0, Math.min(179.0, definition.delivery.cone_angle)) * 0.5));

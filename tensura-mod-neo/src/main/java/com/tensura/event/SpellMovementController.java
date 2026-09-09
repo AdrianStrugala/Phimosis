@@ -83,6 +83,10 @@ public class SpellMovementController {
         return true;
     }
 
+    public static void clearCompanionState(PokemonEntity companion) {
+        if (ACTIVE_DASHES.containsKey(companion.getUUID())) stopDash(companion);
+    }
+
     @SubscribeEvent
     public void onPlayerTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
@@ -100,6 +104,11 @@ public class SpellMovementController {
         ActiveDash dash = ACTIVE_DASHES.get(caster.getUUID());
         if (dash == null) return;
         if (!(caster.level() instanceof ServerLevel level)) return;
+        if (caster instanceof PokemonEntity pokemon
+                && (pokemon.isBattling() || pokemon.isVehicle())) {
+            stopDash(caster);
+            return;
+        }
         ServerPlayer owner = caster instanceof ServerPlayer player
                 ? player
             : level.getServer().getPlayerList().getPlayer(dash.ownerId);

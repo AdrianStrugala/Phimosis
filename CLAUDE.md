@@ -47,7 +47,7 @@ After `./gradlew build`, the JAR is in `tensura-mod-neo/build/libs/`. Copy it to
 - `TensuraItemRegistry`, `TensuraBlockRegistry`, `TensuraEntityRegistry`
 - `TensuraMenuRegistry`, `TensuraAttributes`, `TensuraMobEffects`
 
-**Spell/Predator system** (core mechanic): Players absorb abilities from Pokemon on kill via `PredatorEvents.java`. Spells are defined as data in `SpellDefinition`, loaded by `SpellLoader`, executed by `SpellExecutor`, and centrally managed by `SpellRegistry`.
+**Spell/Predator system** (core mechanic): Players absorb abilities from Pokemon on kill via `PredatorEvents.java`. Spells are defined as data in `SpellDefinition`, loaded by `SpellLoader`, executed by `SpellExecutor`, and centrally managed by `SpellRegistry`. `SpellCastController` owns pending casts and beam/cone channels; `SpellRuntimeController` owns persistent world effects and delivery state.
 
 **Event-driven logic**: All game behavior is in `events/` package — handlers registered to NeoForge's event bus. Key files: `PredatorEvents`, `CombatCompanionEvents`, `ColonyGamemodeEvents`.
 

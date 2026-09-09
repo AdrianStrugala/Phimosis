@@ -126,7 +126,7 @@ public final class SpellCasting {
                                          ResourceLocation spellId, Channel channel) {
         if (level.isClientSide || !(entity instanceof ServerPlayer player) || !channel.held()) return;
         if (spellId == null) return;
-        com.tensura.event.SpellRuntimeController.stopPlayerChannels(player.getUUID());
+        com.tensura.event.SpellCastController.stopPlayerChannels(player.getUUID());
         SpellExecutor.finishHeldChannel(player, spellId);
     }
 

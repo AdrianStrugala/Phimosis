@@ -2,6 +2,7 @@ package com.tensura.engine;
 
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.tensura.event.SpellMovementController;
+import com.tensura.event.SpellCastController;
 import com.tensura.event.SpellRuntimeController;
 import com.tensura.network.CooldownSyncPacket;
 import com.tensura.network.SpellVfxDispatcher;
@@ -26,6 +27,7 @@ public class SpellExecutor {
 
     // cooldownMap: playerUUID -> (spellId -> gameTime when ready)
     private static final Map<UUID, Map<ResourceLocation, Long>> cooldowns = new HashMap<>();
+    private static final Map<UUID, Map<ResourceLocation, Long>> companionCooldowns = new HashMap<>();
     private static final Map<UUID, Map<ResourceLocation, ChargeState>> charges = new HashMap<>();
     private static final Map<UUID, ResourceLocation> heldChannels = new HashMap<>();
 
@@ -38,6 +40,7 @@ public class SpellExecutor {
 
     public static void clearAllState() {
         cooldowns.clear();
+        companionCooldowns.clear();
         charges.clear();
         SpellImpactApplier.clearAllState();
         heldChannels.clear();
@@ -75,7 +78,7 @@ public class SpellExecutor {
             caster.sendSystemMessage(Component.literal("§7[You cannot cast right now]"));
             return false;
         }
-        if (SpellRuntimeController.isCasting(caster)) {
+        if (SpellCastController.isCasting(caster)) {
             caster.sendSystemMessage(Component.literal("§7[Already casting]"));
             return false;
         }
@@ -112,7 +115,7 @@ public class SpellExecutor {
             }
         }
         boolean started = def.cast_time_ticks > 0 && !skipCastTime
-                ? SpellRuntimeController.startCast(caster, spellId, def)
+                ? SpellCastController.startCast(caster, spellId, def)
                 : executeDelivery(caster, spellId, def);
         if (!started) return false;
 
@@ -150,8 +153,8 @@ public class SpellExecutor {
                 case "zone" -> SpellRuntimeController.startZone(
                     caster, caster, def, caster.position());
             case "counter" -> SpellRuntimeController.startCounter(caster, def);
-            case "channel_beam" -> SpellRuntimeController.startChannelBeam(caster, def);
-                case "channel_cone" -> SpellRuntimeController.startChannelCone(caster, caster, def);
+            case "channel_beam" -> SpellCastController.startChannelBeam(caster, def);
+                case "channel_cone" -> SpellCastController.startChannelCone(caster, caster, def);
                 case "wave" -> castWave(caster, caster, def);
                 case "trap" -> castTrap(caster, caster, def,
                     SpellTargetResolver.resolveAimPosition(caster, def.targeting.range));
@@ -192,31 +195,42 @@ public class SpellExecutor {
      * directly hits the known target — no raycast needed.
      * Cooldown keyed on owner UUID with a companion-specific suffix to not share with player's own spells.
      */
-    public static void castAsCompanion(ServerPlayer owner, PokemonEntity companion,
-                                        ResourceLocation spellId, SpellDefinition def, LivingEntity target) {
-        if (!(companion.level() instanceof ServerLevel serverLevel)) return;
+        public static boolean isCompanionSpellReady(PokemonEntity companion,
+                            ResourceLocation spellId) {
+        UUID pokemonId = companion.getPokemon().getUuid();
+        long readyAt = companionCooldowns.getOrDefault(pokemonId, Map.of())
+            .getOrDefault(spellId, 0L);
+        return companion.level().getGameTime() >= readyAt;
+        }
+
+        public static boolean castAsCompanion(ServerPlayer owner, PokemonEntity companion,
+                           ResourceLocation spellId, SpellDefinition def,
+                           LivingEntity target) {
+        if (!(companion.level() instanceof ServerLevel serverLevel)) return false;
+        if (companion.isBattling() || companion.isVehicle()) return false;
         if (companion.hasEffect(TensuraMobEffects.ASLEEP)
                 || companion.hasEffect(TensuraMobEffects.FROZEN)
-                || companion.hasEffect(TensuraMobEffects.EXHAUSTED)) return;
+            || companion.hasEffect(TensuraMobEffects.EXHAUSTED)) return false;
         if (!"self".equals(def.targeting.type)
-            && !SpellTargetingRules.canHarm(owner, companion, target)) return;
+            && !SpellTargetingRules.canCompanionTarget(owner, companion, target)) return false;
 
-        ResourceLocation companionSpellKey = ResourceLocation.fromNamespaceAndPath(
-                spellId.getNamespace(), "companion_" + spellId.getPath());
+        UUID pokemonId = companion.getPokemon().getUuid();
         long now = companion.level().getGameTime();
-        Map<ResourceLocation, Long> ownerCooldowns = cooldowns.computeIfAbsent(owner.getUUID(), k -> new HashMap<>());
-        if (now < ownerCooldowns.getOrDefault(companionSpellKey, 0L)) return;
+        Map<ResourceLocation, Long> pokemonCooldowns = companionCooldowns.computeIfAbsent(
+            pokemonId, ignored -> new HashMap<>());
+        if (now < pokemonCooldowns.getOrDefault(spellId, 0L)) return false;
 
         boolean started = def.cast_time_ticks > 0
-                ? SpellRuntimeController.startCompanionCast(owner, companion, target, spellId, def)
+                ? SpellCastController.startCompanionCast(owner, companion, target, spellId, def)
                 : executeCompanionDelivery(owner, companion, target, spellId, def);
-        if (!started) return;
+        if (!started) return false;
 
-        ownerCooldowns.put(companionSpellKey, now + def.cooldown_ticks);
+        pokemonCooldowns.put(spellId, now + Math.max(0, def.cooldown_ticks));
         SpellFeedback.sendCastVfx(companion, def);
         serverLevel.sendParticles(SpellFeedback.schoolParticle(def.school),
                 companion.getX(), companion.getY() + 1, companion.getZ(), 12, 0.3, 0.3, 0.3, 0.05);
         SpellFeedback.playCastSound(companion, def);
+        return true;
     }
 
     public static boolean executeCompanionDelivery(ServerPlayer owner, PokemonEntity companion,
@@ -239,11 +253,11 @@ public class SpellExecutor {
                 case "zone" -> SpellRuntimeController.startZone(
                     owner, companion, def, companion.position());
             case "counter" -> SpellRuntimeController.startCounter(owner, companion, def);
-            case "channel_beam" -> SpellRuntimeController.startChannelBeam(
+            case "channel_beam" -> SpellCastController.startCompanionChannelBeam(
                     owner, companion, target, def);
-                case "channel_cone" -> SpellRuntimeController.startChannelCone(
-                    owner, companion, def);
-                case "wave" -> castWave(owner, companion, def);
+                case "channel_cone" -> SpellCastController.startCompanionChannelCone(
+                    owner, companion, target, def);
+                case "wave" -> castWave(owner, companion, target, def);
                 case "trap" -> castTrap(owner, companion, def, target.position());
                 case "melee_combo" -> castMeleeCombo(owner, companion, target, def);
                 case "teleport_strike" -> castTeleportStrike(owner, companion, target, def);
@@ -274,11 +288,7 @@ public class SpellExecutor {
                         owner, companion, target, def, spellId);
                 yield true;
             }
-            case "instant", "self" -> {
-                LivingEntity impactTarget = "self".equals(def.targeting.type) ? companion : target;
-                applyImpacts(owner, companion, impactTarget, def);
-                yield true;
-            }
+            case "instant", "self" -> castCompanionStandard(owner, companion, target, def);
             default -> {
                 LivingEntity impactTarget = "self".equals(def.targeting.type) ? companion : target;
                 applyImpacts(owner, companion, impactTarget, def);
@@ -331,6 +341,11 @@ public class SpellExecutor {
         SpellBeamDelivery.castRuntimeCone(owner, effectCaster, def);
     }
 
+    public static void castRuntimeCone(ServerPlayer owner, LivingEntity effectCaster,
+                                       LivingEntity lockedTarget, SpellDefinition def) {
+        SpellBeamDelivery.castRuntimeCone(owner, effectCaster, lockedTarget, def);
+    }
+
         private static boolean castWave(ServerPlayer owner, LivingEntity effectCaster,
                         SpellDefinition def) {
         Vec3 look = effectCaster.getLookAngle();
@@ -341,14 +356,54 @@ public class SpellExecutor {
             direction.normalize());
         }
 
+        private static boolean castWave(ServerPlayer owner, LivingEntity effectCaster,
+                        LivingEntity target, SpellDefinition def) {
+        Vec3 direction = target.position().subtract(effectCaster.position());
+        direction = new Vec3(direction.x, 0.0, direction.z);
+        if (direction.lengthSqr() < 1.0E-6) return false;
+        return SpellRuntimeController.startWave(owner, effectCaster, def,
+            effectCaster.position().add(direction.normalize().scale(1.5)),
+            direction.normalize());
+        }
+
         private static boolean castTrap(ServerPlayer owner, LivingEntity effectCaster,
                         SpellDefinition def, Vec3 center) {
-        Vec3 look = effectCaster.getLookAngle();
-        Vec3 direction = new Vec3(look.x, 0.0, look.z);
+        Vec3 offset = center.subtract(effectCaster.position());
+        Vec3 direction = new Vec3(offset.x, 0.0, offset.z);
         if (direction.lengthSqr() < 1.0E-6) direction = new Vec3(0.0, 0.0, 1.0);
         return SpellRuntimeController.startTrap(owner, effectCaster, def, center,
             direction.normalize());
         }
+
+    private static boolean castCompanionStandard(ServerPlayer owner, PokemonEntity companion,
+                                                 LivingEntity target, SpellDefinition def) {
+        if ("self".equals(def.targeting.type)) {
+            applyImpacts(owner, companion, companion, def);
+            return true;
+        }
+        if (!"area".equals(def.targeting.type)) {
+            applyImpacts(owner, companion, target, def);
+            return true;
+        }
+
+        double range = Math.max(0.0, def.targeting.range);
+        List<LivingEntity> targets = companion.level().getEntitiesOfClass(
+                LivingEntity.class, companion.getBoundingBox().inflate(range),
+                candidate -> companion.distanceTo(candidate) <= range
+                        && SpellTargetingRules.canHarm(owner, companion, candidate));
+        targets.sort((left, right) -> Double.compare(
+                left.distanceToSqr(companion), right.distanceToSqr(companion)));
+        if (def.targeting.max_targets > 0 && targets.size() > def.targeting.max_targets) {
+            targets = targets.subList(0, def.targeting.max_targets);
+        }
+
+        LivingEntity casterImpactContext = targets.isEmpty() ? companion : targets.get(0);
+        applyImpacts(owner, companion, casterImpactContext, def, true, true);
+        for (LivingEntity areaTarget : targets) {
+            applyImpacts(owner, companion, areaTarget, def, true, false);
+        }
+        return true;
+    }
 
         private static boolean castMeleeCombo(ServerPlayer owner, LivingEntity effectCaster,
                           LivingEntity target, SpellDefinition def) {
