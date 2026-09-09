@@ -370,12 +370,10 @@ public final class SpellImpactApplier {
                     if (movement == null) continue;
                     int duration = Math.max(2, impact.duration);
                     if (movement.getBaseValue() >= 0.12) {
-                        recipient.removeEffect(MobEffects.MOVEMENT_SPEED);
                         recipient.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,
                                 duration, Math.max(0, impact.amplifier), false,
                                 impact.show_particles, impact.show_icon));
                     } else {
-                        recipient.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
                         recipient.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED,
                                 duration, Math.max(0, impact.amplifier), false,
                                 impact.show_particles, impact.show_icon));

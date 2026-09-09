@@ -274,11 +274,18 @@ public class SpellRuntimeController {
                                       SpellDefinition definition) {
             if (!SpellTargetingRules.canHarm(owner, effectCaster, target)) return false;
             int delay = Math.max(1, definition.delivery.delay_ticks);
-            DELAYED_TELEPORT_STRIKES.removeIf(strike ->
-                strike.effectCasterId.equals(effectCaster.getUUID()));
+            boolean removeInvisibilityOnFinish =
+                !effectCaster.hasEffect(MobEffects.INVISIBILITY);
+            Iterator<DelayedTeleportStrike> iterator = DELAYED_TELEPORT_STRIKES.iterator();
+            while (iterator.hasNext()) {
+                DelayedTeleportStrike strike = iterator.next();
+                if (!strike.effectCasterId.equals(effectCaster.getUUID())) continue;
+                removeInvisibilityOnFinish |= strike.removeInvisibilityOnFinish;
+                iterator.remove();
+            }
             DELAYED_TELEPORT_STRIKES.add(new DelayedTeleportStrike(
                 effectCaster.level().dimension(), owner.getUUID(), effectCaster.getUUID(),
-                target.getUUID(), definition, delay));
+                target.getUUID(), definition, delay, removeInvisibilityOnFinish));
             effectCaster.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY,
                 delay, 0, false, false, true));
             if (effectCaster.level() instanceof ServerLevel level) {
@@ -1046,7 +1053,8 @@ public class SpellRuntimeController {
             }
             if (seed.remainingTicks % 20 == 0) {
                 float healthBefore = target.getHealth();
-                target.hurt(target.damageSources().magic(), (float) seed.amountPerTick);
+                target.hurt(owner.damageSources().playerAttack(owner),
+                        (float) seed.amountPerTick);
                 effectCaster.heal(Math.max(0.0F, healthBefore - target.getHealth()));
                 level.sendParticles(ParticleTypes.HAPPY_VILLAGER,
                         target.getX(), target.getY() + target.getBbHeight() * 0.6,
@@ -1114,16 +1122,26 @@ public class SpellRuntimeController {
                     || !(targetEntity instanceof LivingEntity target) || !target.isAlive()
                     || !SpellTargetingRules.canHarm(owner, effectCaster, target)) {
                 if (source instanceof LivingEntity living) {
-                    living.removeEffect(MobEffects.INVISIBILITY);
+                    clearTeleportStrikeInvisibility(living, strike);
                 }
                 iterator.remove();
                 continue;
             }
             if (--strike.remainingTicks > 0) continue;
-            effectCaster.removeEffect(MobEffects.INVISIBILITY);
+            clearTeleportStrikeInvisibility(effectCaster, strike);
             SpellExecutor.castRuntimeTeleportStrike(
                     owner, effectCaster, target, strike.definition);
             iterator.remove();
+        }
+    }
+
+    private static void clearTeleportStrikeInvisibility(
+            LivingEntity effectCaster, DelayedTeleportStrike strike) {
+        MobEffectInstance invisibility = effectCaster.getEffect(MobEffects.INVISIBILITY);
+        if (strike.removeInvisibilityOnFinish && invisibility != null
+                && invisibility.getAmplifier() == 0
+                && invisibility.getDuration() <= strike.remainingTicks + 1) {
+            effectCaster.removeEffect(MobEffects.INVISIBILITY);
         }
     }
 
@@ -1498,17 +1516,20 @@ public class SpellRuntimeController {
         private final UUID effectCasterId;
         private final UUID targetId;
         private final SpellDefinition definition;
+        private final boolean removeInvisibilityOnFinish;
         private int remainingTicks;
 
         private DelayedTeleportStrike(ResourceKey<Level> dimension, UUID ownerId,
                                       UUID effectCasterId, UUID targetId,
-                                      SpellDefinition definition, int remainingTicks) {
+                                      SpellDefinition definition, int remainingTicks,
+                                      boolean removeInvisibilityOnFinish) {
             this.dimension = dimension;
             this.ownerId = ownerId;
             this.effectCasterId = effectCasterId;
             this.targetId = targetId;
             this.definition = definition;
             this.remainingTicks = remainingTicks;
+            this.removeInvisibilityOnFinish = removeInvisibilityOnFinish;
         }
     }
 

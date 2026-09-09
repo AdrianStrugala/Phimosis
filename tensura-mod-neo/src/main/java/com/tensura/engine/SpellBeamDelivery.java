@@ -122,7 +122,7 @@ final class SpellBeamDelivery {
                 ? definition.targeting.max_targets : Integer.MAX_VALUE;
         for (int index = 0; index < Math.min(maxTargets, targets.size()); index++) {
             SpellImpactApplier.applyImpacts(
-                    owner, effectCaster, targets.get(index), definition);
+                    owner, effectCaster, targets.get(index), definition, true, false);
         }
         SpellImpactApplier.applyImpacts(
                 owner, effectCaster, effectCaster, definition, true, true, false);

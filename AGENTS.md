@@ -47,21 +47,20 @@ Stan zweryfikowany 2026-09-09:
 
 - plan docelowy: 110 unikalnych spelli w `docs/specs/spell-rework.md`;
 - implementacja done-done: 110 spelli, czyli caly kanoniczny roster;
-- drzewko Devour: 18 rays i 112 par spell/dispenser;
+- drzewko Devour: 18 rays i 110 par spell/dispenser;
 - customowe ikony: 110;
 - unikalne profile cast VFX: 110, w 8 rodzinach geometrii;
 - `energy_ball`, `explosion`, `iron_tail`, `sacred_fire`, `scald`, `sludge_bomb`,
   `thunderbolt`, `water_pulse` i `will_o_wisp` zostaly trwale usuniete z runtime,
   mapowan i Devour;
-- `iron_strike`, `frost_nova`, `nature_burst`, `poison_strike`, `seismic_slam`
-  i `thundershock` zostaly zastapione kanonicznymi ID z migracja zapisanych danych;
+- `iron_strike`, `frost_nova`, `nature_burst`, `poison_strike`, `seismic_slam`,
+  `thundershock`, `aerial_strike` i `psychic_blast` zostaly zastapione kanonicznymi
+  ID z migracja zapisanych danych;
 - wspolny delivery `arc_strike` jest wdrozony i respektuje kierunek, zasieg oraz
   przeszkody;
 - istnieje 110 z 110 kanonicznych definicji; `dragon_rush`, `phantom_force`,
   `rock_tomb`, `stealth_rock` i `trick_room` maja komplet mechanik runtime,
   mapowan, ikon, profili VFX i wpisow Devour;
-- dwie dodatkowe pary Devour to nadal legacy `aerial_strike` i `psychic_blast`,
-  dlatego 112 par Devour odpowiada 110 spellom kanonicznym i dwom dodatkom legacy.
 
 Checkpoint jest wskazowka startowa, nie zamiennikiem walidacji. Po zmianie rosteru,
 generatorow, ikon, mapowan, VFX albo Devour zaktualizuj go dopiero po przejsciu

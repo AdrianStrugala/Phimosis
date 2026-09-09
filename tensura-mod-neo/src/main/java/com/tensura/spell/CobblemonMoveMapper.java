@@ -185,25 +185,25 @@ public class CobblemonMoveMapper {
         n("trick_room",         "trick_room");
         n("zen_headbutt",       "confusion");
         n("extrasensory",       "psybeam");
-        n("stored_power",       "psychic_blast");
-        n("prismatic_laser",    "psychic_blast");
-        n("psycho_boost",       "psychic_blast");
-        n("luster_purge",       "psychic_blast");
+        n("stored_power",       "psychic");
+        n("prismatic_laser",    "psychic");
+        n("psycho_boost",       "psychic");
+        n("luster_purge",       "psychic");
         n("mist_ball",          "psybeam");
         n("heart_stamp",        "confusion");
         n("future_sight",       "future_sight");
         n("dream_eater",        "hex");
         n("psyshock",           "psychic");
-        n("psystrike",          "psychic_blast");
-        n("hyperspace_hole",    "psychic_blast");
-        n("photon_geyser",      "psychic_blast");
-        n("light_that_burns_the_sky", "psychic_blast");
-        n("expanding_force",    "psychic_blast");
+        n("psystrike",          "psychic");
+        n("hyperspace_hole",    "psychic");
+        n("photon_geyser",      "psychic");
+        n("light_that_burns_the_sky", "psychic");
+        n("expanding_force",    "psychic");
         n("twin_beam",          "psybeam");
         n("esper_wing",         "psybeam");
         n("lumina_crash",       "psychic");
         n("make_it_rain",       "psychic");
-        n("hyper_space_fury",   "psychic_blast");
+        n("hyper_space_fury",   "psychic");
 
         // ═══════════════════════════════════════════════════════════════════
         // GHOST / DARK
@@ -367,9 +367,9 @@ public class CobblemonMoveMapper {
         n("aerial_ace",         "aerial_ace");
         n("air_slash",          "aerial_ace");
         n("brave_bird",         "close_combat");
-        n("hurricane",          "aerial_strike");
+        n("hurricane",          "hurricane");
         n("drill_peck",         "aerial_ace");
-        n("sky_attack",         "aerial_strike");
+        n("sky_attack",         "hurricane");
         n("fly",                "gust");
         n("peck",               "gust");
         n("pluck",              "aerial_ace");
@@ -378,10 +378,10 @@ public class CobblemonMoveMapper {
         n("mirror_move",        "aerial_ace");
         n("aerial_ace",         "aerial_ace");
         n("oblivion_wing",      "aerial_ace");
-        n("supersonic_skystrike", "aerial_strike");
+        n("supersonic_skystrike", "hurricane");
         n("floaty_fall",        "aerial_ace");
         n("dual_wingbeat",      "aerial_ace");
-        n("bleakwind_storm",    "aerial_strike");
+        n("bleakwind_storm",    "hurricane");
         n("victory_dance",      "future_sight");
 
         // ═══════════════════════════════════════════════════════════════════
@@ -394,13 +394,13 @@ public class CobblemonMoveMapper {
         n("bug_buzz",           "bug_buzz");
         n("signal_beam",        "psybeam");
         n("leech_life",         "leech_seed");
-        n("silver_wind",        "aerial_strike");
+        n("silver_wind",        "hurricane");
         n("quiver_dance",       "future_sight");
         n("attack_order",       "aerial_ace");
         n("fell_stinger",       "poison_sting");
         n("lunge",              "aerial_ace");
         n("first_impression",   "razor_leaf");
-        n("struggle_bug",       "aerial_strike");
+        n("struggle_bug",       "hurricane");
         n("infestation",        "poison_sting");
         n("bug_bite",           "aerial_ace");
         n("skitter_smack",      "aerial_ace");
@@ -478,8 +478,8 @@ public class CobblemonMoveMapper {
         n("swift",              "aerial_ace");
         n("tri_attack",         "tri_attack");
         n("egg_bomb",           "fire_blast");
-        n("boomburst",          "aerial_strike");
-        n("hyper_voice",        "aerial_strike");
+        n("boomburst",          "hurricane");
+        n("hyper_voice",        "hyper_voice");
         n("echoed_voice",       "confusion");
         n("round",              "confusion");
         n("work_up",            "future_sight");
@@ -592,13 +592,13 @@ public class CobblemonMoveMapper {
             case "water"              -> power >= 100 ? "hydro_pump"     : "water_gun";
             case "ice"                -> power >= 100 ? "blizzard"       : "ice_beam";
             case "ghost", "dark"      -> power >= 100 ? "dark_pulse"     : "shadow_ball";
-            case "psychic"            -> power >= 100 ? "psychic_blast"  : "psychic";
+            case "psychic"            -> "psychic";
             case "dragon"             -> power >= 100 ? "draco_meteor"   : "dragon_pulse";
             case "poison"             -> "poison_sting";
             case "grass", "fairy"     -> power >= 80  ? "solar_beam"     : "razor_leaf";
             case "steel", "rock"      -> power >= 80  ? "stone_edge"     : "bullet_punch";
             case "ground", "fighting" -> power >= 100 ? "earthquake"     : "seismic_toss";
-            case "flying", "bug"      -> power >= 80  ? "aerial_strike"  : "aerial_ace";
+            case "flying", "bug"      -> power >= 80  ? "hurricane"      : "aerial_ace";
             default                   -> power >= 100 ? "hyper_beam"     : "tackle";
         };
 

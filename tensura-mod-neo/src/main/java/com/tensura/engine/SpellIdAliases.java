@@ -12,7 +12,9 @@ public final class SpellIdAliases {
         "nature_burst", "giga_drain",
         "poison_strike", "venoshock",
         "seismic_slam", "seismic_toss",
-        "thundershock", "thunder_shock"
+        "thundershock", "thunder_shock",
+        "aerial_strike", "hurricane",
+        "psychic_blast", "psychic"
     );
 
     private SpellIdAliases() {}

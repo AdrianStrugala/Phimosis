@@ -3190,57 +3190,6 @@
       }
     }
   },
-  "aerial_strike_owned": {
-    "title": "Aerial Strike",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "aerial_strike": {
-    "title": "Aerial Strike",
-    "description": "Launch a Wind projectile from long range. Knocks enemies back.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "minecraft:phantom_membrane"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s aerial_strike"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
   "confusion_owned": {
     "title": "Confusion",
     "icon": {
@@ -3535,57 +3484,6 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s trick_room"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
-  "psychic_blast_owned": {
-    "title": "Psychic Blast",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "psychic_blast": {
-    "title": "Psychic Blast",
-    "description": "Strike enemies with a burst of Psychic energy at medium range. Knocks enemies back and sometimes weakens enemies.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "minecraft:nether_star"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s psychic_blast"
         }
       }
     ],

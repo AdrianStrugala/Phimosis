@@ -687,17 +687,6 @@
     "y": 312,
     "definition": "hurricane"
   },
-  "aerial_strike_owned": {
-    "x": 0,
-    "y": 366,
-    "definition": "aerial_strike_owned",
-    "root": true
-  },
-  "aerial_strike": {
-    "x": 0,
-    "y": 366,
-    "definition": "aerial_strike"
-  },
   "confusion_owned": {
     "x": -33,
     "y": 90,
@@ -764,26 +753,15 @@
     "y": 344,
     "definition": "trick_room"
   },
-  "psychic_blast_owned": {
-    "x": -144,
-    "y": 395,
-    "definition": "psychic_blast_owned",
-    "root": true
-  },
-  "psychic_blast": {
-    "x": -144,
-    "y": 395,
-    "definition": "psychic_blast"
-  },
   "future_sight_owned": {
-    "x": -162,
-    "y": 445,
+    "x": -144,
+    "y": 395,
     "definition": "future_sight_owned",
     "root": true
   },
   "future_sight": {
-    "x": -162,
-    "y": 445,
+    "x": -144,
+    "y": 395,
     "definition": "future_sight"
   },
   "string_shot_owned": {

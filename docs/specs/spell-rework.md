@@ -482,12 +482,13 @@ definicji, mapowan Cobblemon, wpisow Devour ani trybu `Legacy Skill`.
 | `seismic_slam` | `seismic_toss`; Seismic Slam nie jest kanonicznym ruchem. |
 | `thundershock` | `thunder_shock`; poprawny kanoniczny zapis to Thunder Shock. |
 
-Migrator odczytu itemow i danych Predator obsluguje obecnie szesc wykonanych zmian:
+Migrator odczytu itemow i danych Predator obsluguje obecnie osiem wykonanych zmian:
 `iron_strike -> bullet_punch`, `frost_nova -> icy_wind`,
 `nature_burst -> giga_drain`, `poison_strike -> venoshock`,
 `seismic_slam -> seismic_toss` oraz `thundershock -> thunder_shock`.
-`aerial_strike` i `psychic_blast` nadal istnieja jako legacy i wymagaja osobnej
-migracji. Zasada ta nie obejmuje ID wymienionych w sekcji `Usuniete z projektu`.
+`aerial_strike -> hurricane` oraz `psychic_blast -> psychic` zostaly zmigrowane,
+a stare definicje, mapowania, ikony i wpisy Devour usuniete. Zasada ta nie obejmuje
+ID wymienionych w sekcji `Usuniete z projektu`.
 
 ## Aktualny zakres implementacji - 2026-09-07
 
@@ -498,8 +499,8 @@ migracji. Zasada ta nie obejmuje ID wymienionych w sekcji `Usuniete z projektu`.
 	oslabienie special damage, penetracja pancerza oraz grab/throw sa wdrozone;
 - pozostaly `dragon_rush`, `phantom_force`, `rock_tomb`, `stealth_rock` i
 	`trick_room`;
-- `aerial_strike` i `psychic_blast` sa dodatkowymi legacy definicjami poza rosterem
-	110 i nie sa liczone jako kanoniczne pokrycie.
+- w tym historycznym snapshotcie `aerial_strike` i `psychic_blast` byly jeszcze
+	dodatkowymi legacy definicjami; zostaly zmigrowane i usuniete 2026-09-09.
 
 ## 9. Kolejnosc implementacji
 

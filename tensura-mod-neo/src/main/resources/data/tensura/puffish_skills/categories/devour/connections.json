@@ -496,14 +496,6 @@
     "hurricane"
   ],
   [
-    "hurricane_owned",
-    "aerial_strike_owned"
-  ],
-  [
-    "aerial_strike_owned",
-    "aerial_strike"
-  ],
-  [
     "devour_core",
     "confusion_owned"
   ],
@@ -553,14 +545,6 @@
   ],
   [
     "trick_room_owned",
-    "psychic_blast_owned"
-  ],
-  [
-    "psychic_blast_owned",
-    "psychic_blast"
-  ],
-  [
-    "psychic_blast_owned",
     "future_sight_owned"
   ],
   [

@@ -74,7 +74,7 @@ devour_generator = File.read(DEVOUR_GENERATOR_FILE)
 ray_block = devour_generator[/RAYS = \{(.*?)\n\}\.freeze/m, 1]
 fail_validation("Devour RAYS not found") unless ray_block
 ray_spells = ray_block.scan(/\w+: %w\[([^\]]+)\]/).flatten.flat_map(&:split)
-canonical_spells = ray_spells - %w[aerial_strike psychic_blast]
+canonical_spells = ray_spells
 fail_validation("expected 110 canonical spells, got #{canonical_spells.size}") unless
   canonical_spells.size == 110 && canonical_spells.uniq.size == 110
 fail_validation("done-done roster differs from canonical roster") unless
@@ -314,13 +314,15 @@ fail_validation("Overheat lacks its broad burst or self-exhaustion") unless
     impacts.call("overheat").any? do |impact|
       impact["recipient"] == "caster" && impact["effect"] == "tensura:exhausted" &&
         impact["duration"].to_i >= 120
-    end && executor.match?(/castArcStrike.*?effectCaster, definition, true, true, false/m)
+    end && executor.match?(/castArcStrike.*?targets\.get\(index\), definition, true, false.*?effectCaster, definition, true, true, false/m)
 
 fail_validation("Leech Seed lacks periodic health transfer") unless
   impacts.call("leech_seed").any? do |impact|
     impact["type"] == "leech_seed" && impact["duration"].to_i == 160 &&
       impact["amount"].to_f == 2.0
-  end && runtime.include?("tickLeechSeeds") && runtime.include?("healthBefore - target.getHealth()")
+  end && runtime.include?("tickLeechSeeds") &&
+    runtime.include?("owner.damageSources().playerAttack(owner)") &&
+    runtime.include?("healthBefore - target.getHealth()")
 
 fail_validation("Powder Snow is not a chilling cone") unless
   spell_definition.call("powder_snow").dig("delivery", "type") == "arc_strike" &&
@@ -376,6 +378,8 @@ fail_validation("Phantom Force lacks delayed invisibility and teleport strike") 
     phantom_force.dig("delivery", "delay_ticks").to_i >= 20 &&
     runtime.include?("startDelayedTeleportStrike") &&
     runtime.include?("MobEffects.INVISIBILITY") &&
+      runtime.include?("removeInvisibilityOnFinish") &&
+      runtime.include?("clearTeleportStrikeInvisibility") &&
     runtime.include?("castRuntimeTeleportStrike")
 
 rock_tomb = spell_definition.call("rock_tomb")
@@ -399,7 +403,9 @@ fail_validation("Trick Room lacks its speed-inverting zone") unless
   trick_room.dig("delivery", "type") == "zone" &&
     trick_room.dig("delivery", "duration_ticks").to_i == 160 &&
     impacts.call("trick_room").any? { |impact| impact["type"] == "invert_speed" } &&
-    runtime.include?("tickZones") && executor.include?("movement.getBaseValue() >= 0.12")
+      runtime.include?("tickZones") && executor.include?("movement.getBaseValue() >= 0.12") &&
+      !executor.include?("recipient.removeEffect(MobEffects.MOVEMENT_SPEED)") &&
+      !executor.include?("recipient.removeEffect(MobEffects.MOVEMENT_SLOWDOWN)")
 
 %w[fire_punch thunder_punch ice_punch dragon_claw shadow_claw psycho_cut].each do |spell|
   fail_validation("#{spell} is not a targetless arc strike") unless
@@ -448,13 +454,25 @@ fail_validation("Metal Claw grants Guard before both hits connect") unless
 legacy_replacements = {
   "iron_strike" => "bullet_punch", "frost_nova" => "icy_wind",
   "nature_burst" => "giga_drain", "poison_strike" => "venoshock",
-  "seismic_slam" => "seismic_toss", "thundershock" => "thunder_shock"
+  "seismic_slam" => "seismic_toss", "thundershock" => "thunder_shock",
+  "aerial_strike" => "hurricane", "psychic_blast" => "psychic"
 }
 legacy_replacements.each do |legacy, replacement|
   fail_validation("legacy definition still exists: #{legacy}") if
     File.exist?(File.join(SPELL_DIR, "#{legacy}.json"))
   fail_validation("missing saved-data migration #{legacy} -> #{replacement}") unless
     aliases.include?(%Q{"#{legacy}", "#{replacement}"})
+  fail_validation("legacy spell is still a Cobblemon mapping target: #{legacy}") if
+    mapper.match?(/n\("[^"]+",\s*"#{legacy}"\);/)
+  fail_validation("legacy spell is still present in Devour: #{legacy}") if
+    definitions.key?(legacy) || definitions.key?("#{legacy}_owned") ||
+      skills.key?(legacy) || skills.key?("#{legacy}_owned")
+  legacy_assets = [
+    File.join(MODEL_DIR, "spell_#{legacy}.json"),
+    File.join(MODEL_DIR, "spell_icon_#{legacy}.json"),
+    File.join(TEXTURE_DIR, "#{legacy}.png")
+  ]
+  fail_validation("legacy icon assets still exist: #{legacy}") if legacy_assets.any?(File.method(:exist?))
 end
 
 fail_validation("lingering clouds are not connected to the runtime controller") unless
