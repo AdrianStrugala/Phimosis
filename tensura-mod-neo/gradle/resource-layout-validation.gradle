@@ -1,0 +1,120 @@
+// Waliduje uklad zasobow moda: nazwy katalogow datapacka wg 1.21, istnienie modeli
+// i tekstur, na ktore wskazuja overrides, oraz itemy w wynikach receptur.
+//
+// Wszystkie te bledy sa CICHE. Plik receptury w katalogu 'recipes' (schemat 1.20)
+// nie wywala loadera - po prostu nigdy sie nie laduje, wiec item jest niecraftowalny
+// i nikt sie o tym nie dowiaduje az do proby zrobienia go w grze. Tak przelezal
+// spell_focus caly commit, a recall_station duzo dluzej.
+
+import groovy.json.JsonSlurper
+
+// 1.21 przemianowalo katalogi datapacka na nazwy rejestrow w liczbie pojedynczej.
+def LEGACY_DIRS = [
+        'advancements'   : 'advancement',
+        'dimensions'     : 'dimension',
+        'dimension_types': 'dimension_type',
+        'functions'      : 'function',
+        'item_modifiers' : 'item_modifier',
+        'loot_tables'    : 'loot_table',
+        'predicates'     : 'predicate',
+        'recipes'        : 'recipe',
+        'structures'     : 'structure',
+]
+def LEGACY_TAG_DIRS = [
+        'blocks'      : 'block',
+        'entity_types': 'entity_type',
+        'fluids'      : 'fluid',
+        'functions'   : 'function',
+        'items'       : 'item',
+]
+
+tasks.register('validateResourceLayout') {
+    group = 'verification'
+    description = 'Sprawdza katalogi datapacka 1.21, modele/tekstury z overrides i wyniki receptur'
+
+    def resDir = file('src/main/resources')
+    def javaDir = file('src/main/java')
+    outputs.upToDateWhen { false }
+
+    doLast {
+        def json = new JsonSlurper()
+        def errors = []
+
+        // ---- katalogi datapacka ----
+        new File(resDir, 'data').listFiles()?.findAll { it.directory }?.each { ns ->
+            ns.listFiles()?.findAll { it.directory }?.each { dir ->
+                def modern = LEGACY_DIRS[dir.name]
+                if (modern != null) {
+                    errors << ('data/' + ns.name + '/' + dir.name + ': schemat 1.20, w 1.21 to "'
+                            + modern + '" - loader nie zaglada do tego katalogu, pliki sa ignorowane')
+                }
+            }
+            new File(ns, 'tags').listFiles()?.findAll { it.directory }?.each { dir ->
+                def modern = LEGACY_TAG_DIRS[dir.name]
+                if (modern != null) {
+                    errors << ('data/' + ns.name + '/tags/' + dir.name + ': schemat 1.20, w 1.21 to "'
+                            + modern + '"')
+                }
+            }
+        }
+
+        // ---- itemy faktycznie zarejestrowane ----
+        def registrySrc = new File(javaDir, 'com/tensura/registry/TensuraItemRegistry.java').text
+        def registered = [] as Set
+        // Literaly ITEMS.register("nazwa", ...); ikony ida petla i lapiemy je nizej.
+        def lit = registrySrc =~ /ITEMS\.register\("([a-z0-9_]+)"\s*,/
+        while (lit.find()) { registered << lit.group(1) }
+
+        def spellItemSrc = new File(javaDir, 'com/tensura/item/SpellItem.java').text
+        def orderMatch = spellItemSrc =~ /CUSTOM_ICON_ORDER\s*=\s*(?:java\.util\.)?List\.of\(([\s\S]*?)\);/
+        if (orderMatch.find()) {
+            def names = orderMatch.group(1) =~ /"([a-z0-9_]+)"/
+            while (names.find()) { registered << ('spell_icon_' + names.group(1)) }
+        } else {
+            errors << 'Nie znaleziono CUSTOM_ICON_ORDER w SpellItem.java'
+        }
+
+        // ---- receptury ----
+        def recipeDir = new File(resDir, 'data/tensura/recipe')
+        recipeDir.listFiles()?.findAll { it.name.endsWith('.json') }?.each { f ->
+            def item = json.parse(f)?.result?.item
+            if (item instanceof String && item.startsWith('tensura:')
+                    && !registered.contains(item.split(':')[1])) {
+                errors << ('recipe/' + f.name + ': wynik ' + item + ' nie jest zarejestrowanym itemem')
+            }
+        }
+
+        // ---- modele i tekstury, na ktore wskazuja overrides ----
+        def modelDir = new File(resDir, 'assets/tensura/models/item')
+        def modelExists = { String id ->
+            new File(modelDir, id.substring('tensura:item/'.length()) + '.json').isFile()
+        }
+        def textureExists = { String id ->
+            new File(resDir, 'assets/tensura/textures/'
+                    + id.substring('tensura:'.length()) + '.png').isFile()
+        }
+
+        modelDir.listFiles()?.findAll { it.name.endsWith('.json') }?.each { f ->
+            def m = json.parse(f)
+            m.textures?.each { layer, tex ->
+                if (tex instanceof String && tex.startsWith('tensura:') && !textureExists(tex)) {
+                    errors << (f.name + ': ' + layer + ' wskazuje na brakujaca teksture ' + tex)
+                }
+            }
+            m.overrides?.eachWithIndex { o, i ->
+                def target = o.model
+                if (target instanceof String && target.startsWith('tensura:item/') && !modelExists(target)) {
+                    errors << (f.name + ': override[' + i + '] wskazuje na brakujacy model ' + target)
+                }
+            }
+        }
+
+        if (errors) {
+            throw new GradleException('Walidacja ukladu zasobow nie przeszla (' + errors.size() + '):\n  - '
+                    + errors.unique().join('\n  - '))
+        }
+        logger.lifecycle('Uklad zasobow: katalogi 1.21, modele, tekstury i receptury OK')
+    }
+}
+
+tasks.named('check') { dependsOn 'validateResourceLayout' }

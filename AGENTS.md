@@ -113,6 +113,7 @@ Z katalogu `tensura-mod-neo/`:
 ```bash
 ruby scripts/validate_done_spells.rb
 ./gradlew validateSkillTrees
+./gradlew validateResourceLayout
 ./gradlew build
 ```
 
@@ -121,6 +122,11 @@ ruby scripts/validate_done_spells.rb
 - `scripts/validate_done_spells.rb` jest podstawowym zrodlem liczby done-done, ikon,
   profili VFX i par Devour.
 - `validateSkillTrees` sprawdza kontrakt Puffish Skills.
+- `validateResourceLayout` sprawdza uklad zasobow: nazwy katalogow datapacka wg 1.21
+  (`recipe`, nie `recipes`), istnienie modeli i tekstur wskazywanych przez `overrides`
+  oraz to, czy wynik receptury jest zarejestrowanym itemem. Wszystkie te bledy sa
+  ciche - plik w zlym katalogu nie wywala loadera, po prostu nigdy sie nie laduje.
+- Oba taski `validate*` sa wpiete w `check`, wiec `./gradlew build` je uruchamia.
 - Pelny build moze byc zablokowany przez brak lokalnych zaleznosci albo dostep do
   serwerow Mojang. Raportuj taki blocker; nie przedstawiaj go jako bledu kodu.
 

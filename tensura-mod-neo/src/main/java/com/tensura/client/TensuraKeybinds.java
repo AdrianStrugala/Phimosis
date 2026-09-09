@@ -55,8 +55,8 @@ public final class TensuraKeybinds {
             if (!OPEN_RADIAL.isDown()) return;
             if (SpellCasting.findFocus(mc.player) == null) return;
 
-            // The radial polls this key code to know when the player lets go.
-            mc.setScreen(new SpellRadialScreen(null, OPEN_RADIAL.getKey().getValue()));
+            // The radial polls this binding to know when the player lets go.
+            mc.setScreen(new SpellRadialScreen(null, OPEN_RADIAL.getKey(), null));
         }
 
         /** Shift+scroll walks the slots and swallows the hotbar scroll while it does. */

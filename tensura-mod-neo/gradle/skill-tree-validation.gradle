@@ -24,9 +24,15 @@ tasks.register('validateSkillTrees') {
         def spells = [] as Set
         spellFiles.each { f -> if (f.name.endsWith('.json')) spells << f.name[0..-6] }
 
+        // Czytane z rejestru, nie z listy w tym pliku: recznie utrzymywana lista przezyla
+        // usuniecie predator_codex i nie wiedziala o spell_focus.
+        def registered = [] as Set
+        def registrySrc = new File(javaDir, 'com/tensura/registry/TensuraItemRegistry.java').text
+        def lit = registrySrc =~ /ITEMS\.register\("([a-z0-9_]+)"\s*,/
+        while (lit.find()) { registered << lit.group(1) }
+
         // Ikony rejestrowane sa petla po SpellItem.CUSTOM_ICON_ORDER, nie literalami
         // ITEMS.register - grep po literalach dawal falszywy alarm.
-        def registered = ['spell_item', 'predator_codex', 'recall_station'] as Set
         def spellItemSrc = new File(javaDir, 'com/tensura/item/SpellItem.java').text
         def orderMatch = spellItemSrc =~ /CUSTOM_ICON_ORDER\s*=\s*(?:java\.util\.)?List\.of\(([\s\S]*?)\);/
         if (orderMatch.find()) {

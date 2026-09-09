@@ -16,6 +16,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
 
@@ -47,18 +48,40 @@ public class SpellRadialScreen extends Screen {
     /** Non-null when the screen was opened to place this spell into a slot. */
     @Nullable
     private final ResourceLocation pendingSpell;
-    /** Key that opened the screen in select mode; -1 in assign mode. */
-    private final int holdKey;
+    /**
+     * Input that opened the screen in select mode, polled to know when the player lets go.
+     * Null in assign mode, and also when the binding cannot be polled — see
+     * {@link #pollable(InputConstants.Key)}. The screen then closes on ESC or on a click.
+     */
+    @Nullable
+    private final InputConstants.Key holdKey;
+    /** Screen to return to on close — the Devour tree, when we were opened from it. */
+    @Nullable
+    private final Screen parent;
 
     private List<ResourceLocation> spells = List.of();
     private int activeIndex;
     private int hovered = -1;
     private int dragFrom = -1;
 
-    public SpellRadialScreen(@Nullable ResourceLocation pendingSpell, int holdKey) {
+    public SpellRadialScreen(@Nullable ResourceLocation pendingSpell,
+                             @Nullable InputConstants.Key holdKey,
+                             @Nullable Screen parent) {
         super(Component.literal("Katalizator"));
         this.pendingSpell = pendingSpell;
-        this.holdKey = holdKey;
+        this.holdKey = pollable(holdKey);
+        this.parent = parent;
+    }
+
+    /**
+     * GLFW can be asked about a key or a mouse button, but there is no way to ask about a raw
+     * scancode. A binding we cannot poll gets dropped rather than reported as released, which
+     * would slam the screen shut on the first tick.
+     */
+    @Nullable
+    private static InputConstants.Key pollable(@Nullable InputConstants.Key key) {
+        if (key == null || key.getValue() < 0) return null;
+        return key.getType() == InputConstants.Type.SCANCODE ? null : key;
     }
 
     @Override
@@ -81,6 +104,19 @@ public class SpellRadialScreen extends Screen {
     @Override
     public boolean isPauseScreen() {
         return false;
+    }
+
+    /**
+     * Back to the Devour tree when that is where we came from. Attuning five spells in a row
+     * otherwise means reopening the tree five times.
+     */
+    @Override
+    public void onClose() {
+        if (minecraft != null && parent != null) {
+            minecraft.setScreen(parent);
+            return;
+        }
+        super.onClose();
     }
 
     // ── Rendering ────────────────────────────────────────────────────────────
@@ -184,6 +220,7 @@ public class SpellRadialScreen extends Screen {
 
     /** Slot under the cursor, chosen by angle so the mouse never has to land on the icon. */
     private int slotAt(int dx, int dy) {
+        if (spells.isEmpty()) return -1;
         if (dx * dx + dy * dy < CENTER_DEAD_ZONE * CENTER_DEAD_ZONE) return -1;
 
         double angle = Math.atan2(dy, dx) + Math.PI / 2;
@@ -198,13 +235,20 @@ public class SpellRadialScreen extends Screen {
 
     @Override
     public void tick() {
-        // Select mode commits when the key that opened the menu comes back up. Polling the
-        // window beats keyReleased here, because the key went down before the screen existed.
-        if (holdKey == -1 || minecraft == null) return;
-        long window = minecraft.getWindow().getWindow();
-        if (!InputConstants.isKeyDown(window, holdKey)) {
+        // Select mode commits when the input that opened the menu comes back up. Polling GLFW
+        // beats keyReleased here: the key went down before the screen existed, and opening a
+        // screen makes vanilla call KeyMapping.releaseAll().
+        if (holdKey == null || minecraft == null) return;
+        if (!isHoldKeyDown()) {
             commitSelection();
         }
+    }
+
+    private boolean isHoldKeyDown() {
+        long window = minecraft.getWindow().getWindow();
+        return holdKey.getType() == InputConstants.Type.MOUSE
+                ? GLFW.glfwGetMouseButton(window, holdKey.getValue()) == GLFW.GLFW_PRESS
+                : InputConstants.isKeyDown(window, holdKey.getValue());
     }
 
     private void commitSelection() {

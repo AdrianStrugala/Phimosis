@@ -69,11 +69,16 @@ public class SpellFocusItem extends Item {
         ListTag list = data == null ? new ListTag() : data.copyTag().getList(NBT_SPELLS, Tag.TAG_STRING);
 
         for (int i = 0; i < slots; i++) {
-            String raw = i < list.size() ? list.getString(i) : EMPTY_SLOT;
-            ResourceLocation id = raw.isEmpty() ? null : ResourceLocation.tryParse(raw);
-            result.add(id == null ? null : SpellIdAliases.canonicalize(id));
+            result.add(parseSlot(i < list.size() ? list.getString(i) : EMPTY_SLOT));
         }
         return result;
+    }
+
+    @Nullable
+    private static ResourceLocation parseSlot(String raw) {
+        if (raw.isEmpty()) return null;
+        ResourceLocation id = ResourceLocation.tryParse(raw);
+        return id == null ? null : SpellIdAliases.canonicalize(id);
     }
 
     public static void setSpell(ItemStack stack, int slot, @Nullable ResourceLocation spellId) {
@@ -92,9 +97,10 @@ public class SpellFocusItem extends Item {
 
     public static int getActiveIndex(ItemStack stack) {
         CustomData data = stack.get(DataComponents.CUSTOM_DATA);
-        if (data == null) return 0;
-        int index = data.copyTag().getInt(NBT_ACTIVE);
-        int slots = maxSlotsOf(stack);
+        return data == null ? 0 : clampIndex(data.copyTag().getInt(NBT_ACTIVE), maxSlotsOf(stack));
+    }
+
+    private static int clampIndex(int index, int slots) {
         return index < 0 || index >= slots ? 0 : index;
     }
 
@@ -103,11 +109,22 @@ public class SpellFocusItem extends Item {
         mutateTag(stack, tag -> tag.putInt(NBT_ACTIVE, slot));
     }
 
+    /**
+     * The active spell, read without materialising the whole slot list.
+     *
+     * This runs from two {@code ItemProperties} functions, so it is called for every rendered
+     * catalyst on every frame — building a list of five parsed ResourceLocations to throw four
+     * of them away was pure garbage in the render loop.
+     */
     @Nullable
     public static ResourceLocation getActiveSpell(ItemStack stack) {
-        List<ResourceLocation> spells = getSpells(stack);
-        int index = getActiveIndex(stack);
-        return index < spells.size() ? spells.get(index) : null;
+        CustomData data = stack.get(DataComponents.CUSTOM_DATA);
+        if (data == null) return null;
+
+        CompoundTag tag = data.copyTag();
+        ListTag list = tag.getList(NBT_SPELLS, Tag.TAG_STRING);
+        int index = clampIndex(tag.getInt(NBT_ACTIVE), maxSlotsOf(stack));
+        return index < list.size() ? parseSlot(list.getString(index)) : null;
     }
 
     /** First free slot, or -1 when the focus is full. */
@@ -115,6 +132,15 @@ public class SpellFocusItem extends Item {
         List<ResourceLocation> spells = getSpells(stack);
         for (int i = 0; i < spells.size(); i++) {
             if (spells.get(i) == null) return i;
+        }
+        return -1;
+    }
+
+    /** First slot holding a spell, or -1 when the focus is empty. */
+    public static int firstAttunedSlot(ItemStack stack) {
+        List<ResourceLocation> spells = getSpells(stack);
+        for (int i = 0; i < spells.size(); i++) {
+            if (spells.get(i) != null) return i;
         }
         return -1;
     }
@@ -128,11 +154,23 @@ public class SpellFocusItem extends Item {
 
     // ── Model properties ─────────────────────────────────────────────────────
 
+    /**
+     * No school model applies — an empty catalyst, or a spell whose school has no model. The
+     * item then falls through to its own texture.
+     *
+     * It has to be negative. Model overrides match on {@code value >= predicate} and the last
+     * match wins, so 0 would pick the physical model and anything past the end of the school
+     * list would pick the last one (steel).
+     */
+    private static final float NO_SCHOOL_MODEL = -1f;
+
     public static float getSchoolIndex(ItemStack stack) {
         ResourceLocation id = getActiveSpell(stack);
-        if (id == null) return 0f;
+        if (id == null) return NO_SCHOOL_MODEL;
         SpellDefinition def = definitionOf(id);
-        return def == null ? 0f : SpellItem.schoolOrder(def.school);
+        if (def == null) return NO_SCHOOL_MODEL;
+        int order = SpellItem.schoolOrder(def.school);
+        return order >= SpellItem.schoolCount() ? NO_SCHOOL_MODEL : order;
     }
 
     public static float getIconIndex(ItemStack stack) {
@@ -184,6 +222,7 @@ public class SpellFocusItem extends Item {
             }
         }
         tooltip.add(Component.literal("§8Przytrzymaj R — wybór zaklęcia"));
+        tooltip.add(Component.literal("§8Shift + scroll — zmiana slotu w biegu"));
     }
 
     // ── Cooldown bar, mirroring SpellItem ────────────────────────────────────

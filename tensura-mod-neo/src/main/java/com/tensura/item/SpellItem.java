@@ -98,6 +98,11 @@ public class SpellItem extends Item {
         return idx < 0 ? SCHOOL_ORDER.size() : idx;
     }
 
+    /** Number of known schools — anything {@code >=} this came back from {@link #schoolOrder} unknown. */
+    public static int schoolCount() {
+        return SCHOOL_ORDER.size();
+    }
+
     @Nullable
     public static ResourceLocation getSpellId(ItemStack stack) {
         CustomData data = stack.get(DataComponents.CUSTOM_DATA);

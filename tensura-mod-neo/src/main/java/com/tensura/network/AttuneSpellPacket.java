@@ -59,6 +59,12 @@ public record AttuneSpellPacket(int slot, Optional<ResourceLocation> spellId)
 
             if (pkt.spellId().isEmpty()) {
                 SpellFocusItem.setSpell(focus, pkt.slot(), null);
+                // Leaving the selection on the slot we just emptied would make right-click do
+                // nothing at all, silently — move it to whatever is still attuned.
+                if (SpellFocusItem.getActiveIndex(focus) == pkt.slot()) {
+                    int fallback = SpellFocusItem.firstAttunedSlot(focus);
+                    if (fallback >= 0) SpellFocusItem.setActiveIndex(focus, fallback);
+                }
                 return;
             }
 

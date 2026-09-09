@@ -16,6 +16,8 @@ public class ClientPacketHandlers {
     public static void openRadialForAssign(ResourceLocation spellId) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) return;
-        mc.setScreen(new SpellRadialScreen(spellId, -1));
+        // The current screen is the Devour tree the player just clicked in; the radial hands
+        // control back to it once the spell is placed.
+        mc.setScreen(new SpellRadialScreen(spellId, null, mc.screen));
     }
 }

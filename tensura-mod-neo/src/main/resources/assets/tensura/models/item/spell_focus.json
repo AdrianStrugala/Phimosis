@@ -1,9 +1,15 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "minecraft:item/slime_ball"
+    "layer0": "tensura:item/spell_focus"
   },
   "overrides": [
+    {
+      "predicate": {
+        "tensura:school": 0
+      },
+      "model": "tensura:item/spell_physical"
+    },
     {
       "predicate": {
         "tensura:school": 1

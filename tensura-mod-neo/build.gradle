@@ -121,3 +121,4 @@ tasks.named('build').configure {
 
 // Walidacja drzewek Puffish - patrz docs/contracts/devour-tree.md
 apply from: 'gradle/skill-tree-validation.gradle'
+apply from: 'gradle/resource-layout-validation.gradle'

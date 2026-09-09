@@ -9,7 +9,7 @@
 
 ## 0. Stan wdrozenia
 
-Zbudowane i wgrane na TEST oraz klienta jako `tensura-2.0.38.jar` (2026-09-08).
+Zbudowane i wgrane na TEST oraz klienta jako `tensura-2.0.39.jar` (2026-09-09).
 **Produkcja nietknięta** — 2k37 nadal ma 2.0.18.
 
 | Krok | Stan |
@@ -20,15 +20,36 @@ Zbudowane i wgrane na TEST oraz klienta jako `tensura-2.0.38.jar` (2026-09-08).
 | 3. `SpellRadialScreen` na `R` | Zrobione |
 | 4. `devourRecover` → `OpenRadialPacket` + `AttuneSpellPacket` | Zrobione |
 | 5. Wycięcie Kodeksu | Zrobione |
-| 6. Offhand | `findFocus` zrobione; przełączniki Epic Knights **nie ruszone** (config produkcji) |
+| 6. Offhand | `findFocus` zrobione; przełączniki Epic Knights włączone na TEST i kliencie, **produkcja nie ruszona** |
 
-**Nie zweryfikowane w grze.** Kompiluje się, `validateSkillTrees` przechodzi, klasy
-i assety są w jarze — ale nikt tego jeszcze nie uruchomił. Kryteria akceptacji
-w sekcji 12 są nadal do odhaczenia.
+**Nie zweryfikowane w grze.** Kompiluje się, walidacje przechodzą, klasy i assety
+są w jarze — ale nikt tego jeszcze nie kliknął. Kryteria akceptacji w sekcji 12
+są nadal do odhaczenia.
 
 Decyzje użytkownika, które zmieniły ten spec względem pierwotnej wersji:
 jeden katalizator zamiast trzech tierów (5 slotów, receptura ze slime ballem),
 pochłonięcie **nadal dropi** `SpellItem`, wycięcie Kodeksu wchodzi od razu.
+
+### Poprawki z review 2026-09-09 (2.0.39)
+
+- **Receptura była w martwym katalogu.** 1.21 przemianowało katalogi datapacka na
+  nazwy rejestrów w liczbie pojedynczej, a plik leżał w `data/tensura/recipes/`.
+  Loader tam nie zagląda i nie zgłasza błędu — katalizator był niecraftowalny,
+  tak samo `recall_station` (dużo dłużej). Przeniesione do `recipe/`.
+- **Nowy `validateResourceLayout`** (`gradle/resource-layout-validation.gradle`,
+  wpięty w `check`) łapie stare nazwy katalogów, brakujące modele i tekstury
+  z `overrides` oraz wynik receptury wskazujący na niezarejestrowany item.
+  Lista zarejestrowanych itemów czytana jest z `TensuraItemRegistry`, a nie
+  przepisywana ręcznie — poprzednia przeżyła usunięcie `predator_codex`.
+- **Katalizator ma własną teksturę** (`textures/item/spell_focus.png`) zamiast
+  `minecraft:item/slime_ball`. Przy okazji szkoła `physical` dostała jawny model
+  `spell_physical` — w `spell_item.json` była nią `layer0`, więc na katalizatorze
+  `tackle` i `hyper_beam` renderowały się jako slime ball.
+- `getActiveSpell` czyta tylko aktywny slot; leciało to z dwóch `ItemProperties`,
+  czyli co klatkę na każdy wyrenderowany katalizator.
+- Radial wraca do drzewka Devour zamiast do świata; polling klawisza obsługuje
+  też przycisk myszy; wyczyszczenie aktywnego slotu przestawia wybór na pierwszy
+  niepusty; tooltip mówi o Shift+scroll.
 
 ---
 
@@ -199,6 +220,10 @@ Oba domyślnie `false`; komentarz w configu sam zaleca ich włączenie przy moda
 bojowych. Cena: blokowanie mieczem znika dla wszystkich, a katalizator w offhandzie
 i tak wyklucza tarczę. To świadomy trade-off buildu — mag-rycerz oddaje obronę za magię.
 
+**Stan (2026-09-09):** włączone na TEST i na kliencie. Na produkcji nadal `false` —
+to zmiana odczuwalna dla graczy, którzy dziś blokują mieczem, więc czeka na decyzję
+i na restart 2k37.
+
 **Po stronie kodu:** `SpellCasting.findFocus(player)` — najpierw główna ręka, potem
 offhand. Potrzebne, żeby `R` i radial znajdowały katalizator niezależnie od slotu.
 
@@ -294,14 +319,17 @@ niezmienniki: `../contracts/devour-tree.md`, który jest dla tego drzewka
 
 | Plik | Rola |
 |---|---|
-| `item/SpellFocusItem.java` | Item, trzy warianty, NBT z sekcji 4 |
+| `item/SpellFocusItem.java` | Item, jeden wariant o 5 slotach, NBT z sekcji 4 |
 | `item/SpellCasting.java` | Logika use/channel wyciągnięta z `SpellItem`, wspólna; plus `findFocus(player)` |
 | `client/SpellRadialScreen.java` | Jedyne UI katalizatora |
 | `client/TensuraKeybinds.java` | `RegisterKeyMappingsEvent`, `R` |
 | `network/OpenRadialPacket.java` | S→C |
 | `network/SetActiveSpellPacket.java` | C→S |
 | `network/AttuneSpellPacket.java` | C→S |
-| `data/tensura/recipes/spell_focus.json` | Receptura, wzorzec: `recall_station.json` |
+| `data/tensura/recipe/spell_focus.json` | Receptura — katalog `recipe`, nie `recipes` (1.21) |
+| `assets/…/textures/item/spell_focus.png` | Ikona pustego katalizatora |
+| `assets/…/models/item/spell_physical.json` | Model szkoły physical, wcześniej niejawnie `layer0` |
+| `gradle/resource-layout-validation.gradle` | `validateResourceLayout`, wpięty w `check` |
 
 ### Zmienione
 
@@ -309,16 +337,15 @@ niezmienniki: `../contracts/devour-tree.md`, który jest dla tego drzewka
 |---|---|
 | `TensuraCommands.devourRecover` | `addItem` → `OpenRadialPacket`; walidacja i re-lock bez zmian |
 | `SpellItem` | Logika przeniesiona do `SpellCasting`; item zostaje castowalny dla starych egzemplarzy |
-| `TensuraItemRegistry` | +3 katalizatory, −`PREDATOR_CODEX` |
-| `config/epicknights/general.json5` | `disableTwoHanded`, `disableWeaponBlocking` → `true` |
+| `TensuraItemRegistry` | +`SPELL_FOCUS`, −`PREDATOR_CODEX` |
+| `gradle/skill-tree-validation.gradle` | Lista zarejestrowanych itemów czytana z rejestru zamiast przepisywana |
+| `config/epicknights/general.json5` | `disableTwoHanded`, `disableWeaponBlocking` → `true` (TEST i klient) |
 
 ### Usunięte
 
-`item/PredatorCodexItem.java`, `network/OpenCodexPacket.java`,
-`network/RetrieveAbsorbedSpellPacket.java`, wpis `PREDATOR_CODEX`.
-
-`gui/PredatorCodexScreen.java` **zostaje jako baza radiala** — ma już listę zaklęć
-i obsługę kliknięcia. To zmiana nazwy, nie wskrzeszanie Kodeksu.
+`item/PredatorCodexItem.java`, `gui/PredatorCodexScreen.java`,
+`network/OpenCodexPacket.java`, `network/RetrieveAbsorbedSpellPacket.java`,
+wpis `PREDATOR_CODEX`.
 
 **Dlaczego Kodeks umiera:** miał dwa zadania. Przeglądanie przejmuje drzewko,
 a odzyskiwanie zgubionego `SpellItem` **przestaje mieć sens** — przy katalizatorze
@@ -353,6 +380,9 @@ nie objaw.
 - [ ] Katalizator w offhandzie + miecz w głównej ręce: LPM bije, PPM rzuca
 - [ ] Stare `SpellItem` z ekwipunków graczy nadal działają
 - [ ] Dwa katalizatory na pasku trzymają niezależne zestawy
+- [ ] Pusty katalizator ma własną ikonę (złoty pierścień ze slime rdzeniem), nie slime ball
+- [ ] `tackle` na katalizatorze pokazuje ikonę physical, nie slime ball
+- [ ] Po przypisaniu z drzewka radial oddaje sterowanie z powrotem do drzewka
 
 ---
 
@@ -360,6 +390,13 @@ nie objaw.
 
 - Czy po playteście drop `SpellItem` przy pochłonięciu ma zostać wycięty.
 - Czy dochodzą kolejne tiery katalizatora i na jakich materiałach.
+- **Czy radial na `R` zostaje ekranem.** `Screen` zatrzymuje ruch i kamerę gracza na
+  czas trzymania klawisza — świat tyka (`isPauseScreen() == false`), ale postać stoi.
+  Na razie podział ról: `R` to wybór i przypisanie poza walką, Shift+scroll to
+  ścieżka bojowa (oba w tooltipie). Jeśli playtest pokaże, że to boli, alternatywą
+  jest overlay na `RenderGuiEvent` z własnym czytaniem delty myszy — realna robota
+  i nowa klasa błędów, więc nie robimy tego w ciemno.
+- Czy `disableTwoHanded`/`disableWeaponBlocking` wchodzą na produkcję.
 
 (Koszty node'ów devour przestały być pytaniem — sekcja 9 wyjaśnia, dlaczego muszą
 zostać zerowe.)
