@@ -20,4 +20,15 @@ public class ClientPacketHandlers {
         // control back to it once the spell is placed.
         mc.setScreen(new SpellRadialScreen(spellId, null, mc.screen));
     }
+
+    /**
+     * Opens the radial with nothing on the cursor, for a right-click on a catalyst whose
+     * active slot is empty. No key is being held, so the screen closes on the click that
+     * picks a slot rather than on a key release.
+     */
+    public static void openRadialForSelect() {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null || mc.screen != null) return;
+        mc.setScreen(new SpellRadialScreen(null, null, null));
+    }
 }

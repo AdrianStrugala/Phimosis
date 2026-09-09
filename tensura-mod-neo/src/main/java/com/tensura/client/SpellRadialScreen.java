@@ -35,9 +35,12 @@ import java.util.List;
 @OnlyIn(Dist.CLIENT)
 public class SpellRadialScreen extends Screen {
 
-    private static final int RING_RADIUS = 74;
-    private static final int SLOT_HALF = 13;
-    private static final int CENTER_DEAD_ZONE = 26;
+    private static final int RING_RADIUS = 68;
+    private static final int SLOT_HALF = 22;
+    private static final int CENTER_DEAD_ZONE = 30;
+    /** Items draw at 16px; the ring has room for far more than that. */
+    private static final float ICON_SCALE = 2.0f;
+    private static final int PANEL_PADDING = SLOT_HALF + 10;
 
     private static final int COLOR_PANEL      = 0xB0101018;
     private static final int COLOR_SLOT       = 0xC02A2A3A;
@@ -132,8 +135,8 @@ public class SpellRadialScreen extends Screen {
         int cy = height / 2;
         hovered = slotAt(mouseX - cx, mouseY - cy);
 
-        graphics.fill(cx - RING_RADIUS - 30, cy - RING_RADIUS - 30,
-                      cx + RING_RADIUS + 30, cy + RING_RADIUS + 30, COLOR_PANEL);
+        graphics.fill(cx - RING_RADIUS - PANEL_PADDING, cy - RING_RADIUS - PANEL_PADDING,
+                      cx + RING_RADIUS + PANEL_PADDING, cy + RING_RADIUS + PANEL_PADDING, COLOR_PANEL);
 
         for (int i = 0; i < spells.size(); i++) {
             renderSlot(graphics, cx, cy, i);
@@ -143,8 +146,17 @@ public class SpellRadialScreen extends Screen {
 
         // In assign mode the incoming spell rides the cursor until it is dropped.
         if (pendingSpell != null) {
-            graphics.renderItem(displayStack(pendingSpell), mouseX + 6, mouseY + 6);
+            renderIcon(graphics, displayStack(pendingSpell), mouseX + SLOT_HALF, mouseY + SLOT_HALF);
         }
+    }
+
+    /** Draws an item centred on a point, scaled past the 16px items normally render at. */
+    private void renderIcon(GuiGraphics graphics, ItemStack stack, int x, int y) {
+        graphics.pose().pushPose();
+        graphics.pose().translate(x, y, 0f);
+        graphics.pose().scale(ICON_SCALE, ICON_SCALE, 1f);
+        graphics.renderItem(stack, -8, -8);
+        graphics.pose().popPose();
     }
 
     private void renderSlot(GuiGraphics graphics, int cx, int cy, int slot) {
@@ -164,11 +176,15 @@ public class SpellRadialScreen extends Screen {
         }
 
         if (spellId == null) {
-            graphics.drawCenteredString(font, "+", x, y - 4, 0xFF666677);
+            graphics.pose().pushPose();
+            graphics.pose().translate(x, y, 0f);
+            graphics.pose().scale(ICON_SCALE, ICON_SCALE, 1f);
+            graphics.drawCenteredString(font, "+", 0, -4, 0xFF666677);
+            graphics.pose().popPose();
             return;
         }
 
-        graphics.renderItem(displayStack(spellId), x - 8, y - 8);
+        renderIcon(graphics, displayStack(spellId), x, y);
 
         if (ClientCooldownTracker.isOnCooldown(spellId)) {
             float remaining = ClientCooldownTracker.getRemainingFraction(spellId);
@@ -289,15 +305,23 @@ public class SpellRadialScreen extends Screen {
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        // Dragging a slot into the middle empties it.
         if (dragFrom >= 0) {
+            int from = dragFrom;
+            dragFrom = -1;
+
             int dx = (int) mouseX - width / 2;
             int dy = (int) mouseY - height / 2;
             if (dx * dx + dy * dy < CENTER_DEAD_ZONE * CENTER_DEAD_ZONE) {
-                PacketDistributor.sendToServer(AttuneSpellPacket.clear(dragFrom));
+                // Dragging a slot into the middle empties it.
+                PacketDistributor.sendToServer(AttuneSpellPacket.clear(from));
+                onClose();
+            } else if (holdKey == null) {
+                // Opened by a right-click rather than by holding a key, so there is no key
+                // release to wait for — the click itself is the whole interaction. The
+                // selection already went out in mouseClicked; drag-to-centre still works
+                // because this only fires once the button comes back up.
                 onClose();
             }
-            dragFrom = -1;
         }
         return super.mouseReleased(mouseX, mouseY, button);
     }

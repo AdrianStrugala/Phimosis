@@ -255,8 +255,14 @@ public class SpellFocusItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         ResourceLocation spellId = getActiveSpell(stack);
-        // An empty active slot fails silently: this fires on every stray right-click.
-        if (spellId == null) return InteractionResultHolder.fail(stack);
+
+        // Nothing bound to cast — open the picker instead. The client-only call sits behind
+        // the side check, so the class is never resolved on a dedicated server.
+        if (spellId == null) {
+            if (level.isClientSide) com.tensura.client.ClientPacketHandlers.openRadialForSelect();
+            return InteractionResultHolder.consume(stack);
+        }
+
         return SpellCasting.use(level, player, hand, stack, spellId, SpellCasting.fromDefinition(spellId));
     }
 

@@ -1,7 +1,7 @@
 # Katalizator zaklęć — spec implementacyjna
 
 **Data:** 2026-09-08
-**Status:** wdrożony w 2.0.38 (kroki 1–5), czeka na playtest
+**Status:** wdrożony, przeszedł pierwszy playtest (2.0.40)
 **Dotyczy:** tensura-mod-neo (NeoForge 1.21.1) + datapack `predator_skills`
 **Dokument siostrzany:** [start serwera publicznego](../operations/public-server-launch.md)
 
@@ -9,7 +9,7 @@
 
 ## 0. Stan wdrozenia
 
-Zbudowane i wgrane na TEST oraz klienta jako `tensura-2.0.39.jar` (2026-09-09).
+Zbudowane i wgrane na TEST oraz klienta jako `tensura-2.0.40.jar` (2026-09-09).
 **Produkcja nietknięta** — 2k37 nadal ma 2.0.18.
 
 | Krok | Stan |
@@ -52,6 +52,16 @@ pochłonięcie **nadal dropi** `SpellItem`, wycięcie Kodeksu wchodzi od razu.
   niepusty; tooltip mówi o Shift+scroll.
 - **Config Epic Knights cofnięty do domyślnego** na TEST i kliencie. Zalecenie
   włączenia obu przełączników było błędne — sekcja 7 tłumaczy, dlaczego.
+
+### Po pierwszym playteście (2.0.40)
+
+Katalizator działa. Zgłoszone i poprawione:
+
+- **PPM z pustym aktywnym slotem otwiera radial** zamiast nie robić nic. Ten sam
+  ekran co pod `R`, tylko bez trzymanego klawisza — zamyka go klik w wycinek
+  (puszczenie przycisku, więc przeciągnięcie do środka nadal czyści slot).
+- **Ikony w radialu 2×** (32 px zamiast 16 px), sloty 44 px, pierścień ściągnięty
+  z 74 na 68 px. Wcześniej ikona zajmowała ćwiartkę tego, co panel na nią dawał.
 
 ---
 
@@ -141,8 +151,9 @@ się na ikonę aktywnego zaklęcia przez te same nadpisania, których używa `Sp
 
 - `use(level, player, hand)` — deleguje do `SpellCasting` dla zaklęcia z aktywnego
   slotu. Cała logika instant/windup/kanał przeniesiona z `SpellItem` bez zmian.
-- Pusty aktywny slot → `InteractionResultHolder.fail`, bez komunikatu na czacie
-  (spam przy przypadkowym kliknięciu).
+- Pusty aktywny slot → otwiera radial zamiast rzucać (`consume`, bez komunikatu na
+  czacie). Wywołanie klienta siedzi za `level.isClientSide`, więc na dedyku klasa
+  kliencka nigdy się nie ładuje.
 - Pasek cooldownu — jak w `SpellItem`, ale dla aktywnego zaklęcia.
 - Model — property override po szkole i ikonie aktywnego zaklęcia, wariant
   `getIconIndex`/`getSchoolIndex` czytający `AttunedSpells[ActiveIndex]`.
@@ -158,6 +169,7 @@ najechanego zaklęcia i jego szkoła.
 | Wejście | Zachowanie |
 |---|---|
 | Przytrzymanie `R` z katalizatorem w ręce lub offhandzie | Puszczenie na wycinku → `SetActiveSpellPacket` |
+| PPM katalizatorem z **pustym aktywnym slotem** | Otwiera ten sam radial; nie ma trzymanego klawisza, więc zamyka go klik w wycinek |
 | Klik node'a w drzewku Puffisha | Radial otwiera się z zaklęciem „na kursorze"; klik w wycinek → `AttuneSpellPacket` (nadpisuje) |
 | Przeciągnięcie wycinka do środka | `AttuneSpellPacket` z pustym ID = wyczyść slot |
 | `Esc` | Zamknij bez zmian |
