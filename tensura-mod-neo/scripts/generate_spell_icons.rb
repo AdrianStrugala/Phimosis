@@ -127,7 +127,7 @@ REDRAW = %w[
   overheat leech_seed toxic night_shade dragon_breath outrage foul_play flash_cannon
   dragon_rush phantom_force stealth_rock tackle trick_room
   powder_snow icy_wind snarl ice_punch dragon_tail metal_claw hex acid_spray
-  hyper_beam rock_tomb iron_head draining_kiss
+  hyper_beam rock_tomb iron_head draining_kiss dark_pulse sucker_punch
 ].freeze
 
 ICON_ORDER = %w[
@@ -169,7 +169,7 @@ PALETTES = {
   "rock" => [[190, 162, 83, 255], [238, 218, 153, 255]],
   "ghost" => [[126, 101, 202, 255], [210, 170, 255, 255]],
   "dragon" => [[116, 91, 255, 255], [255, 91, 98, 255]],
-  "dark" => [[103, 91, 112, 255], [221, 105, 162, 255]],
+  "dark" => [[45, 48, 54, 255], [156, 163, 173, 255]],
   "steel" => [[164, 190, 205, 255], [238, 250, 255, 255]],
   "fairy" => [[255, 135, 207, 255], [255, 235, 250, 255]]
 }.freeze

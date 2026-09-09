@@ -391,7 +391,8 @@ fail_validation("Leech Seed lacks periodic health transfer") unless
     impact["type"] == "leech_seed" && impact["duration"].to_i == 160 &&
       impact["amount"].to_f == 2.0
   end && runtime.include?("tickLeechSeeds") &&
-    runtime.include?("owner.damageSources().playerAttack(owner)") &&
+    runtime.include?("SpellImpactApplier.hurtAttributedToOwner(owner, effectCaster, target") &&
+    executor.include?("owner.damageSources().playerAttack(owner)") &&
     runtime.include?("healthBefore - target.getHealth()")
 
 fail_validation("Powder Snow is not a chilling cone") unless
@@ -569,6 +570,19 @@ fail_validation("waves do not consume trail when aftermath is absent") unless
 stone_edge_damage = impacts.call("stone_edge").find { |impact| impact["type"] == "damage" }
 fail_validation("Stone Edge is under-scaled for one-hit meteor groups") unless
   stone_edge_damage&.fetch("damage_multiplier", 0).to_f >= 1.0
+earthquake = spell_definition.call("earthquake")
+fail_validation("Earthquake is not a fixed ten-second caster-centered zone") unless
+  earthquake["cast_time_ticks"].to_i == 0 &&
+    earthquake.dig("targeting", "range").to_f == 0.0 &&
+    earthquake.dig("targeting", "radius").to_f >= 12.0 &&
+    earthquake.dig("delivery", "type") == "moving_zone" &&
+    earthquake.dig("delivery", "duration_ticks").to_i == 200 &&
+    earthquake.dig("delivery", "tick_interval_ticks").to_i == 40 &&
+    earthquake.dig("delivery", "movement_speed").to_f == 0.0 &&
+    impacts.call("earthquake").any? { |impact| impact["type"] == "damage" } &&
+    impacts.call("earthquake").any? do |impact|
+      impact["type"] == "knockup" && impact["strength"].to_f.between?(0.25, 0.5)
+    end
 fail_validation("Shift Gear incorrectly grants Iron Strike") if
   mapper.match?(/n\("shift_gear",\s*"iron_strike"\);/)
 

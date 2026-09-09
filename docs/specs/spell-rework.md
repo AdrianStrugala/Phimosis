@@ -152,7 +152,7 @@ Docelowe zalozenia:
 | `Bulldoze` | 11 / 8 | Ground cone | Fala ziemi spowalnia cele stojace na podlozu. | Bloki nie sa niszczone; wizualne plyty gruntu przesuwaja sie do przodu. |
 | `Dig` | 16 / 12 | Burrow dash | Gracz znika pod ziemia na maks. 1.5 s i wyskakuje pod celem. | Zapadniecie w pyl, ruchomy slad ziemi i erupcja przy wyjsciu. |
 | `Earth Power` | 18 / 14 | Delayed line | Seria erupcji biegnie po ziemi i daje 1 Exposed. | Pomaranczowe pekniecia poprzedzaja kazdy pionowy wybuch energii. |
-| `Earthquake` | 23 / 20 | Radial waves | Trzy fale; nie trafia celow wysoko nad ziemia. | Pekniecia i pyl biegna pierscieniami bez niszczenia blokow. |
+| `Earthquake` | 23 / 20 | Fixed zone | Bez cast time tworzy w poczatkowej pozycji castera strefe o promieniu 12 m; przez 10 s zadaje obrazenia co 2 s i lekko wyrzuca cele w gore. | Pekniecia i pyl pulsuja po ziemi bez niszczenia blokow. |
 
 ### Flying - 5
 

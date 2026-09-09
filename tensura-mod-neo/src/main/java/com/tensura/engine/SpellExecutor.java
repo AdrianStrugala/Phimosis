@@ -488,14 +488,18 @@ public class SpellExecutor {
 
     private static boolean castMovingZone(ServerPlayer caster, SpellDefinition def) {
         Vec3 direction = caster.getLookAngle();
-        Vec3 center = caster.position().add(direction.normalize().scale(2.0));
+        Vec3 center = def.targeting.range <= 0.0
+                ? caster.position()
+                : caster.position().add(direction.normalize().scale(2.0));
         return SpellRuntimeController.startMovingZone(caster, caster, def, center, direction);
     }
 
     private static boolean startCompanionMovingZone(ServerPlayer owner, PokemonEntity companion,
                                                     LivingEntity target, SpellDefinition def) {
         Vec3 direction = target.position().subtract(companion.position());
-        Vec3 center = companion.position().add(direction.normalize().scale(2.0));
+        Vec3 center = def.targeting.range <= 0.0
+            ? companion.position()
+            : companion.position().add(direction.normalize().scale(2.0));
         return SpellRuntimeController.startMovingZone(owner, companion, def, center, direction);
     }
 

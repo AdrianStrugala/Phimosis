@@ -43,6 +43,7 @@ EFFECT_NAMES = {
 }.freeze
 
 DESCRIPTION_OVERRIDES = {
+  "earthquake" => "Shake a fixed twelve-block area around your cast position for ten seconds, damaging and launching enemies slightly upward every two seconds.",
   "toxic_spikes" => "Scatter poisonous spikes across the ground. The first trigger poisons; repeated triggers turn the poison Toxic.",
   "u_turn" => "Dash through an enemy with Bug energy, then return to where you started.",
   "future_sight" => "Mark an area with Psychic energy. After a short delay, it erupts and catches anyone still inside.",
@@ -134,6 +135,7 @@ def impact_text(impact)
   when "fire"
     impact.fetch("chance", 1).to_f < 1 ? "sometimes sets enemies ablaze" : "sets enemies ablaze"
   when "knockback" then "knocks enemies back"
+  when "knockup" then "launches enemies slightly upward"
   when "pull" then "pulls enemies inward"
   when "heal", "heal_fraction" then "restores your health"
   when "heal_damage_fraction" then "restores health from damage dealt"
@@ -191,7 +193,9 @@ def spell_action(definition)
   when "delayed_area" then "Mark an area for a delayed #{type} blast#{range}"
   when "melee_combo" then "Rush an enemy with a rapid #{type} combo#{range}"
   when "meteor" then "Call down a barrage of #{type} strikes#{range}"
-  when "moving_zone" then "Summon a roaming storm of #{type} energy"
+  when "moving_zone"
+    delivery["movement_speed"].to_f.zero? ?
+      "Create a fixed zone of #{type} energy" : "Summon a roaming storm of #{type} energy"
   when "protective_aura" then "Wrap yourself and nearby allies in #{with_article(type, "barrier")}"
   when "ricochet_beam" then "Fire #{with_article(type, "beam")} that leaps to another enemy#{range}"
   when "self" then "Focus #{type} energy within yourself"

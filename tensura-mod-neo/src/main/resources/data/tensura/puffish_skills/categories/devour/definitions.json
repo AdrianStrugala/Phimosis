@@ -2909,7 +2909,7 @@
   },
   "earthquake": {
     "title": "Earthquake",
-    "description": "Strike enemies with a burst of Ground energy at medium range. Knocks enemies back and slows enemies. Takes a short moment to cast.",
+    "description": "Shake a fixed twelve-block area around your cast position for ten seconds, damaging and launching enemies slightly upward every two seconds.",
     "icon": {
       "type": "item",
       "data": {

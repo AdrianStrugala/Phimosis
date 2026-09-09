@@ -247,6 +247,11 @@ public final class SpellImpactApplier {
                             .add(direction.x, 0.4, direction.z));
                     target.hurtMarked = true;
                 }
+                case "knockup" -> {
+                    if (!canHarm) continue;
+                    target.setDeltaMovement(target.getDeltaMovement().add(0.0, impact.strength, 0.0));
+                    target.hurtMarked = true;
+                }
                 case "pull" -> {
                     if (!canHarm) continue;
                     Vec3 delta = effectCaster.position().subtract(target.position());
