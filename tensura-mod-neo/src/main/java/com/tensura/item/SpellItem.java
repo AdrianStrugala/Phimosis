@@ -156,7 +156,15 @@ public class SpellItem extends Item {
         if (def.charges > 1) {
             tooltip.add(Component.literal("Charges: " + def.charges));
         }
-        tooltip.add(Component.literal("Range: " + (int) def.targeting.range + "m"));
+        // A self-centred area spell keeps its size in radius and leaves range at 0, so reading
+        // range alone would advertise "Range: 0m" for something that covers 12 blocks.
+        if (def.targeting.range > 0.0) {
+            tooltip.add(Component.literal("Range: " + (int) def.targeting.range + "m"));
+        } else if (def.targeting.radius > 0.0) {
+            tooltip.add(Component.literal("Radius: " + (int) def.targeting.radius + "m"));
+        } else {
+            tooltip.add(Component.literal("Range: Self"));
+        }
         tooltip.add(Component.literal(def.delivery.hold_to_channel
                 ? "Use: Hold right-click" : "Use: Right-click"));
     }

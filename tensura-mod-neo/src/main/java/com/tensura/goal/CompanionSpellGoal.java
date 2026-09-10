@@ -123,8 +123,21 @@ public class CompanionSpellGoal extends Goal {
             return true;
         }
 
-        if (distanceSqr > definition.targeting.range * definition.targeting.range) return false;
+        double reach = effectiveReach(definition);
+        if (distanceSqr > reach * reach) return false;
         return !requiresLineOfSight(definition) || companion.hasLineOfSight(target);
+    }
+
+    /**
+     * An area spell centred on the caster carries its size in {@code radius} and sets
+     * {@code range} to 0 to tell the zone delivery "centre it on me" (see
+     * {@code SpellExecutor#castMovingZone}). Reading {@code range} alone would gate such a
+     * spell out entirely - a reach of 0 means the companion never picks it.
+     */
+    private static double effectiveReach(SpellDefinition definition) {
+        return "area".equals(definition.targeting.type)
+                ? Math.max(definition.targeting.radius, definition.targeting.range)
+                : definition.targeting.range;
     }
 
     private static boolean isHealingSpell(SpellDefinition definition) {
@@ -173,8 +186,10 @@ public class CompanionSpellGoal extends Goal {
         return switch (definition.delivery.type) {
             case "dash", "dash_combo", "melee_combo", "teleport_strike", "grab",
                     "arc_strike" -> true;
-            default -> definition.targeting.range > 0.0
-                    && definition.targeting.range <= CLOSE_RANGE;
+            default -> {
+                double reach = effectiveReach(definition);
+                yield reach > 0.0 && reach <= CLOSE_RANGE;
+            }
         };
     }
 

@@ -1,0 +1,3 @@
+# Ruby tooling runs under a POSIX shell (CI, Docker); a CRLF shebang makes the
+# interpreter warn and breaks direct ./script execution.
+*.rb text eol=lf

@@ -3,6 +3,12 @@
 require "digest"
 require "json"
 
+# Sources check out with CRLF on Windows while the assertions below embed a literal
+# newline escape, so every multi-line needle would silently miss. Normalise on read.
+def read_source(path)
+  File.read(path).gsub("\r\n", "\n")
+end
+
 ROOT = File.expand_path("..", __dir__)
 JAVA_ICON_FILE = File.join(ROOT, "src/main/java/com/tensura/item/SpellItem.java")
 SPELL_CASTING_FILE = File.join(ROOT, "src/main/java/com/tensura/item/SpellCasting.java")
@@ -79,14 +85,14 @@ def fail_validation(message)
   exit 1
 end
 
-java = File.read(JAVA_ICON_FILE)
+java = read_source(JAVA_ICON_FILE)
 icon_block = java[/CUSTOM_ICON_ORDER = java\.util\.List\.of\((.*?)\n    \);/m, 1]
 fail_validation("CUSTOM_ICON_ORDER not found") unless icon_block
 spells = icon_block.scan(/"([a-z0-9_]+)"/).flatten
 fail_validation("expected 110 custom icon spells, got #{spells.size}") unless spells.size == 110
 fail_validation("duplicate custom icon spell") unless spells.uniq.size == spells.size
 
-devour_generator = File.read(DEVOUR_GENERATOR_FILE)
+devour_generator = read_source(DEVOUR_GENERATOR_FILE)
 ray_block = devour_generator[/RAYS = \{(.*?)\n\}\.freeze/m, 1]
 fail_validation("Devour RAYS not found") unless ray_block
 ray_spells = ray_block.scan(/\w+: %w\[([^\]]+)\]/).flatten.flat_map(&:split)
@@ -111,33 +117,33 @@ missing_promotions = promoted_spells - spells
 fail_validation("missing promoted spells: #{missing_promotions.join(', ')}") unless
   missing_promotions.empty?
 
-mapper = File.read(MAPPER_FILE)
+mapper = read_source(MAPPER_FILE)
 fail_validation("Cobblemon mapper does not use same-named spell IDs") unless
   mapper.include?('TensuraMod.MOD_ID + ":" + name')
 fail_validation("Cobblemon mapper does not reject unsupported moves") unless
   mapper.include?("SpellRegistry.get(spellId).isPresent()")
 fail_validation("Cobblemon mapper still contains custom aliases or type fallback") if
   mapper.include?("NAME_MAP") || mapper.include?("typeFallback") || mapper.match?(/\bn\("/)
-spell_casting = File.read(SPELL_CASTING_FILE)
+spell_casting = read_source(SPELL_CASTING_FILE)
 executor = [EXECUTOR_FILE, IMPACT_APPLIER_FILE, FEEDBACK_FILE,
   PROJECTILE_DELIVERY_FILE, BEAM_DELIVERY_FILE]
-  .map { |file| File.read(file) }.join("\n")
-movement = File.read(MOVEMENT_FILE)
-projectile = File.read(PROJECTILE_FILE)
-runtime = File.read(RUNTIME_FILE)
-cast_controller = File.read(CAST_CONTROLLER_FILE)
-beam_pose = File.read(BEAM_POSE_FILE)
-beam_extension = File.read(BEAM_EXTENSION_FILE)
-spell_item = File.read(SPELL_ITEM_FILE)
-spell_focus = File.read(SPELL_FOCUS_FILE)
+  .map { |file| read_source(file) }.join("\n")
+movement = read_source(MOVEMENT_FILE)
+projectile = read_source(PROJECTILE_FILE)
+runtime = read_source(RUNTIME_FILE)
+cast_controller = read_source(CAST_CONTROLLER_FILE)
+beam_pose = read_source(BEAM_POSE_FILE)
+beam_extension = read_source(BEAM_EXTENSION_FILE)
+spell_item = read_source(SPELL_ITEM_FILE)
+spell_focus = read_source(SPELL_FOCUS_FILE)
 enum_extensions = JSON.parse(File.read(ENUM_EXTENSIONS_FILE))
-vfx = File.read(VFX_FILE)
-aliases = File.read(ALIASES_FILE)
-status_events = File.read(STATUS_FILE)
-companion_events = File.read(COMPANION_EVENTS_FILE)
-companion_goal = File.read(COMPANION_GOAL_FILE)
-targeting_rules = File.read(TARGETING_RULES_FILE)
-flamethrower_vfx = File.read(FLAMETHROWER_VFX_FILE)
+vfx = read_source(VFX_FILE)
+aliases = read_source(ALIASES_FILE)
+status_events = read_source(STATUS_FILE)
+companion_events = read_source(COMPANION_EVENTS_FILE)
+companion_goal = read_source(COMPANION_GOAL_FILE)
+targeting_rules = read_source(TARGETING_RULES_FILE)
+flamethrower_vfx = read_source(FLAMETHROWER_VFX_FILE)
 
 fail_validation("companion AI scans for nearby hostile mobs") if
   companion_events.include?("NearestAttackableTargetGoal") ||
@@ -393,6 +399,12 @@ fail_validation("spell items do not expose the custom beam pose") unless
     beam_extension.include?("RegisterClientExtensionsEvent") &&
     beam_extension.include?("TensuraItemRegistry.SPELL_ITEM") &&
     beam_extension.include?("TensuraItemRegistry.SPELL_FOCUS")
+# RegisterClientExtensionsEvent is an IModBusEvent: the default GAME bus is rejected
+# by NeoForge's bus class checker and takes the client down during mod loading.
+fail_validation("the beam pose extension is not subscribed to the mod bus") unless
+  beam_extension.match?(/@EventBusSubscriber\([^)]*bus\s*=\s*EventBusSubscriber\.Bus\.MOD/)
+fail_validation("spell items do not route their use animation through SpellCasting") unless
+  [spell_item, spell_focus].all? { |src| src.include?("SpellCasting.useAnimation(channelOf(stack))") }
 fail_validation("held-channel cooldown is not deferred until release") unless
   spell_casting.include?("SpellExecutor.finishHeldChannel(player, spellId)") &&
     executor.include?("public static void finishHeldChannel") &&

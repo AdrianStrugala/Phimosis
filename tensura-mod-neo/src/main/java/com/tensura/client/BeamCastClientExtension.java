@@ -19,7 +19,7 @@ import com.tensura.registry.TensuraItemRegistry;
 import org.jetbrains.annotations.Nullable;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(modid = TensuraMod.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = TensuraMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class BeamCastClientExtension implements IClientItemExtensions {
 
     public static final BeamCastClientExtension INSTANCE = new BeamCastClientExtension();
