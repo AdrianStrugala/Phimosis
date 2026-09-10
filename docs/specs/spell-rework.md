@@ -150,7 +150,7 @@ Docelowe zalozenia:
 |---|---:|---|---|---|
 | `Mud Shot` | 7 / 4 | Projectile | Spowalnia o 30% i daje Exposed na 4 s. | Bryla blota zostawia krople i plame znikajaca po chwili. |
 | `Bulldoze` | 11 / 8 | Ground cone | Fala ziemi spowalnia cele stojace na podlozu. | Bloki nie sa niszczone; wizualne plyty gruntu przesuwaja sie do przodu. |
-| `Dig` | 16 / 12 | Burrow dash | Gracz znika pod ziemia na maks. 1.5 s i wyskakuje pod celem. | Zapadniecie w pyl, ruchomy slad ziemi i erupcja przy wyjsciu. |
+| `Dig` | 16 / 12 | Delayed teleport strike | Gracz znika pod ziemia, a po 1.2 s wyskakuje za namierzonym celem. | Zapadniecie w pyl, telegraph celu i erupcja przy wyjsciu. |
 | `Earth Power` | 18 / 14 | Delayed line | Seria erupcji biegnie po ziemi i daje 1 Exposed. | Pomaranczowe pekniecia poprzedzaja kazdy pionowy wybuch energii. |
 | `Earthquake` | 23 / 20 | Fixed zone | Bez cast time tworzy w poczatkowej pozycji castera strefe o promieniu 12 m; przez 10 s zadaje obrazenia co 2 s i lekko wyrzuca cele w gore. | Pekniecia i pyl pulsuja po ziemi bez niszczenia blokow. |
 
@@ -168,11 +168,11 @@ Docelowe zalozenia:
 
 | Spell | DMG / CD | Delivery | Mechanika RPG | Animacja i VFX |
 |---|---:|---|---|---|
-| `Confusion` | 6 / 5 | Telekinetic throw | Krotko podnosi cel, odrzuca do celownika i naklada Confused. | Fioletowe pierscienie wokol glowy i telekinetyczna fala. |
+| `Protect` | 0 / 5 | Barrier wall | Przezroczysta sciana o szerokosci 6 m przez 10 s przechwytuje ataki lecace do castera i jego sojusznikow. | Jasna, polprzezroczysta tafla z wyraznymi krawedziami i rozblyskiem w punkcie bloku. |
 | `Psybeam` | 11 / 8 | Held channel beam | Promien trwa podczas przytrzymania, a cooldown startuje po puszczeniu. | Warstwowy teczowy promien skupiony na aktualnym kierunku celowania. |
 | `Psycho Cut` | 14 / 8 | Arc strike | Magiczne ostrze przecina obszar przed graczem i ignoruje 2 punkty pancerza. Nie wymaga namierzonego przeciwnika. | Fioletowy polksiezyc powstaje przy dloni i rozcina powietrze na krotkim dystansie. |
 | `Rest` | 0 / 90 | Self heal | Natychmiast przywraca pelne HP i oczyszcza negatywne statusy, po czym naklada Asleep na 5 s. Obrazenia moga obudzic dopiero po 2 s. | Gracz siada lub opuszcza ramiona, otacza go spokojna niebieska aura i trzy unoszace sie symbole snu. |
-| `Psychic` | 13 / 8 | Instant on-hit | Bez cast time i bez projectile natychmiast trafia namierzony cel telekinetycznym uderzeniem, zadaje damage i odrzuca go od castera. | Snowstorm `psychic_actor` na release oraz `psychic_target` i `psychic_impact` dokladnie na trafionym celu. |
+| `Psychic` | 13 / 8 | Instant on-hit | Bez cast time i bez projectile natychmiast trafia namierzony cel czystym damage, bez knockbacku i statusu. | Snowstorm `psychic_actor` na release oraz `psychic_target` i `psychic_impact` dokladnie na trafionym celu. |
 | `Trick Room` | 0 / 24 | Zone | Przez 8 s szybkie jednostki sa spowolnione, a wolne przyspieszone. | Odwrocona przezroczysta kostka z siatka i rotujacymi rogami. |
 | `Future Sight` | 28 / 22 | Delayed mark | Znacznik na celu wybucha po 3 s nawet po utracie line of sight. | Runa oka, trzy pulsy odliczania i jasny implozyjny impact. |
 
@@ -194,8 +194,8 @@ Docelowe zalozenia:
 | `Smack Down` | 9 / 7 | Homing projectile | Sciaga lecacy cel na ziemie i blokuje lot na 3 s. | Glaz uderza z gory; powietrzny cel ciagnie za soba pyl podczas upadku. |
 | `Rock Tomb` | 12 / 11 | Trap zone | Trzy skaly zamykaja obszar, spowalniajac wyjscie przez 4 s. | Glazy wyrastaja po bokach, ale nie tworza trwalych blokow. |
 | `Stealth Rock` | 7 / 16 | Trap | Trzy skalne pulapki trwaja 20 s i rania przeciwnika przy kazdym ponownym wejsciu. | Prawie ukryte kamienne runy wyrzucaja ostre odlamki po aktywacji. |
-| `Rock Slide` | 15 / 12 | Delayed line | Trzy spadajace glazy; srodkowy powoduje Stagger. | Cienie na ziemi rosna przed upadkiem, glazy pekaja na kawalki. |
-| `Stone Edge` | 23 / 17 | Ground line | Linia kolcow przebija 4 punkty pancerza. | Sekwencyjnie wyrastajace ostre skaly i fala pylu. |
+| `Rock Slide` | 15 / 12 | Falling-rock volley | Piec spadajacych glazow pokrywa szeroki obszar, spowalnia i odrzuca cele. | Cienie na ziemi rosna przed upadkiem, glazy pekaja na kawalki. |
+| `Stone Edge` | 23 / 17 | Ground line | Waska fala kolcow przebija 4 punkty pancerza, bez obszarowej kontroli Rock Slide. | Sekwencyjnie wyrastajace ostre skaly i fala pylu. |
 
 ### Ghost - 7
 
@@ -493,8 +493,8 @@ targeting `aim` i bezposredni damage on-hit na trafionej encji. Usuwamy
 `delayed_area`, `delay_ticks`, pocisk oraz opozniony telegraph. Snowstorm
 `cobblemon:psychic_actor` uruchamia release, a `cobblemon:psychic_target` i
 `cobblemon:psychic_impact` sa zakotwiczone na celu dopiero po udanym raycascie.
-Brak celu oznacza miss bez AoE na koncu zasiegu. Poza usunieciem opoznienia
-zachowujemy obecne impacty: damage, knockback i 40% szansy na Weakness.
+Brak celu oznacza miss bez AoE na koncu zasiegu. Jedynym impactem jest damage;
+Psychic nie naklada statusu i nie powoduje knockbacku.
 
 #### Wspolny kontrakt implementacyjny ultimate
 
@@ -586,7 +586,7 @@ wszystkich delivery.
 
 ### Zachowac i przebudowac
 
-`aerial_ace`, `blizzard`, `bubble_beam`, `close_combat`, `confusion`, `dark_pulse`, `dazzling_gleam`, `discharge`, `draco_meteor`, `dragon_breath`, `dragon_pulse`, `earthquake`, `ember`, `fire_blast`, `flamethrower`, `focus_blast`, `foul_play`, `future_sight`, `gust`, `hex`, `hydro_pump`, `hyper_beam`, `ice_beam`, `ice_shard`, `leaf_blade`, `leech_seed`, `mach_punch`, `moonblast`, `night_shade`, `outrage`, `overheat`, `petal_blizzard`, `poison_sting`, `psychic`, `psybeam`, `razor_leaf`, `rock_slide`, `rock_throw`, `shadow_ball`, `solar_beam`, `stone_edge`, `surf`, `tackle`, `thunder`, `toxic`, `vine_whip`, `volt_tackle` i `water_gun` pozostaja prawidlowymi kanonicznymi ruchami.
+`aerial_ace`, `blizzard`, `bubble_beam`, `close_combat`, `protect`, `dark_pulse`, `dazzling_gleam`, `discharge`, `draco_meteor`, `dragon_breath`, `dragon_pulse`, `earthquake`, `ember`, `fire_blast`, `flamethrower`, `focus_blast`, `foul_play`, `future_sight`, `gust`, `hex`, `hydro_pump`, `hyper_beam`, `ice_beam`, `ice_shard`, `leaf_blade`, `leech_seed`, `mach_punch`, `moonblast`, `night_shade`, `outrage`, `overheat`, `petal_blizzard`, `poison_sting`, `psychic`, `psybeam`, `razor_leaf`, `rock_slide`, `rock_throw`, `shadow_ball`, `solar_beam`, `stone_edge`, `surf`, `tackle`, `thunder`, `toxic`, `vine_whip`, `volt_tackle` i `water_gun` pozostaja prawidlowymi kanonicznymi ruchami.
 
 ### Usuniete z projektu
 
@@ -599,6 +599,7 @@ definicji, mapowan Cobblemon, wpisow Devour ani trybu `Legacy Skill`.
 | Stary spell | Migracja |
 |---|---|
 | `aerial_strike` | `hurricane`; Aerial Strike nie jest kanonicznym ruchem Pokemon. |
+| `confusion` | `protect`; Confusion zostal zastapiony funkcjonalna sciana obronna. |
 | `flash_cannon` | Zachowac w bazowej setce bez zmiany ID. |
 | `frost_nova` | `icy_wind`; Frost Nova nie jest ruchem Pokemon. |
 | `iron_strike` | `bullet_punch`; Iron Strike nie jest ruchem Pokemon. |
@@ -609,11 +610,12 @@ definicji, mapowan Cobblemon, wpisow Devour ani trybu `Legacy Skill`.
 | `seismic_slam` | `seismic_toss`; Seismic Slam nie jest kanonicznym ruchem. |
 | `thundershock` | `thunder_shock`; poprawny kanoniczny zapis to Thunder Shock. |
 
-Migrator odczytu itemow i danych Predator obsluguje obecnie osiem wykonanych zmian:
+Migrator odczytu itemow i danych Predator obsluguje obecnie dziewiec wykonanych zmian:
 `iron_strike -> bullet_punch`, `frost_nova -> icy_wind`,
 `nature_burst -> giga_drain`, `poison_strike -> venoshock`,
 `seismic_slam -> seismic_toss` oraz `thundershock -> thunder_shock`.
-`aerial_strike -> hurricane` oraz `psychic_blast -> psychic` zostaly zmigrowane,
+`aerial_strike -> hurricane`, `psychic_blast -> psychic` oraz
+`confusion -> protect` zostaly zmigrowane,
 a stare definicje, mapowania, ikony i wpisy Devour usuniete. Zasada ta nie obejmuje
 ID wymienionych w sekcji `Usuniete z projektu`.
 

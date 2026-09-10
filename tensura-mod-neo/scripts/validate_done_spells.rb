@@ -71,6 +71,7 @@ DELIVERY_VFX = {
   "orbit_release" => [%w[trail], %w[impact]],
   "phase_movement" => [%w[trail], %w[impact]],
   "pulse_ring" => [%w[trail], %w[impact], %w[aftermath]],
+  "barrier_wall" => [%w[trail], %w[impact]],
   "cloud" => [%w[aftermath], %w[impact]],
   "protective_aura" => [%w[telegraph], %w[aftermath]],
   "zone" => [%w[telegraph], %w[aftermath]],
@@ -116,7 +117,7 @@ fail_validation("done-done roster differs from canonical roster") unless
   spells.sort == canonical_spells.sort
 
 promoted_spells = %w[
-  water_gun thunder_shock psychic confusion razor_leaf leaf_blade poison_sting
+  water_gun thunder_shock psychic protect razor_leaf leaf_blade poison_sting
   rock_throw ice_shard fire_blast bubble_beam petal_blizzard solar_beam
   stone_edge discharge dragon_pulse bullet_punch mach_punch focus_blast shadow_ball
   acid_spray bite crunch dragon_claw dragon_tail drain_punch fire_punch flame_charge
@@ -317,7 +318,7 @@ spells.each do |spell|
   delivery = definition.dig("delivery", "type").to_s
   fail_validation("#{spell} has no delivery") if delivery.empty?
   fail_validation("#{spell} has unsupported delivery #{delivery}") unless DELIVERY_VFX.key?(delivery)
-  controller_delivery = delivery == "trap"
+  controller_delivery = %w[trap barrier_wall].include?(delivery)
   fail_validation("#{spell} has no impact or controller mechanic") if
     Array(definition["impact"]).empty? && !controller_delivery
   sounds = definition.fetch("sound", {})
@@ -395,7 +396,29 @@ fail_validation("Psychic is not an immediate single-target on-hit spell") unless
     psychic.dig("targeting", "type") == "aim" &&
     psychic.dig("targeting", "max_targets").to_i == 1 &&
     !psychic.dig("delivery").key?("delay_ticks") &&
-    !psychic.dig("visual").key?("projectile")
+    !psychic.dig("visual").key?("projectile") &&
+    impacts.call("psychic").size == 1 &&
+    impacts.call("psychic").first["type"] == "damage"
+protect = spell_definition.call("protect")
+fail_validation("Protect is not a ten-second, five-second-cooldown directional wall") unless
+  protect.dig("delivery", "type") == "barrier_wall" &&
+    protect.dig("delivery", "duration_ticks").to_i == 200 &&
+    protect["cooldown_ticks"].to_i == 100 &&
+    protect.dig("targeting", "width").to_f == 6.0 &&
+    protect.dig("targeting", "radius").to_f == 2.5 &&
+    impacts.call("protect").empty? &&
+    runtime.include?("startBarrierWall") &&
+    runtime.include?("findBarrierIntersection") &&
+    runtime.include?("intersectBarrier(wall, start, end)") &&
+    runtime.include?("level.getEntitiesOfClass(") &&
+    runtime.include?("Projectile.class, bounds, Entity::isAlive") &&
+    companion_goal.include?('"barrier_wall".equals(definition.delivery.type)') &&
+    aliases.include?('"confusion", "protect"')
+fail_validation("Removed Confusion definition or assets remain") if
+  File.exist?(File.join(SPELL_DIR, "confusion.json")) ||
+    File.exist?(File.join(MODEL_DIR, "spell_confusion.json")) ||
+    File.exist?(File.join(MODEL_DIR, "spell_icon_confusion.json")) ||
+    File.exist?(File.join(TEXTURE_DIR, "confusion.png"))
 volt_tackle = spell_definition.call("volt_tackle")
 volt_speed = impacts.call("volt_tackle").find do |impact|
   impact["type"] == "status_effect" && impact["recipient"] == "caster" &&
@@ -642,10 +665,13 @@ fail_validation("Toxic Spikes is not a six-point contamination ring") unless
     runtime.include?('boolean toxicRing = "poison_burst".equals') &&
     runtime.include?("index * Math.PI * 2.0 / trapCount")
 dig = spell_definition.call("dig")
-fail_validation("Dig lacks two-second steerable phase movement") unless
-  dig.dig("delivery", "type") == "phase_movement" &&
-    dig.dig("delivery", "duration_ticks").to_i == 40 &&
-    movement.include?("tickPhaseMovement") && movement.include?("finishPhaseMovement")
+fail_validation("Dig lacks delayed burrow and emergence behind its target") unless
+  dig.dig("delivery", "type") == "teleport_strike" &&
+    dig.dig("delivery", "delay_ticks").to_i >= 20 &&
+    runtime.include?("startDelayedTeleportStrike") &&
+    runtime.include?("MobEffects.INVISIBILITY") &&
+    executor.include?("findTeleportDestination") &&
+    ultimate_vfx.include?('case "dig_eruption" -> send(level, "bodyslam_actor_dust"')
 fail_validation("Earthquake Snowstorm is not centralized per pulse") unless
   runtime.include?("CobblemonUltimateVfx.sendEarthquakePulse(level, zone.center)") &&
     ultimate_vfx.include?("sendEarthquakePulse")
@@ -910,8 +936,13 @@ fail_validation("waves do not consume trail when aftermath is absent") unless
   runtime.include?("? wave.definition.visual.trail : wave.definition.visual.aftermath")
 
 stone_edge_damage = impacts.call("stone_edge").find { |impact| impact["type"] == "damage" }
-fail_validation("Stone Edge is under-scaled for one-hit meteor groups") unless
-  stone_edge_damage&.fetch("damage_multiplier", 0).to_f >= 1.0
+stone_edge = spell_definition.call("stone_edge")
+fail_validation("Stone Edge is not a narrow advancing armor-piercing spire line") unless
+  stone_edge.dig("delivery", "type") == "wave" &&
+    stone_edge.dig("targeting", "width").to_f <= 1.5 &&
+    stone_edge.dig("targeting", "range").to_f >= 16.0 &&
+    stone_edge_damage&.fetch("damage_multiplier", 0).to_f >= 1.0 &&
+    stone_edge_damage.fetch("armor_penetration", 0).to_f >= 4.0
 earthquake = spell_definition.call("earthquake")
 fail_validation("Earthquake is not a fixed ten-second caster-centered zone") unless
   earthquake["cast_time_ticks"].to_i == 0 &&

@@ -62,7 +62,7 @@ TARGETS = {
   "water_gun" => :water_nozzle,
   "thunder_shock" => :small_spark,
   "psychic" => :psychic_eye,
-  "confusion" => :confusion_spiral,
+  "protect" => :protect_wall,
   "razor_leaf" => :razor_leaves,
   "leaf_blade" => :leaf_sword,
   "poison_sting" => :poison_needle,
@@ -138,7 +138,7 @@ ICON_ORDER = %w[
   whirlpool pin_missile u_turn x_scissor bug_buzz mud_shot bulldoze dig
   earth_power earthquake fairy_wind draining_kiss charm dazzling_gleam moonblast
   gust air_cutter aerial_ace tailwind hurricane swift hyper_voice water_gun
-  thunder_shock psychic confusion razor_leaf leaf_blade poison_sting rock_throw
+  thunder_shock psychic protect razor_leaf leaf_blade poison_sting rock_throw
   ice_shard fire_blast bubble_beam petal_blizzard solar_beam stone_edge discharge
   dragon_pulse bullet_punch mach_punch focus_blast shadow_ball fire_punch
   acid_spray bite crunch dragon_claw dragon_tail drain_punch flame_charge force_palm
@@ -556,9 +556,11 @@ class Canvas
     arc(16, 16, 4, 0, Math::PI * 2, @primary, 2); dot(17, 15, [255, 255, 255, 255], 1)
   end
 
-  def confusion_spiral
-    arc(16, 16, 9, -0.4, 5.2, @primary, 2); arc(16, 16, 5, 1.0, 6.0, @secondary, 2)
-    line(16, 16, 21, 13, @primary); dot(9, 9, @secondary, 1)
+  def protect_wall
+    line(9, 7, 9, 25, @primary, 2); line(23, 7, 23, 25, @secondary, 2)
+    line(9, 7, 23, 7, @secondary, 2); line(9, 25, 23, 25, @primary, 2)
+    line(12, 10, 12, 22, @secondary); line(16, 9, 16, 23, @primary)
+    line(20, 10, 20, 22, @secondary); dot(16, 16, [255, 255, 255, 255], 2)
   end
 
   def razor_leaves
@@ -987,5 +989,16 @@ spell_item_model = {
 }
 File.write(File.join(model_directory, "spell_item.json"),
   JSON.pretty_generate(spell_item_model) + "\n")
+
+focus_model_path = File.join(model_directory, "spell_focus.json")
+focus_model = JSON.parse(File.read(focus_model_path))
+focus_model.fetch("overrides").each do |override|
+  icon_index = override.dig("predicate", "tensura:icon")
+  next unless icon_index && icon_index.to_i > 0
+
+  spell = ICON_ORDER.fetch(icon_index.to_i - 1)
+  override["model"] = "tensura:item/#{model_name.call(spell)}"
+end
+File.write(focus_model_path, JSON.pretty_generate(focus_model) + "\n")
 
 puts "Generated #{generated.size} spell icons: #{generated.join(', ')}"

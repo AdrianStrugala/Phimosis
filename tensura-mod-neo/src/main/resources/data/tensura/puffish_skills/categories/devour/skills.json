@@ -687,16 +687,16 @@
     "y": 312,
     "definition": "hurricane"
   },
-  "confusion_owned": {
+  "protect_owned": {
     "x": -33,
     "y": 90,
-    "definition": "confusion_owned",
+    "definition": "protect_owned",
     "root": true
   },
-  "confusion": {
+  "protect": {
     "x": -33,
     "y": 90,
-    "definition": "confusion"
+    "definition": "protect"
   },
   "psybeam_owned": {
     "x": -51,

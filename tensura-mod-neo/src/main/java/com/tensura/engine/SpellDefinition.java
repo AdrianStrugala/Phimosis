@@ -46,6 +46,7 @@ public class SpellDefinition {
          * "orbit_release" — follows the caster until recast or automatic radial release
          * "phase_movement" — steerable phased movement ending in a contact strike
          * "pulse_ring" — emits timed outward/returning radial phases
+         * "barrier_wall" — places a finite directional wall that intercepts attacks
          * "channel_cone" — repeatedly applies impacts in a forward cone
          * "wave"        — moves a ground-level front through enemies
          * "trap"        — persists at a location and triggers on entry

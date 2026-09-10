@@ -410,7 +410,7 @@
       "predicate": {
         "tensura:icon": 54
       },
-      "model": "tensura:item/spell_confusion"
+      "model": "tensura:item/spell_protect"
     },
     {
       "predicate": {

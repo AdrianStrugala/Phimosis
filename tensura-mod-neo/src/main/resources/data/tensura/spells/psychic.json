@@ -8,9 +8,7 @@
   "targeting": { "type": "aim", "range": 20.0, "width": 1.0, "max_targets": 1 },
   "delivery": { "type": "instant" },
   "impact": [
-    { "type": "damage", "damage_multiplier": 1.0 },
-    { "type": "knockback", "strength": 2.0 },
-    { "type": "status_effect", "effect": "minecraft:weakness", "duration": 80, "chance": 0.4 }
+    { "type": "damage", "damage_multiplier": 1.0 }
   ],
   "visual": {
     "cast_animation": "psychic_lift_cast",

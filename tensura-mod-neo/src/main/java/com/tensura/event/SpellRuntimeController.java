@@ -18,6 +18,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.Level;
@@ -60,6 +61,7 @@ public class SpellRuntimeController {
     private static final List<ContactAura> CONTACT_AURAS = new ArrayList<>();
     private static final Map<UUID, ActiveOrbit> ACTIVE_ORBITS = new HashMap<>();
     private static final List<ActivePulseRing> PULSE_RINGS = new ArrayList<>();
+    private static final List<BarrierWall> BARRIER_WALLS = new ArrayList<>();
     private static final Map<UUID, ActiveCounter> COUNTERS = new HashMap<>();
     private static final Map<UUID, GuardState> GUARDS = new HashMap<>();
     private static final Map<UUID, MeteorGroup> METEOR_GROUPS = new HashMap<>();
@@ -348,6 +350,38 @@ public class SpellRuntimeController {
             return true;
         }
 
+        public static boolean startBarrierWall(ServerPlayer owner, LivingEntity effectCaster,
+                                               LivingEntity facingTarget,
+                                               SpellDefinition definition) {
+            Vec3 forward = facingTarget == null
+                    ? effectCaster.getLookAngle()
+                    : facingTarget.getBoundingBox().getCenter()
+                        .subtract(effectCaster.getEyePosition());
+            forward = new Vec3(forward.x, 0.0, forward.z);
+            if (forward.lengthSqr() < 1.0E-6) {
+                double yaw = Math.toRadians(effectCaster.getYRot());
+                forward = new Vec3(-Math.sin(yaw), 0.0, Math.cos(yaw));
+            }
+            forward = forward.normalize();
+            Vec3 right = new Vec3(-forward.z, 0.0, forward.x);
+            double width = Math.max(1.0, definition.targeting.width);
+            double halfHeight = Math.max(1.0, definition.targeting.radius);
+            int duration = Math.max(1, definition.delivery.duration_ticks);
+            Vec3 center = effectCaster.position().add(forward.scale(2.0))
+                    .add(0.0, halfHeight, 0.0);
+            BARRIER_WALLS.add(new BarrierWall(effectCaster.level().dimension(), owner.getUUID(),
+                    effectCaster.getUUID(), center, forward, right,
+                    width * 0.5, halfHeight, definition, duration));
+            if (effectCaster.level() instanceof ServerLevel level) {
+                Vec3 left = center.subtract(right.scale(width * 0.5));
+                Vec3 rightEdge = center.add(right.scale(width * 0.5));
+                SpellVfxDispatcher.send(level, "beam", definition.visual.trail,
+                        definition.school, left, rightEdge, halfHeight,
+                        duration, effectCaster, true);
+            }
+            return true;
+        }
+
     public static void clearCompanionState(LivingEntity companion) {
         UUID companionId = companion.getUUID();
         VORTEXES.removeIf(vortex -> vortex.effectCasterId.equals(companionId));
@@ -373,6 +407,7 @@ public class SpellRuntimeController {
         CONTACT_AURAS.removeIf(aura -> aura.effectCasterId.equals(companionId));
         ACTIVE_ORBITS.remove(companionId);
         PULSE_RINGS.removeIf(ring -> ring.effectCasterId.equals(companionId));
+        BARRIER_WALLS.removeIf(wall -> wall.effectCasterId.equals(companionId));
         COUNTERS.remove(companionId);
         GUARDS.remove(companionId);
         METEOR_GROUPS.entrySet().removeIf(entry ->
@@ -481,6 +516,7 @@ public class SpellRuntimeController {
         tickContactAuras(event.getServer());
         tickOrbits(event.getServer());
         tickPulseRings(event.getServer());
+        tickBarrierWalls(event.getServer());
         tickGuards(event.getServer());
 
         long now = event.getServer().overworld().getGameTime();
@@ -494,6 +530,19 @@ public class SpellRuntimeController {
         LivingEntity victim = event.getEntity();
         if (!(victim.level() instanceof ServerLevel serverLevel)) return;
         Entity sourceEntity = event.getSource().getEntity();
+
+        if (sourceEntity != null) {
+            BarrierHit barrierHit = findBarrierIntersection(
+                serverLevel, sourceEntity.position(), victim.getBoundingBox().getCenter(),
+                victim);
+            if (barrierHit != null) {
+                event.setCanceled(true);
+                Entity directEntity = event.getSource().getDirectEntity();
+                if (directEntity instanceof Projectile projectile) projectile.discard();
+                sendBarrierImpact(serverLevel, barrierHit, victim);
+                return;
+            }
+        }
 
         ActiveCounter counter = COUNTERS.get(victim.getUUID());
         ServerPlayer owner = counter == null ? null
@@ -600,6 +649,8 @@ public class SpellRuntimeController {
             || entry.getValue().effectCasterId.equals(playerId));
         PULSE_RINGS.removeIf(ring -> ring.ownerId.equals(playerId)
             || ring.effectCasterId.equals(playerId));
+        BARRIER_WALLS.removeIf(wall -> wall.ownerId.equals(playerId)
+            || wall.effectCasterId.equals(playerId));
         COUNTERS.entrySet().removeIf(entry -> entry.getKey().equals(playerId)
                 || entry.getValue().ownerId.equals(playerId));
         GUARDS.remove(playerId);
@@ -623,6 +674,7 @@ public class SpellRuntimeController {
         CONTACT_AURAS.clear();
         ACTIVE_ORBITS.clear();
         PULSE_RINGS.clear();
+        BARRIER_WALLS.clear();
         COUNTERS.clear();
         GUARDS.clear();
         METEOR_GROUPS.clear();
@@ -775,6 +827,81 @@ public class SpellRuntimeController {
                 orbit.definition.school, effectCaster.position(), effectCaster.position(),
                 radius, 12, effectCaster, false);
     }
+
+    private static void tickBarrierWalls(MinecraftServer server) {
+        Iterator<BarrierWall> iterator = BARRIER_WALLS.iterator();
+        while (iterator.hasNext()) {
+            BarrierWall wall = iterator.next();
+            ServerLevel level = server.getLevel(wall.dimension);
+            ServerPlayer owner = server.getPlayerList().getPlayer(wall.ownerId);
+            Entity source = level == null ? null : level.getEntity(wall.effectCasterId);
+            if (level == null || owner == null || owner.level() != level
+                    || !(source instanceof LivingEntity living) || !living.isAlive()
+                    || --wall.remainingTicks < 0) {
+                iterator.remove();
+                continue;
+            }
+
+            AABB bounds = new AABB(
+                    wall.center.x - wall.halfWidth, wall.center.y - wall.halfHeight,
+                    wall.center.z - wall.halfWidth, wall.center.x + wall.halfWidth,
+                    wall.center.y + wall.halfHeight, wall.center.z + wall.halfWidth)
+                    .inflate(0.5);
+            for (Projectile projectile : level.getEntitiesOfClass(
+                    Projectile.class, bounds, Entity::isAlive)) {
+                Entity projectileOwner = projectile.getOwner();
+                if (projectileOwner instanceof LivingEntity livingOwner
+                        && SpellTargetingRules.isProtectedAlly(
+                            owner, living, livingOwner)) continue;
+
+                Vec3 end = projectile.position();
+                Vec3 start = end.subtract(projectile.getDeltaMovement());
+                Vec3 intersection = intersectBarrier(wall, start, end);
+                if (intersection == null) continue;
+
+                projectile.discard();
+                sendBarrierImpact(level, new BarrierHit(wall, intersection), living);
+            }
+        }
+    }
+
+    private static BarrierHit findBarrierIntersection(ServerLevel level, Vec3 start, Vec3 end,
+                                                      LivingEntity protectedTarget) {
+        for (BarrierWall wall : BARRIER_WALLS) {
+            if (!wall.dimension.equals(level.dimension())) continue;
+            ServerPlayer owner = level.getServer().getPlayerList().getPlayer(wall.ownerId);
+            Entity source = level.getEntity(wall.effectCasterId);
+            if (owner == null || !(source instanceof LivingEntity effectCaster)
+                    || !SpellTargetingRules.isProtectedAlly(
+                            owner, effectCaster, protectedTarget)) continue;
+                Vec3 intersection = intersectBarrier(wall, start, end);
+                if (intersection != null) return new BarrierHit(wall, intersection);
+        }
+        return null;
+    }
+
+            private static Vec3 intersectBarrier(BarrierWall wall, Vec3 start, Vec3 end) {
+            double startSide = start.subtract(wall.center).dot(wall.normal);
+            double endSide = end.subtract(wall.center).dot(wall.normal);
+            if (startSide * endSide > 0.0) return null;
+            double denominator = startSide - endSide;
+            if (Math.abs(denominator) < 1.0E-6) return null;
+            double progress = startSide / denominator;
+            if (progress < 0.0 || progress > 1.0) return null;
+            Vec3 intersection = start.lerp(end, progress);
+            Vec3 relative = intersection.subtract(wall.center);
+            return Math.abs(relative.dot(wall.right)) <= wall.halfWidth
+                && Math.abs(relative.y) <= wall.halfHeight ? intersection : null;
+            }
+
+            private static void sendBarrierImpact(ServerLevel level, BarrierHit barrierHit,
+                              Entity anchor) {
+            SpellDefinition definition = barrierHit.wall.definition;
+            SpellVfxDispatcher.send(level, "impact", definition.visual.impact,
+                definition.school, barrierHit.position, barrierHit.position, 1.0,
+                10, anchor, true);
+            CobblemonUltimateVfx.sendProtectBlock(level, barrierHit.position);
+            }
 
     private static void tickVortexes(MinecraftServer server) {
         Iterator<ActiveVortex> iterator = VORTEXES.iterator();
@@ -1897,6 +2024,37 @@ public class SpellRuntimeController {
             this.remainingTicks = remainingTicks;
         }
     }
+
+    private static class BarrierWall {
+        private final ResourceKey<Level> dimension;
+        private final UUID ownerId;
+        private final UUID effectCasterId;
+        private final Vec3 center;
+        private final Vec3 normal;
+        private final Vec3 right;
+        private final double halfWidth;
+        private final double halfHeight;
+        private final SpellDefinition definition;
+        private int remainingTicks;
+
+        private BarrierWall(ResourceKey<Level> dimension, UUID ownerId,
+                            UUID effectCasterId, Vec3 center, Vec3 normal, Vec3 right,
+                            double halfWidth, double halfHeight,
+                            SpellDefinition definition, int remainingTicks) {
+            this.dimension = dimension;
+            this.ownerId = ownerId;
+            this.effectCasterId = effectCasterId;
+            this.center = center;
+            this.normal = normal;
+            this.right = right;
+            this.halfWidth = halfWidth;
+            this.halfHeight = halfHeight;
+            this.definition = definition;
+            this.remainingTicks = remainingTicks;
+        }
+    }
+
+    private record BarrierHit(BarrierWall wall, Vec3 position) {}
 
     private record ActiveCounter(UUID ownerId, SpellDefinition definition, long expiresAt) {}
 

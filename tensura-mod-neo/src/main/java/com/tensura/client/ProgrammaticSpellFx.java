@@ -87,6 +87,17 @@ public final class ProgrammaticSpellFx {
      * {@code targeting.width}, so these numbers are blocks at width 1.0.
      */
     private static void addBeamGeometry(FX effect, String style, int duration, Palette palette) {
+        if ("protect_wall".equals(style)) {
+            effect.getFxData().objects().add(boxShellAt(duration,
+                new Palette(0xCCB8F3FF, 0x001FA2FF),
+                32.0f, 0.085f, 1.0f, 2.0f, 0.05f,
+                0.5f, 0.0f, 0.0f, Box.Type.Edge, true));
+            effect.getFxData().objects().add(boxShellAt(duration,
+                new Palette(0x3344D8FF, 0x001FA2FF),
+                12.0f, 0.10f, 0.98f, 1.96f, 0.04f,
+                0.5f, 0.0f, 0.0f, Box.Type.Shell, true));
+            return;
+        }
         if ("hyper_beam_core".equals(style)) {
             addHyperBeamGeometry(effect, Math.max(14, duration), palette);
             return;
@@ -128,6 +139,21 @@ public final class ProgrammaticSpellFx {
             if (addCrunchGeometry(effect, style, duration)) return true;
             if (addSolarGeometry(effect, style, duration)) return true;
             switch (style) {
+                case "protect_cast" -> {
+                    effect.getFxData().objects().add(ring(duration,
+                        new Palette(0xDDB8F3FF, 0x001FA2FF),
+                        24.0f, 0.055f, 0.72f));
+                    effect.getFxData().objects().add(sphere(duration,
+                        new Palette(0x66FFFFFF, 0x001FA2FF),
+                        18.0f, 0.10f, 0.04f, true, false));
+                    return true;
+                }
+                case "protect_block" -> {
+                    effect.getFxData().objects().add(burstSphere(duration,
+                        new Palette(0xEEFFFFFF, 0x001FA2FF),
+                        34.0f, 0.13f, 0.66f, 0));
+                    return true;
+                }
                 case "hyper_beam_charge" -> {
                     effect.getFxData().objects().add(
                             sphere(duration, new Palette(0xFFFFFFFF, 0x007DD3FC),
@@ -859,7 +885,7 @@ public final class ProgrammaticSpellFx {
             case "water_gun_brace" -> new CastProfile(CastFamily.CHANNEL, 10);
             case "thunder_shock_snap" -> new CastProfile(CastFamily.BURST, 10);
             case "psychic_lift_cast" -> new CastProfile(CastFamily.GROUND, 7);
-            case "confusion_orbit_cast" -> new CastProfile(CastFamily.FOCUS, 7);
+            case "protect_cast" -> new CastProfile(CastFamily.STANCE, 7);
             case "razor_leaf_fan" -> new CastProfile(CastFamily.VOLLEY, 8);
             case "leaf_blade_dash" -> new CastProfile(CastFamily.DASH, 7);
             case "poison_sting_volley" -> new CastProfile(CastFamily.VOLLEY, 9);

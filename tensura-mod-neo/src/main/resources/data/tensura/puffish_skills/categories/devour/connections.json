@@ -497,14 +497,14 @@
   ],
   [
     "devour_core",
-    "confusion_owned"
+    "protect_owned"
   ],
   [
-    "confusion_owned",
-    "confusion"
+    "protect_owned",
+    "protect"
   ],
   [
-    "confusion_owned",
+    "protect_owned",
     "psybeam_owned"
   ],
   [

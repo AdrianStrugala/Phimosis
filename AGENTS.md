@@ -44,7 +44,7 @@ okresl jednoznacznie, za co odpowiada.
 
 ## Aktualny checkpoint spelli
 
-Stan zweryfikowany 2026-09-09:
+Stan zweryfikowany 2026-09-10:
 
 - plan docelowy: 110 unikalnych spelli w `docs/specs/spell-rework.md`;
 - implementacja done-done: 110 spelli, czyli caly kanoniczny roster;
@@ -57,6 +57,8 @@ Stan zweryfikowany 2026-09-09:
 - `iron_strike`, `frost_nova`, `nature_burst`, `poison_strike`, `seismic_slam`,
   `thundershock`, `aerial_strike` i `psychic_blast` zostaly zastapione kanonicznymi
   ID z migracja zapisanych danych;
+- `confusion` zostal zastapiony przez `protect`: przezroczysta sciana 6 x 5 m
+  dziala przez 10 s, przechwytuje ataki do castera i sojusznikow, a cooldown wynosi 5 s;
 - wspolny delivery `arc_strike` jest wdrozony i respektuje kierunek, zasieg oraz
   przeszkody;
 - `CobblemonMoveMapper` mapuje ruch tylko na spell o identycznym ID i pomija ruchy
@@ -68,7 +70,7 @@ Stan zweryfikowany 2026-09-09:
   `rock_tomb`, `stealth_rock` i `trick_room` maja komplet mechanik runtime,
   mapowan, ikon, profili VFX i wpisow Devour;
 - pierwszy pass warstwy ultimate obejmuje 36 capstone'ow, po dwa na kazdy z 18
-  rays; bazowy `psychic` jest instant on-hit, a mechaniki ultimate i bindingi
+  rays; bazowy `psychic` jest instant on-hit tylko z damage, bez knockbacku, a mechaniki ultimate i bindingi
   Snowstorm/Photon przechodza walidator oraz build, lecz oczekuja playtestu;
 - `flamethrower` jest zaakceptowanym wzorcem jakosci VFX; dedykowane profile
   sygnaturowe dla `hyper_beam`, `thunder`, `earthquake`, `draco_meteor`, `surf`,

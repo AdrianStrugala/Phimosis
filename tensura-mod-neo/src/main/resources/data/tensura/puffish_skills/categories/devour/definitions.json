@@ -2807,7 +2807,7 @@
   },
   "dig": {
     "title": "Dig",
-    "description": "Burrow for up to two seconds with a visible ground trail, then erupt on contact, collision, or recast.",
+    "description": "Burrow beneath the ground, then emerge behind the aimed enemy after a short delay.",
     "icon": {
       "type": "item",
       "data": {
@@ -3190,8 +3190,8 @@
       }
     }
   },
-  "confusion_owned": {
-    "title": "Confusion",
+  "protect_owned": {
+    "title": "Protect",
     "icon": {
       "type": "texture",
       "data": {
@@ -3213,20 +3213,21 @@
       }
     }
   },
-  "confusion": {
-    "title": "Confusion",
-    "description": "Launch a Psychic projectile from long range. Sometimes disorients enemies.",
+  "protect": {
+    "title": "Protect",
+    "description": "Raise a transparent wall for ten seconds that intercepts attacks crossing toward you or nearby allies.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "tensura:spell_icon_confusion"
+        "item": "tensura:spell_icon_protect"
       }
     },
+    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
         "data": {
-          "command": "tensura devour_recover @s confusion"
+          "command": "tensura devour_recover @s protect"
         }
       }
     ],
@@ -3369,7 +3370,7 @@
   },
   "psychic": {
     "title": "Psychic",
-    "description": "Instantly strike one aimed enemy with Psychic force, knocking it back and sometimes weakening it.",
+    "description": "Instantly damage one aimed enemy with concentrated Psychic force.",
     "icon": {
       "type": "item",
       "data": {
@@ -4036,7 +4037,7 @@
   },
   "rock_slide": {
     "title": "Rock Slide",
-    "description": "Call down a barrage of Rock strikes from long range. Knocks enemies back and sometimes slows enemies. Takes a short moment to cast.",
+    "description": "Drop five rocks across a broad area, slowing enemies and knocking them away.",
     "icon": {
       "type": "item",
       "data": {
@@ -4087,7 +4088,7 @@
   },
   "stone_edge": {
     "title": "Stone Edge",
-    "description": "Call down a barrage of Rock strikes from long range. Sometimes leaves enemies Exposed. Takes a short moment to cast.",
+    "description": "Drive a narrow line of stone spires through enemies, ignoring four points of armor.",
     "icon": {
       "type": "item",
       "data": {

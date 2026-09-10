@@ -138,6 +138,11 @@ public final class CobblemonUltimateVfx {
         send(level, "rockthrow_target", position.add(0.0, 1.0, 0.0));
     }
 
+    public static void sendProtectBlock(ServerLevel level, Vec3 position) {
+        send(level, "protect-blockchip", position);
+        send(level, "protect-shine", position);
+    }
+
     public static void sendEarthquakePulse(ServerLevel level, Vec3 position) {
         send(level, "eruption_targetburst", position);
         send(level, "eruption_targetrocks", position);

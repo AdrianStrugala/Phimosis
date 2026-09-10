@@ -232,6 +232,8 @@ public class SpellExecutor {
             case "orbit_release" -> SpellRuntimeController.startOrbit(caster, caster, def);
             case "phase_movement" -> SpellMovementController.startPhaseMovement(caster, def);
             case "pulse_ring" -> SpellRuntimeController.startPulseRing(caster, caster, def);
+                case "barrier_wall" -> SpellRuntimeController.startBarrierWall(
+                    caster, caster, null, def);
             case "protective_aura" -> SpellRuntimeController.startProtectiveAura(caster, caster, def);
                 case "zone" -> SpellRuntimeController.startZone(
                     caster, caster, def, caster.position());
@@ -337,6 +339,8 @@ public class SpellExecutor {
                         case "phase_movement" -> SpellMovementController.startPhaseMovement(
                             owner, companion, target, def);
                             case "pulse_ring" -> SpellRuntimeController.startPulseRing(owner, companion, def);
+                                case "barrier_wall" -> SpellRuntimeController.startBarrierWall(
+                                    owner, companion, target, def);
             case "protective_aura" -> SpellRuntimeController.startProtectiveAura(
                     owner, companion, def);
                 case "zone" -> SpellRuntimeController.startZone(

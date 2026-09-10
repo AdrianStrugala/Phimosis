@@ -158,6 +158,7 @@ public class CompanionSpellGoal extends Goal {
 
     private static boolean isOffensiveSelfArea(SpellDefinition definition) {
         if ("protective_aura".equals(definition.delivery.type)
+                || "barrier_wall".equals(definition.delivery.type)
                 || "self".equals(definition.delivery.type)) return false;
         return definition.targeting.radius > 0.0;
     }

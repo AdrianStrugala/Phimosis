@@ -14,7 +14,8 @@ public final class SpellIdAliases {
         "seismic_slam", "seismic_toss",
         "thundershock", "thunder_shock",
         "aerial_strike", "hurricane",
-        "psychic_blast", "psychic"
+        "psychic_blast", "psychic",
+        "confusion", "protect"
     );
 
     private SpellIdAliases() {}
