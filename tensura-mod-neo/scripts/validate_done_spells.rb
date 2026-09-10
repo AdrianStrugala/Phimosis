@@ -213,6 +213,13 @@ fail_validation("Flamethrower Snowstorm throttle state can grow without bounds")
 fail_validation("Flamethrower hit throttling merges effects from different casters") unless
   flamethrower_vfx.include?("new HitKey(caster.getUUID(), target.getUUID())") &&
     flamethrower_vfx.include?("record HitKey(UUID casterId, UUID targetId)")
+# Player casts get no Snowstorm stream (the Cobblemon handler drops the entity packet for
+# anything that is not a PosableEntity) and no vanilla particle line, so the Photon beam is
+# the whole visual. A lone 0.16-wide BeamEmitter renders as a near-invisible hairline.
+fail_validation("Flamethrower player stream fell back to a single hairline beam") unless
+  vfx.include?("addBeamGeometry(effect, id.getPath(), duration, palette)") &&
+    vfx.match?(/"flame_stream".equals\(style\)/) &&
+    vfx.scan(/beam\(duration,[^;]*?0\.(?:95|55|24)f\)/m).size == 3
 fail_validation("Flamethrower still layers vanilla beam particles over Snowstorm") unless
   executor.include?("!CobblemonFlamethrowerVfx.isFlamethrower(definition)")
 fail_validation("Flamethrower impact does not replace Photon feedback with Snowstorm") unless

@@ -38,8 +38,7 @@ public final class ProgrammaticSpellFx {
         effect.setFxLocation(id);
 
         switch (shape) {
-            case "beam", "ribbon" -> effect.getFxData().objects().add(
-                    beam(duration, palette));
+            case "beam", "ribbon" -> addBeamGeometry(effect, id.getPath(), duration, palette);
             case "cone" -> effect.getFxData().objects().add(
                 cone(duration, palette));
             case "wave" -> {
@@ -70,6 +69,33 @@ public final class ProgrammaticSpellFx {
 
     private static BeamEmitter beam(int duration, Palette palette) {
         return beam(duration, palette, 0.16f);
+    }
+
+    /**
+     * A single 0.16-wide BeamEmitter reads as a hairline: for most beams it is only the bright
+     * accent laid over the vanilla particle line that {@code SpellBeamDelivery} draws along the
+     * trace. Flamethrower has no such line - Snowstorm owns its Pokemon visuals and the vanilla
+     * fallback is deliberately suppressed - so its stream has to carry the whole silhouette and
+     * is built from stacked layers instead. Client-side width is multiplied by the spell's
+     * {@code targeting.width}, so these numbers are blocks at width 1.0.
+     */
+    private static void addBeamGeometry(FX effect, String style, int duration, Palette palette) {
+        if (!"flame_stream".equals(style)) {
+            effect.getFxData().objects().add(beam(duration, palette));
+            return;
+        }
+
+        // Outer envelope, hot middle, near-white core - widest first so the core draws on top.
+        effect.getFxData().objects().add(beam(duration,
+                new Palette(withAlpha(palette.primary(), 0x55), palette.secondary()), 0.95f));
+        effect.getFxData().objects().add(beam(duration,
+                new Palette(withAlpha(palette.primary(), 0xAA), palette.secondary()), 0.55f));
+        effect.getFxData().objects().add(beam(duration,
+                new Palette(0xFFFFF3C4, palette.primary()), 0.24f));
+    }
+
+    private static int withAlpha(int argb, int alpha) {
+        return ((alpha & 0xFF) << 24) | (argb & 0x00FFFFFF);
     }
 
     private static BeamEmitter beam(int duration, Palette palette, float width) {
