@@ -4,9 +4,9 @@
   "power": 16.0,
   "school": "earth",
   "cooldown_ticks": 240,
-  "cast_time_ticks": 12,
+  "cast_time_ticks": 0,
   "targeting": { "type": "aim", "range": 14.0, "width": 1.5, "max_targets": 1 },
-  "delivery": { "type": "teleport_strike", "delay_ticks": 12 },
+  "delivery": { "type": "phase_movement", "duration_ticks": 40, "movement_speed": 0.35 },
   "impact": [
     { "type": "damage", "damage_multiplier": 1.0 },
     { "type": "knockback", "strength": 1.4 }

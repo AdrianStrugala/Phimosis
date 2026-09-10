@@ -172,7 +172,7 @@ Docelowe zalozenia:
 | `Psybeam` | 11 / 8 | Held channel beam | Promien trwa podczas przytrzymania, a cooldown startuje po puszczeniu. | Warstwowy teczowy promien skupiony na aktualnym kierunku celowania. |
 | `Psycho Cut` | 14 / 8 | Arc strike | Magiczne ostrze przecina obszar przed graczem i ignoruje 2 punkty pancerza. Nie wymaga namierzonego przeciwnika. | Fioletowy polksiezyc powstaje przy dloni i rozcina powietrze na krotkim dystansie. |
 | `Rest` | 0 / 90 | Self heal | Natychmiast przywraca pelne HP i oczyszcza negatywne statusy, po czym naklada Asleep na 5 s. Obrazenia moga obudzic dopiero po 2 s. | Gracz siada lub opuszcza ramiona, otacza go spokojna niebieska aura i trzy unoszace sie symbole snu. |
-| `Psychic` | 17 / 14 | Hold and throw | Przytrzymuje cel do 1.5 s; ponowne uzycie rzuca go w wybranym kierunku. | Przezroczysta aura i linie wskazujace kierunek rzutu. |
+| `Psychic` | 13 / 8 | Instant on-hit | Bez cast time i bez projectile natychmiast trafia namierzony cel telekinetycznym uderzeniem, zadaje damage i odrzuca go od castera. | Snowstorm `psychic_actor` na release oraz `psychic_target` i `psychic_impact` dokladnie na trafionym celu. |
 | `Trick Room` | 0 / 24 | Zone | Przez 8 s szybkie jednostki sa spowolnione, a wolne przyspieszone. | Odwrocona przezroczysta kostka z siatka i rotujacymi rogami. |
 | `Future Sight` | 28 / 22 | Delayed mark | Znacznik na celu wybucha po 3 s nawet po utracie line of sight. | Runa oka, trzy pulsy odliczania i jasny implozyjny impact. |
 
@@ -444,6 +444,133 @@ Modele pociskow i stref nie wymagaja GeckoLib. Wlasne `EntityRenderer`, modele B
 - Persistent zone wysyla stan przy utworzeniu, zamiast pakietu particles co tick.
 - Beam i trail sa renderowane klientowo na podstawie zsynchronizowanych punktow.
 - Przy wielu companionach klient stosuje limit odleglosci i laczy odlegle efekty w prostsze LOD.
+
+### 6.6. Plan warstwy ultimate - 2026-09-10
+
+Status: `IMPLEMENTATION`. Pierwszy pass wszystkich 36 capstone'ow oraz korekta
+bazowego `Psychic` sa wdrozone w definicjach i runtime. Mechaniki, bindingi VFX,
+cleanup i opisy Devour przechodza validator; cala warstwa oczekuje jeszcze na
+playtest widocznosci, timingu, balansu i zachowania companionow.
+
+Kazdy z 18 rays otrzymuje dwa wyrazne spelle capstone. Nie musza byc po prostu
+dwoma najwiekszymi liczbami damage: jeden powinien reprezentowac kulminacje
+mechaniki typu, a drugi dawac inny rytm walki albo role druzynowa. Aktualnie
+zatwierdzone jest pelne 36 slotow. `Thunder`, `Earthquake` i `Surf` zachowuja
+mechanike jako trzy benchmarki; Thunder i Earthquake dostaja polish VFX.
+
+Snowstorm z Cobblemona jest warstwa efektow, nie zrodlem mechaniki. Uzywamy
+wylacznie identyfikatorow obecnych w bundlowanym Cobblemonie 1.7.3. Geometria
+telegraphu, hitbox, czas i obrazenia pozostaja serwerowe w Tensurze. Gdy efekt
+Snowstorm zniknie po aktualizacji Cobblemona, spell zachowuje czytelny fallback
+Photon zamiast znikac wizualnie.
+
+| Typ | Pierwszy ultimate | Drugi ultimate | Paleta Snowstorm Cobblemona |
+|---|---|---|---|
+| Normal | **Hyper Voice - Resonance Break.** Cztery rozszerzajace sie impulsy; kolejne trafienia tego samego celu zwiekszaja odrzut, a czwarty przerywa cast. Przeciwnik moze wyjsc bokiem z rosnacego stozka. | **Hyper Beam - Terminal Line.** Wyrazne ladowanie, przebijajacy promien i trzy opoznione eksplozje wzdluz trafionej linii; po release naklada Exhausted. | `cobblemon:explosion_actorbigring`, `cobblemon:explosion_actorrings`, `cobblemon:explosion_charge_accretion`, `cobblemon:explosion_burst_flash`. |
+| Fire | **Fire Blast - Daimonji Brand.** Pocisk po trafieniu wypala piec ramion znaku; kazde ramie eksploduje osobno i zamyka droge odwrotu, ale srodek jest zapowiedziany przed detonacja. | **Overheat - Furnace Vent.** Caster zakotwicza sie i wypuszcza trzy coraz szersze fale ognia; ostatnia mocno odrzuca, po czym caster otrzymuje Exhausted. | `cobblemon:daimonji1`, `cobblemon:daimonji2`, `cobblemon:daimonji3`, `cobblemon:daimonji4`, `cobblemon:fireblast_target`, `cobblemon:eruption_actorburst`, `cobblemon:lavaplume_target`. |
+| Water | **Surf - benchmark bez przebudowy.** Zachowuje szeroka fale jadaca po podlozu, niesienie celow i Wet. Dopuszczalny jest tylko polish piany oraz impactu. | **Hydro Pump - Pressure Cannon.** Kanalowany strumien ma narastajacy odrzut celu i kontrolowany recoil castera; uderzenie w blok tworzy szeroki splash, ale nie omija przeszkod. | `cobblemon:watergun_actor`, `cobblemon:watergun_spray`, `cobblemon:watergun_targetfoam`, `cobblemon:waterpulse_targetsplash`. |
+| Electric | **Thunder - benchmark mechaniki, polish VFX.** Bez zmian damage, telegraphu i timingu; poprawiamy gestosc chmury, pionowy bolt, impact i afterglow istniejacym natywnym timeline'em. | **Volt Tackle - Live Wire.** Aktywacja daje wyrazny bonus speed na 10 s i elektryczna aure. Kontakt z przeciwnikiem zadaje damage; kazdy cel moze zostac trafiony tylko raz podczas aktywacji, aby aura nie zadawala obrazen co tick. | `cobblemon:thunder_actor`, `cobblemon:thunder_actorcloud`, `cobblemon:thunder_target`, `cobblemon:thunder_targetfloorsparks`, `cobblemon:thunderbolt_actorbolts`, `cobblemon:thundershock_actorsparks`, `cobblemon:thunderbolt_targetimpact`. |
+| Grass | **Petal Blizzard - Bloom Orbit.** Platki najpierw wiruja przy casterze jako ruchoma oslona, a po ponownym uzyciu sa wyrzucane promieniowo; wczesny release daje mniejszy zasieg. | **Solar Beam - Sunline.** Nad casterem powstaje sloneczny fokus; po naladowaniu szeroki beam przebija cele, a swiatlo dzienne skraca anticipation bez usuwania telegraphu. | `cobblemon:magicalleaf_actor`, `cobblemon:razorleaf_targetexcess`, `cobblemon:synthesis_sun`, `cobblemon:synthesis_sunlight`, `cobblemon:aurorabeam_targetburst`. |
+| Ice | **Aurora Veil - Fracture Dome.** Oslona ma trzy widoczne segmenty; zlamanie kazdego segmentu wypuszcza slaby frost pulse, ale nie zamraza bez istniejacego Wet/Chill. | **Blizzard - Whiteout Front.** Powolna burza podaza w wybranym kierunku, buduje Chill i przy koncu rozbija tylko cele juz Frozen; granica strefy pozostaje widoczna w sniegu. | `cobblemon:protect-block`, `cobblemon:protect-blockchip`, `cobblemon:protect-shine`, `cobblemon:mist_actorshroud`, `cobblemon:icywind_actor`, `cobblemon:powdersnow_actor`, `cobblemon:icywind_targetbreak`. |
+| Fighting | **Close Combat - Break Sequence.** Natywny dwuetapowy Snowstorm poprzedza trzeci, kierunkowy finisher; kazdy etap wymaga pozostania blisko celu, a po calosci caster otrzymuje Exposed. | **Focus Blast - Pressure Core.** Wolny orb mozna doladowac do wiekszego promienia; miss pozostawia krotka implozje cisnienia, hit daje Stagger. Caster jest wyraznie widoczny podczas charge. | `cobblemon:closecombat_actor`, `cobblemon:closecombat_target`, `cobblemon:closecombat_target2`, `cobblemon:explosion_charge_accretion`, `cobblemon:explosion_target`. |
+| Poison | **Toxic Spikes - Contamination Ring.** Caster rozstawia szesc punktow na obwodzie areny; pierwsze przekroczenie daje Poison, kolejne Toxic. Srodek pozostaje bezpieczny i pozwala grac wokol granicy. | **Toxic - Fatal Dose.** Jeden wolny, naprowadzany ladunek po trafieniu naklada narastajacy Toxic na pojedynczy cel. Bez transferu po smierci i bez dodatkowych triggerow; counterplayem jest unik, oslona albo cleanse przed wysokimi tickami koncowymi. | `cobblemon:poisonpowder_land`, `cobblemon:poisonpowder_landcloud`, `cobblemon:poisongas_target`, `cobblemon:sludgebomb_targetbubbles`, `cobblemon:toxpoison_actor`. |
+| Ground | **Dig - Tectonic Hunt.** Caster znika pod ziemia na maksymalnie 2 s i moze sterowac ruchem; widoczny slad gruntu zdradza trase. Release albo kontakt z przeciwnikiem wywoluje erupcje i knockup, a kolizja z nieprzekraczalna przeszkoda konczy ruch. | **Earthquake - benchmark mechaniki, polish VFX.** Zachowuje nieruchoma strefe 12 blokow i piec pulsu przez 10 s; kazdy puls dostaje narastajace pekniecia, wyrzut skal i pyl Snowstorm bez zmiany hitboxu ani tickow. | `cobblemon:bodyslam_actor_dust`, `cobblemon:eruption_targetburst`, `cobblemon:eruption_targetrocks`, `cobblemon:eruption_targetsmoke`, `cobblemon:rockthrow_actor`. |
+| Flying | **Tailwind - Slipstream Road.** Zamiast okraglej aury tworzy za casterem zakrzywiony korytarz; sojusznicy poruszajacy sie zgodnie z nim dostaja speed, przeciwnicy idacy pod wiatr sa lekko hamowani. | **Hurricane - Eye and Release.** Tornado ma spokojne oko, sciaga cele do pierscienia, unosi dopiero w ostatniej fazie i wyrzuca w kierunku pokazanym przez telegraph. | `cobblemon:aerialace_actorjumpline`, `cobblemon:mist_actor`, `cobblemon:explosion_actorrings`, `cobblemon:bodyslam_actor_smoke`. |
+| Psychic | **Trick Room - Inversion Cell.** Duzy pokoj wyznaczony czterema naroznikami przez 8 s odwraca relacje speed: szybkie jednostki spowalnia, a wolne przyspiesza. Nie zamienia castera miejscem z targetem. | **Future Sight - Recorded Fate.** Znak przez trzy sekundy zapisuje bezposrednie obrazenia otrzymane przez cel, a potem zadaje bazowy hit plus ograniczone echo czesci zapisu. Telegraph pokazuje moment zamkniecia okna. | `cobblemon:kinesis_actorspiral`, `cobblemon:psychic_actor`, `cobblemon:psychic_target`, `cobblemon:confusion_impact`, `cobblemon:amnesia_actortraillarge`. |
+| Bug | **X-Scissor - Crossing Lines.** Dwa szybkie dash-ciecia przecinaja sie w wybranym punkcie; cel trafiony w przecieciu dostaje Exposed, ale kazde ramie osobno ma nizszy damage. | **Bug Buzz - Swarm Resonance.** Kanalowana fala rozszerza sie segmentami; kazdy segment zdejmuje czesc Guard, a ostatni przerywa cast. Nie jest kolejnym zwyklym cone damage. | `cobblemon:aerialace_targetcut1`, `cobblemon:aerialace_targetcut2`, `cobblemon:closecombat_targetimpact`, `cobblemon:infestation_targetswarm`, `cobblemon:infestation_targetsmallhits`. |
+| Rock | **Rock Tomb - Closing Quarry.** Cztery wielkie skaly wyrastaja wokol oznaczonego obszaru, zostawiajac widoczne szczeliny ucieczki; po chwili zapadaja sie do srodka, zadaja damage i krotko spowalniaja cele pozostale wewnatrz. Nie stawiaja prawdziwych blokow. | **Stealth Rock - Shard Halo.** Szesc odlamkow krazy wokol castera przez 12 s. Wejscie przeciwnika w zasieg zuzywa jeden odlamek i uderza ten cel; ten sam przeciwnik nie moze skonsumowac wielu odlamkow w jednym wejsciu. | `cobblemon:rockthrow_actor`, `cobblemon:rockthrow_actorsend`, `cobblemon:rockthrow_target`, `cobblemon:eruption_targetrocks`, `cobblemon:bodyslam_impactfloor`. |
+| Ghost | **Shadow Ball - Event Horizon.** Powolny orb po trafieniu albo recznej detonacji tworzy krotka implozje: najpierw lekko przyciaga pobliskich wrogow, potem zadaje pojedynczy burst damage. Pull i hit maja osobne, czytelne fazy. | **Phantom Force - Phase Hunt.** Caster przechodzi w faze na maksymalnie 1.5 s, moze poruszac sie szybciej, ale nie atakuje. Release przywraca go i wykonuje jedno ciecie w kierunku celownika; miejsce powrotu jest widoczne przez ostatnie 0.35 s. Bez decoya. | `cobblemon:shadowball_actorblob`, `cobblemon:shadowball_actorlaunch`, `cobblemon:shadowball_targetimpact`, `cobblemon:shadowball_targetimpactsplotch`, `cobblemon:pursuit_targethit`, `cobblemon:shadowclaw_target`. |
+| Dragon | **Outrage - Rampage Route.** Trzy wymuszone szarze wybieraja kolejno kierunki, kazda ma wiekszy luk trafienia; finisher wypuszcza roar, a po sekwencji zostaje Confused. Gracz moze przerwac kosztem cooldownu. | **Draco Meteor - Constellation Fall.** Male meteory oznaczaja obwod, po nich spada centralny comet; przebywanie blisko pierwszych impactow zwieksza ryzyko finalu, ale wszystkie punkty maja cienie. | `cobblemon:dragonclaw_aura`, `cobblemon:dragonclaw_target`, `cobblemon:closecombat_dashlines`, `cobblemon:explosion_charge_accretion`, `cobblemon:eruption_targetrocks`, `cobblemon:explosion_target`. |
+| Dark | **Crunch - Abyssal Maw.** Po krotkim telegraphie wielkie szczeki zamykaja sie na obszarze celu, zadaja jeden ciezki hit i nakladaja Exposed. Cel moze uniknac ataku wychodzac z oznaczonego kregu przed zacisnieciem. | **Dark Pulse - Receding Night.** Ciemny pierscien rozszerza sie od castera i przerywa przygotowywane casty, po czym wraca do srodka i dopiero wtedy zadaje damage. Kazdy cel moze otrzymac tylko jeden impact na faze. | `cobblemon:hyperfang_target`, `cobblemon:hyperfang_targetspark`, `cobblemon:shadowball_targetblob`, `cobblemon:shadowball_targetsplotching`, `cobblemon:nastyplot_actorcloud`, `cobblemon:pursuit_targethit`. |
+| Steel | **Iron Defense - Reactive Plates.** Cztery widoczne plyty reprezentuja Guard; rozbicie plyty wypuszcza odlamki odpychajace najblizszego napastnika, ale nie zadaje pelnego damage bez trafienia. | **Flash Cannon - Prism Breach.** Ladowany beam przebija pierwszy cel; jesli cel ma armor, rozszczepia sie na dwa slabsze promienie do pobliskich wrogow i naklada Exposed. | `cobblemon:protect-block`, `cobblemon:protect-blockchip`, `cobblemon:cottonguard`, `cobblemon:aurorabeam_charge`, `cobblemon:aurorabeam_actor`, `cobblemon:explosion_burst_flash`. |
+| Fairy | **Dazzling Gleam - Prism Nova.** Po krotkim, widocznym ladowaniu pojedyncza pryzmatyczna fala rozszerza sie we wszystkich kierunkach, raz zadaje damage i odpycha wrogow. Bez cleanse, debuffu i dodatkowych faz mechanicznych. | **Moonblast - Lunar Tide.** Dysk nad celem zapowiada pionowy impact; trafienie tworzy krotki przyplyw grawitacyjny sciagajacy wrogow do srodka i oslabia ich special damage. | `cobblemon:mysticalfire_actorburst`, `cobblemon:mysticalfire_actorsparkle`, `cobblemon:protect-shine`, `cobblemon:synthesis_sun`, `cobblemon:aurorabeam_targetsparkle`. |
+
+#### Zatwierdzona korekta bazowego Psychic
+
+To osobna zmiana planowana razem z ultimate Psychic, ale sam `Psychic` nie jest
+trzecim capstone. Definicja ma miec `cast_time_ticks: 0`, delivery `instant`,
+targeting `aim` i bezposredni damage on-hit na trafionej encji. Usuwamy
+`delayed_area`, `delay_ticks`, pocisk oraz opozniony telegraph. Snowstorm
+`cobblemon:psychic_actor` uruchamia release, a `cobblemon:psychic_target` i
+`cobblemon:psychic_impact` sa zakotwiczone na celu dopiero po udanym raycascie.
+Brak celu oznacza miss bez AoE na koncu zasiegu. Poza usunieciem opoznienia
+zachowujemy obecne impacty: damage, knockback i 40% szansy na Weakness.
+
+#### Wspolny kontrakt implementacyjny ultimate
+
+1. Rozszerzyc obecny bridge Flamethrowera do rejestru bindingow Snowstorm. Binding
+	definiuje faze (`start`, `travel`, `hit`, `aftermath`), effect ID, anchor,
+	source locators, opcjonalny target locator i minimalny interwal emisji.
+2. `SpawnSnowstormEntityParticlePacket` wolno wysylac tylko dla `PosableEntity`.
+	Dla Pokemona stosujemy uporzadkowane fallback locators i target entity, jezeli
+	efekt potrzebuje kierunku. Gracz uzywa position packetow dla burstow oraz
+	Photon dla kierunkowego beamu, fali, telegraphu i bryly strefy.
+3. Nie wysylac Snowstorm co tick. Efekty startuja przy zmianie fazy, a dlugie
+	kanaly moga je odswiezyc najwyzej raz na 20 tickow. Throttle jest ograniczony
+	czasowo i rozroznia co najmniej pare caster-target.
+4. Kazdy ultimate ma czytelne `anticipation`, `release`, `impact` i `aftermath`.
+	Damage nie moze wystapic przed serwerowym telegraphem, a particle settings nie
+	moga ukryc granicy hitboxu.
+5. Reuse Snowstorm oznacza odwolanie do runtime Cobblemona, bez kopiowania jego
+	JSON-ow do assets Tensury. Brak effect ID ma logowac pojedyncze ostrzezenie i
+	uruchamiac profil Photon.
+6. Companion i gracz uzywaja tej samej mechaniki, power i cooldownu. Roznice VFX
+	wynikaja tylko z tego, ze model Pokemona ma locatory, a model gracza ich nie ma.
+
+#### Minimalne rozszerzenia runtime
+
+Nie tworzymy osobnego delivery dla kazdego ultimate. Reworki maja korzystac z
+ponizszych wspolnych prymitywow:
+
+| Prymityw | Zakres |
+|---|---|
+| `phased_sequence` | Powtarzane impulsy z osobnym opoznieniem, promieniem, katem i mnoznikiem knockbacku. Obsluguje Hyper Voice, eksplozje Hyper Beam, Overheat, Bug Buzz i powracajacy Dark Pulse. |
+| `conditional_branch` | Galezie `on_hit`, `on_miss`, `on_wall`, `on_release`, `on_guard_break` i warunki celu. Obsluguje Close Combat, Outrage, X-Scissor i Flash Cannon. |
+| `charge_release` | Poziom naladowania wybiera skale, zasieg albo forme release bez wielokrotnego naliczania cooldownu. Obsluguje Petal Blizzard, Solar Beam i Focus Blast. |
+| `pattern_zone` | Serwer wylicza punkty pierscienia, zamykajacego obwodu lub konstelacji i wysyla jeden opis wzoru klientowi. Obsluguje Toxic Spikes, Rock Tomb i Draco Meteor. |
+| `segmented_guard` | Guard ma jawne segmenty i zdarzenie pekniecia segmentu. Obsluguje Aurora Veil i Iron Defense. |
+| `recorded_window` | Ograniczone czasowo i maksymalna wartoscia zapisywanie obrazen lub stanu celu. Obsluguje Future Sight; obecny `target_attack_scaled_damage` nadal wystarcza dla bazowego skalowania Foul Play. |
+| `directional_field` | Strefa zna kierunek ruchu jednostki wzgledem osi i warunkowe impacty. Obsluguje Tailwind oraz finalna faze Blizzard. |
+| `contact_field` | Czasowa aura sledzi wejscia oraz kontakt z hitboxem i pamieta trafione UUID. Obsluguje dziesieciosekundowy Volt Tackle oraz zuzywanie odlamkow Stealth Rock bez damage co tick. |
+| `phase_movement` | Czasowe przejscie w alternatywny tryb ruchu z jawnym release i awaryjnym zakonczeniem na kolizji. Obsluguje Dig i Phantom Force. |
+| `spell_phase_vfx` | Zdarzenia wejscia w `anticipation`, `release`, `impact` i `aftermath` z bindingiem Snowstorm/Photon. Phase-enter omija throttle; throttle dotyczy tylko odswiezania tej samej fazy. |
+
+`orbit_release` dla Petal Blizzard pozostaje izolowanym rozszerzeniem. Wprowadzamy
+go dopiero w paczce zawierajacej ten spell, zamiast obciazac nim bazowy model
+wszystkich delivery.
+
+#### Guardraile balansu
+
+- Pierwszy pass zachowuje obecny cooldown oraz laczny oczekiwany damage spella.
+	Rework zmienia sposob dostarczenia mocy, nie daje darmowego wzrostu liczb.
+- W sekwencji suma mnoznikow hitow wynosi `1.0`; bonus za trudny centralny hit
+	moze podniesc laczny damage najwyzej o 10% i musi miec czytelny telegraph.
+- Persistent zone nie moze trafic czesciej niz deklarowany tick interval, nawet
+	jezeli kilka emitterow Snowstorm odtwarza sie jednoczesnie.
+- Hard CC ultimate respektuje istniejace diminishing returns. Efekt koncowy nie
+	resetuje odpornosci nalozonej przez wczesniejsza faze tego samego castu.
+- Recoil, Exhausted, Exposed i ryzyko miss sa czescia budzetu mocy; nie usuwamy
+	kosztu tylko dlatego, ze nowa prezentacja jest bardziej widowiskowa.
+- Benchmarki Thunder, Earthquake i Surf moga dostac jedynie korekty VFX, dzwieku
+	i telegraphu, bez zmiany hitboxu, damage, tickow ani cooldownu w tej inicjatywie.
+- Volt Tackle trwa 200 tickow, a lista trafionych UUID zyje tylko z aktywna aura;
+	kontakt tego samego celu nie moze odswiezac damage ani przedluzac buffa speed.
+
+#### Kolejnosc wdrozenia ultimate
+
+1. **Bridge i walidacja:** rejestr bindingow, wykrywanie dostepnych effect IDs,
+	fallback Photon, bounded throttle i validator sprawdzajacy wszystkie bindingi
+	przeciw `libs/cobblemon.jar`.
+2. **Natywne i bliskie rodzinom Cobblemona:** Fire Blast, Close Combat, Overheat,
+	Hydro Pump, Volt Tackle, Toxic, Petal Blizzard i Blizzard.
+3. **Strefy i kontrola przestrzeni:** Toxic Spikes, Tailwind, Hurricane,
+	Trick Room, Rock Tomb, Stealth Rock, Aurora Veil i korekta bazowego Psychic.
+4. **Ruch i sekwencje:** Dig, Future Sight, X-Scissor, Bug Buzz, Shadow Ball,
+	Phantom Force, Outrage, Crunch, Dark Pulse i Iron Defense.
+5. **Najbardziej zlozone finishery:** Hyper Voice, Hyper Beam, Solar Beam,
+	Focus Blast, Draco Meteor, Flash Cannon, Dazzling Gleam i Moonblast.
+6. Po kazdej paczce wykonac playtest osobno dla gracza i companiona, test dwoch
+	casterow na jednym celu oraz probe z minimalnymi ustawieniami particles.
 
 ## 7. Absorpcja i progresja
 

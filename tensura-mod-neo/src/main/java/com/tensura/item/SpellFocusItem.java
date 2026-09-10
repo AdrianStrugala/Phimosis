@@ -284,12 +284,13 @@ public class SpellFocusItem extends Item {
 
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeCharged) {
-        SpellCasting.finishHeldChannel(level, entity, getActiveSpell(stack), channelOf(stack));
+        SpellCasting.releaseUsing(
+            level, entity, getActiveSpell(stack), channelOf(stack), timeCharged);
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
-        SpellCasting.finishHeldChannel(level, entity, getActiveSpell(stack), channelOf(stack));
+        SpellCasting.releaseUsing(level, entity, getActiveSpell(stack), channelOf(stack), 0);
         return stack;
     }
 

@@ -4,12 +4,12 @@
   "power": 16.0,
   "school": "shadow",
   "cooldown_ticks": 180,
-  "targeting": { "type": "aim", "range": 4.0, "max_targets": 1 },
-  "delivery": { "type": "dash", "distance": 4.0, "duration_ticks": 4 },
+  "targeting": { "type": "area", "range": 12.0, "radius": 2.5, "max_targets": 4 },
+  "delivery": { "type": "delayed_area", "delay_ticks": 12 },
   "impact": [
     { "type": "damage" },
     { "type": "expose", "duration": 100, "chance": 0.65 }
   ],
-  "visual": { "cast_animation": "crunch_lunge_cast", "trail": "crunch_shadow_lunge", "impact": "crushing_jaws" },
+  "visual": { "cast_animation": "crunch_lunge_cast", "telegraph": "crunch_maw_warning", "trail": "crunch_shadow_lunge", "impact": "crushing_jaws", "aftermath": "crunch_maw_residue" },
   "sound": { "cast": "minecraft:entity.ravager.roar", "impact": "minecraft:entity.generic.big_fall" }
 }

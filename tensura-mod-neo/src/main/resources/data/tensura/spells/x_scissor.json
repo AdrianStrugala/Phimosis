@@ -24,7 +24,8 @@
     {
       "type": "expose",
       "duration": 100,
-      "amplifier": 0
+      "amplifier": 0,
+      "final_hit_only": true
     }
   ],
   "visual": {

@@ -34,6 +34,12 @@ final class SpellBeamDelivery {
 
     static void castRuntimeBeam(ServerPlayer owner, LivingEntity effectCaster,
                                 LivingEntity lockedTarget, SpellDefinition definition) {
+                castRuntimeBeam(owner, effectCaster, lockedTarget, definition, 0, 1);
+        }
+
+        static void castRuntimeBeam(ServerPlayer owner, LivingEntity effectCaster,
+                                                                LivingEntity lockedTarget, SpellDefinition definition,
+                                                                int pulseIndex, int pulseCount) {
         if (!(effectCaster.level() instanceof ServerLevel level)) return;
         BeamTrace trace = resolveBeamTrace(owner, effectCaster, lockedTarget, definition);
         Vec3 origin = trace.origin();
@@ -64,12 +70,45 @@ final class SpellBeamDelivery {
                 && targets.size() > definition.targeting.max_targets) {
             targets = targets.subList(0, definition.targeting.max_targets);
         }
+        if ("flash_cannon_beam".equals(definition.visual.trail) && !targets.isEmpty()) {
+            LivingEntity firstTarget = targets.get(0);
+            SpellExecutor.applyTargetImpacts(owner, effectCaster, firstTarget, definition);
+            if (firstTarget.getArmorValue() > 0) {
+                List<LivingEntity> splitTargets = level.getEntitiesOfClass(
+                        LivingEntity.class, firstTarget.getBoundingBox().inflate(6.0),
+                        target -> target != firstTarget
+                                && SpellTargetingRules.canHarm(owner, effectCaster, target));
+                splitTargets.sort((left, right) -> Double.compare(
+                        left.distanceToSqr(firstTarget), right.distanceToSqr(firstTarget)));
+                for (int index = 0; index < Math.min(2, splitTargets.size()); index++) {
+                    LivingEntity splitTarget = splitTargets.get(index);
+                    SpellVfxDispatcher.send(level, "beam", definition.visual.impact,
+                            definition.school, firstTarget.getBoundingBox().getCenter(),
+                            splitTarget.getBoundingBox().getCenter(),
+                            Math.max(0.1, definition.targeting.width * 0.55),
+                            8, effectCaster, false);
+                    SpellExecutor.applyTargetImpacts(
+                            owner, effectCaster, splitTarget, definition, 0.5);
+                }
+                        } else {
+                                for (int index = 1; index < targets.size(); index++) {
+                                        SpellExecutor.applyTargetImpacts(
+                                                        owner, effectCaster, targets.get(index), definition);
+                                }
+            }
+            SpellImpactApplier.applyImpacts(
+                    owner, effectCaster, effectCaster, definition, true, true, false);
+            return;
+        }
         for (LivingEntity target : targets) {
             if ("channel_beam".equals(definition.delivery.type)) {
                 target.invulnerableTime = 0;
             }
+                        boolean hydroPump = "water_spiral".equals(definition.visual.trail);
+                        double pressureProgress = Math.min(1.0, (pulseIndex + 1.0) / 5.0);
             SpellImpactApplier.applyImpacts(
-                    owner, effectCaster, target, definition, true, false);
+                                        owner, effectCaster, target, definition, true, false, true,
+                                        hydroPump ? 0.6 + 1.4 * pressureProgress : 1.0);
         }
         SpellImpactApplier.applyImpacts(
                 owner, effectCaster, effectCaster, definition, true, true, false);
@@ -90,15 +129,28 @@ final class SpellBeamDelivery {
 
     static void castRuntimeCone(ServerPlayer owner, LivingEntity effectCaster,
                                 LivingEntity lockedTarget, SpellDefinition definition) {
+                castRuntimeCone(owner, effectCaster, lockedTarget, definition, 0, 1);
+        }
+
+        static void castRuntimeCone(ServerPlayer owner, LivingEntity effectCaster,
+                                                                LivingEntity lockedTarget, SpellDefinition definition,
+                                                                int pulseIndex, int pulseCount) {
         if (!(effectCaster.level() instanceof ServerLevel level)) return;
         Vec3 origin = effectCaster.getEyePosition();
         Vec3 forward = lockedTarget != null && lockedTarget.isAlive()
                 && SpellTargetingRules.canHarm(owner, effectCaster, lockedTarget)
                 ? lockedTarget.getBoundingBox().getCenter().subtract(origin).normalize()
                 : effectCaster.getLookAngle().normalize();
-        double range = Math.max(1.0, definition.targeting.range);
+        boolean phasedCone = "sonic_voice_rings".equals(definition.visual.trail)
+                || "overheat_front".equals(definition.visual.trail);
+        double progress = phasedCone
+                ? Math.min(1.0, (pulseIndex + 1.0) / Math.max(1, pulseCount)) : 1.0;
+        double range = Math.max(1.0, definition.targeting.range)
+                * (phasedCone ? 0.55 + 0.45 * progress : 1.0);
+        double coneAngle = definition.delivery.cone_angle
+                * (phasedCone ? 0.60 + 0.40 * progress : 1.0);
         double minimumDot = Math.cos(Math.toRadians(
-                Math.max(1.0, Math.min(179.0, definition.delivery.cone_angle)) * 0.5));
+                Math.max(1.0, Math.min(179.0, coneAngle)) * 0.5));
         List<LivingEntity> targets = targetsInCone(
                 owner, effectCaster, origin, forward, range, minimumDot);
         if (definition.targeting.max_targets > 0
@@ -108,17 +160,24 @@ final class SpellBeamDelivery {
         for (LivingEntity target : targets) {
             target.invulnerableTime = 0;
             SpellImpactApplier.applyImpacts(
-                    owner, effectCaster, target, definition, true, false);
+                                        owner, effectCaster, target, definition,
+                                        !phasedCone || pulseIndex + 1 >= pulseCount, false, true,
+                                        phasedCone ? 0.65 + 0.25 * pulseIndex : 1.0);
         }
         SpellImpactApplier.applyImpacts(
-                owner, effectCaster, effectCaster, definition, true, true, false);
+                                owner, effectCaster, effectCaster, definition,
+                                !phasedCone || pulseIndex + 1 >= pulseCount, true, false);
         Vec3 end = origin.add(forward.scale(range));
         double radius = Math.tan(Math.toRadians(
-                definition.delivery.cone_angle * 0.5)) * range;
+                coneAngle * 0.5)) * range;
         SpellVfxDispatcher.send(level, "cone", definition.visual.trail,
                 definition.school, origin, end, Math.max(0.5, radius),
                 Math.max(2, definition.delivery.tick_interval_ticks + 1),
                 effectCaster, false);
+        if ("overheat_front".equals(definition.visual.trail)) {
+            CobblemonUltimateVfx.sendOverheatWave(
+                    level, origin, end, pulseIndex, pulseCount);
+        }
     }
 
     static boolean castArcStrike(ServerPlayer owner, LivingEntity effectCaster,
@@ -315,8 +374,16 @@ final class SpellBeamDelivery {
                 }
         int duration = "channel_beam".equals(definition.delivery.type)
                 ? Math.max(2, definition.delivery.tick_interval_ticks + 1) : 8;
+                if ("hyper_beam_core".equals(definition.visual.trail)) {
+                        duration = Math.max(14, duration);
+                }
+        Vec3 visualOrigin = trace.origin();
+        if (CobblemonFlamethrowerVfx.isFlamethrower(definition)) {
+            visualOrigin = CobblemonFlamethrowerVfx.playerStreamOrigin(
+                    effectCaster, trace.end().subtract(trace.origin()));
+        }
         SpellVfxDispatcher.send(level, "beam", definition.visual.trail,
-                definition.school, trace.origin(), trace.end(),
+                definition.school, visualOrigin, trace.end(),
                 Math.max(0.1, definition.targeting.width), duration,
                 effectCaster, false);
     }

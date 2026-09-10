@@ -4,7 +4,7 @@
   "power": 22.0,
   "school": "nature",
   "cooldown_ticks": 280,
-  "cast_time_ticks": 24,
+  "cast_time_ticks": 36,
   "targeting": { "type": "beam", "range": 30.0, "width": 1.4, "max_targets": 8 },
   "delivery": { "type": "beam" },
   "impact": [

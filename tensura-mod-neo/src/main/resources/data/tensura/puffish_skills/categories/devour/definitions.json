@@ -704,7 +704,7 @@
   },
   "overheat": {
     "title": "Overheat",
-    "description": "Release a broad blast of flame that burns enemies and leaves you Exhausted.",
+    "description": "Release three widening waves of flame with rising knockback, then become Exhausted.",
     "icon": {
       "type": "item",
       "data": {
@@ -1371,7 +1371,7 @@
   },
   "volt_tackle": {
     "title": "Volt Tackle",
-    "description": "Dash forward in a burst of Electric energy at medium range. Deals recoil damage to you, knocks enemies back, and sometimes paralyzes enemies.",
+    "description": "Surge with speed and electricity for ten seconds, damaging each enemy once on contact.",
     "icon": {
       "type": "item",
       "data": {
@@ -1678,7 +1678,7 @@
   },
   "petal_blizzard": {
     "title": "Petal Blizzard",
-    "description": "Send a surging wave of Grass energy forward. Knocks enemies back.",
+    "description": "Orbit yourself with cutting petals for four seconds, then recast to release them in a radial blast.",
     "icon": {
       "type": "item",
       "data": {
@@ -1729,7 +1729,7 @@
   },
   "solar_beam": {
     "title": "Solar Beam",
-    "description": "Launch a devastating blast of Nature energy from long range.",
+    "description": "Charge a devastating Nature beam; open daylight shortens the charge without removing its telegraph.",
     "icon": {
       "type": "item",
       "data": {
@@ -2037,7 +2037,7 @@
   },
   "aurora_veil": {
     "title": "Aurora Veil",
-    "description": "Raise an icy aurora around you that protects you and nearby allies from damage.",
+    "description": "Raise an icy aurora with three visible segments. Each segment breaks after absorbing enough damage for nearby allies.",
     "icon": {
       "type": "item",
       "data": {
@@ -2088,7 +2088,7 @@
   },
   "blizzard": {
     "title": "Blizzard",
-    "description": "Summon a roaming storm of Ice energy. Chills soaked enemies.",
+    "description": "Drive a moving snowstorm that builds Chill and shatters Frozen enemies on its final pulse.",
     "icon": {
       "type": "item",
       "data": {
@@ -2397,7 +2397,7 @@
   },
   "focus_blast": {
     "title": "Focus Blast",
-    "description": "Launch a Fighting blast from long range that explodes on impact. Knocks enemies back and sometimes leaves enemies Exposed. Takes a short moment to cast.",
+    "description": "Hold to charge a Fighting orb from a quick smaller blast to a full-power wide explosion that sometimes leaves enemies Exposed.",
     "icon": {
       "type": "item",
       "data": {
@@ -2603,7 +2603,7 @@
   },
   "toxic_spikes": {
     "title": "Toxic Spikes",
-    "description": "Scatter poisonous spikes across the ground. The first trigger poisons; repeated triggers turn the poison Toxic.",
+    "description": "Place six poisonous traps in a ring. Crossing the ring poisons, while repeated crossings escalate the effect to Toxic.",
     "icon": {
       "type": "item",
       "data": {
@@ -2807,7 +2807,7 @@
   },
   "dig": {
     "title": "Dig",
-    "description": "Blink behind an enemy and strike with Ground energy at medium range. Knocks enemies back. Takes a short moment to cast.",
+    "description": "Burrow for up to two seconds with a visible ground trail, then erupt on contact, collision, or recast.",
     "icon": {
       "type": "item",
       "data": {
@@ -3113,7 +3113,7 @@
   },
   "tailwind": {
     "title": "Tailwind",
-    "description": "Summon a guiding wind that makes you and nearby allies move faster.",
+    "description": "Create a slipstream behind you that speeds allies moving with the wind and slows enemies pushing against it.",
     "icon": {
       "type": "item",
       "data": {
@@ -3369,7 +3369,7 @@
   },
   "psychic": {
     "title": "Psychic",
-    "description": "Mark an area for a delayed Psychic blast from long range. Knocks enemies back and sometimes weakens enemies.",
+    "description": "Instantly strike one aimed enemy with Psychic force, knocking it back and sometimes weakening it.",
     "icon": {
       "type": "item",
       "data": {
@@ -3523,7 +3523,7 @@
   },
   "future_sight": {
     "title": "Future Sight",
-    "description": "Mark an area with Psychic energy. After a short delay, it erupts and catches anyone still inside.",
+    "description": "Mark an enemy for three seconds, then deal a Psychic hit plus a capped echo of damage taken during the mark.",
     "icon": {
       "type": "item",
       "data": {
@@ -3727,7 +3727,7 @@
   },
   "x_scissor": {
     "title": "X Scissor",
-    "description": "Rush an enemy with a rapid Bug combo at close range. Leaves enemies Exposed.",
+    "description": "Cross through an enemy with two opposing Bug cuts; landing both leaves the target Exposed.",
     "icon": {
       "type": "item",
       "data": {
@@ -3778,7 +3778,7 @@
   },
   "bug_buzz": {
     "title": "Bug Buzz",
-    "description": "Channel a wide cone of Bug energy at medium range. Leaves enemies Exposed and interrupts casting.",
+    "description": "Channel resonant Bug waves that damage enemies, strip Guard, interrupt casts, and leave them Exposed.",
     "icon": {
       "type": "item",
       "data": {
@@ -3932,7 +3932,7 @@
   },
   "rock_tomb": {
     "title": "Rock Tomb",
-    "description": "Raise three temporary rock formations that crush and slow enemies entering the area.",
+    "description": "Mark a quarry where four rocks close inward, then crush and slow enemies still inside.",
     "icon": {
       "type": "item",
       "data": {
@@ -3984,7 +3984,7 @@
   },
   "stealth_rock": {
     "title": "Stealth Rock",
-    "description": "Scatter hidden rock traps that damage enemies again whenever they leave and re-enter.",
+    "description": "Orbit yourself with six rock shards; each shard strikes one enemy that enters contact range.",
     "icon": {
       "type": "item",
       "data": {
@@ -4344,7 +4344,7 @@
   },
   "shadow_ball": {
     "title": "Shadow Ball",
-    "description": "Launch a Ghost blast from long range that explodes on impact. Sometimes weakens enemies.",
+    "description": "Launch a slow shadow orb that briefly pulls nearby enemies inward before its impact burst.",
     "icon": {
       "type": "item",
       "data": {
@@ -4446,7 +4446,7 @@
   },
   "phantom_force": {
     "title": "Phantom Force",
-    "description": "Vanish briefly, telegraph your return, then reappear behind the target and strike.",
+    "description": "Phase out for up to one and a half seconds, then reappear with a telegraphed directional strike.",
     "icon": {
       "type": "item",
       "data": {
@@ -4756,7 +4756,7 @@
   },
   "draco_meteor": {
     "title": "Draco Meteor",
-    "description": "Call down a barrage of Dragon strikes from long range. Knocks enemies back. Takes a short moment to cast.",
+    "description": "Call six Dragon meteors around a marked constellation, followed by one central comet.",
     "icon": {
       "type": "item",
       "data": {
@@ -4807,7 +4807,7 @@
   },
   "outrage": {
     "title": "Outrage",
-    "description": "Enter a forced sequence of three Dragon charges, then become briefly Confused.",
+    "description": "Enter three Dragon charges with increasingly wide impacts, then become briefly Confused.",
     "icon": {
       "type": "item",
       "data": {
@@ -4910,7 +4910,7 @@
   },
   "crunch": {
     "title": "Crunch",
-    "description": "Lunge with crushing Dark jaws that sometimes leave the target Exposed.",
+    "description": "Mark an area with abyssal jaws that close after a short warning, damage enemies, and sometimes leave them Exposed.",
     "icon": {
       "type": "item",
       "data": {
@@ -5014,7 +5014,7 @@
   },
   "dark_pulse": {
     "title": "Dark Pulse",
-    "description": "Channel a sustained Dark beam from long range. Sometimes disorients enemies.",
+    "description": "Send out a Dark ring that interrupts casts, then pull it inward for one damaging return pulse.",
     "icon": {
       "type": "item",
       "data": {
@@ -5323,7 +5323,7 @@
   },
   "iron_defense": {
     "title": "Iron Defense",
-    "description": "Focus Steel energy within yourself. Blocks the next hit.",
+    "description": "Gain sixteen Guard divided into four visible Steel plates that fracture as damage is absorbed.",
     "icon": {
       "type": "item",
       "data": {
@@ -5374,7 +5374,7 @@
   },
   "flash_cannon": {
     "title": "Flash Cannon",
-    "description": "Charge a piercing Steel beam that leaves every struck enemy Exposed.",
+    "description": "Fire a piercing Steel beam that splits into two half-power rays after striking an armored enemy.",
     "icon": {
       "type": "item",
       "data": {
@@ -5578,7 +5578,7 @@
   },
   "dazzling_gleam": {
     "title": "Dazzling Gleam",
-    "description": "Release a wide burst of Fairy light around you. Also clears Poison or Chill from you.",
+    "description": "Charge briefly, then release one prismatic nova that damages and pushes enemies in every direction.",
     "icon": {
       "type": "item",
       "data": {
@@ -5629,7 +5629,7 @@
   },
   "moonblast": {
     "title": "Moonblast",
-    "description": "Launch a Fairy blast that explodes across an area and weakens enemies. Takes a short moment to cast.",
+    "description": "Launch a lunar blast whose explosion pulls nearby enemies toward its center and weakens special damage.",
     "icon": {
       "type": "item",
       "data": {

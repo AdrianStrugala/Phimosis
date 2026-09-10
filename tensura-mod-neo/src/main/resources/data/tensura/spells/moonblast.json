@@ -9,7 +9,7 @@
   "delivery": { "type": "projectile", "speed": 1.15 },
   "impact": [
     { "type": "damage", "damage_multiplier": 1.0 },
-    { "type": "status_effect", "effect": "minecraft:weakness", "duration": 100, "amplifier": 0 }
+    { "type": "status_effect", "effect": "tensura:special_weakened", "duration": 100, "amplifier": 0 }
   ],
   "visual": {
     "cast_animation": "moonblast_channel",

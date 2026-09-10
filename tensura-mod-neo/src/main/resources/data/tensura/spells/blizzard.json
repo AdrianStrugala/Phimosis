@@ -18,6 +18,7 @@
   },
   "impact": [
     { "type": "damage", "damage_multiplier": 0.3333333333 },
+    { "type": "shatter_frozen", "damage_multiplier": 0.25, "final_hit_only": true },
     {
       "type": "freeze_if_wet",
       "duration": 60,

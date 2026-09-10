@@ -166,7 +166,10 @@ public class SpellItem extends Item {
             tooltip.add(Component.literal("Range: Self"));
         }
         tooltip.add(Component.literal(def.delivery.hold_to_channel
-                ? "Use: Hold right-click" : "Use: Right-click"));
+            ? "Use: Hold right-click"
+            : def.delivery.charge_release
+                ? "Use: Hold and release right-click"
+                : "Use: Right-click"));
     }
 
     @Override
@@ -221,12 +224,13 @@ public class SpellItem extends Item {
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity,
                              int timeCharged) {
-        SpellCasting.finishHeldChannel(level, entity, getSpellId(stack), channelOf(stack));
+        SpellCasting.releaseUsing(
+            level, entity, getSpellId(stack), channelOf(stack), timeCharged);
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
-        SpellCasting.finishHeldChannel(level, entity, getSpellId(stack), channelOf(stack));
+        SpellCasting.releaseUsing(level, entity, getSpellId(stack), channelOf(stack), 0);
         return stack;
     }
 
@@ -236,12 +240,17 @@ public class SpellItem extends Item {
      * thing from the spell definition instead — see {@link SpellCasting#fromDefinition}.
      */
     private static SpellCasting.Channel channelOf(ItemStack stack) {
+        ResourceLocation spellId = getSpellId(stack);
+        if (spellId != null) {
+            SpellCasting.Channel definitionChannel = SpellCasting.fromDefinition(spellId);
+            if (definitionChannel.chargeRelease()) return definitionChannel;
+        }
         if (isHeldChannel(stack)) {
-            return new SpellCasting.Channel(true, 0, getHeldChannelDuration(stack));
+            return new SpellCasting.Channel(true, false, 0, getHeldChannelDuration(stack));
         }
         int windup = getChannelWindup(stack);
         return windup > 0
-                ? new SpellCasting.Channel(false, windup, getChannelDuration(stack))
+                ? new SpellCasting.Channel(false, false, windup, getChannelDuration(stack))
                 : SpellCasting.Channel.NONE;
     }
 

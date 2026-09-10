@@ -43,6 +43,7 @@ public final class SpellImpactApplier {
     static void clearAllState() {
         IMPACT_SOUND_TIMES.clear();
         CobblemonFlamethrowerVfx.clear();
+        CobblemonUltimateVfx.clear();
         COMPANION_DAMAGE_DEPTH.remove();
     }
 
@@ -94,9 +95,17 @@ public final class SpellImpactApplier {
     public static void applyProjectileSplash(ServerPlayer owner, LivingEntity effectCaster,
                                              LivingEntity directTarget,
                                              SpellDefinition definition) {
-        double radius = definition.targeting.radius;
+        applyProjectileSplash(owner, effectCaster, directTarget, definition, 1.0, 1.0);
+    }
+
+    public static void applyProjectileSplash(ServerPlayer owner, LivingEntity effectCaster,
+                                             LivingEntity directTarget,
+                                             SpellDefinition definition,
+                                             double damageScale, double radiusScale) {
+        double radius = definition.targeting.radius * radiusScale;
         if (radius <= 0.0) {
-            applyImpacts(owner, effectCaster, directTarget, definition);
+            applyImpacts(owner, effectCaster, directTarget, definition,
+                    true, false, true, 1.0, damageScale);
             return;
         }
 
@@ -109,14 +118,57 @@ public final class SpellImpactApplier {
         targets.sort((left, right) -> Double.compare(
                 left.distanceToSqr(directTarget), right.distanceToSqr(directTarget)));
 
-        applyImpacts(owner, effectCaster, directTarget, definition, true, true);
-        applyImpacts(owner, effectCaster, directTarget, definition, true, false);
+        applyImpacts(owner, effectCaster, directTarget, definition,
+            true, true, false, 1.0, damageScale);
+        applyImpacts(owner, effectCaster, directTarget, definition,
+            true, false, true, 1.0, damageScale);
         int affected = 1;
         for (LivingEntity target : targets) {
             if (affected++ >= maxTargets) break;
-            applyImpacts(owner, effectCaster, target, definition, true, false);
+            if ("moonblast_bloom".equals(definition.visual.impact)) {
+                Vec3 pullDirection = directTarget.getBoundingBox().getCenter()
+                        .subtract(target.getBoundingBox().getCenter());
+                if (pullDirection.lengthSqr() > 1.0E-6) {
+                    Vec3 pull = pullDirection.normalize().scale(0.75);
+                    target.setDeltaMovement(target.getDeltaMovement()
+                            .add(pull.x, 0.12, pull.z));
+                    target.hurtMarked = true;
+                }
+            }
+                applyImpacts(owner, effectCaster, target, definition,
+                    true, false, true, 1.0, damageScale);
         }
     }
+
+        public static void applyProjectileSplashAt(ServerPlayer owner, LivingEntity effectCaster,
+                               Vec3 position,
+                               SpellDefinition definition,
+                               double damageScale,
+                               double radiusScale) {
+        if (!(effectCaster.level() instanceof ServerLevel level)) return;
+        double radius = definition.targeting.radius * radiusScale;
+        if (radius <= 0.0) return;
+        int maxTargets = definition.targeting.max_targets > 0
+            ? definition.targeting.max_targets : Integer.MAX_VALUE;
+        List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class,
+            new net.minecraft.world.phys.AABB(position, position).inflate(radius),
+            target -> SpellTargetingRules.canHarm(owner, effectCaster, target)
+                && target.getBoundingBox().getCenter().distanceToSqr(position)
+                    <= radius * radius);
+        targets.sort((left, right) -> Double.compare(
+            left.getBoundingBox().getCenter().distanceToSqr(position),
+            right.getBoundingBox().getCenter().distanceToSqr(position)));
+
+        applyImpacts(owner, effectCaster, effectCaster, definition,
+            true, true, false, 1.0, damageScale);
+        for (int index = 0; index < Math.min(maxTargets, targets.size()); index++) {
+            applyImpacts(owner, effectCaster, targets.get(index), definition,
+                true, false, false, 1.0, damageScale);
+        }
+        SpellVfxDispatcher.send(level, "impact", definition.visual.impact,
+            definition.school, position, position, radius, 12,
+            effectCaster, false);
+        }
 
     public static void applyImpacts(ServerPlayer owner, LivingEntity effectCaster,
                                     LivingEntity target, SpellDefinition definition) {
@@ -139,6 +191,23 @@ public final class SpellImpactApplier {
                              LivingEntity target, SpellDefinition definition,
                              boolean finalProjectile, Boolean casterOnly,
                              boolean playFeedback) {
+        applyImpacts(owner, effectCaster, target, definition,
+            finalProjectile, casterOnly, playFeedback, 1.0);
+        }
+
+        static void applyImpacts(ServerPlayer owner, LivingEntity effectCaster,
+                     LivingEntity target, SpellDefinition definition,
+                     boolean finalProjectile, Boolean casterOnly,
+                     boolean playFeedback, double knockbackScale) {
+            applyImpacts(owner, effectCaster, target, definition,
+                finalProjectile, casterOnly, playFeedback, knockbackScale, 1.0);
+            }
+
+            static void applyImpacts(ServerPlayer owner, LivingEntity effectCaster,
+                         LivingEntity target, SpellDefinition definition,
+                         boolean finalProjectile, Boolean casterOnly,
+                         boolean playFeedback, double knockbackScale,
+                         double damageScale) {
         boolean canHarm = SpellTargetingRules.canHarm(owner, effectCaster, target);
         float damageDealt = 0.0F;
         for (SpellDefinition.Impact impact : definition.impact) {
@@ -158,7 +227,7 @@ public final class SpellImpactApplier {
                     double conditionalMultiplier = hasAnyEffect(target, impact.effects)
                             ? impact.conditional_multiplier : 1.0;
                     float damage = (float) (applyExposedModifier(baseDamage, target, definition)
-                            * impact.damage_multiplier * conditionalMultiplier);
+                            * impact.damage_multiplier * conditionalMultiplier * damageScale);
                     float healthBefore = target.getHealth();
                     hurtWithSpellDamage(owner, effectCaster, target, definition,
                             Math.max(1, damage), impact.armor_penetration);
@@ -178,7 +247,7 @@ public final class SpellImpactApplier {
                     double scaledPower = definition.power
                             + (maximumPower - definition.power) * advantage;
                     float damage = (float) (applyExposedModifier(scaledPower, target, definition)
-                            * impact.damage_multiplier);
+                            * impact.damage_multiplier * damageScale);
                     float healthBefore = target.getHealth();
                     hurtWithSpellDamage(owner, effectCaster, target, definition,
                             Math.max(1, damage), impact.armor_penetration);
@@ -193,7 +262,7 @@ public final class SpellImpactApplier {
                         hurtWithSpellDamage(owner, effectCaster, target, definition,
                             (float) Math.max(1.0, applyExposedModifier(
                                 scaledPower, target, definition)
-                                * impact.damage_multiplier),
+                                * impact.damage_multiplier * damageScale),
                             impact.armor_penetration);
                         damageDealt += Math.max(0.0F, healthBefore - target.getHealth());
                     }
@@ -206,7 +275,7 @@ public final class SpellImpactApplier {
                         hurtWithSpellDamage(owner, effectCaster, target, definition,
                             (float) Math.max(1.0, applyExposedModifier(
                                 definition.power, target, definition)
-                                * impact.damage_multiplier * multiplier),
+                                * impact.damage_multiplier * multiplier * damageScale),
                             impact.armor_penetration);
                         damageDealt += Math.max(0.0F, healthBefore - target.getHealth());
                     }
@@ -220,7 +289,7 @@ public final class SpellImpactApplier {
                         hurtWithSpellDamage(owner, effectCaster, target, definition,
                             (float) Math.max(1.0, applyExposedModifier(
                                 scaledPower, target, definition)
-                                * impact.damage_multiplier),
+                                * impact.damage_multiplier * damageScale),
                             impact.armor_penetration);
                         damageDealt += Math.max(0.0F, healthBefore - target.getHealth());
                     }
@@ -243,7 +312,7 @@ public final class SpellImpactApplier {
                 case "knockback" -> {
                     if (!canHarm) continue;
                     Vec3 direction = target.position().subtract(effectCaster.position())
-                            .normalize().scale(impact.strength);
+                            .normalize().scale(impact.strength * knockbackScale);
                     target.setDeltaMovement(target.getDeltaMovement()
                             .add(direction.x, 0.4, direction.z));
                     target.hurtMarked = true;
@@ -386,6 +455,17 @@ public final class SpellImpactApplier {
                                         impact.duration, Math.max(1, impact.amplifier))));
                     }
                 }
+                case "shatter_frozen" -> {
+                    if (!canHarm || !recipient.hasEffect(TensuraMobEffects.FROZEN)) continue;
+                    recipient.removeEffect(TensuraMobEffects.FROZEN);
+                    float damage = (float) Math.max(1.0,
+                            applyExposedModifier(definition.power, target, definition)
+                                    * impact.damage_multiplier);
+                    float healthBefore = target.getHealth();
+                    hurtWithSpellDamage(owner, effectCaster, target, definition,
+                            damage, impact.armor_penetration);
+                    damageDealt += Math.max(0.0F, healthBefore - target.getHealth());
+                }
                 case "paralyze_if_wet" -> {
                     if (!canHarm) continue;
                     double chance = recipient.hasEffect(TensuraMobEffects.WET)
@@ -448,14 +528,24 @@ public final class SpellImpactApplier {
                     }
                 }
                 case "guard" -> SpellRuntimeController.addGuard(
-                        recipient, impact.amount, impact.duration);
+                        recipient, impact.amount, impact.duration, definition.visual.impact);
+                case "guard_damage" -> {
+                    if (canHarm) SpellRuntimeController.damageGuard(recipient, impact.amount);
+                }
             }
         }
         if (playFeedback && finalProjectile && target.level() instanceof ServerLevel level) {
+                CobblemonUltimateVfx.sendImpactEffects(
+                    level, effectCaster, target, definition);
             Vec3 impactPosition = target.getBoundingBox().getCenter();
             double radius = definition.targeting.radius > 0.0
                     ? definition.targeting.radius : 1.0;
-            if (CobblemonFlamethrowerVfx.isFlamethrower(definition) && canHarm) {
+            if (CobblemonUltimateVfx.isHydroPump(definition) && canHarm) {
+                CobblemonUltimateVfx.sendHydroHitIfDue(level, effectCaster, target);
+            }
+            if (CobblemonThunderVfx.isThunder(definition)) {
+                // Thunder owns one central delayed-area impact instead of one column per target.
+            } else if (CobblemonFlamethrowerVfx.isFlamethrower(definition) && canHarm) {
                 CobblemonFlamethrowerVfx.sendHitIfDue(level, effectCaster, target);
             } else {
                 SpellVfxDispatcher.send(level, "impact", definition.visual.impact,

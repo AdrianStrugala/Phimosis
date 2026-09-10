@@ -42,6 +42,18 @@ final class SpellProjectileDelivery {
         }
     }
 
+        static void castChargedProjectile(ServerPlayer caster, SpellDefinition definition,
+                                                                          ResourceLocation spellId, double damageScale,
+                                                                          double radiusScale) {
+                if (!(caster.level() instanceof ServerLevel level)) return;
+                Vec3 direction = caster.getLookAngle();
+                SpellProjectile projectile = SpellProjectile.createCharged(
+                                caster, spellId, definition, direction, damageScale, radiusScale);
+                level.addFreshEntity(projectile);
+                SpellFeedback.sendProjectileVfx(
+                        level, projectile, definition, direction, radiusScale);
+        }
+
     static void castCompanionProjectile(ServerPlayer owner, PokemonEntity companion,
                                         LivingEntity target, SpellDefinition definition,
                                         ResourceLocation spellId) {
@@ -88,8 +100,21 @@ final class SpellProjectileDelivery {
                 Math.max(1.0, definition.targeting.radius),
                 definition.delivery.delay_ticks, effectCaster, false);
         for (int index = 0; index < projectileCount; index++) {
-            double offsetX = (level.random.nextDouble() - 0.5) * spreadRadius * 2.0;
-            double offsetZ = (level.random.nextDouble() - 0.5) * spreadRadius * 2.0;
+                        boolean dracoConstellation = "dragon_crater".equals(definition.visual.impact)
+                                        && projectileCount >= 7;
+                        double offsetX;
+                        double offsetZ;
+                        if (dracoConstellation && index < projectileCount - 1) {
+                                double angle = index * Math.PI * 2.0 / (projectileCount - 1);
+                                offsetX = Math.cos(angle) * spreadRadius;
+                                offsetZ = Math.sin(angle) * spreadRadius;
+                        } else if (dracoConstellation) {
+                                offsetX = 0.0;
+                                offsetZ = 0.0;
+                        } else {
+                                offsetX = (level.random.nextDouble() - 0.5) * spreadRadius * 2.0;
+                                offsetZ = (level.random.nextDouble() - 0.5) * spreadRadius * 2.0;
+                        }
             Vec3 impactPosition = center.add(offsetX, 0.0, offsetZ);
             Vec3 spawnPosition = impactPosition.add(
                     (level.random.nextDouble() - 0.5) * 4.0,

@@ -5,6 +5,7 @@ import com.cobblemon.mod.common.net.messages.client.effect.SpawnSnowstormEntityP
 import com.cobblemon.mod.common.net.messages.client.effect.SpawnSnowstormParticlePacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
@@ -36,8 +37,20 @@ final class CobblemonFlamethrowerVfx {
             return;
         }
 
-        Vec3 position = caster.getEyePosition().add(caster.getLookAngle().scale(0.6));
+        Vec3 position = playerStreamOrigin(caster, caster.getLookAngle());
         sendAtPosition(level, HIT_EFFECT, position);
+    }
+
+    static Vec3 playerStreamOrigin(LivingEntity caster, Vec3 direction) {
+        Vec3 forward = direction.lengthSqr() > 1.0E-6
+                ? direction.normalize() : caster.getLookAngle().normalize();
+        Vec3 right = new Vec3(-forward.z, 0.0, forward.x);
+        if (right.lengthSqr() > 1.0E-6) right = right.normalize();
+        double handSide = caster.getMainArm() == HumanoidArm.RIGHT ? 0.22 : -0.22;
+        return caster.getEyePosition()
+                .add(forward.scale(0.7))
+                .add(right.scale(handSide))
+                .add(0.0, -0.3, 0.0);
     }
 
     static void sendActorIfDue(ServerLevel level, LivingEntity caster, LivingEntity target) {

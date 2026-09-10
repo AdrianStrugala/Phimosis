@@ -67,6 +67,9 @@ Stan zweryfikowany 2026-09-09:
 - istnieje 110 z 110 kanonicznych definicji; `dragon_rush`, `phantom_force`,
   `rock_tomb`, `stealth_rock` i `trick_room` maja komplet mechanik runtime,
   mapowan, ikon, profili VFX i wpisow Devour;
+- pierwszy pass warstwy ultimate obejmuje 36 capstone'ow, po dwa na kazdy z 18
+  rays; bazowy `psychic` jest instant on-hit, a mechaniki ultimate i bindingi
+  Snowstorm/Photon przechodza walidator oraz build, lecz oczekuja playtestu;
 
 Checkpoint jest wskazowka startowa, nie zamiennikiem walidacji. Po zmianie rosteru,
 generatorow, ikon, mapowan, VFX albo Devour zaktualizuj go dopiero po przejsciu

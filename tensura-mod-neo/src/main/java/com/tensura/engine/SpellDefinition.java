@@ -42,6 +42,10 @@ public class SpellDefinition {
          * "delayed_area" — telegraphs a fixed area before applying impacts
          * "moving_zone"  — moves and applies periodic area impacts
          * "protective_aura" — follows the caster and mitigates allied damage
+         * "contact_aura" — follows the caster and impacts each contacted target once
+         * "orbit_release" — follows the caster until recast or automatic radial release
+         * "phase_movement" — steerable phased movement ending in a contact strike
+         * "pulse_ring" — emits timed outward/returning radial phases
          * "channel_cone" — repeatedly applies impacts in a forward cone
          * "wave"        — moves a ground-level front through enemies
          * "trap"        — persists at a location and triggers on entry
@@ -62,6 +66,9 @@ public class SpellDefinition {
         public int recovery_ticks = 0;
         public boolean steerable = false;
         public boolean hold_to_channel = false;
+        public boolean charge_release = false;
+        public int minimum_charge_ticks = 0;
+        public int maximum_charge_ticks = 0;
         public double movement_speed = 0.0;
         public double homing_strength = 0.0;
         public double pull_strength = 0.0;

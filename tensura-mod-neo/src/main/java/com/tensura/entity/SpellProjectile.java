@@ -4,6 +4,7 @@ import com.tensura.engine.SpellDefinition;
 import com.tensura.engine.SpellExecutor;
 import com.tensura.engine.SpellRegistry;
 import com.tensura.engine.SpellTargetingRules;
+import com.tensura.engine.CobblemonUltimateVfx;
 import com.tensura.event.SpellRuntimeController;
 import com.tensura.registry.TensuraEntityRegistry;
 import net.minecraft.core.particles.ParticleTypes;
@@ -47,6 +48,8 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
     private UUID sourceEntityId;
     private UUID homingTargetId;
     private double homingStrength;
+    private double damageScale = 1.0;
+    private double radiusScale = 1.0;
 
     // Deserialization constructor (required by EntityType.Builder.of)
     public SpellProjectile(EntityType<? extends SpellProjectile> type, Level level) {
@@ -67,6 +70,16 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
     public static SpellProjectile create(ServerPlayer caster, ResourceLocation spellId, SpellDefinition def,
                                          Vec3 direction, int projectileIndex, int projectileCount) {
         return create(caster, caster, spellId, def, direction, projectileIndex, projectileCount);
+    }
+
+    public static SpellProjectile createCharged(ServerPlayer caster, ResourceLocation spellId,
+                                                SpellDefinition definition, Vec3 direction,
+                                                double damageScale, double radiusScale) {
+        SpellProjectile projectile = create(
+                caster, caster, spellId, definition, direction, 0, 1, null, null);
+        projectile.damageScale = damageScale;
+        projectile.radiusScale = radiusScale;
+        return projectile;
     }
 
     public static SpellProjectile create(ServerPlayer owner, LivingEntity source,
@@ -199,6 +212,11 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
                 discard();
                 return;
             }
+            if (CobblemonUltimateVfx.isFireBlast(def)
+                    && level() instanceof ServerLevel serverLevel) {
+                CobblemonUltimateVfx.sendFireBlastImpact(
+                        serverLevel, target.getBoundingBox().getCenter());
+            }
             if (meteorGroup != null) {
                 SpellRuntimeController.applyMeteorImpact(caster, def, position(), meteorGroup);
             } else {
@@ -217,10 +235,11 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
                     }
                 }
                 if (def.targeting.radius > 0.0) {
-                    SpellExecutor.applyProjectileSplash(caster, effectCaster, target, def);
+                    SpellExecutor.applyProjectileSplash(
+                        caster, effectCaster, target, def, damageScale, radiusScale);
                 } else {
-                    SpellExecutor.applyImpacts(caster, effectCaster, target, def,
-                            finalImpact);
+                    SpellExecutor.applyTargetImpacts(
+                            caster, effectCaster, target, def, finalImpact, damageScale);
                 }
             }
         }
@@ -229,9 +248,20 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
 
     @Override
     protected void onHitBlock(BlockHitResult result) {
-        if (!level().isClientSide && meteorGroup != null && getOwner() instanceof ServerPlayer caster) {
+        if (!level().isClientSide && getOwner() instanceof ServerPlayer caster) {
             SpellDefinition def = SpellRegistry.get(ResourceLocation.parse(spellId)).orElse(null);
-            if (def != null) {
+            Entity source = (sourceEntityId == null || !(level() instanceof ServerLevel serverLevel))
+                    ? null : serverLevel.getEntity(sourceEntityId);
+            LivingEntity effectCaster = source instanceof LivingEntity living ? living : caster;
+            if (def != null && level() instanceof ServerLevel serverLevel
+                    && CobblemonUltimateVfx.isFireBlast(def)) {
+                CobblemonUltimateVfx.sendFireBlastImpact(serverLevel, result.getLocation());
+            }
+            if (def != null && meteorGroup == null && def.targeting.radius > 0.0) {
+                SpellExecutor.applyProjectileSplashAt(caster, effectCaster,
+                        result.getLocation(), def, damageScale, radiusScale);
+            }
+            if (def != null && meteorGroup != null) {
                 SpellRuntimeController.applyMeteorImpact(caster, def, result.getLocation(), meteorGroup);
             }
         }
@@ -273,6 +303,8 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
         if (sourceEntityId != null) tag.putUUID("SourceEntity", sourceEntityId);
         if (homingTargetId != null) tag.putUUID("HomingTarget", homingTargetId);
         tag.putDouble("HomingStrength", homingStrength);
+        tag.putDouble("DamageScale", damageScale);
+        tag.putDouble("RadiusScale", radiusScale);
     }
 
     @Override
@@ -290,6 +322,8 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
         sourceEntityId = tag.hasUUID("SourceEntity") ? tag.getUUID("SourceEntity") : null;
         homingTargetId = tag.hasUUID("HomingTarget") ? tag.getUUID("HomingTarget") : null;
         homingStrength = tag.getDouble("HomingStrength");
+        damageScale = tag.contains("DamageScale") ? tag.getDouble("DamageScale") : 1.0;
+        radiusScale = tag.contains("RadiusScale") ? tag.getDouble("RadiusScale") : 1.0;
     }
 
     private SimpleParticleType schoolParticle() {

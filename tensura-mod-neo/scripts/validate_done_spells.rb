@@ -22,6 +22,12 @@ BEAM_DELIVERY_FILE = File.join(ROOT,
   "src/main/java/com/tensura/engine/SpellBeamDelivery.java")
 FLAMETHROWER_VFX_FILE = File.join(ROOT,
   "src/main/java/com/tensura/engine/CobblemonFlamethrowerVfx.java")
+PSYCHIC_VFX_FILE = File.join(ROOT,
+  "src/main/java/com/tensura/engine/CobblemonPsychicVfx.java")
+THUNDER_VFX_FILE = File.join(ROOT,
+  "src/main/java/com/tensura/engine/CobblemonThunderVfx.java")
+ULTIMATE_VFX_FILE = File.join(ROOT,
+  "src/main/java/com/tensura/engine/CobblemonUltimateVfx.java")
 MOVEMENT_FILE = File.join(ROOT, "src/main/java/com/tensura/event/SpellMovementController.java")
 PROJECTILE_FILE = File.join(ROOT, "src/main/java/com/tensura/entity/SpellProjectile.java")
 RUNTIME_FILE = File.join(ROOT, "src/main/java/com/tensura/event/SpellRuntimeController.java")
@@ -59,6 +65,10 @@ DELIVERY_VFX = {
   "delayed" => [%w[telegraph], %w[impact]],
   "delayed_area" => [%w[telegraph], %w[impact], %w[aftermath]],
   "moving_zone" => [%w[aftermath], %w[impact]],
+  "contact_aura" => [%w[trail], %w[impact]],
+  "orbit_release" => [%w[trail], %w[impact]],
+  "phase_movement" => [%w[trail], %w[impact]],
+  "pulse_ring" => [%w[trail], %w[impact], %w[aftermath]],
   "cloud" => [%w[aftermath], %w[impact]],
   "protective_aura" => [%w[telegraph], %w[aftermath]],
   "zone" => [%w[telegraph], %w[aftermath]],
@@ -77,7 +87,8 @@ DELIVERY_VFX = {
 }.freeze
 
 LOOP_DELIVERIES = %w[
-  channel_beam channel_cone cloud moving_zone protective_aura vortex wave zone
+  channel_beam channel_cone cloud contact_aura moving_zone orbit_release
+  phase_movement protective_aura pulse_ring vortex wave zone
 ].freeze
 
 def fail_validation(message)
@@ -144,6 +155,9 @@ companion_events = read_source(COMPANION_EVENTS_FILE)
 companion_goal = read_source(COMPANION_GOAL_FILE)
 targeting_rules = read_source(TARGETING_RULES_FILE)
 flamethrower_vfx = read_source(FLAMETHROWER_VFX_FILE)
+psychic_vfx = read_source(PSYCHIC_VFX_FILE)
+thunder_vfx = read_source(THUNDER_VFX_FILE)
+ultimate_vfx = read_source(ULTIMATE_VFX_FILE)
 
 fail_validation("companion AI scans for nearby hostile mobs") if
   companion_events.include?("NearestAttackableTargetGoal") ||
@@ -213,17 +227,32 @@ fail_validation("Flamethrower Snowstorm throttle state can grow without bounds")
 fail_validation("Flamethrower hit throttling merges effects from different casters") unless
   flamethrower_vfx.include?("new HitKey(caster.getUUID(), target.getUUID())") &&
     flamethrower_vfx.include?("record HitKey(UUID casterId, UUID targetId)")
-# Player casts get no Snowstorm stream (the Cobblemon handler drops the entity packet for
-# anything that is not a PosableEntity) and no vanilla particle line, so the Photon beam is
-# the whole visual. A lone 0.16-wide BeamEmitter renders as a near-invisible hairline.
-fail_validation("Flamethrower player stream fell back to a single hairline beam") unless
+# Player casts get no entity-bound Snowstorm stream, so Photon must provide a visible volume
+# rather than stacking solid beam cylinders that still read as a laser.
+fail_validation("Flamethrower player stream is not a volumetric flame profile") unless
   vfx.include?("addBeamGeometry(effect, id.getPath(), duration, palette)") &&
     vfx.match?(/"flame_stream".equals\(style\)/) &&
-    vfx.scan(/beam\(duration,[^;]*?0\.(?:95|55|24)f\)/m).size == 3
+    vfx.scan(/flameVolume\(duration,/).size >= 2 &&
+    vfx.include?("0xFFFFF3C4, 0x00FFC857), 0.11f")
+fail_validation("Flamethrower player stream still starts inside the camera") unless
+  flamethrower_vfx.include?("playerStreamOrigin") &&
+    flamethrower_vfx.include?(".add(forward.scale(0.7))") &&
+    flamethrower_vfx.include?(".add(0.0, -0.3, 0.0)") &&
+    executor.include?("CobblemonFlamethrowerVfx.playerStreamOrigin(")
 fail_validation("Flamethrower still layers vanilla beam particles over Snowstorm") unless
   executor.include?("!CobblemonFlamethrowerVfx.isFlamethrower(definition)")
 fail_validation("Flamethrower impact does not replace Photon feedback with Snowstorm") unless
   executor.include?("CobblemonFlamethrowerVfx.sendHitIfDue(level, effectCaster, target)")
+fail_validation("Psychic lacks actor, target, or impact Snowstorm feedback") unless
+  %w[psychic_actor psychic_target psychic_impact].all? do |effect|
+    psychic_vfx.include?(%Q{"cobblemon", "#{effect}"})
+  end && executor.include?("CobblemonPsychicVfx.sendHit")
+fail_validation("Thunder lacks one centralized Snowstorm telegraph and impact") unless
+  %w[thunder_targetcloud thunder_target thunder_targetboom].all? do |effect|
+    thunder_vfx.include?(%Q{"cobblemon", "#{effect}"})
+  end && runtime.include?("CobblemonThunderVfx.sendTelegraph") &&
+    runtime.include?("CobblemonThunderVfx.sendImpact") &&
+    executor.include?("CobblemonThunderVfx.isThunder(definition)")
 definitions = JSON.parse(File.read(File.join(DEVOUR_DIR, "definitions.json")))
 skills = JSON.parse(File.read(File.join(DEVOUR_DIR, "skills.json")))
 connections = JSON.parse(File.read(File.join(DEVOUR_DIR, "connections.json")))
@@ -319,6 +348,26 @@ fail_validation("expected 8 cast geometry families, got #{families.size}") unles
 spell_definition = ->(name) { JSON.parse(File.read(File.join(SPELL_DIR, "#{name}.json"))) }
 impacts = ->(name) { Array(spell_definition.call(name)["impact"]) }
 
+psychic = spell_definition.call("psychic")
+fail_validation("Psychic is not an immediate single-target on-hit spell") unless
+  psychic["cast_time_ticks"].to_i.zero? &&
+    psychic.dig("delivery", "type") == "instant" &&
+    psychic.dig("targeting", "type") == "aim" &&
+    psychic.dig("targeting", "max_targets").to_i == 1 &&
+    !psychic.dig("delivery").key?("delay_ticks") &&
+    !psychic.dig("visual").key?("projectile")
+volt_tackle = spell_definition.call("volt_tackle")
+volt_speed = impacts.call("volt_tackle").find do |impact|
+  impact["type"] == "status_effect" && impact["recipient"] == "caster" &&
+    impact["effect"] == "minecraft:speed"
+end
+fail_validation("Volt Tackle is not a ten-second contact speed aura") unless
+  volt_tackle.dig("delivery", "type") == "contact_aura" &&
+    volt_tackle.dig("delivery", "duration_ticks").to_i == 200 &&
+    volt_speed&.fetch("duration", 0).to_i == 200 &&
+    runtime.include?("CONTACT_AURAS") && runtime.include?("aura.hitEntities.add") &&
+    runtime.include?("ParticleTypes.ELECTRIC_SPARK")
+
 u_turn = spell_definition.call("u_turn")
 fail_validation("U-turn is not configured to return") unless
   u_turn.dig("delivery", "return_to_origin") && movement.include?("beginReturn(dash)")
@@ -350,19 +399,37 @@ fail_validation("Moonblast lacks projectile AoE") unless
     moonblast.dig("targeting", "radius").to_f > 0.0 &&
     moonblast.dig("targeting", "max_targets").to_i > 1 &&
     projectile.include?("applyProjectileSplash") && executor.include?("entity != directTarget") &&
-  executor.match?(/applyImpacts\(owner, effectCaster, directTarget,\s*\w+, true, false\)/)
+    executor.match?(/applyImpacts\(owner, effectCaster, directTarget, definition,\s*true, false, true/)
 
-dazzling_cleanse = impacts.call("dazzling_gleam").find do |impact|
-  impact["type"] == "cleanse_one" && impact["recipient"] == "caster"
-end
-fail_validation("Dazzling Gleam lacks its targeted self-cleanse") unless
-  dazzling_cleanse&.fetch("effects", nil) == ["minecraft:poison", "tensura:frozen"] &&
-    executor.include?("casterImpactContext")
+dazzling_gleam = spell_definition.call("dazzling_gleam")
+fail_validation("Dazzling Gleam is not a single damaging Prism Nova") unless
+  dazzling_gleam.dig("delivery", "type") == "instant" &&
+    impacts.call("dazzling_gleam").count { |impact| impact["type"] == "damage" } == 1 &&
+    impacts.call("dazzling_gleam").any? { |impact| impact["type"] == "knockback" } &&
+    impacts.call("dazzling_gleam").none? { |impact| impact["type"] == "cleanse_one" }
+fail_validation("Moonblast lacks its center-directed gravity pull") unless
+  executor.include?('"moonblast_bloom".equals(definition.visual.impact)') &&
+    executor.include?("directTarget.getBoundingBox().getCenter()") &&
+    impacts.call("moonblast").any? do |impact|
+      impact["type"] == "status_effect" &&
+        impact["effect"] == "tensura:special_weakened"
+    end
 
 %w[bug_buzz hyper_voice].each do |spell|
   fail_validation("#{spell} lacks cast interruption") unless
     impacts.call(spell).any? { |impact| impact["type"] == "interrupt_cast" }
 end
+hyper_voice = spell_definition.call("hyper_voice")
+hyper_voice_interrupt = impacts.call("hyper_voice").find do |impact|
+  impact["type"] == "interrupt_cast"
+end
+fail_validation("Hyper Voice is not a four-phase expanding resonance") unless
+  hyper_voice.dig("delivery", "duration_ticks").to_i == 16 &&
+    hyper_voice.dig("delivery", "tick_interval_ticks").to_i == 4 &&
+    hyper_voice_interrupt&.fetch("final_hit_only", false) &&
+    cast_controller.include?("cone.pulseIndex++, pulseCount") &&
+    executor.include?("0.55 + 0.45 * progress") &&
+    executor.include?("0.65 + 0.25 * pulseIndex")
 fail_validation("interrupt impact is not connected to pending casts") unless
   executor.include?("interruptPendingCast") &&
     cast_controller.include?("PENDING_CASTS.remove(target.getUUID())")
@@ -442,15 +509,161 @@ fail_validation("Hyper Beam lacks charge, piercing beam, or exhaustion") unless
       impact["type"] == "status_effect" && impact["recipient"] == "caster" &&
         impact["effect"] == "tensura:exhausted" && impact["duration"].to_i >= 80
     end
+fail_validation("Hyper Beam lacks its layered release and three line aftershocks") unless
+  vfx.include?('"hyper_beam_core".equals(style)') &&
+    vfx.scan(/hyperBeamAftershock\(duration, [369], 0\.(?:28|56|84)f\)/).size == 3 &&
+    vfx.include?("burst.time = delay") &&
+    executor.include?('"hyper_beam_core".equals(definition.visual.trail)') &&
+    executor.include?("duration = Math.max(14, duration)") &&
+    cast_controller.include?('if (!"hyper_beam_core".equals(definition.visual.trail))')
 
 overheat = spell_definition.call("overheat")
-fail_validation("Overheat lacks its broad burst or self-exhaustion") unless
-  overheat.dig("delivery", "type") == "arc_strike" &&
+overheat_exhaustion = impacts.call("overheat").find do |impact|
+  impact["recipient"] == "caster" && impact["effect"] == "tensura:exhausted"
+end
+fail_validation("Overheat is not a three-phase broad burst with final exhaustion") unless
+  overheat.dig("delivery", "type") == "channel_cone" &&
+    overheat.dig("delivery", "duration_ticks").to_i == 12 &&
+    overheat.dig("delivery", "tick_interval_ticks").to_i == 4 &&
+    (overheat["power"].to_f * 3.0 - 28.0).abs < 0.01 &&
     overheat.dig("delivery", "cone_angle").to_f >= 100.0 &&
-    impacts.call("overheat").any? do |impact|
-      impact["recipient"] == "caster" && impact["effect"] == "tensura:exhausted" &&
-        impact["duration"].to_i >= 120
-    end && executor.match?(/castArcStrike.*?targets\.get\(index\), definition, true, false.*?effectCaster, definition, true, true, false/m)
+    overheat_exhaustion&.fetch("duration", 0).to_i >= 120 &&
+    overheat_exhaustion.fetch("final_hit_only", false) &&
+    impacts.call("overheat").any? { |impact| impact["type"] == "knockback" } &&
+    executor.include?('"overheat_front".equals(definition.visual.trail)')
+
+fail_validation("Fire and Water ultimates lack their bounded Snowstorm phases") unless
+  %w[daimonji1 daimonji2 daimonji3 daimonji4 fireblast_target
+     eruption_actorburst lavaplume_target waterpulse_actorsplash watergun_spray
+     watergun_targetfoam waterpulse_targetsplash].all? do |effect|
+    ultimate_vfx.include?(%Q{"#{effect}"})
+  end && projectile.include?("CobblemonUltimateVfx.sendFireBlastImpact") &&
+    runtime.include?("CobblemonUltimateVfx.sendSurfStart") &&
+    executor.include?("CobblemonUltimateVfx.sendOverheatWave") &&
+    executor.include?("0.6 + 1.4 * pressureProgress") &&
+    ultimate_vfx.include?("LAST_HYDRO_HIT") &&
+    ultimate_vfx.include?("now - lastSent >= HIT_INTERVAL_TICKS")
+
+petal_blizzard = spell_definition.call("petal_blizzard")
+fail_validation("Petal Blizzard is not a recastable four-second orbit release") unless
+  petal_blizzard.dig("delivery", "type") == "orbit_release" &&
+    petal_blizzard.dig("delivery", "duration_ticks").to_i == 80 &&
+    runtime.include?("ACTIVE_ORBITS") && runtime.include?("releaseOrbit") &&
+    executor.include?('"orbit_release".equals(def.delivery.type)')
+solar_beam = spell_definition.call("solar_beam")
+fail_validation("Solar Beam lacks daylight-aware charging") unless
+  solar_beam["cast_time_ticks"].to_i == 36 &&
+    cast_controller.include?('"solar_beam_charge".equals') &&
+    cast_controller.include?("caster.level().isDay()") &&
+    cast_controller.include?("caster.level().canSeeSky") &&
+    cast_controller.include?("return 20")
+fail_validation("Aurora Veil lacks three breakable visual segments") unless
+  runtime.include?('this.segments = "aurora_curtain".equals') &&
+    runtime.include?("selected.preventedSinceBreak >= 8.0F") &&
+    runtime.include?("CobblemonUltimateVfx.sendAuroraFracture")
+fail_validation("Blizzard lacks a final Frozen shatter") unless
+  impacts.call("blizzard").any? do |impact|
+    impact["type"] == "shatter_frozen" && impact["final_hit_only"] == true
+  end && executor.include?('case "shatter_frozen"') &&
+    runtime.include?("zone.remainingTicks == 0")
+fail_validation("Close Combat lacks its native three-stage Snowstorm sequence") unless
+  runtime.include?("CobblemonUltimateVfx.sendCloseCombatHit") &&
+    %w[closecombat_target closecombat_target2 closecombat_targetimpact].all? do |effect|
+      ultimate_vfx.include?(%Q{"#{effect}"})
+    end
+toxic_spikes = spell_definition.call("toxic_spikes")
+fail_validation("Toxic Spikes is not a six-point contamination ring") unless
+  toxic_spikes.dig("delivery", "type") == "trap" &&
+    toxic_spikes.dig("delivery", "projectile_count").to_i == 6 &&
+    runtime.include?('boolean toxicRing = "poison_burst".equals') &&
+    runtime.include?("index * Math.PI * 2.0 / trapCount")
+dig = spell_definition.call("dig")
+fail_validation("Dig lacks two-second steerable phase movement") unless
+  dig.dig("delivery", "type") == "phase_movement" &&
+    dig.dig("delivery", "duration_ticks").to_i == 40 &&
+    movement.include?("tickPhaseMovement") && movement.include?("finishPhaseMovement")
+fail_validation("Earthquake Snowstorm is not centralized per pulse") unless
+  runtime.include?("CobblemonUltimateVfx.sendEarthquakePulse(level, zone.center)") &&
+    ultimate_vfx.include?("sendEarthquakePulse")
+fail_validation("Tailwind is not a directional ally/enemy field") unless
+  runtime.include?("applyTailwind") && runtime.include?("alongWind > 0.01") &&
+    runtime.include?("alongWind < -0.01") &&
+    runtime.include?("sendTailwindRibbon") &&
+    runtime.include?('SpellVfxDispatcher.send(level, "ribbon"')
+fail_validation("Future Sight does not record a capped damage echo") unless
+  runtime.include?("onLivingDamageApplied(LivingDamageEvent.Post event)") &&
+    runtime.include?("delayed.recordedDamage + appliedDamage * 0.25") &&
+    runtime.include?("delayed.definition.power * 0.5") &&
+    runtime.include?("(float) delayed.recordedDamage") &&
+    runtime.match?(/delayed\.recordedDamage > 0\.0\s*&& SpellTargetingRules\.canHarm/m)
+fail_validation("Bug Buzz does not strip Guard during its channel") unless
+  impacts.call("bug_buzz").any? do |impact|
+    impact["type"] == "guard_damage" && impact["amount"].to_f > 0.0
+  end && executor.include?('case "guard_damage"') && runtime.include?("damageGuard")
+fail_validation("X-Scissor lacks two distinct crossing cut effects") unless
+  runtime.include?("CobblemonUltimateVfx.sendXScissorHit") &&
+    %w[aerialace_targetcut1 aerialace_targetcut2].all? do |effect|
+      ultimate_vfx.include?(%Q{"#{effect}"})
+    end && impacts.call("x_scissor").any? do |impact|
+      impact["type"] == "expose" && impact["final_hit_only"] == true
+    end
+shadow_ball = spell_definition.call("shadow_ball")
+fail_validation("Shadow Ball lacks its implosive pull") unless
+  impacts.call("shadow_ball").any? do |impact|
+    impact["type"] == "pull" && impact["strength"].to_f > 0.0
+  end
+dark_pulse = spell_definition.call("dark_pulse")
+fail_validation("Dark Pulse is not an interrupting outward and damaging return ring") unless
+  dark_pulse.dig("delivery", "type") == "pulse_ring" &&
+    impacts.call("dark_pulse").any? { |impact| impact["type"] == "interrupt_cast" } &&
+    impacts.call("dark_pulse").any? do |impact|
+      impact["type"] == "damage" && impact["final_hit_only"] == true
+    end && runtime.include?("tickPulseRings")
+fail_validation("Iron Defense lacks four visible Guard segments") unless
+  runtime.include?('"steel_plates".equals(visualStyle) ? 4 : 1') &&
+    runtime.include?("guard.visibleSegments()") &&
+    runtime.include?("CobblemonUltimateVfx.sendIronDefenseFracture")
+fail_validation("Flash Cannon lacks its armored-target prism split") unless
+  executor.include?('"flash_cannon_beam".equals(definition.visual.trail)') &&
+    executor.include?("firstTarget.getArmorValue() > 0") &&
+    executor.include?("splitTarget, definition, 0.5") &&
+    executor.include?("targets.get(index), definition")
+focus_blast = spell_definition.call("focus_blast")
+fail_validation("Focus Blast lacks minimum-to-maximum charge release scaling") unless
+  focus_blast.dig("delivery", "charge_release") == true &&
+    focus_blast.dig("delivery", "minimum_charge_ticks").to_i == 10 &&
+    focus_blast.dig("delivery", "maximum_charge_ticks").to_i == 30 &&
+    spell_casting.include?("SpellExecutor.beginCharge") &&
+    spell_casting.include?("SpellExecutor.castChargedProjectile") &&
+    executor.include?("Map<UUID, ActiveCharge> activeCharges") &&
+    executor.include?("caster.level().getGameTime() - charge.startedAt") &&
+    cast_controller.include?("SpellExecutor.interruptCharge") &&
+    executor.include?("double damageScale = 0.65 + 0.35 * progress") &&
+    executor.include?("double radiusScale = 0.75 + 0.50 * progress") &&
+    executor.include?("def.cast_time_ticks > 0 || def.delivery.charge_release") &&
+    cast_controller.include?("definition.delivery.maximum_charge_ticks") &&
+    projectile.include?("DamageScale") && projectile.include?("RadiusScale") &&
+    executor.include?("direction, radiusScale")
+fail_validation("explosive projectiles do not apply scaled splash on block hit") unless
+  projectile.include?("SpellExecutor.applyProjectileSplashAt") &&
+    executor.include?("applyProjectileSplashAt") &&
+    executor.include?("definition.targeting.radius * radiusScale")
+fail_validation("X-Scissor does not cross to opposite sides of its target") unless
+  runtime.include?("moveForCrossingStrike") &&
+    runtime.include?("hitIndex == 0 ? 1.8 : -1.8") &&
+    runtime.include?("noCollision(caster, destinationBox)")
+fail_validation("Draco Meteor lacks a six-point constellation and central comet") unless
+  executor.include?('"dragon_crater".equals(definition.visual.impact)') &&
+    executor.include?("index * Math.PI * 2.0 / (projectileCount - 1)") &&
+    executor.include?("offsetX = 0.0") &&
+    runtime.include?("CobblemonUltimateVfx.sendDracoMeteorImpact")
+fail_validation("Outrage hitboxes do not grow across its three charges") unless
+  runtime.include?('"outrage_dash".equals(combo.definition.visual.trail)') &&
+    runtime.include?("dashIndex * 0.25") &&
+    movement.include?("0.35 + dash.collisionBonus")
+fail_validation("phase movement can leave owned invisibility on logout") unless
+  movement.include?("ownMovement != null") &&
+    movement.include?("clearPhaseInvisibility(event.getEntity(), ownMovement)")
 
 fail_validation("Leech Seed lacks periodic health transfer") unless
   impacts.call("leech_seed").any? do |impact|
@@ -510,30 +723,29 @@ fail_validation("Dragon Rush lacks steering or central Stagger") unless
     movement.include?("definition.delivery.steerable")
 
 phantom_force = spell_definition.call("phantom_force")
-fail_validation("Phantom Force lacks delayed invisibility and teleport strike") unless
-  phantom_force.dig("delivery", "type") == "teleport_strike" &&
-    phantom_force.dig("delivery", "delay_ticks").to_i >= 20 &&
-    runtime.include?("startDelayedTeleportStrike") &&
-    runtime.include?("MobEffects.INVISIBILITY") &&
-      runtime.include?("removeInvisibilityOnFinish") &&
-      runtime.include?("clearTeleportStrikeInvisibility") &&
-    runtime.include?("castRuntimeTeleportStrike")
+fail_validation("Phantom Force lacks steerable phase movement and a telegraphed release") unless
+  phantom_force.dig("delivery", "type") == "phase_movement" &&
+    phantom_force.dig("delivery", "duration_ticks").to_i == 30 &&
+    movement.include?("startPhaseMovementInternal") &&
+    movement.include?("releasePhaseMovement") &&
+    movement.include?("removeInvisibilityOnFinish")
 
 rock_tomb = spell_definition.call("rock_tomb")
-fail_validation("Rock Tomb lacks its temporary slowing trap formation") unless
-  rock_tomb.dig("delivery", "type") == "trap" &&
-    rock_tomb.dig("delivery", "projectile_count").to_i == 3 &&
-    rock_tomb.dig("delivery", "duration_ticks").to_i == 80 &&
+fail_validation("Rock Tomb lacks its telegraphed collapsing quarry") unless
+  rock_tomb.dig("delivery", "type") == "delayed_area" &&
+    rock_tomb.dig("delivery", "delay_ticks").to_i >= 20 &&
+    rock_tomb.dig("targeting", "radius").to_f >= 4.0 &&
     impacts.call("rock_tomb").any? do |impact|
       impact["type"] == "status_effect" && impact["effect"] == "minecraft:slowness"
     end
 
 stealth_rock = spell_definition.call("stealth_rock")
-fail_validation("Stealth Rock lacks persistent re-entry damage") unless
-  stealth_rock.dig("delivery", "type") == "trap" &&
-    stealth_rock.dig("delivery", "duration_ticks").to_i == 400 &&
+fail_validation("Stealth Rock lacks its six-shard contact halo") unless
+  stealth_rock.dig("delivery", "type") == "contact_aura" &&
+    stealth_rock.dig("delivery", "duration_ticks").to_i == 240 &&
+    stealth_rock.dig("targeting", "max_targets").to_i == 6 &&
     impacts.call("stealth_rock").any? { |impact| impact["type"] == "damage" } &&
-    runtime.include?("trap.occupants.clear()")
+    runtime.include?("aura.hitEntities.size() >= maxTargets")
 
 trick_room = spell_definition.call("trick_room")
 fail_validation("Trick Room lacks its speed-inverting zone") unless

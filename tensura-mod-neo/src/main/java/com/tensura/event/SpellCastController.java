@@ -35,19 +35,36 @@ public class SpellCastController {
     private static final Map<UUID, PendingCompanionCast> PENDING_COMPANION_CASTS = new HashMap<>();
 
     public static boolean isCasting(ServerPlayer caster) {
-        return PENDING_CASTS.containsKey(caster.getUUID());
+        return PENDING_CASTS.containsKey(caster.getUUID())
+            || SpellExecutor.isCharging(caster.getUUID());
     }
 
     public static void interruptPendingCast(LivingEntity target) {
         PENDING_CASTS.remove(target.getUUID());
+        if (SpellExecutor.interruptCharge(target.getUUID())) {
+            target.stopUsingItem();
+        }
     }
 
     public static boolean startCast(ServerPlayer caster, ResourceLocation spellId,
                                     SpellDefinition definition) {
         if (PENDING_CASTS.containsKey(caster.getUUID())) return false;
+        int castTime = effectiveCastTime(caster, definition);
         PENDING_CASTS.put(caster.getUUID(), new PendingCast(spellId, definition,
-                caster.level().getGameTime() + Math.max(1, definition.cast_time_ticks)));
+                caster.level().getGameTime() + Math.max(1, castTime)));
         return true;
+    }
+
+    private static int effectiveCastTime(LivingEntity caster, SpellDefinition definition) {
+        if (definition.delivery.charge_release) {
+            return Math.max(1, definition.delivery.maximum_charge_ticks);
+        }
+        if ("solar_beam_charge".equals(definition.visual.cast_animation)
+                && caster.level().isDay()
+                && caster.level().canSeeSky(caster.blockPosition())) {
+            return 20;
+        }
+        return definition.cast_time_ticks;
     }
 
     public static boolean startChannelBeam(ServerPlayer caster, SpellDefinition definition) {
@@ -70,7 +87,9 @@ public class SpellCastController {
                 effectCaster.getUUID(), target == null ? null : target.getUUID(),
                 definition, duration));
         SpellExecutor.playLoopSound(effectCaster, definition);
-        SpellExecutor.sendRuntimeBeamVfx(owner, effectCaster, target, definition);
+        if (!"hyper_beam_core".equals(definition.visual.trail)) {
+            SpellExecutor.sendRuntimeBeamVfx(owner, effectCaster, target, definition);
+        }
         return true;
     }
 
@@ -113,7 +132,8 @@ public class SpellCastController {
                 ? companion.getUUID() : target.getUUID();
         PENDING_COMPANION_CASTS.put(companion.getUUID(), new PendingCompanionCast(
                 companion.level().dimension(), owner.getUUID(), targetId, spellId, definition,
-                companion.level().getGameTime() + Math.max(1, definition.cast_time_ticks)));
+            companion.level().getGameTime()
+                + Math.max(1, effectiveCastTime(companion, definition))));
         return true;
     }
 
@@ -195,7 +215,10 @@ public class SpellCastController {
                 SpellExecutor.playLoopSound(effectCaster, beam.definition);
             }
             if (beam.remainingTicks % interval == 0) {
-                SpellExecutor.castRuntimeBeam(owner, effectCaster, target, beam.definition);
+                int pulseCount = Math.max(1,
+                    (int) Math.ceil((double) beam.durationTicks / interval));
+                SpellExecutor.castRuntimeBeam(owner, effectCaster, target, beam.definition,
+                    beam.pulseIndex++, pulseCount);
             }
             if (beam.remainingTicks == 0) iterator.remove();
         }
@@ -231,7 +254,10 @@ public class SpellCastController {
 
             int interval = Math.max(1, cone.definition.delivery.tick_interval_ticks);
             if (cone.remainingTicks % interval == 0) {
-                SpellExecutor.castRuntimeCone(owner, effectCaster, target, cone.definition);
+                int pulseCount = Math.max(1,
+                    (int) Math.ceil((double) cone.durationTicks / interval));
+                SpellExecutor.castRuntimeCone(owner, effectCaster, target, cone.definition,
+                    cone.pulseIndex++, pulseCount);
             }
             if (cone.remainingTicks > 0 && cone.remainingTicks % 20 == 0) {
                 SpellExecutor.playLoopSound(effectCaster, cone.definition);
@@ -316,6 +342,8 @@ public class SpellCastController {
         private final UUID effectCasterId;
         private final UUID targetId;
         private final SpellDefinition definition;
+        private final int durationTicks;
+        private int pulseIndex;
         private int remainingTicks;
 
         private ActiveChannelBeam(ResourceKey<Level> dimension, UUID ownerId,
@@ -326,6 +354,7 @@ public class SpellCastController {
             this.effectCasterId = effectCasterId;
             this.targetId = targetId;
             this.definition = definition;
+            this.durationTicks = remainingTicks;
             this.remainingTicks = remainingTicks;
         }
     }
@@ -336,6 +365,8 @@ public class SpellCastController {
         private final UUID effectCasterId;
         private final UUID targetId;
         private final SpellDefinition definition;
+        private final int durationTicks;
+        private int pulseIndex;
         private int remainingTicks;
 
         private ActiveChannelCone(ResourceKey<Level> dimension, UUID ownerId,
@@ -347,6 +378,7 @@ public class SpellCastController {
             this.effectCasterId = effectCasterId;
             this.targetId = targetId;
             this.definition = definition;
+            this.durationTicks = remainingTicks;
             this.remainingTicks = remainingTicks;
         }
     }

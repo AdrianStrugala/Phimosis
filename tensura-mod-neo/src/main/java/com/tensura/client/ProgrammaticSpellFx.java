@@ -3,9 +3,11 @@ package com.tensura.client;
 import com.lowdragmc.lowdraglib2.math.GradientColor;
 import com.lowdragmc.photon.client.fx.FX;
 import com.lowdragmc.photon.client.gameobject.emitter.beam.BeamEmitter;
+import com.lowdragmc.photon.client.gameobject.emitter.data.EmissionSetting;
 import com.lowdragmc.photon.client.gameobject.emitter.data.number.NumberFunction;
 import com.lowdragmc.photon.client.gameobject.emitter.data.number.NumberFunction3;
 import com.lowdragmc.photon.client.gameobject.emitter.data.number.color.Gradient;
+import com.lowdragmc.photon.client.gameobject.emitter.data.shape.Box;
 import com.lowdragmc.photon.client.gameobject.emitter.data.shape.Circle;
 import com.lowdragmc.photon.client.gameobject.emitter.data.shape.Cone;
 import com.lowdragmc.photon.client.gameobject.emitter.data.shape.Sphere;
@@ -16,6 +18,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.Map;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 @OnlyIn(Dist.CLIENT)
@@ -80,22 +83,66 @@ public final class ProgrammaticSpellFx {
      * {@code targeting.width}, so these numbers are blocks at width 1.0.
      */
     private static void addBeamGeometry(FX effect, String style, int duration, Palette palette) {
+        if ("hyper_beam_core".equals(style)) {
+            addHyperBeamGeometry(effect, Math.max(14, duration), palette);
+            return;
+        }
         if (!"flame_stream".equals(style)) {
             effect.getFxData().objects().add(beam(duration, palette));
             return;
         }
 
-        // Outer envelope, hot middle, near-white core - widest first so the core draws on top.
+        effect.getFxData().objects().add(flameVolume(duration,
+            new Palette(0x99EF4444, 0x00EF4444), 34.0f, 0.34f, 0.95f));
+        effect.getFxData().objects().add(flameVolume(duration,
+            new Palette(0xDDFFB020, 0x00EF4444), 48.0f, 0.22f, 0.58f));
         effect.getFxData().objects().add(beam(duration,
-                new Palette(withAlpha(palette.primary(), 0x55), palette.secondary()), 0.95f));
-        effect.getFxData().objects().add(beam(duration,
-                new Palette(withAlpha(palette.primary(), 0xAA), palette.secondary()), 0.55f));
-        effect.getFxData().objects().add(beam(duration,
-                new Palette(0xFFFFF3C4, palette.primary()), 0.24f));
+            new Palette(0xFFFFF3C4, 0x00FFC857), 0.11f));
     }
 
-    private static int withAlpha(int argb, int alpha) {
-        return ((alpha & 0xFF) << 24) | (argb & 0x00FFFFFF);
+        private static void addHyperBeamGeometry(FX effect, int duration, Palette palette) {
+        effect.getFxData().objects().add(beam(duration,
+            new Palette(0x557DD3FC, 0x007DD3FC), 0.82f));
+        effect.getFxData().objects().add(beam(duration,
+            new Palette(palette.primary(), palette.secondary()), 0.42f));
+        effect.getFxData().objects().add(beam(duration,
+            new Palette(0xFFFFFFFF, 0x00E0F2FE), 0.16f));
+        effect.getFxData().objects().add(hyperBeamAftershock(duration, 3, 0.28f));
+        effect.getFxData().objects().add(hyperBeamAftershock(duration, 6, 0.56f));
+        effect.getFxData().objects().add(hyperBeamAftershock(duration, 9, 0.84f));
+        }
+
+        private static ParticleEmitter hyperBeamAftershock(int duration, int delay,
+                                   float linePosition) {
+        Palette palette = new Palette(0xFFFFFFFF, 0x0060A5FA);
+        ParticleEmitter emitter = particle(duration, palette, 0.0f, 0.30f, 0.16f, false);
+        emitter.config.setStartLifetime(NumberFunction.constant(8.0f));
+        emitter.config.setMaxParticles(96);
+        Box box = new Box();
+        emitter.config.shape.setShape(box);
+        emitter.config.shape.setPosition(new NumberFunction3(linePosition, 0.0, 0.0));
+        emitter.config.shape.setScale(new NumberFunction3(0.015, 0.85, 0.85));
+        EmissionSetting.Burst burst = new EmissionSetting.Burst();
+        burst.time = delay;
+        burst.cycles = 1;
+        burst.interval = 1;
+        burst.probability = 1.0f;
+        burst.setCount(NumberFunction.constant(30.0f));
+        emitter.config.emission.setBursts(List.of(burst));
+        return emitter;
+        }
+
+        private static ParticleEmitter flameVolume(int duration, Palette palette,
+                               float emission, float size,
+                               float diameter) {
+        ParticleEmitter emitter = particle(duration, palette, emission, size, 0.08f, false);
+        emitter.config.setStartLifetime(NumberFunction.constant(7.0f));
+        emitter.config.setMaxParticles(384);
+        Box box = new Box();
+        emitter.config.shape.setShape(box);
+        emitter.config.shape.setPosition(new NumberFunction3(0.5, 0.0, 0.0));
+        emitter.config.shape.setScale(new NumberFunction3(1.0, diameter, diameter));
+        return emitter;
     }
 
     private static BeamEmitter beam(int duration, Palette palette, float width) {

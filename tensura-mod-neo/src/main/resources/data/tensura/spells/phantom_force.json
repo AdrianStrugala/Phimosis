@@ -5,7 +5,7 @@
   "school": "shadow",
   "cooldown_ticks": 360,
   "targeting": { "type": "aim", "range": 12.0, "width": 1.0, "max_targets": 1 },
-  "delivery": { "type": "teleport_strike", "delay_ticks": 20 },
+  "delivery": { "type": "phase_movement", "duration_ticks": 30, "movement_speed": 0.45 },
   "impact": [
     { "type": "damage" }
   ],

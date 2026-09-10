@@ -30,12 +30,14 @@ public class SpellExecutor {
     private static final Map<UUID, Map<ResourceLocation, Long>> companionCooldowns = new HashMap<>();
     private static final Map<UUID, Map<ResourceLocation, ChargeState>> charges = new HashMap<>();
     private static final Map<UUID, ResourceLocation> heldChannels = new HashMap<>();
+    private static final Map<UUID, ActiveCharge> activeCharges = new HashMap<>();
 
     public static void clearPlayerState(UUID playerId) {
         cooldowns.remove(playerId);
         charges.remove(playerId);
         SpellImpactApplier.clearPlayerState(playerId);
         heldChannels.remove(playerId);
+        activeCharges.remove(playerId);
     }
 
     public static void clearAllState() {
@@ -44,6 +46,7 @@ public class SpellExecutor {
         charges.clear();
         SpellImpactApplier.clearAllState();
         heldChannels.clear();
+        activeCharges.clear();
     }
 
     public static boolean cast(ServerPlayer caster, ResourceLocation spellId) {
@@ -70,6 +73,70 @@ public class SpellExecutor {
         PacketDistributor.sendToPlayer(caster, new CooldownSyncPacket(spellId, cooldownTicks));
     }
 
+        public static boolean castChargedProjectile(ServerPlayer caster) {
+        ActiveCharge charge = activeCharges.remove(caster.getUUID());
+        if (charge == null) return false;
+        ResourceLocation spellId = charge.spellId;
+        SpellDefinition definition = SpellRegistry.get(spellId).orElse(null);
+        if (definition == null || !definition.delivery.charge_release
+            || caster.hasEffect(TensuraMobEffects.ASLEEP)
+            || caster.hasEffect(TensuraMobEffects.FROZEN)
+            || caster.hasEffect(TensuraMobEffects.EXHAUSTED)) return false;
+
+        int minimumChargeTicks = Math.max(1, definition.delivery.minimum_charge_ticks);
+        int maximumChargeTicks = Math.max(
+            minimumChargeTicks, definition.delivery.maximum_charge_ticks);
+        int chargedTicks = (int) Math.min(Integer.MAX_VALUE,
+            Math.max(0L, caster.level().getGameTime() - charge.startedAt));
+        if (chargedTicks < minimumChargeTicks) return false;
+
+        long now = caster.level().getGameTime();
+        Map<ResourceLocation, Long> playerCooldowns = cooldowns.computeIfAbsent(
+            caster.getUUID(), ignored -> new HashMap<>());
+        if (now < playerCooldowns.getOrDefault(spellId, 0L)) return false;
+
+        double progress = maximumChargeTicks <= minimumChargeTicks ? 1.0
+            : Math.max(0.0, Math.min(1.0,
+                (double) (chargedTicks - minimumChargeTicks)
+                    / (maximumChargeTicks - minimumChargeTicks)));
+        double damageScale = 0.65 + 0.35 * progress;
+        double radiusScale = 0.75 + 0.50 * progress;
+        SpellProjectileDelivery.castChargedProjectile(
+            caster, definition, spellId, damageScale, radiusScale);
+        playerCooldowns.put(spellId, now + definition.cooldown_ticks);
+        PacketDistributor.sendToPlayer(
+            caster, new CooldownSyncPacket(spellId, definition.cooldown_ticks));
+        caster.swing(InteractionHand.MAIN_HAND, true);
+        SpellFeedback.playTravelSound(caster, definition);
+        return true;
+    }
+
+    public static boolean beginCharge(ServerPlayer caster, ResourceLocation spellId) {
+        SpellDefinition definition = SpellRegistry.get(spellId).orElse(null);
+        if (definition == null || !definition.delivery.charge_release
+                || SpellCastController.isCasting(caster)
+                || caster.hasEffect(TensuraMobEffects.ASLEEP)
+                || caster.hasEffect(TensuraMobEffects.FROZEN)
+                || caster.hasEffect(TensuraMobEffects.EXHAUSTED)
+                || activeCharges.containsKey(caster.getUUID())
+                || caster.level().getGameTime() < cooldowns
+                    .getOrDefault(caster.getUUID(), Map.of())
+                    .getOrDefault(spellId, 0L)) return false;
+        activeCharges.put(caster.getUUID(), new ActiveCharge(
+            spellId, caster.level().getGameTime()));
+        SpellFeedback.sendCastVfx(caster, definition);
+        SpellFeedback.playCastSound(caster, definition);
+        return true;
+    }
+
+    public static boolean isCharging(UUID casterId) {
+        return activeCharges.containsKey(casterId);
+    }
+
+    public static boolean interruptCharge(UUID casterId) {
+        return activeCharges.remove(casterId) != null;
+    }
+
     private static boolean cast(ServerPlayer caster, ResourceLocation spellId,
                                 boolean skipCastTime, boolean deferCooldown) {
         if (caster.hasEffect(TensuraMobEffects.ASLEEP)
@@ -88,6 +155,18 @@ public class SpellExecutor {
         if (def == null) {
             caster.sendSystemMessage(Component.literal("Unknown spell: " + spellId));
             return false;
+        }
+        if ("orbit_release".equals(def.delivery.type)
+                && SpellRuntimeController.releaseOrbit(caster)) {
+            caster.swing(InteractionHand.MAIN_HAND, true);
+            SpellFeedback.playTravelSound(caster, def);
+            return true;
+        }
+        if ("phase_movement".equals(def.delivery.type)
+                && SpellMovementController.releasePhaseMovement(caster)) {
+            caster.swing(InteractionHand.MAIN_HAND, true);
+            SpellFeedback.playTravelSound(caster, def);
+            return true;
         }
 
         long now = caster.level().getGameTime();
@@ -149,6 +228,10 @@ public class SpellExecutor {
             case "delayed" -> castDelayed(caster, def);
             case "delayed_area" -> castDelayedArea(caster, def);
             case "moving_zone" -> castMovingZone(caster, def);
+            case "contact_aura" -> SpellRuntimeController.startContactAura(caster, caster, def);
+            case "orbit_release" -> SpellRuntimeController.startOrbit(caster, caster, def);
+            case "phase_movement" -> SpellMovementController.startPhaseMovement(caster, def);
+            case "pulse_ring" -> SpellRuntimeController.startPulseRing(caster, caster, def);
             case "protective_aura" -> SpellRuntimeController.startProtectiveAura(caster, caster, def);
                 case "zone" -> SpellRuntimeController.startZone(
                     caster, caster, def, caster.position());
@@ -220,7 +303,7 @@ public class SpellExecutor {
             pokemonId, ignored -> new HashMap<>());
         if (now < pokemonCooldowns.getOrDefault(spellId, 0L)) return false;
 
-        boolean started = def.cast_time_ticks > 0
+        boolean started = def.cast_time_ticks > 0 || def.delivery.charge_release
                 ? SpellCastController.startCompanionCast(owner, companion, target, spellId, def)
                 : executeCompanionDelivery(owner, companion, target, spellId, def);
         if (!started) return false;
@@ -248,6 +331,12 @@ public class SpellExecutor {
             case "delayed_area" -> SpellRuntimeController.startDelayedArea(
                     owner, companion, def, target.position());
             case "moving_zone" -> startCompanionMovingZone(owner, companion, target, def);
+                case "contact_aura" -> SpellRuntimeController.startContactAura(
+                    owner, companion, def);
+                    case "orbit_release" -> SpellRuntimeController.startOrbit(owner, companion, def);
+                        case "phase_movement" -> SpellMovementController.startPhaseMovement(
+                            owner, companion, target, def);
+                            case "pulse_ring" -> SpellRuntimeController.startPulseRing(owner, companion, def);
             case "protective_aura" -> SpellRuntimeController.startProtectiveAura(
                     owner, companion, def);
                 case "zone" -> SpellRuntimeController.startZone(
@@ -305,7 +394,11 @@ public class SpellExecutor {
         List<LivingEntity> targets = SpellTargetResolver.resolveTargets(caster, def);
 
         if (!targets.isEmpty()) {
-            SpellFeedback.applySchoolVisual(caster, def.school, targets.get(0).position());
+            if (CobblemonPsychicVfx.isPsychic(def)) {
+                CobblemonPsychicVfx.sendHit(caster, targets.get(0));
+            } else {
+                SpellFeedback.applySchoolVisual(caster, def.school, targets.get(0).position());
+            }
             if ("vine_tether".equals(def.visual.trail)) {
                 SpellFeedback.drawParticleLine(caster, targets.get(0), ParticleTypes.COMPOSTER);
             }
@@ -336,6 +429,13 @@ public class SpellExecutor {
         SpellBeamDelivery.castRuntimeBeam(owner, effectCaster, lockedTarget, def);
     }
 
+    public static void castRuntimeBeam(ServerPlayer owner, LivingEntity effectCaster,
+                                       LivingEntity lockedTarget, SpellDefinition def,
+                                       int pulseIndex, int pulseCount) {
+        SpellBeamDelivery.castRuntimeBeam(
+                owner, effectCaster, lockedTarget, def, pulseIndex, pulseCount);
+    }
+
     public static void castRuntimeCone(ServerPlayer owner, LivingEntity effectCaster,
                                        SpellDefinition def) {
         SpellBeamDelivery.castRuntimeCone(owner, effectCaster, def);
@@ -344,6 +444,13 @@ public class SpellExecutor {
     public static void castRuntimeCone(ServerPlayer owner, LivingEntity effectCaster,
                                        LivingEntity lockedTarget, SpellDefinition def) {
         SpellBeamDelivery.castRuntimeCone(owner, effectCaster, lockedTarget, def);
+    }
+
+    public static void castRuntimeCone(ServerPlayer owner, LivingEntity effectCaster,
+                                       LivingEntity lockedTarget, SpellDefinition def,
+                                       int pulseIndex, int pulseCount) {
+        SpellBeamDelivery.castRuntimeCone(
+                owner, effectCaster, lockedTarget, def, pulseIndex, pulseCount);
     }
 
         private static boolean castWave(ServerPlayer owner, LivingEntity effectCaster,
@@ -382,6 +489,9 @@ public class SpellExecutor {
             return true;
         }
         if (!"area".equals(def.targeting.type)) {
+            if (CobblemonPsychicVfx.isPsychic(def)) {
+                CobblemonPsychicVfx.sendHit(companion, target);
+            }
             applyImpacts(owner, companion, target, def);
             return true;
         }
@@ -534,6 +644,8 @@ public class SpellExecutor {
         }
     }
 
+    private record ActiveCharge(ResourceLocation spellId, long startedAt) {}
+
     // Public impact methods remain as a stable facade for controllers and projectiles.
     public static void applyImpacts(ServerPlayer caster, LivingEntity target,
                                     SpellDefinition definition) {
@@ -551,6 +663,23 @@ public class SpellExecutor {
         SpellImpactApplier.applyProjectileSplash(owner, effectCaster, directTarget, definition);
     }
 
+    public static void applyProjectileSplash(ServerPlayer owner, LivingEntity effectCaster,
+                                             LivingEntity directTarget,
+                                             SpellDefinition definition,
+                                             double damageScale, double radiusScale) {
+        SpellImpactApplier.applyProjectileSplash(
+                owner, effectCaster, directTarget, definition, damageScale, radiusScale);
+    }
+
+    public static void applyProjectileSplashAt(ServerPlayer owner, LivingEntity effectCaster,
+                                               Vec3 position,
+                                               SpellDefinition definition,
+                                               double damageScale,
+                                               double radiusScale) {
+        SpellImpactApplier.applyProjectileSplashAt(
+                owner, effectCaster, position, definition, damageScale, radiusScale);
+    }
+
     public static void applyImpacts(ServerPlayer owner, LivingEntity effectCaster,
                                     LivingEntity target, SpellDefinition definition) {
         SpellImpactApplier.applyImpacts(owner, effectCaster, target, definition);
@@ -561,6 +690,31 @@ public class SpellExecutor {
                                     boolean finalProjectile) {
         SpellImpactApplier.applyImpacts(
                 owner, effectCaster, target, definition, finalProjectile);
+    }
+
+        public static void applyCasterImpacts(ServerPlayer owner, LivingEntity effectCaster,
+                          SpellDefinition definition) {
+        SpellImpactApplier.applyImpacts(
+            owner, effectCaster, effectCaster, definition, true, true, false);
+        }
+
+        public static void applyTargetImpacts(ServerPlayer owner, LivingEntity effectCaster,
+                          LivingEntity target, SpellDefinition definition) {
+        SpellImpactApplier.applyImpacts(
+            owner, effectCaster, target, definition, true, false, true);
+        }
+
+    public static void applyTargetImpacts(ServerPlayer owner, LivingEntity effectCaster,
+                                          LivingEntity target, SpellDefinition definition,
+                                          double damageScale) {
+        applyTargetImpacts(owner, effectCaster, target, definition, true, damageScale);
+        }
+
+        public static void applyTargetImpacts(ServerPlayer owner, LivingEntity effectCaster,
+                          LivingEntity target, SpellDefinition definition,
+                          boolean finalProjectile, double damageScale) {
+        SpellImpactApplier.applyImpacts(owner, effectCaster, target, definition,
+            finalProjectile, false, true, 1.0, damageScale);
     }
 
     private static void applyImpacts(ServerPlayer owner, LivingEntity effectCaster,

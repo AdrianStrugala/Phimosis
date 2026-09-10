@@ -5,24 +5,26 @@
   "school": "shadow",
   "cooldown_ticks": 200,
   "targeting": {
-    "type": "beam",
-    "range": 16.0,
-    "width": 0.7,
-    "max_targets": 4
+    "type": "area",
+    "range": 0.0,
+    "radius": 8.0,
+    "max_targets": 12
   },
   "delivery": {
-    "type": "channel_beam",
+    "type": "pulse_ring",
     "duration_ticks": 12,
-    "tick_interval_ticks": 4
+    "tick_interval_ticks": 6
   },
   "impact": [
-    { "type": "damage", "damage_multiplier": 0.3333333333 },
+    { "type": "interrupt_cast" },
+    { "type": "damage", "damage_multiplier": 1.0, "final_hit_only": true },
     {
       "type": "status_effect",
       "effect": "minecraft:nausea",
       "duration": 50,
       "amplifier": 0,
-      "chance": 0.1
+      "chance": 0.1,
+      "final_hit_only": true
     }
   ],
   "visual": {

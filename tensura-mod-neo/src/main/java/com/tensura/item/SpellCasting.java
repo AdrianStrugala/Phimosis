@@ -25,11 +25,11 @@ import org.jetbrains.annotations.Nullable;
 public final class SpellCasting {
 
     /** Resolved channel timings for one cast. {@code NONE} means a plain instant cast. */
-    public record Channel(boolean held, int windup, int duration) {
-        public static final Channel NONE = new Channel(false, 0, 0);
+    public record Channel(boolean held, boolean chargeRelease, int windup, int duration) {
+        public static final Channel NONE = new Channel(false, false, 0, 0);
 
         public boolean isChannel() {
-            return held || windup > 0;
+            return held || chargeRelease || windup > 0;
         }
     }
 
@@ -58,13 +58,20 @@ public final class SpellCasting {
                 .orElse(null);
         if (def == null || def.delivery == null) return Channel.NONE;
 
+        if (def.delivery.charge_release) {
+            return new Channel(false, true,
+                Math.max(1, def.delivery.minimum_charge_ticks),
+                Math.max(def.delivery.minimum_charge_ticks,
+                    def.delivery.maximum_charge_ticks));
+        }
         if (def.delivery.hold_to_channel) {
             int duration = def.delivery.duration_ticks > 0
                     ? def.delivery.duration_ticks : Integer.MAX_VALUE;
-            return new Channel(true, 0, duration);
+            return new Channel(true, false, 0, duration);
         }
         if ("channel_beam".equals(def.delivery.type) && def.cast_time_ticks > 0) {
-            return new Channel(false, def.cast_time_ticks, Math.max(1, def.delivery.duration_ticks));
+                return new Channel(false, false, def.cast_time_ticks,
+                    Math.max(1, def.delivery.duration_ticks));
         }
         return Channel.NONE;
     }
@@ -75,6 +82,16 @@ public final class SpellCasting {
                                                          InteractionHand hand, ItemStack stack,
                                                          ResourceLocation spellId, Channel channel) {
         if (spellId == null) return InteractionResultHolder.fail(stack);
+
+        if (channel.chargeRelease()) {
+            player.startUsingItem(hand);
+            if (!level.isClientSide && player instanceof ServerPlayer serverPlayer
+                    && !SpellExecutor.beginCharge(serverPlayer, spellId)) {
+                player.stopUsingItem();
+                return InteractionResultHolder.fail(stack);
+            }
+            return InteractionResultHolder.consume(stack);
+        }
 
         if (channel.held()) {
             player.startUsingItem(hand);
@@ -100,7 +117,7 @@ public final class SpellCasting {
     }
 
     public static int useDuration(Channel channel) {
-        if (channel.held()) return channel.duration();
+        if (channel.held() || channel.chargeRelease()) return channel.duration();
         return channel.windup() > 0 ? channel.windup() + channel.duration() : 0;
     }
 
@@ -112,7 +129,7 @@ public final class SpellCasting {
     public static void onUseTick(Level level, LivingEntity entity, ItemStack stack,
                                  int remainingUseDuration, ResourceLocation spellId, Channel channel) {
         if (level.isClientSide || !(entity instanceof ServerPlayer player)) return;
-        if (channel.held() || channel.windup() <= 0) return;
+        if (channel.held() || channel.chargeRelease() || channel.windup() <= 0) return;
 
         int elapsed = useDuration(channel) - remainingUseDuration;
         if (elapsed != channel.windup()) return;
@@ -128,6 +145,18 @@ public final class SpellCasting {
         if (spellId == null) return;
         com.tensura.event.SpellCastController.stopPlayerChannels(player.getUUID());
         SpellExecutor.finishHeldChannel(player, spellId);
+    }
+
+    public static void releaseUsing(Level level, LivingEntity entity,
+                                    ResourceLocation spellId, Channel channel,
+                                    int remainingUseDuration) {
+        if (level.isClientSide || !(entity instanceof ServerPlayer player)) return;
+        if (spellId == null) return;
+        if (channel.chargeRelease()) {
+            SpellExecutor.castChargedProjectile(player);
+            return;
+        }
+        finishHeldChannel(level, entity, spellId, channel);
     }
 
     /** Shared display helper: {@code fire_blast} → {@code Fire Blast}. */

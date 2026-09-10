@@ -10,7 +10,7 @@
   "impact": [
     { "type": "damage", "damage_multiplier": 1.0 },
     { "type": "knockback", "strength": 0.45 },
-    { "type": "interrupt_cast" }
+    { "type": "interrupt_cast", "final_hit_only": true }
   ],
   "visual": {
     "cast_animation": "hyper_voice_cast",

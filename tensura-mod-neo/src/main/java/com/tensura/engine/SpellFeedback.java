@@ -19,18 +19,25 @@ final class SpellFeedback {
 
     static void sendProjectileVfx(ServerLevel level, SpellProjectile projectile,
                                   SpellDefinition definition, Vec3 direction) {
+        sendProjectileVfx(level, projectile, definition, direction, 1.0);
+    }
+
+    static void sendProjectileVfx(ServerLevel level, SpellProjectile projectile,
+                                  SpellDefinition definition, Vec3 direction,
+                                  double visualScale) {
         Vec3 origin = projectile.position();
         Vec3 target = origin.add(direction.normalize().scale(definition.targeting.range));
         SpellVfxDispatcher.send(level, "projectile", definition.visual.projectile,
-                definition.school, origin, target, 1.0,
+                definition.school, origin, target, visualScale,
                 definition.delivery.duration_ticks, projectile, false);
         SpellVfxDispatcher.send(level, "projectile", definition.visual.trail,
-                definition.school, origin, target, 1.0,
+                definition.school, origin, target, visualScale,
                 definition.delivery.duration_ticks, projectile, false);
     }
 
     static void sendCastVfx(LivingEntity effectCaster, SpellDefinition definition) {
         if (!(effectCaster.level() instanceof ServerLevel level)) return;
+                CobblemonUltimateVfx.sendCastEffects(effectCaster, definition);
         SpellVfxDispatcher.send(level, "attachment", definition.visual.cast_animation,
                 definition.school, effectCaster.position(), effectCaster.position(),
                 1.0, definition.cast_time_ticks, effectCaster, true);

@@ -12,12 +12,22 @@ falls back to the code-generated effect when that resource does not exist.
 ## Runtime contract
 
 - Runtime IDs resolve as `tensura:<visual value>`.
-- Flamethrower is the only Cobblemon Snowstorm exception. Pokemon streams use
+- Cobblemon Snowstorm overlays are allowed for spell phases with verified effect
+   IDs. Photon remains responsible for directional geometry, telegraphs and a
+   visible fallback when an integration asset is unavailable. Entity-bound
+   Snowstorm packets are sent only for `PosableEntity`; player casts use position
+   packets.
+- Flamethrower Pokemon streams use
    `cobblemon:flamethrower_actor`, select the first available source locator from
    `special` and `target`, and aim at locator `middle` or the target position.
-   Player casts retain the directional Photon stream because players do not
-   expose Cobblemon locators. Cast start and per-caster throttled target hits use
+   Player casts use a thin Photon core inside two short-lived volumetric flame
+   layers because players do not expose Cobblemon locators. Their visual origin
+   is offset forward, down, and toward the main hand so the first-person camera
+   does not clip it. Cast start and per-caster throttled target hits use
    `cobblemon:flamethrower_targetburst`; throttle entries expire after 20 ticks.
+   - Ultimate overlays are emitted only on phase entry or through a bounded,
+     per-caster-target refresh. Area detonations send one central effect rather
+     than one full effect stack for every target in the area.
 - Optional overrides belong at `src/main/resources/assets/tensura/fx/<id>.fx`.
 - Keep editable `.fxproj` files outside runtime resources.
 - World-space directional effects point along local `+X`. Java rotates `+X`
