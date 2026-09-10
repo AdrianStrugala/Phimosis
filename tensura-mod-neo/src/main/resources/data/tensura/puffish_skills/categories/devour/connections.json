@@ -65,38 +65,6 @@
   ],
   [
     "ember_owned",
-    "flame_charge_owned"
-  ],
-  [
-    "flame_charge_owned",
-    "flame_charge"
-  ],
-  [
-    "flame_charge_owned",
-    "flamethrower_owned"
-  ],
-  [
-    "flamethrower_owned",
-    "flamethrower"
-  ],
-  [
-    "flamethrower_owned",
-    "fire_spin_owned"
-  ],
-  [
-    "fire_spin_owned",
-    "fire_spin"
-  ],
-  [
-    "fire_spin_owned",
-    "fire_blast_owned"
-  ],
-  [
-    "fire_blast_owned",
-    "fire_blast"
-  ],
-  [
-    "fire_blast_owned",
     "fire_punch_owned"
   ],
   [
@@ -105,6 +73,38 @@
   ],
   [
     "fire_punch_owned",
+    "flame_charge_owned"
+  ],
+  [
+    "flame_charge_owned",
+    "flame_charge"
+  ],
+  [
+    "flame_charge_owned",
+    "fire_spin_owned"
+  ],
+  [
+    "fire_spin_owned",
+    "fire_spin"
+  ],
+  [
+    "fire_spin_owned",
+    "flamethrower_owned"
+  ],
+  [
+    "flamethrower_owned",
+    "flamethrower"
+  ],
+  [
+    "flamethrower_owned",
+    "fire_blast_owned"
+  ],
+  [
+    "fire_blast_owned",
+    "fire_blast"
+  ],
+  [
+    "fire_blast_owned",
     "overheat_owned"
   ],
   [
@@ -185,14 +185,6 @@
   ],
   [
     "electro_ball_owned",
-    "discharge_owned"
-  ],
-  [
-    "discharge_owned",
-    "discharge"
-  ],
-  [
-    "discharge_owned",
     "thunder_punch_owned"
   ],
   [
@@ -201,6 +193,14 @@
   ],
   [
     "thunder_punch_owned",
+    "discharge_owned"
+  ],
+  [
+    "discharge_owned",
+    "discharge"
+  ],
+  [
+    "discharge_owned",
     "thunder_owned"
   ],
   [
@@ -225,14 +225,6 @@
   ],
   [
     "vine_whip_owned",
-    "leech_seed_owned"
-  ],
-  [
-    "leech_seed_owned",
-    "leech_seed"
-  ],
-  [
-    "leech_seed_owned",
     "razor_leaf_owned"
   ],
   [
@@ -241,22 +233,14 @@
   ],
   [
     "razor_leaf_owned",
-    "leaf_blade_owned"
+    "leech_seed_owned"
   ],
   [
-    "leaf_blade_owned",
-    "leaf_blade"
+    "leech_seed_owned",
+    "leech_seed"
   ],
   [
-    "leaf_blade_owned",
-    "giga_drain_owned"
-  ],
-  [
-    "giga_drain_owned",
-    "giga_drain"
-  ],
-  [
-    "giga_drain_owned",
+    "leech_seed_owned",
     "petal_blizzard_owned"
   ],
   [
@@ -265,6 +249,22 @@
   ],
   [
     "petal_blizzard_owned",
+    "giga_drain_owned"
+  ],
+  [
+    "giga_drain_owned",
+    "giga_drain"
+  ],
+  [
+    "giga_drain_owned",
+    "leaf_blade_owned"
+  ],
+  [
+    "leaf_blade_owned",
+    "leaf_blade"
+  ],
+  [
+    "leaf_blade_owned",
     "solar_beam_owned"
   ],
   [
@@ -281,14 +281,6 @@
   ],
   [
     "powder_snow_owned",
-    "ice_shard_owned"
-  ],
-  [
-    "ice_shard_owned",
-    "ice_shard"
-  ],
-  [
-    "ice_shard_owned",
     "icy_wind_owned"
   ],
   [
@@ -297,14 +289,6 @@
   ],
   [
     "icy_wind_owned",
-    "ice_beam_owned"
-  ],
-  [
-    "ice_beam_owned",
-    "ice_beam"
-  ],
-  [
-    "ice_beam_owned",
     "ice_punch_owned"
   ],
   [
@@ -313,6 +297,22 @@
   ],
   [
     "ice_punch_owned",
+    "ice_shard_owned"
+  ],
+  [
+    "ice_shard_owned",
+    "ice_shard"
+  ],
+  [
+    "ice_shard_owned",
+    "ice_beam_owned"
+  ],
+  [
+    "ice_beam_owned",
+    "ice_beam"
+  ],
+  [
+    "ice_beam_owned",
     "aurora_veil_owned"
   ],
   [
@@ -337,6 +337,14 @@
   ],
   [
     "mach_punch_owned",
+    "seismic_toss_owned"
+  ],
+  [
+    "seismic_toss_owned",
+    "seismic_toss"
+  ],
+  [
+    "seismic_toss_owned",
     "force_palm_owned"
   ],
   [
@@ -353,14 +361,6 @@
   ],
   [
     "drain_punch_owned",
-    "seismic_toss_owned"
-  ],
-  [
-    "seismic_toss_owned",
-    "seismic_toss"
-  ],
-  [
-    "seismic_toss_owned",
     "close_combat_owned"
   ],
   [
@@ -393,14 +393,6 @@
   ],
   [
     "acid_spray_owned",
-    "venoshock_owned"
-  ],
-  [
-    "venoshock_owned",
-    "venoshock"
-  ],
-  [
-    "venoshock_owned",
     "toxic_spikes_owned"
   ],
   [
@@ -409,6 +401,14 @@
   ],
   [
     "toxic_spikes_owned",
+    "venoshock_owned"
+  ],
+  [
+    "venoshock_owned",
+    "venoshock"
+  ],
+  [
+    "venoshock_owned",
     "toxic_owned"
   ],
   [
@@ -465,14 +465,6 @@
   ],
   [
     "gust_owned",
-    "air_cutter_owned"
-  ],
-  [
-    "air_cutter_owned",
-    "air_cutter"
-  ],
-  [
-    "air_cutter_owned",
     "aerial_ace_owned"
   ],
   [
@@ -481,6 +473,14 @@
   ],
   [
     "aerial_ace_owned",
+    "air_cutter_owned"
+  ],
+  [
+    "air_cutter_owned",
+    "air_cutter"
+  ],
+  [
+    "air_cutter_owned",
     "tailwind_owned"
   ],
   [
@@ -513,6 +513,14 @@
   ],
   [
     "psybeam_owned",
+    "rest_owned"
+  ],
+  [
+    "rest_owned",
+    "rest"
+  ],
+  [
+    "rest_owned",
     "psycho_cut_owned"
   ],
   [
@@ -529,14 +537,6 @@
   ],
   [
     "psychic_owned",
-    "rest_owned"
-  ],
-  [
-    "rest_owned",
-    "rest"
-  ],
-  [
-    "rest_owned",
     "trick_room_owned"
   ],
   [
@@ -617,14 +617,6 @@
   ],
   [
     "rock_tomb_owned",
-    "stealth_rock_owned"
-  ],
-  [
-    "stealth_rock_owned",
-    "stealth_rock"
-  ],
-  [
-    "stealth_rock_owned",
     "rock_slide_owned"
   ],
   [
@@ -633,6 +625,14 @@
   ],
   [
     "rock_slide_owned",
+    "stealth_rock_owned"
+  ],
+  [
+    "stealth_rock_owned",
+    "stealth_rock"
+  ],
+  [
+    "stealth_rock_owned",
     "stone_edge_owned"
   ],
   [
@@ -649,6 +649,14 @@
   ],
   [
     "lick_owned",
+    "shadow_sneak_owned"
+  ],
+  [
+    "shadow_sneak_owned",
+    "shadow_sneak"
+  ],
+  [
+    "shadow_sneak_owned",
     "night_shade_owned"
   ],
   [
@@ -665,22 +673,6 @@
   ],
   [
     "shadow_claw_owned",
-    "shadow_sneak_owned"
-  ],
-  [
-    "shadow_sneak_owned",
-    "shadow_sneak"
-  ],
-  [
-    "shadow_sneak_owned",
-    "shadow_ball_owned"
-  ],
-  [
-    "shadow_ball_owned",
-    "shadow_ball"
-  ],
-  [
-    "shadow_ball_owned",
     "hex_owned"
   ],
   [
@@ -689,6 +681,14 @@
   ],
   [
     "hex_owned",
+    "shadow_ball_owned"
+  ],
+  [
+    "shadow_ball_owned",
+    "shadow_ball"
+  ],
+  [
+    "shadow_ball_owned",
     "phantom_force_owned"
   ],
   [
@@ -705,14 +705,6 @@
   ],
   [
     "dragon_breath_owned",
-    "dragon_claw_owned"
-  ],
-  [
-    "dragon_claw_owned",
-    "dragon_claw"
-  ],
-  [
-    "dragon_claw_owned",
     "dragon_tail_owned"
   ],
   [
@@ -721,14 +713,14 @@
   ],
   [
     "dragon_tail_owned",
-    "dragon_rush_owned"
+    "dragon_claw_owned"
   ],
   [
-    "dragon_rush_owned",
-    "dragon_rush"
+    "dragon_claw_owned",
+    "dragon_claw"
   ],
   [
-    "dragon_rush_owned",
+    "dragon_claw_owned",
     "dragon_pulse_owned"
   ],
   [
@@ -737,19 +729,27 @@
   ],
   [
     "dragon_pulse_owned",
-    "draco_meteor_owned"
+    "dragon_rush_owned"
   ],
   [
-    "draco_meteor_owned",
-    "draco_meteor"
+    "dragon_rush_owned",
+    "dragon_rush"
   ],
   [
-    "draco_meteor_owned",
+    "dragon_rush_owned",
     "outrage_owned"
   ],
   [
     "outrage_owned",
     "outrage"
+  ],
+  [
+    "outrage_owned",
+    "draco_meteor_owned"
+  ],
+  [
+    "draco_meteor_owned",
+    "draco_meteor"
   ],
   [
     "devour_core",
@@ -761,14 +761,6 @@
   ],
   [
     "bite_owned",
-    "crunch_owned"
-  ],
-  [
-    "crunch_owned",
-    "crunch"
-  ],
-  [
-    "crunch_owned",
     "snarl_owned"
   ],
   [
@@ -777,14 +769,6 @@
   ],
   [
     "snarl_owned",
-    "dark_pulse_owned"
-  ],
-  [
-    "dark_pulse_owned",
-    "dark_pulse"
-  ],
-  [
-    "dark_pulse_owned",
     "sucker_punch_owned"
   ],
   [
@@ -793,6 +777,22 @@
   ],
   [
     "sucker_punch_owned",
+    "crunch_owned"
+  ],
+  [
+    "crunch_owned",
+    "crunch"
+  ],
+  [
+    "crunch_owned",
+    "dark_pulse_owned"
+  ],
+  [
+    "dark_pulse_owned",
+    "dark_pulse"
+  ],
+  [
+    "dark_pulse_owned",
     "foul_play_owned"
   ],
   [
@@ -849,14 +849,6 @@
   ],
   [
     "fairy_wind_owned",
-    "draining_kiss_owned"
-  ],
-  [
-    "draining_kiss_owned",
-    "draining_kiss"
-  ],
-  [
-    "draining_kiss_owned",
     "charm_owned"
   ],
   [
@@ -865,6 +857,14 @@
   ],
   [
     "charm_owned",
+    "draining_kiss_owned"
+  ],
+  [
+    "draining_kiss_owned",
+    "draining_kiss"
+  ],
+  [
+    "draining_kiss_owned",
     "dazzling_gleam_owned"
   ],
   [

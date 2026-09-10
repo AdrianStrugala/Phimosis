@@ -13,25 +13,27 @@ icon_block = spell_item[/CUSTOM_ICON_ORDER = java\.util\.List\.of\((.*?)\n    \)
 abort "CUSTOM_ICON_ORDER not found" unless icon_block
 CUSTOM_ICONS = icon_block.scan(/"([a-z0-9_]+)"/).flatten.freeze
 
+# Center to edge, ordered by the median natural learn level in the bundled
+# Cobblemon species data. Tutor-only signature moves stay at the outer edge.
 RAYS = {
   normal: %w[tackle quick_attack swift tri_attack recover hyper_voice hyper_beam],
-  fire: %w[ember flame_charge flamethrower fire_spin fire_blast fire_punch overheat],
+  fire: %w[ember fire_punch flame_charge fire_spin flamethrower fire_blast overheat],
   water: %w[water_gun aqua_jet bubble_beam whirlpool surf hydro_pump],
-  electric: %w[thunder_shock spark electro_ball discharge thunder_punch thunder volt_tackle],
-  grass: %w[vine_whip leech_seed razor_leaf leaf_blade giga_drain petal_blizzard solar_beam],
-  ice: %w[powder_snow ice_shard icy_wind ice_beam ice_punch aurora_veil blizzard],
-  fighting: %w[mach_punch force_palm drain_punch seismic_toss close_combat focus_blast],
-  poison: %w[poison_sting acid_spray venoshock toxic_spikes toxic],
+  electric: %w[thunder_shock spark electro_ball thunder_punch discharge thunder volt_tackle],
+  grass: %w[vine_whip razor_leaf leech_seed petal_blizzard giga_drain leaf_blade solar_beam],
+  ice: %w[powder_snow icy_wind ice_punch ice_shard ice_beam aurora_veil blizzard],
+  fighting: %w[mach_punch seismic_toss force_palm drain_punch close_combat focus_blast],
+  poison: %w[poison_sting acid_spray toxic_spikes venoshock toxic],
   ground: %w[mud_shot bulldoze dig earth_power earthquake],
-  flying: %w[gust air_cutter aerial_ace tailwind hurricane],
-  psychic: %w[protect psybeam psycho_cut psychic rest trick_room future_sight],
+  flying: %w[gust aerial_ace air_cutter tailwind hurricane],
+  psychic: %w[protect psybeam rest psycho_cut psychic trick_room future_sight],
   bug: %w[string_shot pin_missile u_turn x_scissor bug_buzz],
-  rock: %w[rock_throw smack_down rock_tomb stealth_rock rock_slide stone_edge],
-  ghost: %w[lick night_shade shadow_claw shadow_sneak shadow_ball hex phantom_force],
-  dragon: %w[dragon_breath dragon_claw dragon_tail dragon_rush dragon_pulse draco_meteor outrage],
-  dark: %w[bite crunch snarl dark_pulse sucker_punch foul_play],
+  rock: %w[rock_throw smack_down rock_tomb rock_slide stealth_rock stone_edge],
+  ghost: %w[lick shadow_sneak night_shade shadow_claw hex shadow_ball phantom_force],
+  dragon: %w[dragon_breath dragon_tail dragon_claw dragon_pulse dragon_rush outrage draco_meteor],
+  dark: %w[bite snarl sucker_punch crunch dark_pulse foul_play],
   steel: %w[bullet_punch metal_claw iron_head iron_defense flash_cannon],
-  fairy: %w[fairy_wind draining_kiss charm dazzling_gleam moonblast]
+  fairy: %w[fairy_wind charm draining_kiss dazzling_gleam moonblast]
 }.freeze
 
 EFFECT_NAMES = {

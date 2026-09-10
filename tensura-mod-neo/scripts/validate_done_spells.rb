@@ -109,7 +109,9 @@ fail_validation("duplicate custom icon spell") unless spells.uniq.size == spells
 devour_generator = read_source(DEVOUR_GENERATOR_FILE)
 ray_block = devour_generator[/RAYS = \{(.*?)\n\}\.freeze/m, 1]
 fail_validation("Devour RAYS not found") unless ray_block
-ray_spells = ray_block.scan(/\w+: %w\[([^\]]+)\]/).flatten.flat_map(&:split)
+rays = ray_block.scan(/(\w+): %w\[([^\]]+)\]/)
+  .to_h { |type, entries| [type, entries.split] }
+ray_spells = rays.values.flatten
 canonical_spells = ray_spells
 fail_validation("expected 110 canonical spells, got #{canonical_spells.size}") unless
   canonical_spells.size == 110 && canonical_spells.uniq.size == 110
@@ -297,6 +299,17 @@ fail_validation("Thunder lacks one centralized Snowstorm telegraph and impact") 
 definitions = JSON.parse(File.read(File.join(DEVOUR_DIR, "definitions.json")))
 skills = JSON.parse(File.read(File.join(DEVOUR_DIR, "skills.json")))
 connections = JSON.parse(File.read(File.join(DEVOUR_DIR, "connections.json")))
+
+rays.each_with_index do |(type, entries), ray_index|
+  angle = (-90 + ray_index * 20) * Math::PI / 180.0
+  entries.each_with_index do |spell, spell_index|
+    radius = 96 + spell_index * 54
+    expected = [(Math.cos(angle) * radius).round, (Math.sin(angle) * radius).round]
+    actual = [skills.dig(spell, "x"), skills.dig(spell, "y")]
+    fail_validation("#{type} ray order is stale at #{spell}: #{actual} != #{expected}") unless
+      actual == expected
+  end
+end
 casts = {}
 cast_profiles = {}
 texture_hashes = {}

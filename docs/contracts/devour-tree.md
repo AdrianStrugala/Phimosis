@@ -106,6 +106,19 @@ wywołaniami `ITEMS.register("spell_icon_…")`. Szukanie literałów w rejestrz
 fałszywy alarm o braku rejestracji. Dodajesz ikonę — dopisz do `CUSTOM_ICON_ORDER`
 plus model w `assets/tensura/models/item/` i teksturę w `assets/tensura/textures/item/spell/`.
 
+### 7. Kolejnosc spelli wewnatrz ray
+
+Tablice `RAYS` w `scripts/sync_devour_tree.rb` sa zapisane od srodka drzewka do
+zewnetrznej krawedzi. Spelle sa ulozone z grubsza rosnaco wedlug mediany dodatnich
+poziomow naturalnej nauki ruchu w danych gatunkow z lokalnego Cobblemona 1.7.3.
+Pojedynczy wpis poziomu 1 u koncowej ewolucji nie przesuwa dzieki temu mocnego ruchu
+na poczatek galezi. `volt_tackle` i `draco_meteor`, ktore nie maja naturalnych wpisow
+level-up w tych danych, pozostaja na koncu jako ruchy sygnaturowe dostepne przez
+TM albo tutora.
+
+Generator wylicza pozycje bezposrednio z kolejnosci `RAYS`. Walidator sprawdza kazdy
+oczekiwany promien i odrzuca wygenerowany `skills.json`, jezeli zachowal starszy uklad.
+
 ---
 
 ## Schemat puffish_skills 0.17.3

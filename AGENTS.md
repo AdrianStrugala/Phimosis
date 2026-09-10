@@ -112,6 +112,8 @@ Po zmianie:
 ## Niezmienniki Devour
 
 - Zachowaj 18 rays, dopoki uzytkownik jawnie nie zmieni architektury.
+- Wewnatrz ray zachowaj kolejnosc od srodka do zewnatrz wedlug przyblizonego poziomu
+  naturalnej nauki ruchu; szczegoly i wyjatki sa w `docs/contracts/devour-tree.md`.
 - Kazdy spell ma ukryty `<spell>_owned` i widoczny dispenser `<spell>` w tej samej
   pozycji.
 - Kazdy `_owned` ma `root: true`, koszt 0, brak nagrod i niewidoczna oprawe.

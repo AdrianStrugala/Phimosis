@@ -422,6 +422,58 @@
       }
     }
   },
+  "fire_punch_owned": {
+    "title": "Fire Punch",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "fire_punch": {
+    "title": "Fire Punch",
+    "description": "Swing a fiery fist in front of you and set struck enemies ablaze.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_fire_punch"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s fire_punch"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
   "flame_charge_owned": {
     "title": "Flame Charge",
     "icon": {
@@ -460,57 +512,6 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s flame_charge"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
-  "flamethrower_owned": {
-    "title": "Flamethrower",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "flamethrower": {
-    "title": "Flamethrower",
-    "description": "Hold to breathe a stream of fire. It starts recharging when you release it.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_flamethrower"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s flamethrower"
         }
       }
     ],
@@ -576,6 +577,57 @@
       }
     }
   },
+  "flamethrower_owned": {
+    "title": "Flamethrower",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "flamethrower": {
+    "title": "Flamethrower",
+    "description": "Hold to breathe a stream of fire. It starts recharging when you release it.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_flamethrower"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s flamethrower"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
   "fire_blast_owned": {
     "title": "Fire Blast",
     "icon": {
@@ -613,58 +665,6 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s fire_blast"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
-  "fire_punch_owned": {
-    "title": "Fire Punch",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "fire_punch": {
-    "title": "Fire Punch",
-    "description": "Swing a fiery fist in front of you and set struck enemies ablaze.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_fire_punch"
-      }
-    },
-    "size": 0.7,
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s fire_punch"
         }
       }
     ],
@@ -1192,57 +1192,6 @@
       }
     }
   },
-  "discharge_owned": {
-    "title": "Discharge",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "discharge": {
-    "title": "Discharge",
-    "description": "Create a lingering cloud of Electric energy at medium range. Paralyzes soaked enemies.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_discharge"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s discharge"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
   "thunder_punch_owned": {
     "title": "Thunder Punch",
     "icon": {
@@ -1281,6 +1230,57 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s thunder_punch"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
+  "discharge_owned": {
+    "title": "Discharge",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "discharge": {
+    "title": "Discharge",
+    "description": "Create a lingering cloud of Electric energy at medium range. Paralyzes soaked enemies.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_discharge"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s discharge"
         }
       }
     ],
@@ -1448,57 +1448,6 @@
       }
     }
   },
-  "leech_seed_owned": {
-    "title": "Leech Seed",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "leech_seed": {
-    "title": "Leech Seed",
-    "description": "Plant a seed that repeatedly drains health from the enemy back to its caster.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_leech_seed"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s leech_seed"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
   "razor_leaf_owned": {
     "title": "Razor Leaf",
     "icon": {
@@ -1550,8 +1499,8 @@
       }
     }
   },
-  "leaf_blade_owned": {
-    "title": "Leaf Blade",
+  "leech_seed_owned": {
+    "title": "Leech Seed",
     "icon": {
       "type": "texture",
       "data": {
@@ -1573,20 +1522,71 @@
       }
     }
   },
-  "leaf_blade": {
-    "title": "Leaf Blade",
-    "description": "Dash forward in a burst of Grass energy at medium range. Sometimes leaves enemies Exposed and hastens you.",
+  "leech_seed": {
+    "title": "Leech Seed",
+    "description": "Plant a seed that repeatedly drains health from the enemy back to its caster.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "tensura:spell_icon_leaf_blade"
+        "item": "tensura:spell_icon_leech_seed"
       }
     },
     "rewards": [
       {
         "type": "puffish_skills:command",
         "data": {
-          "command": "tensura devour_recover @s leaf_blade"
+          "command": "tensura devour_recover @s leech_seed"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
+  "petal_blizzard_owned": {
+    "title": "Petal Blizzard",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "petal_blizzard": {
+    "title": "Petal Blizzard",
+    "description": "Orbit yourself with cutting petals for four seconds, then recast to release them in a radial blast.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_petal_blizzard"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s petal_blizzard"
         }
       }
     ],
@@ -1653,8 +1653,8 @@
       }
     }
   },
-  "petal_blizzard_owned": {
-    "title": "Petal Blizzard",
+  "leaf_blade_owned": {
+    "title": "Leaf Blade",
     "icon": {
       "type": "texture",
       "data": {
@@ -1676,20 +1676,20 @@
       }
     }
   },
-  "petal_blizzard": {
-    "title": "Petal Blizzard",
-    "description": "Orbit yourself with cutting petals for four seconds, then recast to release them in a radial blast.",
+  "leaf_blade": {
+    "title": "Leaf Blade",
+    "description": "Dash forward in a burst of Grass energy at medium range. Sometimes leaves enemies Exposed and hastens you.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "tensura:spell_icon_petal_blizzard"
+        "item": "tensura:spell_icon_leaf_blade"
       }
     },
     "rewards": [
       {
         "type": "puffish_skills:command",
         "data": {
-          "command": "tensura devour_recover @s petal_blizzard"
+          "command": "tensura devour_recover @s leaf_blade"
         }
       }
     ],
@@ -1806,57 +1806,6 @@
       }
     }
   },
-  "ice_shard_owned": {
-    "title": "Ice Shard",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "ice_shard": {
-    "title": "Ice Shard",
-    "description": "Hurl a razor-sharp shard of Ice from long range that may slow enemies.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_ice_shard"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s ice_shard"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
   "icy_wind_owned": {
     "title": "Icy Wind",
     "icon": {
@@ -1909,57 +1858,6 @@
       }
     }
   },
-  "ice_beam_owned": {
-    "title": "Ice Beam",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "ice_beam": {
-    "title": "Ice Beam",
-    "description": "Hold to channel a piercing Ice beam. Soaked enemies freeze on hit, and recharging starts when released.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_ice_beam"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s ice_beam"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
   "ice_punch_owned": {
     "title": "Ice Punch",
     "icon": {
@@ -1998,6 +1896,108 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s ice_punch"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
+  "ice_shard_owned": {
+    "title": "Ice Shard",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "ice_shard": {
+    "title": "Ice Shard",
+    "description": "Hurl a razor-sharp shard of Ice from long range that may slow enemies.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_ice_shard"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s ice_shard"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
+  "ice_beam_owned": {
+    "title": "Ice Beam",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "ice_beam": {
+    "title": "Ice Beam",
+    "description": "Hold to channel a piercing Ice beam. Soaked enemies freeze on hit, and recharging starts when released.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_ice_beam"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s ice_beam"
         }
       }
     ],
@@ -2165,6 +2165,58 @@
       }
     }
   },
+  "seismic_toss_owned": {
+    "title": "Seismic Toss",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "seismic_toss": {
+    "title": "Seismic Toss",
+    "description": "Grab a nearby enemy and throw it toward your aim. Bosses are staggered instead.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_seismic_toss"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s seismic_toss"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
   "force_palm_owned": {
     "title": "Force Palm",
     "icon": {
@@ -2255,58 +2307,6 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s drain_punch"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
-  "seismic_toss_owned": {
-    "title": "Seismic Toss",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "seismic_toss": {
-    "title": "Seismic Toss",
-    "description": "Grab a nearby enemy and throw it toward your aim. Bosses are staggered instead.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_seismic_toss"
-      }
-    },
-    "size": 0.7,
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s seismic_toss"
         }
       }
     ],
@@ -2526,6 +2526,57 @@
       }
     }
   },
+  "toxic_spikes_owned": {
+    "title": "Toxic Spikes",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "toxic_spikes": {
+    "title": "Toxic Spikes",
+    "description": "Place six poisonous traps in a ring. Crossing the ring poisons, while repeated crossings escalate the effect to Toxic.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_toxic_spikes"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s toxic_spikes"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
   "venoshock_owned": {
     "title": "Venoshock",
     "icon": {
@@ -2564,57 +2615,6 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s venoshock"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
-  "toxic_spikes_owned": {
-    "title": "Toxic Spikes",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "toxic_spikes": {
-    "title": "Toxic Spikes",
-    "description": "Place six poisonous traps in a ring. Crossing the ring poisons, while repeated crossings escalate the effect to Toxic.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_toxic_spikes"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s toxic_spikes"
         }
       }
     ],
@@ -2986,57 +2986,6 @@
       }
     }
   },
-  "air_cutter_owned": {
-    "title": "Air Cutter",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "air_cutter": {
-    "title": "Air Cutter",
-    "description": "Launch a volley of Flying projectiles from long range.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_air_cutter"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s air_cutter"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
   "aerial_ace_owned": {
     "title": "Aerial Ace",
     "icon": {
@@ -3074,6 +3023,57 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s aerial_ace"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
+  "air_cutter_owned": {
+    "title": "Air Cutter",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "air_cutter": {
+    "title": "Air Cutter",
+    "description": "Launch a volley of Flying projectiles from long range.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_air_cutter"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s air_cutter"
         }
       }
     ],
@@ -3293,6 +3293,57 @@
       }
     }
   },
+  "rest_owned": {
+    "title": "Rest",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "rest": {
+    "title": "Rest",
+    "description": "Fall asleep to fully restore your health and clear harmful effects.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_rest"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s rest"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
   "psycho_cut_owned": {
     "title": "Psycho Cut",
     "icon": {
@@ -3382,57 +3433,6 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s psychic"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
-  "rest_owned": {
-    "title": "Rest",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "rest": {
-    "title": "Rest",
-    "description": "Fall asleep to fully restore your health and clear harmful effects.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_rest"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s rest"
         }
       }
     ],
@@ -3960,6 +3960,57 @@
       }
     }
   },
+  "rock_slide_owned": {
+    "title": "Rock Slide",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "rock_slide": {
+    "title": "Rock Slide",
+    "description": "Drop five rocks across a broad area, slowing enemies and knocking them away.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_rock_slide"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s rock_slide"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
   "stealth_rock_owned": {
     "title": "Stealth Rock",
     "icon": {
@@ -3998,57 +4049,6 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s stealth_rock"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
-  "rock_slide_owned": {
-    "title": "Rock Slide",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "rock_slide": {
-    "title": "Rock Slide",
-    "description": "Drop five rocks across a broad area, slowing enemies and knocking them away.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_rock_slide"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s rock_slide"
         }
       }
     ],
@@ -4166,6 +4166,57 @@
       }
     }
   },
+  "shadow_sneak_owned": {
+    "title": "Shadow Sneak",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "shadow_sneak": {
+    "title": "Shadow Sneak",
+    "description": "Blink behind an enemy and strike with Ghost energy at medium range.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_shadow_sneak"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s shadow_sneak"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
   "night_shade_owned": {
     "title": "Night Shade",
     "icon": {
@@ -4269,8 +4320,8 @@
       }
     }
   },
-  "shadow_sneak_owned": {
-    "title": "Shadow Sneak",
+  "hex_owned": {
+    "title": "Hex",
     "icon": {
       "type": "texture",
       "data": {
@@ -4292,20 +4343,20 @@
       }
     }
   },
-  "shadow_sneak": {
-    "title": "Shadow Sneak",
-    "description": "Blink behind an enemy and strike with Ghost energy at medium range.",
+  "hex": {
+    "title": "Hex",
+    "description": "Curse an enemy for twice the damage while it is suffering from a harmful effect.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "tensura:spell_icon_shadow_sneak"
+        "item": "tensura:spell_icon_hex"
       }
     },
     "rewards": [
       {
         "type": "puffish_skills:command",
         "data": {
-          "command": "tensura devour_recover @s shadow_sneak"
+          "command": "tensura devour_recover @s hex"
         }
       }
     ],
@@ -4357,57 +4408,6 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s shadow_ball"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
-  "hex_owned": {
-    "title": "Hex",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "hex": {
-    "title": "Hex",
-    "description": "Curse an enemy for twice the damage while it is suffering from a harmful effect.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_hex"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s hex"
         }
       }
     ],
@@ -4525,6 +4525,58 @@
       }
     }
   },
+  "dragon_tail_owned": {
+    "title": "Dragon Tail",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "dragon_tail": {
+    "title": "Dragon Tail",
+    "description": "Swing a wide Dragon tail that knocks enemies away and interrupts casting.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_dragon_tail"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s dragon_tail"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
   "dragon_claw_owned": {
     "title": "Dragon Claw",
     "icon": {
@@ -4577,8 +4629,8 @@
       }
     }
   },
-  "dragon_tail_owned": {
-    "title": "Dragon Tail",
+  "dragon_pulse_owned": {
+    "title": "Dragon Pulse",
     "icon": {
       "type": "texture",
       "data": {
@@ -4600,21 +4652,20 @@
       }
     }
   },
-  "dragon_tail": {
-    "title": "Dragon Tail",
-    "description": "Swing a wide Dragon tail that knocks enemies away and interrupts casting.",
+  "dragon_pulse": {
+    "title": "Dragon Pulse",
+    "description": "Launch a concentrated blast of Dragon energy from long range.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "tensura:spell_icon_dragon_tail"
+        "item": "tensura:spell_icon_dragon_pulse"
       }
     },
-    "size": 0.7,
     "rewards": [
       {
         "type": "puffish_skills:command",
         "data": {
-          "command": "tensura devour_recover @s dragon_tail"
+          "command": "tensura devour_recover @s dragon_pulse"
         }
       }
     ],
@@ -4681,8 +4732,8 @@
       }
     }
   },
-  "dragon_pulse_owned": {
-    "title": "Dragon Pulse",
+  "outrage_owned": {
+    "title": "Outrage",
     "icon": {
       "type": "texture",
       "data": {
@@ -4704,20 +4755,20 @@
       }
     }
   },
-  "dragon_pulse": {
-    "title": "Dragon Pulse",
-    "description": "Launch a concentrated blast of Dragon energy from long range.",
+  "outrage": {
+    "title": "Outrage",
+    "description": "Enter three Dragon charges with increasingly wide impacts, then become briefly Confused.",
     "icon": {
       "type": "item",
       "data": {
-        "item": "tensura:spell_icon_dragon_pulse"
+        "item": "tensura:spell_icon_outrage"
       }
     },
     "rewards": [
       {
         "type": "puffish_skills:command",
         "data": {
-          "command": "tensura devour_recover @s dragon_pulse"
+          "command": "tensura devour_recover @s outrage"
         }
       }
     ],
@@ -4769,57 +4820,6 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s draco_meteor"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
-  "outrage_owned": {
-    "title": "Outrage",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "outrage": {
-    "title": "Outrage",
-    "description": "Enter three Dragon charges with increasingly wide impacts, then become briefly Confused.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_outrage"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s outrage"
         }
       }
     ],
@@ -4886,58 +4886,6 @@
       }
     }
   },
-  "crunch_owned": {
-    "title": "Crunch",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "crunch": {
-    "title": "Crunch",
-    "description": "Mark an area with abyssal jaws that close after a short warning, damage enemies, and sometimes leave them Exposed.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_crunch"
-      }
-    },
-    "size": 0.7,
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s crunch"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
   "snarl_owned": {
     "title": "Snarl",
     "icon": {
@@ -4990,57 +4938,6 @@
       }
     }
   },
-  "dark_pulse_owned": {
-    "title": "Dark Pulse",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "dark_pulse": {
-    "title": "Dark Pulse",
-    "description": "Send out a Dark ring that interrupts casts, then pull it inward for one damaging return pulse.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_dark_pulse"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s dark_pulse"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
   "sucker_punch_owned": {
     "title": "Sucker Punch",
     "icon": {
@@ -5078,6 +4975,109 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s sucker_punch"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
+  "crunch_owned": {
+    "title": "Crunch",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "crunch": {
+    "title": "Crunch",
+    "description": "Mark an area with abyssal jaws that close after a short warning, damage enemies, and sometimes leave them Exposed.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_crunch"
+      }
+    },
+    "size": 0.7,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s crunch"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
+  "dark_pulse_owned": {
+    "title": "Dark Pulse",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "dark_pulse": {
+    "title": "Dark Pulse",
+    "description": "Send out a Dark ring that interrupts casts, then pull it inward for one damaging return pulse.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_dark_pulse"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s dark_pulse"
         }
       }
     ],
@@ -5452,57 +5452,6 @@
       }
     }
   },
-  "draining_kiss_owned": {
-    "title": "Draining Kiss",
-    "icon": {
-      "type": "texture",
-      "data": {
-        "texture": "tensura:textures/gui/blank.png"
-      }
-    },
-    "size": 0.1,
-    "rewards": [
-
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "unlocked": "tensura:textures/gui/blank.png",
-        "available": "tensura:textures/gui/blank.png",
-        "locked": "tensura:textures/gui/blank.png",
-        "excluded": "tensura:textures/gui/blank.png"
-      }
-    }
-  },
-  "draining_kiss": {
-    "title": "Draining Kiss",
-    "description": "Send a homing Fairy kiss at an enemy and restore health from the damage dealt.",
-    "icon": {
-      "type": "item",
-      "data": {
-        "item": "tensura:spell_icon_draining_kiss"
-      }
-    },
-    "rewards": [
-      {
-        "type": "puffish_skills:command",
-        "data": {
-          "command": "tensura devour_recover @s draining_kiss"
-        }
-      }
-    ],
-    "cost": 0,
-    "frame": {
-      "type": "texture",
-      "data": {
-        "locked": "tensura:textures/gui/unowned.png",
-        "available": "tensura:textures/gui/owned.png",
-        "unlocked": "tensura:textures/gui/owned.png",
-        "excluded": "tensura:textures/gui/unowned.png"
-      }
-    }
-  },
   "charm_owned": {
     "title": "Charm",
     "icon": {
@@ -5540,6 +5489,57 @@
         "type": "puffish_skills:command",
         "data": {
           "command": "tensura devour_recover @s charm"
+        }
+      }
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "locked": "tensura:textures/gui/unowned.png",
+        "available": "tensura:textures/gui/owned.png",
+        "unlocked": "tensura:textures/gui/owned.png",
+        "excluded": "tensura:textures/gui/unowned.png"
+      }
+    }
+  },
+  "draining_kiss_owned": {
+    "title": "Draining Kiss",
+    "icon": {
+      "type": "texture",
+      "data": {
+        "texture": "tensura:textures/gui/blank.png"
+      }
+    },
+    "size": 0.1,
+    "rewards": [
+
+    ],
+    "cost": 0,
+    "frame": {
+      "type": "texture",
+      "data": {
+        "unlocked": "tensura:textures/gui/blank.png",
+        "available": "tensura:textures/gui/blank.png",
+        "locked": "tensura:textures/gui/blank.png",
+        "excluded": "tensura:textures/gui/blank.png"
+      }
+    }
+  },
+  "draining_kiss": {
+    "title": "Draining Kiss",
+    "description": "Send a homing Fairy kiss at an enemy and restore health from the damage dealt.",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "tensura:spell_icon_draining_kiss"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "tensura devour_recover @s draining_kiss"
         }
       }
     ],
