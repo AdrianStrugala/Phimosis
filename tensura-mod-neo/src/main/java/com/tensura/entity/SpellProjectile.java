@@ -238,7 +238,7 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
                     SpellExecutor.applyProjectileSplash(
                         caster, effectCaster, target, def, damageScale, radiusScale);
                 } else {
-                    SpellExecutor.applyTargetImpacts(
+                    SpellExecutor.applyAllImpacts(
                             caster, effectCaster, target, def, finalImpact, damageScale);
                 }
             }
@@ -257,7 +257,11 @@ public class SpellProjectile extends AbstractHurtingProjectile implements ItemSu
                     && CobblemonUltimateVfx.isFireBlast(def)) {
                 CobblemonUltimateVfx.sendFireBlastImpact(serverLevel, result.getLocation());
             }
-            if (def != null && meteorGroup == null && def.targeting.radius > 0.0) {
+            // Charged shots only. Letting every radius>0 projectile splash on terrain would make
+            // shadow_ball, fire_blast, venoshock, moonblast, dragon_pulse and rock_throw connect
+            // on a miss, which is a balance change none of them asked for.
+            if (def != null && meteorGroup == null && def.delivery.charge_release
+                    && def.targeting.radius > 0.0) {
                 SpellExecutor.applyProjectileSplashAt(caster, effectCaster,
                         result.getLocation(), def, damageScale, radiusScale);
             }

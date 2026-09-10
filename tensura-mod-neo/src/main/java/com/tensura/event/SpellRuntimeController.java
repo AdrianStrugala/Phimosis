@@ -47,6 +47,7 @@ public class SpellRuntimeController {
     private static final List<ActiveVortex> VORTEXES = new ArrayList<>();
     private static final List<DelayedHit> DELAYED_HITS = new ArrayList<>();
     private static final List<DelayedArea> DELAYED_AREAS = new ArrayList<>();
+    private static final List<Aftershock> AFTERSHOCKS = new ArrayList<>();
     private static final List<MovingZone> MOVING_ZONES = new ArrayList<>();
     private static final List<ActiveWave> WAVES = new ArrayList<>();
     private static final List<ActiveTrap> TRAPS = new ArrayList<>();
@@ -317,9 +318,20 @@ public class SpellRuntimeController {
             return true;
         }
 
-        public static boolean releaseOrbit(ServerPlayer owner) {
-            ActiveOrbit orbit = ACTIVE_ORBITS.remove(owner.getUUID());
-            if (orbit == null) return false;
+        /**
+         * Only releases an orbit belonging to {@code definition}. Keying on the delivery type
+         * alone would let any second orbit_release spell detonate the first one's payload and
+         * return early, consuming the new cast without ever starting it or setting its cooldown.
+         *
+         * <p>Identity comparison is deliberate: {@code SpellRegistry} hands out one instance per
+         * spell id, so the stored definition is the same object the caster looked up. A datapack
+         * reload mid-orbit swaps the instances and the orbit simply expires on its own timer -
+         * no wrong payload, no free cast.
+         */
+        public static boolean releaseOrbit(ServerPlayer owner, SpellDefinition definition) {
+            ActiveOrbit orbit = ACTIVE_ORBITS.get(owner.getUUID());
+            if (orbit == null || orbit.definition != definition) return false;
+            ACTIVE_ORBITS.remove(owner.getUUID());
             releaseOrbit(owner.getServer(), orbit);
             return true;
         }
@@ -338,6 +350,7 @@ public class SpellRuntimeController {
         DELAYED_HITS.removeIf(delayed -> delayed.effectCasterId.equals(companionId));
         SpellCastController.clearCompanionState(companionId);
         DELAYED_AREAS.removeIf(area -> area.effectCasterId.equals(companionId));
+        AFTERSHOCKS.removeIf(blast -> blast.effectCasterId.equals(companionId));
         MOVING_ZONES.removeIf(zone -> zone.effectCasterId.equals(companionId));
         WAVES.removeIf(wave -> wave.effectCasterId.equals(companionId));
         TRAPS.removeIf(trap -> trap.effectCasterId.equals(companionId));
@@ -451,6 +464,7 @@ public class SpellRuntimeController {
         tickVortexes(event.getServer());
         tickDelayedHits(event.getServer());
         tickDelayedAreas(event.getServer());
+        tickAftershocks(event.getServer());
         tickMovingZones(event.getServer());
         tickWaves(event.getServer());
         tickTraps(event.getServer());
@@ -556,6 +570,8 @@ public class SpellRuntimeController {
                 || delayed.effectCasterId.equals(playerId));
         DELAYED_AREAS.removeIf(area -> area.ownerId.equals(playerId)
                 || area.effectCasterId.equals(playerId));
+        AFTERSHOCKS.removeIf(blast -> blast.ownerId.equals(playerId)
+                || blast.effectCasterId.equals(playerId));
         MOVING_ZONES.removeIf(zone -> zone.ownerId.equals(playerId)
                 || zone.effectCasterId.equals(playerId));
         WAVES.removeIf(wave -> wave.ownerId.equals(playerId)
@@ -590,6 +606,7 @@ public class SpellRuntimeController {
         VORTEXES.clear();
         DELAYED_HITS.clear();
         DELAYED_AREAS.clear();
+        AFTERSHOCKS.clear();
         MOVING_ZONES.clear();
         WAVES.clear();
         TRAPS.clear();
@@ -847,6 +864,57 @@ public class SpellRuntimeController {
                 level.sendParticles(ParticleTypes.REVERSE_PORTAL, target.getX(), target.getY() + 1.0,
                         target.getZ(), 35, 0.5, 0.8, 0.5, 0.08);
             }
+        }
+    }
+
+    /** Fraction of the trace between consecutive blasts, and ticks between them. */
+    private static final double AFTERSHOCK_SPACING = 0.28;
+    private static final int AFTERSHOCK_DELAY_TICKS = 3;
+
+    /**
+     * Schedules a beam's trailing blasts ("Terminal Line"). Blast {@code i} lands at
+     * {@code (i+1) * AFTERSHOCK_SPACING} along the trace after
+     * {@code (i+1) * AFTERSHOCK_DELAY_TICKS} ticks. Those two constants MUST stay in step
+     * with the client's {@code ProgrammaticSpellFx#hyperBeamAftershock} calls (0.28/0.56/0.84
+     * at 3/6/9 ticks) - otherwise the damage lands somewhere the player never saw a flash.
+     * The validator pins them together.
+     */
+    public static void startAftershocks(ServerPlayer owner, LivingEntity effectCaster,
+                                        SpellDefinition definition, Vec3 origin, Vec3 end) {
+        int count = definition.delivery.aftershock_count;
+        if (count <= 0 || definition.targeting.radius <= 0.0) return;
+        Vec3 trace = end.subtract(origin);
+        for (int index = 0; index < count; index++) {
+            double progress = (index + 1) * AFTERSHOCK_SPACING;
+            AFTERSHOCKS.add(new Aftershock(effectCaster.level().dimension(),
+                    owner.getUUID(), effectCaster.getUUID(),
+                    origin.add(trace.scale(progress)), definition,
+                    (index + 1) * AFTERSHOCK_DELAY_TICKS));
+        }
+    }
+
+    private static void tickAftershocks(MinecraftServer server) {
+        Iterator<Aftershock> iterator = AFTERSHOCKS.iterator();
+        while (iterator.hasNext()) {
+            Aftershock blast = iterator.next();
+            ServerLevel level = server.getLevel(blast.dimension);
+            ServerPlayer owner = server.getPlayerList().getPlayer(blast.ownerId);
+            Entity source = level == null ? null : level.getEntity(blast.effectCasterId);
+            if (level == null || owner == null || owner.level() != level
+                    || !(source instanceof LivingEntity effectCaster)
+                    || !effectCaster.isAlive()) {
+                iterator.remove();
+                continue;
+            }
+            if (--blast.remainingTicks > 0) continue;
+
+            SpellExecutor.applyProjectileSplashAt(owner, effectCaster, blast.center,
+                    blast.definition,
+                    blast.definition.delivery.aftershock_damage_multiplier, 1.0);
+            SpellVfxDispatcher.send(level, "impact", blast.definition.visual.impact,
+                    blast.definition.school, blast.center, blast.center,
+                    blast.definition.targeting.radius, 8, effectCaster, false);
+            iterator.remove();
         }
     }
 
@@ -1524,6 +1592,26 @@ public class SpellRuntimeController {
             this.ownerId = ownerId;
             this.effectCasterId = effectCasterId;
             this.targetId = targetId;
+            this.definition = definition;
+            this.remainingTicks = remainingTicks;
+        }
+    }
+
+    private static class Aftershock {
+        private final ResourceKey<Level> dimension;
+        private final UUID ownerId;
+        private final UUID effectCasterId;
+        private final Vec3 center;
+        private final SpellDefinition definition;
+        private int remainingTicks;
+
+        private Aftershock(ResourceKey<Level> dimension, UUID ownerId,
+                           UUID effectCasterId, Vec3 center,
+                           SpellDefinition definition, int remainingTicks) {
+            this.dimension = dimension;
+            this.ownerId = ownerId;
+            this.effectCasterId = effectCasterId;
+            this.center = center;
             this.definition = definition;
             this.remainingTicks = remainingTicks;
         }

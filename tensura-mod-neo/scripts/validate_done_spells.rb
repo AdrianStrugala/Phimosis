@@ -247,6 +247,14 @@ fail_validation("Psychic lacks actor, target, or impact Snowstorm feedback") unl
   %w[psychic_actor psychic_target psychic_impact].all? do |effect|
     psychic_vfx.include?(%Q{"cobblemon", "#{effect}"})
   end && executor.include?("CobblemonPsychicVfx.sendHit")
+# psychic_target's disc radius is built from q.entity_radius / q.entity_scale. Spawned at a
+# bare position those queries are 0, and DiscParticleEmitterShape passes that to
+# Random.nextDouble(bound) -> "bound must be finite and positive" crashes the render thread.
+# It must go out entity-bound, guarded on PosableEntity (what Cobblemon's handler requires).
+fail_validation("Psychic target wrap is position-spawned and will crash the client") unless
+  psychic_vfx.include?("target instanceof PosableEntity") &&
+    psychic_vfx.match?(/TARGET_EFFECT,\s*target\.getId\(\)/) &&
+    !psychic_vfx.match?(/sendAtPosition\([^)]*TARGET_EFFECT/)
 fail_validation("Thunder lacks one centralized Snowstorm telegraph and impact") unless
   %w[thunder_targetcloud thunder_target thunder_targetboom].all? do |effect|
     thunder_vfx.include?(%Q{"cobblemon", "#{effect}"})
@@ -505,10 +513,27 @@ hyper_beam = spell_definition.call("hyper_beam")
 fail_validation("Hyper Beam lacks charge, piercing beam, or exhaustion") unless
   hyper_beam.dig("delivery", "type") == "channel_beam" &&
     hyper_beam.fetch("cast_time_ticks", 0).to_i >= 28 &&
-    impacts.call("hyper_beam").any? do |impact|
-      impact["type"] == "status_effect" && impact["recipient"] == "caster" &&
-        impact["effect"] == "tensura:exhausted" && impact["duration"].to_i >= 80
-    end
+    hyper_beam.dig("delivery", "recovery_ticks").to_i >= 80
+# Exhaustion comes from delivery.recovery_ticks, applied once when the channel ends. As a
+# caster-recipient impact it would be re-applied by every aftershock, because
+# applyProjectileSplashAt runs caster impacts on each blast - refreshing the timer 3 times.
+fail_validation("Hyper Beam exhaustion duplicated as a caster impact") if
+  impacts.call("hyper_beam").any? do |impact|
+    impact["recipient"] == "caster" && impact["effect"] == "tensura:exhausted"
+  end
+fail_validation("channel_beam recovery_ticks is dead config again") unless
+  cast_controller.include?("beam.definition.delivery.recovery_ticks > 0") &&
+    cast_controller.include?("TensuraMobEffects.EXHAUSTED")
+# The blasts must land where the client already draws them, so the server spacing/delay
+# constants are pinned to the hyperBeamAftershock literals asserted just below.
+fail_validation("Hyper Beam aftershocks deal no damage") unless
+  hyper_beam.dig("delivery", "aftershock_count").to_i == 3 &&
+    hyper_beam.dig("delivery", "aftershock_damage_multiplier").to_f > 0.0 &&
+    hyper_beam.dig("targeting", "radius").to_f > 0.0 &&
+    runtime.include?("AFTERSHOCK_SPACING = 0.28") &&
+    runtime.include?("AFTERSHOCK_DELAY_TICKS = 3") &&
+    runtime.include?("applyProjectileSplashAt(owner, effectCaster, blast.center") &&
+    executor.include?("startAftershocks(")
 fail_validation("Hyper Beam lacks its layered release and three line aftershocks") unless
   vfx.include?('"hyper_beam_core".equals(style)') &&
     vfx.scan(/hyperBeamAftershock\(duration, [369], 0\.(?:28|56|84)f\)/).size == 3 &&

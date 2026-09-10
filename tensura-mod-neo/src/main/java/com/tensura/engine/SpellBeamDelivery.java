@@ -113,6 +113,11 @@ final class SpellBeamDelivery {
         SpellImpactApplier.applyImpacts(
                 owner, effectCaster, effectCaster, definition, true, true, false);
 
+        // "Terminal Line": blasts walk down the trace we just fired. No-op unless the spell
+        // asks for them, so the other nine beams are untouched.
+        com.tensura.event.SpellRuntimeController.startAftershocks(
+                owner, effectCaster, definition, origin, beamEnd);
+
         if ("lightning".equals(definition.school)) {
             LightningBolt bolt = new LightningBolt(
                     net.minecraft.world.entity.EntityType.LIGHTNING_BOLT, level);

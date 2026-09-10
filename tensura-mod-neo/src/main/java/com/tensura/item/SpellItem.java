@@ -229,6 +229,11 @@ public class SpellItem extends Item {
     }
 
     @Override
+    public void onStopUsing(ItemStack stack, LivingEntity entity, int count) {
+        SpellCasting.onStopUsing(entity.level(), entity, getSpellId(stack), channelOf(stack));
+    }
+
+    @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         SpellCasting.releaseUsing(level, entity, getSpellId(stack), channelOf(stack), 0);
         return stack;

@@ -147,6 +147,30 @@ public final class SpellCasting {
         SpellExecutor.finishHeldChannel(player, spellId);
     }
 
+    /**
+     * NeoForge routes an <em>interrupted</em> use through {@code onStopUsing} and never through
+     * {@code releaseUsing}: scrolling the hotbar makes the server call
+     * {@code ServerGamePacketListenerImpl#handleSetCarriedItem} -> {@code stopUsingItem()}, and
+     * swapping the held stack goes through {@code updatingUsingItem()} to the same place. Without
+     * unwinding here the bookkeeping leaks - and since {@code SpellCastController.isCasting} ORs
+     * in {@code isCharging}, a leaked charge locks the player out of every later cast until relog.
+     *
+     * <p>A normal release fires this <em>as well as</em> {@code releaseUsing} (vanilla calls
+     * {@code stopUsingItem()} right after), so both paths below are idempotent: the charge map is
+     * already empty, and {@code finishHeldChannel} guards on {@code heldChannels.remove}.
+     */
+    public static void onStopUsing(Level level, LivingEntity entity,
+                                   ResourceLocation spellId, Channel channel) {
+        if (level.isClientSide || !(entity instanceof ServerPlayer player)) return;
+        if (channel.chargeRelease()) {
+            // Dropped, not fired: the player moved off the item mid-charge.
+            SpellExecutor.interruptCharge(player.getUUID());
+            return;
+        }
+        // A held channel still settles its cooldown, otherwise scrolling away skips it for free.
+        if (channel.held()) finishHeldChannel(level, entity, spellId, channel);
+    }
+
     public static void releaseUsing(Level level, LivingEntity entity,
                                     ResourceLocation spellId, Channel channel,
                                     int remainingUseDuration) {

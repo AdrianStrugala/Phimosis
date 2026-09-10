@@ -157,13 +157,13 @@ public class SpellExecutor {
             return false;
         }
         if ("orbit_release".equals(def.delivery.type)
-                && SpellRuntimeController.releaseOrbit(caster)) {
+                && SpellRuntimeController.releaseOrbit(caster, def)) {
             caster.swing(InteractionHand.MAIN_HAND, true);
             SpellFeedback.playTravelSound(caster, def);
             return true;
         }
         if ("phase_movement".equals(def.delivery.type)
-                && SpellMovementController.releasePhaseMovement(caster)) {
+                && SpellMovementController.releasePhaseMovement(caster, def)) {
             caster.swing(InteractionHand.MAIN_HAND, true);
             SpellFeedback.playTravelSound(caster, def);
             return true;
@@ -715,6 +715,19 @@ public class SpellExecutor {
                           boolean finalProjectile, double damageScale) {
         SpellImpactApplier.applyImpacts(owner, effectCaster, target, definition,
             finalProjectile, false, true, 1.0, damageScale);
+    }
+
+    /**
+     * Every impact on the spell, caster-recipient ones included, scaled by {@code damageScale}.
+     * Distinct from {@code applyTargetImpacts}, which pins {@code casterOnly} to {@code false} and
+     * so drops {@code "recipient": "caster"} entries - that filter is right for splash rings,
+     * where the caster share is applied once by the caller, but wrong for a direct projectile hit.
+     */
+    public static void applyAllImpacts(ServerPlayer owner, LivingEntity effectCaster,
+                                       LivingEntity target, SpellDefinition definition,
+                                       boolean finalProjectile, double damageScale) {
+        SpellImpactApplier.applyImpacts(owner, effectCaster, target, definition,
+                finalProjectile, null, true, 1.0, damageScale);
     }
 
     private static void applyImpacts(ServerPlayer owner, LivingEntity effectCaster,

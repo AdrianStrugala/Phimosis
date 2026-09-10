@@ -96,9 +96,17 @@ public class SpellMovementController {
         return true;
     }
 
-    public static boolean releasePhaseMovement(LivingEntity caster) {
-        ActivePhaseMovement movement = ACTIVE_PHASE_MOVEMENTS.remove(caster.getUUID());
-        if (movement == null) return false;
+    /**
+     * Only releases a phase belonging to {@code definition}. Both {@code dig} and
+     * {@code phantom_force} use phase_movement, so keying on the delivery type alone made casting
+     * one while the other was phasing release the wrong spell's strike, skip the new spell
+     * entirely, and leave it off cooldown. See {@code SpellRuntimeController#releaseOrbit} for
+     * why the comparison is by identity.
+     */
+    public static boolean releasePhaseMovement(LivingEntity caster, SpellDefinition definition) {
+        ActivePhaseMovement movement = ACTIVE_PHASE_MOVEMENTS.get(caster.getUUID());
+        if (movement == null || movement.definition != definition) return false;
+        ACTIVE_PHASE_MOVEMENTS.remove(caster.getUUID());
         finishPhaseMovement(caster, movement, null);
         return true;
     }
@@ -192,9 +200,12 @@ public class SpellMovementController {
         level.sendParticles(ParticleTypes.POOF,
                 caster.getX(), caster.getY() + 0.1, caster.getZ(),
                 8, 0.35, 0.08, 0.35, 0.04);
+        // getEntitiesOfClass has no defined order, so findFirst would pick an arbitrary bystander
+        // out of a crowd instead of the one actually rammed. Matches the fallback path below.
         LivingEntity contact = level.getEntitiesOfClass(LivingEntity.class, swept,
                 target -> SpellTargetingRules.canHarm(owner, caster, target))
-                .stream().findFirst().orElse(null);
+                .stream().min(java.util.Comparator.comparingDouble(caster::distanceToSqr))
+                .orElse(null);
         if (contact != null || --movement.remainingTicks <= 0) {
             ACTIVE_PHASE_MOVEMENTS.remove(caster.getUUID());
             finishPhaseMovement(caster, movement, contact);

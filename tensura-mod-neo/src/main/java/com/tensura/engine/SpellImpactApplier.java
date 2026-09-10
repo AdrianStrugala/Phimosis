@@ -456,11 +456,14 @@ public final class SpellImpactApplier {
                     }
                 }
                 case "shatter_frozen" -> {
-                    if (!canHarm || !recipient.hasEffect(TensuraMobEffects.FROZEN)) continue;
-                    recipient.removeEffect(TensuraMobEffects.FROZEN);
+                    // Reads and damages the same entity: every other damage case works on target,
+                    // and testing FROZEN on recipient would check the caster for a
+                    // "recipient": "caster" entry while the damage still landed on the victim.
+                    if (!canHarm || !target.hasEffect(TensuraMobEffects.FROZEN)) continue;
+                    target.removeEffect(TensuraMobEffects.FROZEN);
                     float damage = (float) Math.max(1.0,
                             applyExposedModifier(definition.power, target, definition)
-                                    * impact.damage_multiplier);
+                                    * impact.damage_multiplier * damageScale);
                     float healthBefore = target.getHealth();
                     hurtWithSpellDamage(owner, effectCaster, target, definition,
                             damage, impact.armor_penetration);

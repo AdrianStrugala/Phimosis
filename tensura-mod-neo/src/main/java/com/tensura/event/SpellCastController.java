@@ -220,7 +220,17 @@ public class SpellCastController {
                 SpellExecutor.castRuntimeBeam(owner, effectCaster, target, beam.definition,
                     beam.pulseIndex++, pulseCount);
             }
-            if (beam.remainingTicks == 0) iterator.remove();
+            if (beam.remainingTicks == 0) {
+                // Recovery lands on release, not on an interrupt - the early-exit paths above
+                // leave the channel without paying it. Mirrors SpellProjectileDelivery, which is
+                // where delivery.recovery_ticks was already honoured.
+                if (beam.definition.delivery.recovery_ticks > 0) {
+                    effectCaster.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                            com.tensura.registry.TensuraMobEffects.EXHAUSTED,
+                            beam.definition.delivery.recovery_ticks, 0, false, true, true));
+                }
+                iterator.remove();
+            }
         }
     }
 

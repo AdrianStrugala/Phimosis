@@ -77,6 +77,16 @@ public class SpellDefinition {
         public int combo_interval_ticks = 4;
         public int bounce_count = 0;
         public boolean return_to_origin = false;
+        /**
+         * Delayed blasts walking down a beam's trace after it fires (Hyper Beam's "Terminal
+         * Line"). Zero leaves every other beam untouched. Blast {@code i} lands at
+         * {@code (i+1) * 0.28} of the trace after {@code (i+1) * 3} ticks - the same spots and
+         * timings the client already draws with {@code ProgrammaticSpellFx#hyperBeamAftershock},
+         * so the damage arrives where the player sees the flash. Each blast is a splash of
+         * {@code targeting.radius} scaled by the multiplier below.
+         */
+        public int aftershock_count = 0;
+        public double aftershock_damage_multiplier = 0.0;
     }
 
     public static class Impact {
