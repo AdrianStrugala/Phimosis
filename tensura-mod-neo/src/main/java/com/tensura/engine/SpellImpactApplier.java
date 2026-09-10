@@ -42,6 +42,7 @@ public final class SpellImpactApplier {
 
     static void clearAllState() {
         IMPACT_SOUND_TIMES.clear();
+        CobblemonFlamethrowerVfx.clear();
         COMPANION_DAMAGE_DEPTH.remove();
     }
 
@@ -454,15 +455,18 @@ public final class SpellImpactApplier {
             Vec3 impactPosition = target.getBoundingBox().getCenter();
             double radius = definition.targeting.radius > 0.0
                     ? definition.targeting.radius : 1.0;
-            SpellVfxDispatcher.send(level, "impact", definition.visual.impact,
-                    definition.school, impactPosition, impactPosition, radius, 0,
-                    effectCaster, !SpellTargetingRules.canHarm(owner, effectCaster, target));
-            if (!"moving_zone".equals(definition.delivery.type)
-                    && !"protective_aura".equals(definition.delivery.type)) {
-                SpellVfxDispatcher.send(level, "aftermath", definition.visual.aftermath,
-                        definition.school, impactPosition, impactPosition, radius,
-                        definition.delivery.duration_ticks, effectCaster,
-                        !SpellTargetingRules.canHarm(owner, effectCaster, target));
+            if (CobblemonFlamethrowerVfx.isFlamethrower(definition) && canHarm) {
+                CobblemonFlamethrowerVfx.sendHitIfDue(level, effectCaster, target);
+            } else {
+                SpellVfxDispatcher.send(level, "impact", definition.visual.impact,
+                        definition.school, impactPosition, impactPosition, radius, 0,
+                        effectCaster, !canHarm);
+                if (!"moving_zone".equals(definition.delivery.type)
+                        && !"protective_aura".equals(definition.delivery.type)) {
+                    SpellVfxDispatcher.send(level, "aftermath", definition.visual.aftermath,
+                            definition.school, impactPosition, impactPosition, radius,
+                            definition.delivery.duration_ticks, effectCaster, !canHarm);
+                }
             }
         }
         if (playFeedback) playImpactSound(owner, target, definition);

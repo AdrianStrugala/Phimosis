@@ -23,7 +23,13 @@ final class SpellBeamDelivery {
                                    LivingEntity lockedTarget, SpellDefinition definition) {
         if (!(effectCaster.level() instanceof ServerLevel level)) return;
         BeamTrace trace = resolveBeamTrace(owner, effectCaster, lockedTarget, definition);
-        sendBeamVfx(level, effectCaster, definition, trace);
+        if (CobblemonFlamethrowerVfx.isFlamethrower(definition)) {
+            CobblemonFlamethrowerVfx.sendStart(effectCaster, lockedTarget);
+            if (effectCaster instanceof com.cobblemon.mod.common.entity.pokemon.PokemonEntity) {
+                return;
+            }
+        }
+        sendBeamVfx(level, effectCaster, lockedTarget, definition, trace);
     }
 
     static void castRuntimeBeam(ServerPlayer owner, LivingEntity effectCaster,
@@ -32,15 +38,17 @@ final class SpellBeamDelivery {
         BeamTrace trace = resolveBeamTrace(owner, effectCaster, lockedTarget, definition);
         Vec3 origin = trace.origin();
         Vec3 beamEnd = trace.end();
-        sendBeamVfx(level, effectCaster, definition, trace);
+        sendBeamVfx(level, effectCaster, lockedTarget, definition, trace);
 
-        double distance = origin.distanceTo(beamEnd);
-        Vec3 direction = beamEnd.subtract(origin).normalize();
-        for (double offset = 1.0; offset < distance; offset += 1.5) {
-            Vec3 position = origin.add(direction.scale(offset));
-            level.sendParticles(SpellFeedback.schoolParticle(definition.school),
-                    position.x, position.y, position.z,
-                    3, 0.1, 0.1, 0.1, 0.0);
+        if (!CobblemonFlamethrowerVfx.isFlamethrower(definition)) {
+            double distance = origin.distanceTo(beamEnd);
+            Vec3 direction = beamEnd.subtract(origin).normalize();
+            for (double offset = 1.0; offset < distance; offset += 1.5) {
+                Vec3 position = origin.add(direction.scale(offset));
+                level.sendParticles(SpellFeedback.schoolParticle(definition.school),
+                        position.x, position.y, position.z,
+                        3, 0.1, 0.1, 0.1, 0.0);
+            }
         }
 
         double width = Math.max(0.1, definition.targeting.width);
@@ -297,8 +305,14 @@ final class SpellBeamDelivery {
         return new BeamTrace(origin, end);
     }
 
-    private static void sendBeamVfx(ServerLevel level, LivingEntity effectCaster,
-                                    SpellDefinition definition, BeamTrace trace) {
+        private static void sendBeamVfx(ServerLevel level, LivingEntity effectCaster,
+                                                                        LivingEntity lockedTarget, SpellDefinition definition,
+                                                                        BeamTrace trace) {
+                if (CobblemonFlamethrowerVfx.isFlamethrower(definition)
+                                && effectCaster instanceof com.cobblemon.mod.common.entity.pokemon.PokemonEntity) {
+                        CobblemonFlamethrowerVfx.sendActorIfDue(level, effectCaster, lockedTarget);
+                        return;
+                }
         int duration = "channel_beam".equals(definition.delivery.type)
                 ? Math.max(2, definition.delivery.tick_interval_ticks + 1) : 8;
         SpellVfxDispatcher.send(level, "beam", definition.visual.trail,

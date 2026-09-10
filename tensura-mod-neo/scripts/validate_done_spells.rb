@@ -14,11 +14,19 @@ PROJECTILE_DELIVERY_FILE = File.join(ROOT,
   "src/main/java/com/tensura/engine/SpellProjectileDelivery.java")
 BEAM_DELIVERY_FILE = File.join(ROOT,
   "src/main/java/com/tensura/engine/SpellBeamDelivery.java")
+FLAMETHROWER_VFX_FILE = File.join(ROOT,
+  "src/main/java/com/tensura/engine/CobblemonFlamethrowerVfx.java")
 MOVEMENT_FILE = File.join(ROOT, "src/main/java/com/tensura/event/SpellMovementController.java")
 PROJECTILE_FILE = File.join(ROOT, "src/main/java/com/tensura/entity/SpellProjectile.java")
 RUNTIME_FILE = File.join(ROOT, "src/main/java/com/tensura/event/SpellRuntimeController.java")
 CAST_CONTROLLER_FILE = File.join(ROOT,
   "src/main/java/com/tensura/event/SpellCastController.java")
+BEAM_POSE_FILE = File.join(ROOT, "src/main/java/com/tensura/client/BeamCastPose.java")
+BEAM_EXTENSION_FILE = File.join(ROOT,
+  "src/main/java/com/tensura/client/BeamCastClientExtension.java")
+SPELL_ITEM_FILE = File.join(ROOT, "src/main/java/com/tensura/item/SpellItem.java")
+SPELL_FOCUS_FILE = File.join(ROOT, "src/main/java/com/tensura/item/SpellFocusItem.java")
+ENUM_EXTENSIONS_FILE = File.join(ROOT, "src/main/resources/META-INF/enumextensions.json")
 VFX_FILE = File.join(ROOT, "src/main/java/com/tensura/client/ProgrammaticSpellFx.java")
 ALIASES_FILE = File.join(ROOT, "src/main/java/com/tensura/engine/SpellIdAliases.java")
 STATUS_FILE = File.join(ROOT, "src/main/java/com/tensura/event/SpellStatusEvents.java")
@@ -118,12 +126,18 @@ movement = File.read(MOVEMENT_FILE)
 projectile = File.read(PROJECTILE_FILE)
 runtime = File.read(RUNTIME_FILE)
 cast_controller = File.read(CAST_CONTROLLER_FILE)
+beam_pose = File.read(BEAM_POSE_FILE)
+beam_extension = File.read(BEAM_EXTENSION_FILE)
+spell_item = File.read(SPELL_ITEM_FILE)
+spell_focus = File.read(SPELL_FOCUS_FILE)
+enum_extensions = JSON.parse(File.read(ENUM_EXTENSIONS_FILE))
 vfx = File.read(VFX_FILE)
 aliases = File.read(ALIASES_FILE)
 status_events = File.read(STATUS_FILE)
 companion_events = File.read(COMPANION_EVENTS_FILE)
 companion_goal = File.read(COMPANION_GOAL_FILE)
 targeting_rules = File.read(TARGETING_RULES_FILE)
+flamethrower_vfx = File.read(FLAMETHROWER_VFX_FILE)
 
 fail_validation("companion AI scans for nearby hostile mobs") if
   companion_events.include?("NearestAttackableTargetGoal") ||
@@ -178,6 +192,25 @@ fail_validation("companion dash cleanup leaves horizontal movement active") unle
 fail_validation("cast state leaked back into SpellRuntimeController") if
   runtime.include?("PENDING_CASTS") || runtime.include?("CHANNEL_BEAMS") ||
     runtime.include?("CHANNEL_CONES")
+fail_validation("Flamethrower does not use Cobblemon Snowstorm start and hit effects") unless
+  flamethrower_vfx.include?('"cobblemon", "flamethrower_actor"') &&
+    flamethrower_vfx.include?('"cobblemon", "flamethrower_targetburst"') &&
+    flamethrower_vfx.include?('List.of("special", "target")') &&
+    flamethrower_vfx.include?('target.getId(), List.of("middle")')
+fail_validation("Flamethrower Snowstorm emitters are not throttled") unless
+  flamethrower_vfx.include?("EFFECT_INTERVAL_TICKS = 20") &&
+    flamethrower_vfx.include?("LAST_ACTOR_EFFECT") &&
+    flamethrower_vfx.include?("LAST_HIT_EFFECT")
+fail_validation("Flamethrower Snowstorm throttle state can grow without bounds") unless
+  flamethrower_vfx.include?("pruneExpiredEntries(now)") &&
+    flamethrower_vfx.include?("now - lastSent >= EFFECT_INTERVAL_TICKS")
+fail_validation("Flamethrower hit throttling merges effects from different casters") unless
+  flamethrower_vfx.include?("new HitKey(caster.getUUID(), target.getUUID())") &&
+    flamethrower_vfx.include?("record HitKey(UUID casterId, UUID targetId)")
+fail_validation("Flamethrower still layers vanilla beam particles over Snowstorm") unless
+  executor.include?("!CobblemonFlamethrowerVfx.isFlamethrower(definition)")
+fail_validation("Flamethrower impact does not replace Photon feedback with Snowstorm") unless
+  executor.include?("CobblemonFlamethrowerVfx.sendHitIfDue(level, effectCaster, target)")
 definitions = JSON.parse(File.read(File.join(DEVOUR_DIR, "definitions.json")))
 skills = JSON.parse(File.read(File.join(DEVOUR_DIR, "skills.json")))
 connections = JSON.parse(File.read(File.join(DEVOUR_DIR, "connections.json")))
@@ -344,8 +377,22 @@ held_channels.each do |spell, delivery|
 end
 fail_validation("held channels are not stopped on item release") unless
   cast_controller.include?("definition.delivery.hold_to_channel") &&
-    spell_casting.include?("stopPlayerChannels(player.getUUID())") &&
-    spell_casting.include?("UseAnim.SPEAR")
+    spell_casting.include?("stopPlayerChannels(player.getUUID())")
+fail_validation("held channels still use the spear animation") if
+  spell_casting.include?("UseAnim.SPEAR")
+beam_pose_entry = enum_extensions.fetch("entries", []).find do |entry|
+  entry["enum"] == "net/minecraft/client/model/HumanoidModel$ArmPose" &&
+    entry["name"] == "TENSURA_BEAM_CAST"
+end
+fail_validation("custom beam arm pose is not registered") unless
+  beam_pose_entry&.fetch("constructor", nil) ==
+    "(ZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V" &&
+    beam_pose.include?("castingArm.xRot") && beam_pose.include?("model.head.xRot")
+fail_validation("spell items do not expose the custom beam pose") unless
+  beam_extension.include?("getArmPose") &&
+    beam_extension.include?("RegisterClientExtensionsEvent") &&
+    beam_extension.include?("TensuraItemRegistry.SPELL_ITEM") &&
+    beam_extension.include?("TensuraItemRegistry.SPELL_FOCUS")
 fail_validation("held-channel cooldown is not deferred until release") unless
   spell_casting.include?("SpellExecutor.finishHeldChannel(player, spellId)") &&
     executor.include?("public static void finishHeldChannel") &&

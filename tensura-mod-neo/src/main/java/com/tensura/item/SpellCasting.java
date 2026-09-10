@@ -105,7 +105,7 @@ public final class SpellCasting {
     }
 
     public static UseAnim useAnimation(Channel channel) {
-        return channel.isChannel() ? UseAnim.SPEAR : UseAnim.NONE;
+        return UseAnim.NONE;
     }
 
     /** Fires the prepared cast the moment the windup elapses. No-op for held channels. */

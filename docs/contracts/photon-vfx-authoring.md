@@ -4,14 +4,20 @@ Tensura uses Photon 2.2.5 as its client VFX runtime. Java sends one compact
 playback event when a spell phase starts; Photon owns particle simulation,
 batching, rendering, timelines, and cleanup.
 
-All initial spell effects are built programmatically by `ProgrammaticSpellFx`.
-Runtime `.fx` resources are optional art overrides, not a requirement. The
-client first attempts to load `tensura:<visual value>` and falls back to the
-code-generated effect when that resource does not exist.
+Initial spell effects use `ProgrammaticSpellFx` unless an integration is listed
+explicitly below. Runtime `.fx` resources are optional art overrides, not a
+requirement. The client first attempts to load `tensura:<visual value>` and
+falls back to the code-generated effect when that resource does not exist.
 
 ## Runtime contract
 
 - Runtime IDs resolve as `tensura:<visual value>`.
+- Flamethrower is the only Cobblemon Snowstorm exception. Pokemon streams use
+   `cobblemon:flamethrower_actor`, select the first available source locator from
+   `special` and `target`, and aim at locator `middle` or the target position.
+   Player casts retain the directional Photon stream because players do not
+   expose Cobblemon locators. Cast start and per-caster throttled target hits use
+   `cobblemon:flamethrower_targetburst`; throttle entries expire after 20 ticks.
 - Optional overrides belong at `src/main/resources/assets/tensura/fx/<id>.fx`.
 - Keep editable `.fxproj` files outside runtime resources.
 - World-space directional effects point along local `+X`. Java rotates `+X`
@@ -59,8 +65,8 @@ code-generated effect when that resource does not exist.
    `/photon_client clear_client_fx_cache`.
 5. Preview an export with `/photon fx tensura:<id> block ~ ~-1 ~`.
 6. Test the real spell path in multiplayer. Missing exports automatically use
-   the programmatic Photon implementation. Existing vanilla particles remain
-   as an additional compatibility fallback.
+   the programmatic Photon implementation. Do not add vanilla particle fallback
+   to the Snowstorm-owned Flamethrower phases.
 
 Enable GPU instancing for tile, trail, and beam renderers. Prefer one material
 per phase, bounded particle counts, and Timeline activation over spawning a new
