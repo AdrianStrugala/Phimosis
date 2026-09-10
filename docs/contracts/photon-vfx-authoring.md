@@ -39,6 +39,108 @@ falls back to the code-generated effect when that resource does not exist.
 - Do not make persistent emitters infinite. Their Timeline should end at the
   same duration so particles can drain naturally.
 
+## Reference profile: Flamethrower
+
+Status: visually accepted after gameplay validation on 2026-09-10.
+
+Flamethrower is the reference for how a finished Tensura spell should read in
+motion. It is not a template that every spell copies literally; it establishes
+the required relationship between silhouette, motion, anchoring, impact and
+gameplay readability.
+
+### Why it works
+
+- The primary silhouette is made by particles with volume, not by a widened
+   laser. Two short-lived flame layers overlap across the full path: a broad red
+   envelope and a denser orange middle.
+- A thin near-white Photon beam remains inside the volume only as a directional
+   core. It helps the eye read aim and range, but it is not the dominant shape.
+- Colors describe heat and depth: pale core, orange body, red outer flame and
+   transparent fade. Alpha falls to zero instead of ending at a hard edge.
+- The player origin is offset `0.7` blocks forward, `0.3` blocks down and `0.22`
+   blocks toward the main hand. This keeps the stream outside the first-person
+   near plane and makes it emerge from the casting arm in third person.
+- Pokemon use their native `special`/`target` locator fallback and aim at the
+   target's `middle` locator. Players use world-space Photon geometry because
+   they do not expose Cobblemon `PosableEntity` locators.
+- Release, travel and hit are distinct. The continuous volume communicates the
+   active hit path; Snowstorm `flamethrower_targetburst` punctuates start and
+   throttled contact without replacing the stream.
+- Visual width agrees with the gameplay width. The effect communicates the
+   dangerous space instead of showing a hairline inside a much larger hitbox.
+- Server traffic stays bounded. Long channels refresh at most once per 20 ticks,
+   and hit throttling is keyed per caster-target pair with expired entries pruned.
+
+### Current authored recipe
+
+| Layer | Role | Key parameters |
+|---|---|---|
+| Outer flame volume | broad, unstable silhouette | red `0x99EF4444`, emission `34`, size `0.34`, diameter `0.95` |
+| Middle flame volume | dense moving body | orange `0xDDFFB020`, emission `48`, size `0.22`, diameter `0.58` |
+| Directional core | aim and continuity only | white-to-transparent `0xFFFFF3C4 -> 0x00FFC857`, width `0.11` |
+| Particle lifetime | prevents a solid tube | `7` ticks with upward drift |
+| Start and hit accent | phase punctuation | `cobblemon:flamethrower_targetburst` |
+
+The numeric values are the accepted Flamethrower profile, not global constants.
+Other spells should preserve the principles while choosing geometry, motion and
+timing appropriate to their element and mechanic.
+
+### Rules derived from the reference
+
+1. Start with the spell's readable silhouette at gameplay distance. Add a bright
+    core only when it clarifies direction; never let the core become the whole
+    effect unless the fantasy is explicitly a laser.
+2. Build depth with at least two visually distinct roles, such as core/body,
+    body/debris or field/boundary. Merely stacking wider copies of one beam does
+    not create volume.
+3. Anchor the effect to the action. First-person clipping and third-person source
+    position must be solved separately from the server damage ray.
+4. Match visual extent to the authoritative hitbox and telegraph. A spectacular
+    effect that communicates the wrong danger area fails review.
+5. Give anticipation, active delivery, impact and aftermath different visual
+    jobs. Do not replay one large burst for every phase or every target in an AoE.
+6. Prefer continuous client-side simulation plus sparse phase packets over
+    server-spawned particle lines every tick.
+7. Combine Photon and Snowstorm when each solves a different problem. Reuse is
+    valuable only when the resulting spell remains directional, visible and
+    coherent for both players and Pokemon.
+
+### Acceptance checklist for future spells
+
+- Visible and correctly anchored in first person and front/back third person.
+- Recognizable as its intended material or force without relying on its color.
+- Telegraph, rendered extent and server hitbox agree.
+- Start, active, hit and aftermath phases are distinguishable at a glance.
+- Still readable against bright sky, dark terrain and dense combat particles.
+- No full-screen flash, camera occlusion or bright opaque shape at the near plane.
+- Multiple simultaneous casts remain understandable and within the packet and
+   particle budgets.
+- Minimal particle settings preserve the telegraph and dangerous boundary.
+
+## Polished signature profiles - 2026-09-10
+
+Status: implemented and compile-validated; awaiting screenshot and gameplay
+sign-off in first person, front/back third person and Pokemon companion casts.
+
+These profiles follow the Flamethrower reference by owning a recognizable
+silhouette instead of relying on a generic recolored sphere or ring.
+
+| Spell | Primary silhouette | Distinct phase treatment |
+|---|---|---|
+| Hyper Beam | turbulent blue-white energy body around a thin stable core | converging charge, double focus ring, three line aftershocks and layered terminal blast |
+| Thunder | vertical spark column and central white flash | double-ring warning, cloud/bolt Snowstorm overlay and fading ground arcs |
+| Earthquake | low dust field and wide ground waves | full-radius boundary, rock/fissure burst on each pulse and persistent settling dust |
+| Draco Meteor | bright meteor core inside a Dragon shell with a broad tail | individual landing shadow, constellation fall and layered rock/energy crater |
+| Surf | seven-block-wide body, bright crest and foam base | broad release front, moving water mass and radial splash on contact |
+| Blizzard | dense low mist plus faster snow inside a stable boundary | cast shroud, visible danger ring, moving storm volume and crystalline shatter |
+| Trick Room | box edges and faint translucent faces, not a sphere | corner-forming cast, ground grid, persistent room shell and local inversion pulse |
+| Stealth Rock | six individually visible shards around the caster | rune activation, persistent halo and separate shard-consumption burst |
+| Crunch | two opposing jaw volumes around a marked area | maw warning, closing-jaw impact and dark residue after the bite |
+| Solar Beam | gold-green energy body around a white solar core | overhead sunlight focus, ground alignment ring and layered solar flare impact |
+
+Surf's `targeting.width` is the full visual/gameplay width. Runtime converts it
+to a half-width only for collision queries; the accepted value is `7.0` blocks.
+
 ## Initial effect matrix
 
 | Spell | FX ID | Anchor | Duration | Authoring intent |

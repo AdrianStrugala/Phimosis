@@ -40,6 +40,10 @@ public final class ProgrammaticSpellFx {
         FX effect = new FX();
         effect.setFxLocation(id);
 
+        if (addSignatureGeometry(effect, id.getPath(), shape, duration, palette)) {
+            return effect;
+        }
+
         switch (shape) {
             case "beam", "ribbon" -> addBeamGeometry(effect, id.getPath(), duration, palette);
             case "cone" -> effect.getFxData().objects().add(
@@ -87,6 +91,10 @@ public final class ProgrammaticSpellFx {
             addHyperBeamGeometry(effect, Math.max(14, duration), palette);
             return;
         }
+        if ("sunlit_stream".equals(style)) {
+            addSolarBeamGeometry(effect, duration);
+            return;
+        }
         if (!"flame_stream".equals(style)) {
             effect.getFxData().objects().add(beam(duration, palette));
             return;
@@ -101,15 +109,521 @@ public final class ProgrammaticSpellFx {
     }
 
         private static void addHyperBeamGeometry(FX effect, int duration, Palette palette) {
+            effect.getFxData().objects().add(energyVolume(duration,
+                    new Palette(0x887DD3FC, 0x007DD3FC), 42.0f, 0.24f, 0.82f, 8));
+            effect.getFxData().objects().add(energyVolume(duration,
+                    new Palette(0xCCBAE6FD, 0x0060A5FA), 58.0f, 0.14f, 0.46f, 6));
         effect.getFxData().objects().add(beam(duration,
-            new Palette(0x557DD3FC, 0x007DD3FC), 0.82f));
-        effect.getFxData().objects().add(beam(duration,
-            new Palette(palette.primary(), palette.secondary()), 0.42f));
-        effect.getFxData().objects().add(beam(duration,
-            new Palette(0xFFFFFFFF, 0x00E0F2FE), 0.16f));
+                    new Palette(0xFFFFFFFF, 0x00E0F2FE), 0.13f));
         effect.getFxData().objects().add(hyperBeamAftershock(duration, 3, 0.28f));
         effect.getFxData().objects().add(hyperBeamAftershock(duration, 6, 0.56f));
         effect.getFxData().objects().add(hyperBeamAftershock(duration, 9, 0.84f));
+        }
+
+        private static boolean addSignatureGeometry(FX effect, String style, String shape,
+                                                    int duration, Palette palette) {
+            if (addBlizzardGeometry(effect, style, duration)) return true;
+            if (addTrickRoomGeometry(effect, style, duration)) return true;
+            if (addStealthRockGeometry(effect, style, duration)) return true;
+            if (addCrunchGeometry(effect, style, duration)) return true;
+            if (addSolarGeometry(effect, style, duration)) return true;
+            switch (style) {
+                case "hyper_beam_charge" -> {
+                    effect.getFxData().objects().add(
+                            sphere(duration, new Palette(0xFFFFFFFF, 0x007DD3FC),
+                                    34.0f, 0.16f, 0.035f, false, false));
+                    effect.getFxData().objects().add(
+                            ring(duration, new Palette(0xCC7DD3FC, 0x002563EB),
+                                    18.0f, 0.07f, 0.55f));
+                    return true;
+                }
+                case "hyper_beam_focus" -> {
+                    effect.getFxData().objects().add(
+                            ring(duration, new Palette(0xFFFFFFFF, 0x0060A5FA),
+                                    28.0f, 0.055f, 0.92f));
+                    effect.getFxData().objects().add(
+                            ring(duration, new Palette(0xAA7DD3FC, 0x002563EB),
+                                    18.0f, 0.08f, 0.62f));
+                    return true;
+                }
+                case "hyper_beam_blast" -> {
+                    effect.getFxData().objects().add(
+                            burstSphere(duration, new Palette(0xFFFFFFFF, 0x007DD3FC),
+                                    72.0f, 0.28f, 1.0f, 0));
+                    effect.getFxData().objects().add(
+                            burstRing(duration, new Palette(0xDD7DD3FC, 0x002563EB),
+                                    44.0f, 0.11f, 0.95f, 1));
+                    return true;
+                }
+                            case "sky_call" -> {
+                            effect.getFxData().objects().add(boxVolume(duration,
+                                new Palette(0xCCFDE047, 0x0060A5FA),
+                                26.0f, 0.12f, 0.12f,
+                                0.7f, 1.8f, 0.7f, 0.9f, 9, false));
+                            effect.getFxData().objects().add(ring(duration,
+                                new Palette(0xFFFFFFFF, 0x00FDE047),
+                                18.0f, 0.06f, 0.62f));
+                            return true;
+                            }
+                            case "electric_ground_ring" -> {
+                            effect.getFxData().objects().add(ring(duration,
+                                new Palette(0xFFFDE047, 0x0060A5FA),
+                                30.0f, 0.055f, 0.96f));
+                            effect.getFxData().objects().add(ring(duration,
+                                new Palette(0xAAFFFFFF, 0x00FDE047),
+                                22.0f, 0.10f, 0.72f));
+                            effect.getFxData().objects().add(boxVolume(duration,
+                                new Palette(0x99FDE047, 0x0060A5FA),
+                                18.0f, 0.08f, 0.05f,
+                                1.6f, 0.05f, 1.6f, 0.03f, 6, false));
+                            return true;
+                            }
+                            case "lightning_column" -> {
+                            effect.getFxData().objects().add(boxVolume(duration,
+                                new Palette(0xEEFFFFFF, 0x0060A5FA),
+                                90.0f, 0.13f, 0.10f,
+                                0.20f, 3.0f, 0.20f, 1.45f, 5, false));
+                            effect.getFxData().objects().add(burstSphere(duration,
+                                new Palette(0xFFFFFFFF, 0x00FDE047),
+                                68.0f, 0.22f, 0.75f, 0));
+                            effect.getFxData().objects().add(burstRing(duration,
+                                new Palette(0xDDFDE047, 0x0060A5FA),
+                                48.0f, 0.10f, 1.0f, 1));
+                            return true;
+                            }
+                            case "electric_afterglow" -> {
+                            effect.getFxData().objects().add(ring(duration,
+                                new Palette(0xAAFDE047, 0x0060A5FA),
+                                18.0f, 0.09f, 0.92f));
+                            effect.getFxData().objects().add(boxVolume(duration,
+                                new Palette(0x88FFFFFF, 0x0060A5FA),
+                                16.0f, 0.07f, 0.04f,
+                                1.5f, 0.06f, 1.5f, 0.05f, 8, false));
+                            return true;
+                            }
+                            case "earthquake_slam" -> {
+                            effect.getFxData().objects().add(ring(duration,
+                                new Palette(0xFFD3944C, 0x0078716C),
+                                28.0f, 0.10f, 0.72f));
+                            effect.getFxData().objects().add(boxVolume(duration,
+                                new Palette(0xCCD6D3D1, 0x0078716C),
+                                32.0f, 0.15f, 0.16f,
+                                1.2f, 0.08f, 1.2f, 0.04f, 10, false));
+                            return true;
+                            }
+                            case "earthquake_first_ring" -> {
+                            effect.getFxData().objects().add(ring(duration,
+                                new Palette(0xFFFFD67E, 0x00D3944C),
+                                34.0f, 0.045f, 0.98f));
+                            effect.getFxData().objects().add(ring(duration,
+                                new Palette(0xAAD3944C, 0x0078716C),
+                                22.0f, 0.10f, 0.82f));
+                            return true;
+                            }
+                            case "earthquake_fissure" -> {
+                            effect.getFxData().objects().add(burstRing(duration,
+                                new Palette(0xFFFFD67E, 0x00D3944C),
+                                72.0f, 0.14f, 0.94f, 0));
+                            effect.getFxData().objects().add(burstSphere(duration,
+                                new Palette(0xDDD6D3D1, 0x0078716C),
+                                52.0f, 0.20f, 0.82f, 1));
+                            return true;
+                            }
+                            case "earthquake_dust" -> {
+                            effect.getFxData().objects().add(ring(duration,
+                                new Palette(0x88D3944C, 0x0078716C),
+                                10.0f, 0.07f, 0.95f));
+                            effect.getFxData().objects().add(boxVolume(duration,
+                                new Palette(0x66D6D3D1, 0x0078716C),
+                                14.0f, 0.09f, 0.04f,
+                                1.7f, 0.08f, 1.7f, 0.06f, 12, true));
+                            return true;
+                            }
+                            case "overhead_channel" -> {
+                            effect.getFxData().objects().add(sphere(duration,
+                                new Palette(0xFFE9D5FF, 0x007E22CE),
+                                36.0f, 0.18f, 0.035f, false, false));
+                            effect.getFxData().objects().add(ring(duration,
+                                new Palette(0xCCF97316, 0x007E22CE),
+                                18.0f, 0.08f, 0.72f));
+                            return true;
+                            }
+                            case "meteor_shadow" -> {
+                            effect.getFxData().objects().add(ring(duration,
+                                new Palette(0xCC1F1235, 0x00F97316),
+                                26.0f, 0.07f, 0.96f));
+                            effect.getFxData().objects().add(ring(duration,
+                                new Palette(0x88F97316, 0x007E22CE),
+                                16.0f, 0.12f, 0.68f));
+                            return true;
+                            }
+                            case "dragon_meteor" -> {
+                            effect.getFxData().objects().add(sphere(duration,
+                                new Palette(0xFFFFF7ED, 0x00F97316),
+                                34.0f, 0.30f, 0.04f, false, true));
+                            effect.getFxData().objects().add(sphere(duration,
+                                new Palette(0xCC7E22CE, 0x001F1235),
+                                22.0f, 0.44f, 0.08f, true, true));
+                            return true;
+                            }
+                            case "dragon_fire" -> {
+                            effect.getFxData().objects().add(boxVolume(duration,
+                                new Palette(0xCCF97316, 0x007E22CE),
+                                40.0f, 0.18f, 0.12f,
+                                0.55f, 0.30f, 0.30f, 0.0f, 8, true));
+                            effect.getFxData().objects().add(boxVolume(duration,
+                                new Palette(0xAAE9D5FF, 0x001F1235),
+                                24.0f, 0.11f, 0.08f,
+                                0.75f, 0.16f, 0.16f, 0.0f, 6, true));
+                            return true;
+                            }
+                            case "dragon_crater" -> {
+                            effect.getFxData().objects().add(burstSphere(duration,
+                                new Palette(0xFFF97316, 0x007E22CE),
+                                72.0f, 0.24f, 0.92f, 0));
+                            effect.getFxData().objects().add(burstRing(duration,
+                                new Palette(0xCCE9D5FF, 0x001F1235),
+                                52.0f, 0.13f, 1.0f, 1));
+                            effect.getFxData().objects().add(boxVolume(duration,
+                                new Palette(0x99D6D3D1, 0x0078716C),
+                                28.0f, 0.18f, 0.16f,
+                                1.4f, 0.12f, 1.4f, 0.08f, 10, false));
+                            return true;
+                            }
+                            case "surf_wave" -> {
+                            effect.getFxData().objects().add(boxVolume(duration,
+                                new Palette(0xCC0284C7, 0x0038BDF8),
+                                54.0f, 0.23f, 0.10f,
+                                                1.0f, 0.48f, 1.0f, 0.20f, 10, false));
+                            effect.getFxData().objects().add(boxVolume(duration,
+                                new Palette(0xDDE0F2FE, 0x0038BDF8),
+                                42.0f, 0.14f, 0.12f,
+                                                1.0f, 0.16f, 1.06f, 0.48f, 7, false));
+                            effect.getFxData().objects().add(boxVolume(duration,
+                                new Palette(0xAAFFFFFF, 0x0067E8F9),
+                                30.0f, 0.10f, 0.06f,
+                                                1.0f, 0.08f, 1.12f, 0.04f, 8, false));
+                            return true;
+                            }
+                            case "water_front" -> {
+                            effect.getFxData().objects().add(ring(duration,
+                                new Palette(0xCC38BDF8, 0x0067E8F9),
+                                24.0f, 0.055f, 0.96f));
+                            effect.getFxData().objects().add(boxVolume(duration,
+                                new Palette(0x88E0F2FE, 0x0038BDF8),
+                                20.0f, 0.10f, 0.04f,
+                                1.5f, 0.06f, 0.30f, 0.04f, 8, false));
+                            return true;
+                            }
+                            case "heavy_splash" -> {
+                            effect.getFxData().objects().add(burstSphere(duration,
+                                new Palette(0xFFE0F2FE, 0x0038BDF8),
+                                64.0f, 0.17f, 0.86f, 0));
+                            effect.getFxData().objects().add(burstRing(duration,
+                                new Palette(0xCC38BDF8, 0x0067E8F9),
+                                42.0f, 0.10f, 0.98f, 1));
+                            return true;
+                            }
+                            case "ground_slam" -> {
+                            effect.getFxData().objects().add(boxVolume(duration,
+                                new Palette(0xAA38BDF8, 0x0067E8F9),
+                                32.0f, 0.13f, 0.08f,
+                                1.1f, 0.08f, 1.1f, 0.06f, 8, false));
+                            effect.getFxData().objects().add(burstRing(duration,
+                                new Palette(0xDDE0F2FE, 0x0038BDF8),
+                                36.0f, 0.10f, 0.92f, 1));
+                            return true;
+                            }
+                default -> {
+                    return false;
+                }
+            }
+        }
+
+        private static boolean addBlizzardGeometry(FX effect, String style, int duration) {
+            switch (style) {
+                case "storm_cast" -> {
+                    effect.getFxData().objects().add(sphere(duration,
+                        new Palette(0xCCE0F2FE, 0x007DD3FC),
+                        30.0f, 0.13f, 0.05f, true, false));
+                    effect.getFxData().objects().add(ring(duration,
+                        new Palette(0xAAFFFFFF, 0x007DD3FC),
+                        20.0f, 0.06f, 0.68f));
+                    return true;
+                }
+                case "snow_zone" -> {
+                    effect.getFxData().objects().add(ring(duration,
+                        new Palette(0xFFE0F2FE, 0x007DD3FC),
+                        30.0f, 0.045f, 0.98f));
+                    effect.getFxData().objects().add(ring(duration,
+                        new Palette(0x887DD3FC, 0x00FFFFFF),
+                        18.0f, 0.11f, 0.78f));
+                    return true;
+                }
+                case "moving_blizzard" -> {
+                    effect.getFxData().objects().add(boxVolume(duration,
+                        new Palette(0x99E0F2FE, 0x007DD3FC),
+                        42.0f, 0.12f, 0.10f,
+                        0.90f, 0.42f, 0.90f, 0.34f, 12, true));
+                    effect.getFxData().objects().add(boxVolume(duration,
+                        new Palette(0x88FFFFFF, 0x0038BDF8),
+                        30.0f, 0.08f, 0.16f,
+                        0.94f, 0.58f, 0.94f, 0.42f, 9, true));
+                    effect.getFxData().objects().add(ring(duration,
+                        new Palette(0xDDE0F2FE, 0x007DD3FC),
+                        12.0f, 0.045f, 0.98f));
+                    return true;
+                }
+                case "blizzard_frost_hit" -> {
+                    effect.getFxData().objects().add(burstSphere(duration,
+                        new Palette(0xFFFFFFFF, 0x007DD3FC),
+                        44.0f, 0.16f, 0.82f, 0));
+                    effect.getFxData().objects().add(burstRing(duration,
+                        new Palette(0xCC82E8FF, 0x00E7FFFF),
+                        30.0f, 0.09f, 0.92f, 1));
+                    return true;
+                }
+                default -> {
+                    return false;
+                }
+            }
+        }
+
+        private static boolean addTrickRoomGeometry(FX effect, String style, int duration) {
+            switch (style) {
+                case "trick_room_cast" -> {
+                    effect.getFxData().objects().add(ring(duration,
+                        new Palette(0xDDF0ABFC, 0x0022D3EE),
+                        24.0f, 0.06f, 0.72f));
+                    effect.getFxData().objects().add(boxShell(duration,
+                        new Palette(0x99F0ABFC, 0x0022D3EE),
+                        22.0f, 0.08f, 0.55f, 0.55f, 0.55f,
+                        0.28f, Box.Type.Edge, false));
+                    return true;
+                }
+                case "trick_room_grid" -> {
+                    effect.getFxData().objects().add(ring(duration,
+                        new Palette(0xFFF0ABFC, 0x0022D3EE),
+                        30.0f, 0.045f, 0.98f));
+                    effect.getFxData().objects().add(boxShell(duration,
+                        new Palette(0x88F0ABFC, 0x0022D3EE),
+                        30.0f, 0.07f, 0.96f, 0.75f, 0.96f,
+                        0.38f, Box.Type.Edge, false));
+                    return true;
+                }
+                case "trick_room_cube" -> {
+                    effect.getFxData().objects().add(boxShell(duration,
+                        new Palette(0xCCF0ABFC, 0x0022D3EE),
+                        28.0f, 0.075f, 0.96f, 0.75f, 0.96f,
+                        0.38f, Box.Type.Edge, true));
+                    effect.getFxData().objects().add(boxShell(duration,
+                        new Palette(0x3322D3EE, 0x00F0ABFC),
+                        10.0f, 0.09f, 0.94f, 0.72f, 0.94f,
+                        0.36f, Box.Type.Shell, true));
+                    effect.getFxData().objects().add(ring(duration,
+                        new Palette(0x88F0ABFC, 0x0022D3EE),
+                        10.0f, 0.055f, 0.92f));
+                    return true;
+                }
+                case "trick_room_shift" -> {
+                    effect.getFxData().objects().add(burstSphere(duration,
+                        new Palette(0xDDF0ABFC, 0x0022D3EE),
+                        34.0f, 0.13f, 0.72f, 0));
+                    return true;
+                }
+                default -> {
+                    return false;
+                }
+            }
+        }
+
+        private static boolean addStealthRockGeometry(FX effect, String style, int duration) {
+            switch (style) {
+                case "stealth_rock_cast", "stealth_rock_runes" -> {
+                    effect.getFxData().objects().add(ring(duration,
+                        new Palette(0xFFD6D3D1, 0x0078716C),
+                        24.0f, 0.055f, 0.88f));
+                    effect.getFxData().objects().add(ring(duration,
+                        new Palette(0x99FFD67E, 0x0078716C),
+                        16.0f, 0.10f, 0.62f));
+                    return true;
+                }
+                case "stealth_rock_field" -> {
+                    for (int index = 0; index < 6; index++) {
+                        double angle = index * Math.PI * 2.0 / 6.0;
+                        effect.getFxData().objects().add(boxVolumeAt(duration,
+                            new Palette(0xCCD6D3D1, 0x0078716C),
+                            8.0f, 0.12f, 0.025f,
+                            0.10f, 0.34f, 0.10f,
+                            (float) (Math.cos(angle) * 0.68), 0.40f,
+                            (float) (Math.sin(angle) * 0.68), 12, true));
+                    }
+                    effect.getFxData().objects().add(ring(duration,
+                        new Palette(0x88D3944C, 0x0078716C),
+                        8.0f, 0.045f, 0.72f));
+                    return true;
+                }
+                case "stealth_rock_shards" -> {
+                    effect.getFxData().objects().add(burstSphere(duration,
+                        new Palette(0xFFD6D3D1, 0x0078716C),
+                        42.0f, 0.18f, 0.72f, 0));
+                    effect.getFxData().objects().add(burstRing(duration,
+                        new Palette(0xAAD3944C, 0x0078716C),
+                        24.0f, 0.09f, 0.82f, 1));
+                    return true;
+                }
+                default -> {
+                    return false;
+                }
+            }
+        }
+
+        private static boolean addCrunchGeometry(FX effect, String style, int duration) {
+            switch (style) {
+                case "crunch_lunge_cast" -> {
+                    effect.getFxData().objects().add(sphere(duration,
+                        new Palette(0xAA312E81, 0x00111827),
+                        22.0f, 0.14f, 0.04f, true, false));
+                    effect.getFxData().objects().add(ring(duration,
+                        new Palette(0xCCC084FC, 0x00111827),
+                        16.0f, 0.06f, 0.62f));
+                    return true;
+                }
+                case "crunch_maw_warning" -> {
+                    effect.getFxData().objects().add(ring(duration,
+                        new Palette(0xFFC084FC, 0x00111827),
+                        28.0f, 0.045f, 0.98f));
+                    effect.getFxData().objects().add(boxShellAt(duration,
+                        new Palette(0x99312E81, 0x00111827),
+                        20.0f, 0.08f, 0.18f, 0.42f, 0.78f,
+                        -0.42f, 0.30f, 0.0f, Box.Type.Edge, false));
+                    effect.getFxData().objects().add(boxShellAt(duration,
+                        new Palette(0x99312E81, 0x00111827),
+                        20.0f, 0.08f, 0.18f, 0.42f, 0.78f,
+                        0.42f, 0.30f, 0.0f, Box.Type.Edge, false));
+                    return true;
+                }
+                case "crushing_jaws" -> {
+                    effect.getFxData().objects().add(boxShellAt(duration,
+                        new Palette(0xEEC084FC, 0x00111827),
+                        42.0f, 0.13f, 0.16f, 0.52f, 0.82f,
+                        -0.24f, 0.35f, 0.0f, Box.Type.Edge, false));
+                    effect.getFxData().objects().add(boxShellAt(duration,
+                        new Palette(0xEEC084FC, 0x00111827),
+                        42.0f, 0.13f, 0.16f, 0.52f, 0.82f,
+                        0.24f, 0.35f, 0.0f, Box.Type.Edge, false));
+                    effect.getFxData().objects().add(burstSphere(duration,
+                        new Palette(0xCC312E81, 0x00111827),
+                        38.0f, 0.18f, 0.72f, 1));
+                    return true;
+                }
+                case "crunch_maw_residue" -> {
+                    effect.getFxData().objects().add(ring(duration,
+                        new Palette(0x88312E81, 0x00111827),
+                        12.0f, 0.09f, 0.88f));
+                    return true;
+                }
+                default -> {
+                    return false;
+                }
+            }
+        }
+
+        private static boolean addSolarGeometry(FX effect, String style, int duration) {
+            switch (style) {
+                case "solar_beam_charge" -> {
+                    effect.getFxData().objects().add(boxVolumeAt(duration,
+                        new Palette(0xFFFFF7AE, 0x0059D65B),
+                        36.0f, 0.13f, 0.04f,
+                        0.62f, 0.24f, 0.62f,
+                        0.0f, 1.45f, 0.0f, 10, false));
+                    effect.getFxData().objects().add(ring(duration,
+                        new Palette(0xCCFACC15, 0x0059D65B),
+                        22.0f, 0.06f, 0.68f));
+                    return true;
+                }
+                case "solar_focus_ring" -> {
+                    effect.getFxData().objects().add(ring(duration,
+                        new Palette(0xFFFFFFA8, 0x0059D65B),
+                        30.0f, 0.045f, 0.98f));
+                    effect.getFxData().objects().add(ring(duration,
+                        new Palette(0xAA59D65B, 0x00FACC15),
+                        18.0f, 0.10f, 0.72f));
+                    return true;
+                }
+                case "solar_beam_column" -> {
+                    effect.getFxData().objects().add(sphere(duration,
+                        new Palette(0xFFFFFFFF, 0x00FACC15),
+                        36.0f, 0.24f, 0.05f, false, true));
+                    return true;
+                }
+                case "solar_flare_burst" -> {
+                    effect.getFxData().objects().add(burstSphere(duration,
+                        new Palette(0xFFFFFFD6, 0x0059D65B),
+                        68.0f, 0.22f, 0.92f, 0));
+                    effect.getFxData().objects().add(burstRing(duration,
+                        new Palette(0xDDFACC15, 0x0059D65B),
+                        44.0f, 0.11f, 1.0f, 1));
+                    return true;
+                }
+                default -> {
+                    return false;
+                }
+            }
+        }
+
+        private static void addSolarBeamGeometry(FX effect, int duration) {
+            effect.getFxData().objects().add(energyVolume(duration,
+                new Palette(0x99FACC15, 0x0059D65B), 38.0f, 0.20f, 0.72f, 9));
+            effect.getFxData().objects().add(energyVolume(duration,
+                new Palette(0xCCFFFFA8, 0x0059D65B), 50.0f, 0.12f, 0.38f, 7));
+            effect.getFxData().objects().add(beam(duration,
+                new Palette(0xFFFFFFFF, 0x00FACC15), 0.10f));
+        }
+
+        private static ParticleEmitter energyVolume(int duration, Palette palette,
+                                                    float emission, float size,
+                                                    float diameter, int lifetime) {
+            ParticleEmitter emitter = particle(duration, palette, emission, size, 0.06f, false);
+            emitter.config.setStartLifetime(NumberFunction.constant((float) lifetime));
+            emitter.config.setMaxParticles(384);
+            Box box = new Box();
+            emitter.config.shape.setShape(box);
+            emitter.config.shape.setPosition(new NumberFunction3(0.5, 0.0, 0.0));
+            emitter.config.shape.setScale(new NumberFunction3(1.0, diameter, diameter));
+            return emitter;
+        }
+
+        private static ParticleEmitter burstSphere(int duration, Palette palette, float count,
+                                                   float size, float radius, int delay) {
+            ParticleEmitter emitter = particle(duration, palette, 0.0f, size, 0.24f, false);
+            Sphere sphere = new Sphere();
+            sphere.setRadius(radius);
+            sphere.setRadiusThickness(0.22f);
+            emitter.config.shape.setShape(sphere);
+            configureBurst(emitter, delay, count);
+            return emitter;
+        }
+
+        private static ParticleEmitter burstRing(int duration, Palette palette, float count,
+                                                 float size, float radius, int delay) {
+            ParticleEmitter emitter = particle(duration, palette, 0.0f, size, 0.12f, false);
+            Circle circle = new Circle();
+            circle.setRadius(radius);
+            circle.setRadiusThickness(0.08f);
+            emitter.config.shape.setShape(circle);
+            configureBurst(emitter, delay, count);
+            return emitter;
+        }
+
+        private static void configureBurst(ParticleEmitter emitter, int delay, float count) {
+            EmissionSetting.Burst burst = new EmissionSetting.Burst();
+            burst.time = delay;
+            burst.cycles = 1;
+            burst.interval = 1;
+            burst.probability = 1.0f;
+            burst.setCount(NumberFunction.constant(count));
+            emitter.config.emission.setBursts(List.of(burst));
         }
 
         private static ParticleEmitter hyperBeamAftershock(int duration, int delay,
@@ -144,6 +658,72 @@ public final class ProgrammaticSpellFx {
         emitter.config.shape.setScale(new NumberFunction3(1.0, diameter, diameter));
         return emitter;
     }
+
+    private static ParticleEmitter boxVolume(int duration, Palette palette,
+                                             float emission, float size, float speed,
+                                             float scaleX, float scaleY, float scaleZ,
+                                             float offsetY, int lifetime,
+                                             boolean looping) {
+        ParticleEmitter emitter = particle(
+                duration, palette, emission, size, speed, looping);
+        emitter.config.setStartLifetime(NumberFunction.constant((float) lifetime));
+        emitter.config.setMaxParticles(384);
+        Box box = new Box();
+        emitter.config.shape.setShape(box);
+        emitter.config.shape.setPosition(new NumberFunction3(0.0, offsetY, 0.0));
+        emitter.config.shape.setScale(new NumberFunction3(scaleX, scaleY, scaleZ));
+        return emitter;
+    }
+
+        private static ParticleEmitter boxShell(int duration, Palette palette,
+                                                float emission, float size,
+                                                float scaleX, float scaleY, float scaleZ,
+                                                float offsetY, Box.Type type,
+                                                boolean looping) {
+            ParticleEmitter emitter = particle(
+                duration, palette, emission, size, 0.025f, looping);
+            emitter.config.setStartLifetime(NumberFunction.constant(10.0f));
+            emitter.config.setMaxParticles(384);
+            Box box = new Box();
+            box.setEmitFrom(type);
+            emitter.config.shape.setShape(box);
+            emitter.config.shape.setPosition(new NumberFunction3(0.0, offsetY, 0.0));
+            emitter.config.shape.setScale(new NumberFunction3(scaleX, scaleY, scaleZ));
+            return emitter;
+        }
+
+        private static ParticleEmitter boxVolumeAt(int duration, Palette palette,
+                                                   float emission, float size, float speed,
+                                                   float scaleX, float scaleY, float scaleZ,
+                                                   float offsetX, float offsetY, float offsetZ,
+                                                   int lifetime, boolean looping) {
+            ParticleEmitter emitter = particle(
+                duration, palette, emission, size, speed, looping);
+            emitter.config.setStartLifetime(NumberFunction.constant((float) lifetime));
+            emitter.config.setMaxParticles(384);
+            Box box = new Box();
+            emitter.config.shape.setShape(box);
+            emitter.config.shape.setPosition(new NumberFunction3(offsetX, offsetY, offsetZ));
+            emitter.config.shape.setScale(new NumberFunction3(scaleX, scaleY, scaleZ));
+            return emitter;
+        }
+
+        private static ParticleEmitter boxShellAt(int duration, Palette palette,
+                                                  float emission, float size,
+                                                  float scaleX, float scaleY, float scaleZ,
+                                                  float offsetX, float offsetY, float offsetZ,
+                                                  Box.Type type, boolean looping) {
+            ParticleEmitter emitter = particle(
+                duration, palette, emission, size, 0.025f, looping);
+            emitter.config.setStartLifetime(NumberFunction.constant(10.0f));
+            emitter.config.setMaxParticles(384);
+            Box box = new Box();
+            box.setEmitFrom(type);
+            emitter.config.shape.setShape(box);
+            emitter.config.shape.setPosition(new NumberFunction3(offsetX, offsetY, offsetZ));
+            emitter.config.shape.setScale(new NumberFunction3(scaleX, scaleY, scaleZ));
+            return emitter;
+        }
 
     private static BeamEmitter beam(int duration, Palette palette, float width) {
         BeamEmitter emitter = new BeamEmitter();

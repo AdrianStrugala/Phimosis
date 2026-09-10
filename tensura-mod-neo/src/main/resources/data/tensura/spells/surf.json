@@ -7,8 +7,8 @@
   "targeting": {
     "type": "wave",
     "range": 16.0,
-    "width": 3.5,
-    "radius": 1.5,
+    "width": 7.0,
+    "radius": 1.75,
     "max_targets": 12
   },
   "delivery": {

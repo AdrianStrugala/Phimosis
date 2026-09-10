@@ -70,6 +70,10 @@ Stan zweryfikowany 2026-09-09:
 - pierwszy pass warstwy ultimate obejmuje 36 capstone'ow, po dwa na kazdy z 18
   rays; bazowy `psychic` jest instant on-hit, a mechaniki ultimate i bindingi
   Snowstorm/Photon przechodza walidator oraz build, lecz oczekuja playtestu;
+- `flamethrower` jest zaakceptowanym wzorcem jakosci VFX; dedykowane profile
+  sygnaturowe dla `hyper_beam`, `thunder`, `earthquake`, `draco_meteor`, `surf`,
+  `blizzard`, `trick_room`, `stealth_rock`, `crunch` i `solar_beam` sa wdrozone
+  i maja sceny walidacyjne, ale oczekuja osobnego sign-offu wizualnego;
 
 Checkpoint jest wskazowka startowa, nie zamiennikiem walidacji. Po zmianie rosteru,
 generatorow, ikon, mapowan, VFX albo Devour zaktualizuj go dopiero po przejsciu

@@ -40,6 +40,8 @@ SPELL_ITEM_FILE = File.join(ROOT, "src/main/java/com/tensura/item/SpellItem.java
 SPELL_FOCUS_FILE = File.join(ROOT, "src/main/java/com/tensura/item/SpellFocusItem.java")
 ENUM_EXTENSIONS_FILE = File.join(ROOT, "src/main/resources/META-INF/enumextensions.json")
 VFX_FILE = File.join(ROOT, "src/main/java/com/tensura/client/ProgrammaticSpellFx.java")
+VFX_HARNESS_FILE = File.join(ROOT,
+  "src/main/java/com/tensura/client/VfxValidationHarness.java")
 ALIASES_FILE = File.join(ROOT, "src/main/java/com/tensura/engine/SpellIdAliases.java")
 STATUS_FILE = File.join(ROOT, "src/main/java/com/tensura/event/SpellStatusEvents.java")
 COMPANION_EVENTS_FILE = File.join(ROOT,
@@ -158,6 +160,36 @@ flamethrower_vfx = read_source(FLAMETHROWER_VFX_FILE)
 psychic_vfx = read_source(PSYCHIC_VFX_FILE)
 thunder_vfx = read_source(THUNDER_VFX_FILE)
 ultimate_vfx = read_source(ULTIMATE_VFX_FILE)
+vfx_harness = read_source(VFX_HARNESS_FILE)
+
+signature_vfx = {
+  "hyper-beam" => %w[hyper_beam_charge hyper_beam_focus hyper_beam_core hyper_beam_blast],
+  "thunder" => %w[sky_call electric_ground_ring lightning_column electric_afterglow],
+  "earthquake" => %w[earthquake_slam earthquake_first_ring earthquake_fissure earthquake_dust],
+  "draco-meteor" => %w[overhead_channel meteor_shadow dragon_meteor dragon_fire dragon_crater],
+  "surf" => %w[ground_slam water_front surf_wave heavy_splash],
+  "blizzard" => %w[storm_cast snow_zone moving_blizzard blizzard_frost_hit],
+  "trick-room" => %w[trick_room_cast trick_room_grid trick_room_cube trick_room_shift],
+  "stealth-rock" => %w[stealth_rock_cast stealth_rock_runes stealth_rock_field stealth_rock_shards],
+  "crunch" => %w[crunch_lunge_cast crunch_maw_warning crushing_jaws crunch_maw_residue],
+  "solar-beam" => %w[solar_beam_charge solar_focus_ring sunlit_stream solar_flare_burst]
+}.freeze
+missing_signature_styles = signature_vfx.values.flatten.reject do |style|
+  vfx.include?(%Q{"#{style}"})
+end
+fail_validation("missing polished signature VFX styles: #{missing_signature_styles.join(', ')}") unless
+  missing_signature_styles.empty?
+fail_validation("polished VFX do not use dedicated layered builders") unless
+  %w[addHyperBeamGeometry addBlizzardGeometry addTrickRoomGeometry
+     addStealthRockGeometry addCrunchGeometry addSolarGeometry
+     energyVolume boxVolume boxShell burstSphere burstRing].all? do |builder|
+    vfx.include?(builder)
+  end
+missing_harness_scenes = signature_vfx.keys.reject do |scene|
+  vfx_harness.include?(%Q{"#{scene}"})
+end
+fail_validation("missing polished VFX harness scenes: #{missing_harness_scenes.join(', ')}") unless
+  missing_harness_scenes.empty?
 
 fail_validation("companion AI scans for nearby hostile mobs") if
   companion_events.include?("NearestAttackableTargetGoal") ||
@@ -568,6 +600,13 @@ fail_validation("Fire and Water ultimates lack their bounded Snowstorm phases") 
     executor.include?("0.6 + 1.4 * pressureProgress") &&
     ultimate_vfx.include?("LAST_HYDRO_HIT") &&
     ultimate_vfx.include?("now - lastSent >= HIT_INTERVAL_TICKS")
+surf = spell_definition.call("surf")
+fail_validation("Surf is not a seven-block-wide readable wave") unless
+  surf.dig("targeting", "width").to_f == 7.0 &&
+    vfx.include?('case "surf_wave"') &&
+    vfx.include?("1.0f, 0.08f, 1.12f") &&
+    runtime.include?('SpellVfxDispatcher.send(level, "wave", definition.visual.telegraph') &&
+    runtime.include?("collisionHalfWidth = surf ? visualWidth * 0.5 : visualWidth")
 
 petal_blizzard = spell_definition.call("petal_blizzard")
 fail_validation("Petal Blizzard is not a recastable four-second orbit release") unless

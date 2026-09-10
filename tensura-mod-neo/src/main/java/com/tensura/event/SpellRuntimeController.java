@@ -125,6 +125,10 @@ public class SpellRuntimeController {
         if (effectCaster.level() instanceof ServerLevel level
             && "surf_wave".equals(definition.visual.aftermath)) {
             CobblemonUltimateVfx.sendSurfStart(level, center);
+            SpellVfxDispatcher.send(level, "wave", definition.visual.telegraph,
+                    definition.school, center,
+                    center.add(direction.normalize().scale(2.0)),
+                    definition.targeting.width, 12, effectCaster, false);
         }
         return true;
     }
@@ -1076,28 +1080,31 @@ public class SpellRuntimeController {
             }
             wave.center = nextCenter;
 
-            double width = wave.definition.targeting.width > 0.0
+            double visualWidth = wave.definition.targeting.width > 0.0
                 ? wave.definition.targeting.width : 3.0;
+            boolean surf = "surf_wave".equals(wave.definition.visual.aftermath);
+            double collisionHalfWidth = surf ? visualWidth * 0.5 : visualWidth;
             double radius = wave.definition.targeting.radius > 0.0
                 ? wave.definition.targeting.radius : 1.5;
             level.sendParticles(runtimeParticle(wave.definition.school),
                 wave.center.x, wave.center.y + 0.8, wave.center.z,
-                18, width * 0.45, 0.8, width * 0.45, 0.08);
+                18, collisionHalfWidth * 0.9, 0.8, collisionHalfWidth * 0.9, 0.08);
             level.sendParticles("water".equals(wave.definition.school)
                     ? ParticleTypes.BUBBLE : ParticleTypes.POOF,
                 wave.center.x, wave.center.y + 0.45, wave.center.z,
-                8, width * 0.4, 0.45, width * 0.4, 0.04);
+                8, collisionHalfWidth * 0.8, 0.45, collisionHalfWidth * 0.8, 0.04);
             if (wave.remainingTicks % 4 == 0) {
             String waveStyle = wave.definition.visual.aftermath == null
                     || wave.definition.visual.aftermath.isBlank()
                     ? wave.definition.visual.trail : wave.definition.visual.aftermath;
             SpellVfxDispatcher.send(level, "wave", waveStyle,
                 wave.definition.school, wave.center,
-                wave.center.add(wave.direction.scale(2.0)), width,
+                wave.center.add(wave.direction.scale(2.0)), visualWidth,
                 6, effectCaster, false);
             }
 
-            AABB area = new AABB(wave.center, wave.center).inflate(width, radius, width);
+            AABB area = new AABB(wave.center, wave.center)
+                    .inflate(collisionHalfWidth, radius, collisionHalfWidth);
             List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, area,
                 target -> SpellTargetingRules.canHarm(owner, effectCaster, target)
                     && target.getY() <= wave.center.y + radius + 1.0);

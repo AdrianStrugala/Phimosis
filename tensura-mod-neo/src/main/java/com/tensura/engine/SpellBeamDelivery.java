@@ -386,6 +386,15 @@ final class SpellBeamDelivery {
         if (CobblemonFlamethrowerVfx.isFlamethrower(definition)) {
             visualOrigin = CobblemonFlamethrowerVfx.playerStreamOrigin(
                     effectCaster, trace.end().subtract(trace.origin()));
+        } else if (effectCaster instanceof ServerPlayer
+                && ("hyper_beam_core".equals(definition.visual.trail)
+                    || "sunlit_stream".equals(definition.visual.trail))) {
+            Vec3 direction = trace.end().subtract(trace.origin());
+            if (direction.lengthSqr() > 1.0E-6) {
+                visualOrigin = effectCaster.getEyePosition()
+                        .add(direction.normalize().scale(0.75))
+                        .add(0.0, -0.22, 0.0);
+            }
         }
         SpellVfxDispatcher.send(level, "beam", definition.visual.trail,
                 definition.school, visualOrigin, trace.end(),

@@ -14,7 +14,9 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 public final class VfxValidationHarness {
     private static final String[] NAMES = {
             "aqua-jet", "hydro-pump", "electro-ball",
-            "thunder", "aurora-veil", "blizzard"
+            "thunder", "aurora-veil", "blizzard",
+            "hyper-beam", "earthquake", "draco-meteor", "surf",
+            "trick-room", "stealth-rock", "crunch", "solar-beam"
     };
     private static final boolean ENABLED = Boolean.getBoolean("tensura.vfxValidation");
     private static int warmupTicks = 100;
@@ -96,6 +98,75 @@ public final class VfxValidationHarness {
                 play("zone", "snow_zone", "ice", ground, ground, 5.0f, 120);
                 play("aftermath", "moving_blizzard", "ice", ground, ground, 5.0f, 120);
             }
+                case 6 -> {
+                play("attachment", "hyper_beam_charge", "physical",
+                    origin, origin, 1.0f, 28);
+                play("beam", "hyper_beam_core", "physical",
+                    origin, target, 2.0f, 16);
+                play("impact", "hyper_beam_blast", "physical",
+                    target, target, 2.5f, 16);
+                }
+                case 7 -> {
+                play("zone", "earthquake_first_ring", "earth",
+                    ground, ground, 12.0f, 40);
+                play("impact", "earthquake_fissure", "earth",
+                    ground, ground, 12.0f, 16);
+                play("aftermath", "earthquake_dust", "earth",
+                    ground, ground, 12.0f, 80);
+                }
+                case 8 -> {
+                Vec3 meteor = ground.add(0.0, 6.0, 0.0);
+                play("telegraph", "meteor_shadow", "dragon",
+                    ground, ground, 2.0f, 30);
+                play("projectile", "dragon_meteor", "dragon",
+                    meteor, ground, 1.5f, 30);
+                play("projectile", "dragon_fire", "dragon",
+                    meteor, ground, 1.2f, 30);
+                play("impact", "dragon_crater", "dragon",
+                    ground, ground, 3.0f, 20);
+                }
+                case 9 -> {
+                play("wave", "water_front", "water",
+                    origin, target, 7.0f, 20);
+                play("wave", "surf_wave", "water",
+                    origin, target, 7.0f, 30);
+                play("impact", "heavy_splash", "water",
+                    target, target, 2.0f, 20);
+                }
+                case 10 -> {
+                play("zone", "trick_room_grid", "psychic",
+                    ground, ground, 8.0f, 30);
+                play("zone", "trick_room_cube", "psychic",
+                    ground, ground, 8.0f, 120);
+                play("impact", "trick_room_shift", "psychic",
+                    ground, ground, 1.5f, 16);
+                }
+                case 11 -> {
+                play("telegraph", "stealth_rock_runes", "earth",
+                    ground, ground, 3.0f, 24);
+                play("attachment", "stealth_rock_field", "earth",
+                    ground, ground, 3.0f, 120);
+                play("impact", "stealth_rock_shards", "earth",
+                    target, target, 1.5f, 16);
+                }
+                case 12 -> {
+                play("telegraph", "crunch_maw_warning", "shadow",
+                    ground, ground, 2.5f, 20);
+                play("impact", "crushing_jaws", "shadow",
+                    ground, ground, 2.5f, 16);
+                play("aftermath", "crunch_maw_residue", "shadow",
+                    ground, ground, 2.5f, 30);
+                }
+                case 13 -> {
+                play("attachment", "solar_beam_charge", "nature",
+                    origin, origin, 1.0f, 36);
+                play("telegraph", "solar_focus_ring", "nature",
+                    ground, ground, 2.0f, 36);
+                play("beam", "sunlit_stream", "nature",
+                    origin, target, 1.4f, 20);
+                play("impact", "solar_flare_burst", "nature",
+                    target, target, 2.0f, 20);
+                }
             default -> throw new IllegalArgumentException("Unknown VFX scene " + index);
         }
         TensuraMod.LOGGER.info("VFX validation playing {}", NAMES[index]);
