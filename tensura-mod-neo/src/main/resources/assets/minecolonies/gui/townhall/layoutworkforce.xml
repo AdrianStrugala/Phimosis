@@ -14,23 +14,25 @@
     <text id="workforceStatus" pos="100 55" size="324 12" color="darkgray"
           textalign="MIDDLE" label="Ładowanie..."/>
 
-        <text pos="100 70" size="145 11" color="black" label="Miejsca pracy"/>
+        <!-- Rows are 136 wide inside 148-wide lists: BlockUI draws the scrollbar in the
+             remaining strip, and full-width rows were being clipped underneath it. -->
+        <text pos="100 70" size="136 11" color="black" label="Miejsca pracy"/>
         <list id="workplaceList" pos="100 84" size="148 130">
-                <view size="148 20">
-                        <button id="workplaceRow" pos="0 0" size="145 18" color="black"
+                <view size="136 20">
+                        <button id="workplaceRow" pos="0 0" size="136 18" color="black" textscale="0.8"
                                         source="minecolonies:textures/gui/builderhut/builder_button_medium_large.png"/>
                 </view>
         </list>
 
-        <text pos="276 70" size="148 11" color="black" label="Citizeni"/>
+        <text pos="276 70" size="136 11" color="black" label="Citizeni"/>
         <list id="workforceCitizenList" pos="276 84" size="148 130">
-                <view size="148 42">
-                        <text id="citizenName" pos="0 0" size="148 11" color="black" textscale="0.75"/>
-                        <text id="citizenPokemon" pos="0 10" size="148 11" color="darkgray" textscale="0.65"/>
-                        <text id="citizenDetail" pos="0 21" size="70 11" color="darkgray" textscale="0.7"/>
-                        <button id="assignCitizen" pos="72 22" size="43 16" label="Praca" color="black"
+                <view size="136 42">
+                        <text id="citizenName" pos="0 0" size="136 11" color="black" textscale="0.75"/>
+                        <text id="citizenPokemon" pos="0 10" size="136 11" color="darkgray" textscale="0.65"/>
+                        <text id="citizenDetail" pos="0 21" size="64 11" color="darkgray" textscale="0.7"/>
+                        <button id="assignCitizen" pos="66 22" size="40 16" label="Praca" color="black" textscale="0.8"
                                         source="minecolonies:textures/gui/builderhut/builder_button_very_small.png"/>
-                        <button id="recallCitizen" pos="118 22" size="29 16" label="R" color="black"
+                        <button id="recallCitizen" pos="108 22" size="28 16" label="R" color="black" textscale="0.8"
                                         source="minecolonies:textures/gui/builderhut/builder_button_very_small.png"/>
                 </view>
         </list>
