@@ -4,7 +4,7 @@
   "power": 23.0,
   "school": "earth",
   "cooldown_ticks": 400,
-  "targeting": { "type": "area", "range": 12.0, "radius": 12.0, "max_targets": 32 },
+  "targeting": { "type": "area", "range": 0.0, "radius": 12.0, "max_targets": 32 },
   "delivery": {
     "type": "moving_zone",
     "duration_ticks": 200,
