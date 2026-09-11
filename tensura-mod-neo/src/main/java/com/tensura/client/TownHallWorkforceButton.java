@@ -59,7 +59,7 @@ public final class TownHallWorkforceButton {
             "minecolonies", "textures/gui/bookmark_medium_ribbon_04.png"));
         extension.setPosition(-17, 239);
         extension.setSize(104, 14);
-        extension.setText(Component.literal("Pracownicy"));
+        extension.setText(Component.translatable("tensura.gui.workforce.tab"));
         extension.setTextAlignment(Alignment.MIDDLE_LEFT);
         extension.setTextOffset(8, 1);
         extension.hide();
@@ -77,7 +77,8 @@ public final class TownHallWorkforceButton {
         // "Hover pane does not have parent window specified" as the town hall screen opens.
         window.addChild(button);
         button.setHoverPane(extension);
-        PaneBuilders.singleLineTooltip(Component.literal("Pracownicy i recall"), button);
+        PaneBuilders.singleLineTooltip(
+            Component.translatable("tensura.gui.workforce.tooltip"), button);
     }
 
     /**

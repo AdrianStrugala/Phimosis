@@ -60,8 +60,8 @@ public class ConversionEvents {
 
             ITownHall townHall = colony.getServerBuildingManager().getTownHall();
             if (townHall == null || !townHall.isInBuilding(playerPos)) return Unit.INSTANCE;
-            if (!ConversionHelper.isColonyOwner(colony, owner)) {
-                owner.sendSystemMessage(Component.literal("§cTylko właściciel kolonii może zamieniać Pokémony w citizenów."));
+            if (!ConversionHelper.canManageColony(colony, owner)) {
+                owner.sendSystemMessage(Component.literal("§cNie masz uprawnień do dodawania citizenów w tej kolonii."));
                 return Unit.INSTANCE;
             }
 
@@ -179,8 +179,7 @@ public class ConversionEvents {
         // Take over the interaction only for citizens that really are recallable Pokemon.
         // Cancelling before this check blocked the ordinary citizen GUI for anyone merely
         // holding a Pokeball.
-        boolean enrolled = data.contains(citizenId);
-        if (!enrolled && ConversionHelper.resolveSpecies(citizenId, citizen) == null) return;
+        if (!data.contains(citizenId)) return;
 
         event.setCanceled(true);
 
@@ -191,16 +190,16 @@ public class ConversionEvents {
                 colony = IColonyManager.getInstance().getColonyByWorld(storedColonyId, level);
             }
         }
-        if (colony == null || !ConversionHelper.isColonyOwner(colony, sender)) {
-            sender.sendSystemMessage(Component.literal("§cTylko właściciel kolonii może przywracać jej citizenów."));
+        if (!ConversionHelper.canManageColony(colony, sender)) {
+            sender.sendSystemMessage(Component.literal("§cNie masz uprawnień do zarządzania citizenami tej kolonii."));
             return;
         }
 
-        UUID recipientId = enrolled ? data.ownerMap.get(citizenId) : sender.getUUID();
-        if (recipientId == null) {
-            sender.sendSystemMessage(Component.literal("§cBrak informacji o właścicielu tego Pokémona."));
+        if (!ConversionHelper.canRecallPokemon(colony, sender, data, citizenId)) {
+            sender.sendSystemMessage(Component.literal("§cTylko pierwotny właściciel może przywrócić tego Pokémona."));
             return;
         }
+        UUID recipientId = sender.getUUID();
 
         // For non-enrolled citizens we still need a mappable species — bail silently if none found
         var citizenSkills = citizen.getCitizenDataView() != null
@@ -237,9 +236,7 @@ public class ConversionEvents {
 
         String speciesName = capitalize(restoredPokemon.getSpecies().getName());
 
-        if (enrolled) {
-            data.remove(citizenId);
-        }
+        data.remove(citizenId);
         ColonyStartupEvents.broadcastSpeciesMap(level);
 
         TensuraMod.LOGGER.info("[Tensura] Recalled citizen #{} by colony owner {} for Pokemon owner {}",

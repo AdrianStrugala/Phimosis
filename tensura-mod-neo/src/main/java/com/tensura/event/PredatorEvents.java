@@ -50,7 +50,7 @@ public class PredatorEvents {
             if (PredatorData.hasAbsorbed(player, spellId)) continue;
             if (level.getRandom().nextDouble() >= chance) continue;
 
-            PredatorAbsorption.absorb(player, spellId, level, pos);
+            PredatorAbsorption.absorb(player, spellId);
         }
     }
 }

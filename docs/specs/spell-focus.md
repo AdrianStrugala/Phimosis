@@ -1,7 +1,7 @@
 # Katalizator zaklęć — spec implementacyjna
 
 **Data:** 2026-09-08
-**Status:** wdrożony, przeszedł pierwszy playtest (2.0.43)
+**Status:** wdrożony; testy w grze trwają, pierwsze wyniki są dobre
 **Dotyczy:** tensura-mod-neo (NeoForge 1.21.1) + datapack `predator_skills`
 **Dokument siostrzany:** [start serwera publicznego](../operations/public-server-launch.md)
 
@@ -22,13 +22,12 @@ Zbudowane i wgrane na TEST oraz klienta jako `tensura-2.0.43.jar` (2026-09-09).
 | 5. Wycięcie Kodeksu | Zrobione |
 | 6. Offhand | `findFocus` zrobione; config Epic Knights **celowo nietknięty** — patrz sekcja 7 |
 
-**Nie zweryfikowane w grze.** Kompiluje się, walidacje przechodzą, klasy i assety
-są w jarze — ale nikt tego jeszcze nie kliknął. Kryteria akceptacji w sekcji 12
-są nadal do odhaczenia.
+Pierwsze testy w grze dają dobre wyniki, ale pełne kryteria akceptacji w sekcji 12
+nie zostały jeszcze odhaczone.
 
 Decyzje użytkownika, które zmieniły ten spec względem pierwotnej wersji:
 jeden katalizator zamiast trzech tierów (5 slotów, receptura ze slime ballem),
-pochłonięcie **nadal dropi** `SpellItem`, wycięcie Kodeksu wchodzi od razu.
+pochłonięcie nie dropi już `SpellItem`, wycięcie Kodeksu wchodzi od razu.
 
 ### Poprawki z review 2026-09-09 (2.0.39)
 
@@ -161,7 +160,7 @@ nietknięta.
 | Czy radial ma pulę zaklęć | **Nie** — niepotrzebna, przypisanie zawsze startuje z drzewka |
 | Kodeks Predatora | **Usunięty** |
 | Katalizator | Craftowalny, jeden item, 5 slotów |
-| Stare `SpellItem` | Zostają castowalne; pochłonięcie nadal je dropi |
+| Stare `SpellItem` | Zostają castowalne dla istniejących egzemplarzy; pochłonięcie ich nie dropi |
 | Drzewko | Jedyne miejsce progresji i przeglądania |
 
 ---
@@ -247,10 +246,9 @@ a po kliknięciu sam się re-lockuje, więc jest klikalny wielokrotnie.
 Bez zmian zostaje: walidacja `PredatorData.hasAbsorbed`, komunikat o niepochłoniętym
 zaklęciu, odroczony o tick `PredatorAbsorption.lockDispenser`.
 
-Bez zmian zostaje też `PredatorAbsorption.absorb` — pochłonięcie nadal dropi
-`SpellItem` na ziemię. **Do decyzji przy implementacji:** czy drop zostaje jako
-„fizyczny łup" (wtedy stare itemy nadal krążą), czy pochłonięcie tylko zapala node.
-Rekomendacja: zostawić drop w kroku 1–3, wyciąć w kroku 5 razem z Kodeksem.
+`PredatorAbsorption.absorb` zapisuje pochłonięcie i zapala node `_owned`, ale nie
+dropi już `SpellItem` na ziemię. Istniejące egzemplarze pozostają castowalne dla
+zgodności zapisanych ekwipunków.
 
 ---
 
@@ -443,7 +441,7 @@ nie objaw.
 2. `SpellFocusItem` + receptury + `SetActiveSpellPacket` + `R`. **Grywalne po tym kroku.**
 3. `SpellRadialScreen` — wybór aktywnego.
 4. `devourRecover` → `OpenRadialPacket` + `AttuneSpellPacket`; tryb przypisania w radialu.
-5. Wycięcie Kodeksu. Drop `SpellItem` przy pochłonięciu **zostaje** (decyzja użytkownika).
+5. Wycięcie Kodeksu i dropu `SpellItem` przy pochłonięciu.
 6. Offhand: `findFocus` + playtest bronią, którą realnie gracie (config Epic Knights zostaje domyślny).
 
 ---
@@ -470,7 +468,6 @@ nie objaw.
 
 ## Otwarte pytania
 
-- Czy po playteście drop `SpellItem` przy pochłonięciu ma zostać wycięty.
 - Czy dochodzą kolejne tiery katalizatora i na jakich materiałach.
 - **Czy radial na `R` zostaje ekranem.** `Screen` zatrzymuje ruch i kamerę gracza na
   czas trzymania klawisza — świat tyka (`isPauseScreen() == false`), ale postać stoi.
