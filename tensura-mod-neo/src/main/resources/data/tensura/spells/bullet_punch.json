@@ -1,0 +1,15 @@
+{
+  "pokemon_type": "steel",
+  "category": "physical",
+  "power": 8.0,
+  "school": "steel",
+  "cooldown_ticks": 80,
+  "targeting": { "type": "aim", "range": 6.0, "max_targets": 1 },
+  "delivery": { "type": "dash", "distance": 6.0, "duration_ticks": 3 },
+  "impact": [
+    { "type": "damage", "armor_penetration": 2.0 },
+    { "type": "knockback", "strength": 0.7 }
+  ],
+  "visual": { "cast_animation": "bullet_punch_flash", "trail": "steel_pressure_cone", "impact": "bullet_punch_flash" },
+  "sound": { "cast": "minecraft:entity.player.attack.strong", "impact": "minecraft:block.anvil.hit" }
+}

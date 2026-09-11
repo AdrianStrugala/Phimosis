@@ -1,0 +1,16 @@
+{
+  "pokemon_type": "ice",
+  "category": "special",
+  "power": 10.0,
+  "school": "ice",
+  "cooldown_ticks": 180,
+  "targeting": { "type": "cone", "range": 7.0, "max_targets": 7 },
+  "delivery": { "type": "arc_strike", "cone_angle": 105.0 },
+  "impact": [
+    { "type": "damage" },
+    { "type": "status_effect", "effect": "minecraft:slowness", "duration": 100, "amplifier": 1 },
+    { "type": "knockback", "strength": 0.7 }
+  ],
+  "visual": { "cast_animation": "icy_wind_sweep", "trail": "icy_wind_cone", "impact": "icy_wind_frost" },
+  "sound": { "cast": "minecraft:entity.breeze.wind_burst", "impact": "minecraft:block.powder_snow.break" }
+}

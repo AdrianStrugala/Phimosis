@@ -1,11 +1,23 @@
 {
+  "pokemon_type": "dragon",
+  "category": "physical",
+  "power": 27.0,
   "school": "dragon",
-  "cooldown_ticks": 260,
-  "targeting": { "type": "aim", "range": 14 },
-  "delivery": { "type": "instant", "speed": 1.0 },
+  "cooldown_ticks": 380,
+  "targeting": { "type": "aim", "range": 10.0, "width": 1.2, "max_targets": 1 },
+  "delivery": {
+    "type": "dash_combo",
+    "speed": 1.8,
+    "distance": 7.0,
+    "duration_ticks": 6,
+    "steerable": true,
+    "combo_hits": 3,
+    "combo_interval_ticks": 20,
+    "recovery_ticks": 80
+  },
   "impact": [
-    { "type": "damage", "damage_multiplier": 5.5 },
-    { "type": "knockback", "strength": 3.0 },
-    { "type": "status_effect", "effect": "minecraft:nausea", "duration": 80, "amplifier": 0, "chance": 1.0 }
-  ]
+    { "type": "damage", "damage_multiplier": 0.3333333333 }
+  ],
+  "visual": { "cast_animation": "outrage_frenzy", "trail": "outrage_dash", "impact": "outrage_slash", "aftermath": "outrage_confusion" },
+  "sound": { "cast": "minecraft:entity.ender_dragon.growl", "travel": "minecraft:entity.player.attack.sweep", "impact": "minecraft:entity.ender_dragon.hurt" }
 }

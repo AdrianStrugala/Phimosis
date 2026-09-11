@@ -1,0 +1,29 @@
+{
+  "pokemon_type": "fire",
+  "category": "physical",
+  "power": 13.0,
+  "school": "fire",
+  "cooldown_ticks": 140,
+  "targeting": {
+    "type": "cone",
+    "range": 4.0,
+    "max_targets": 4
+  },
+  "delivery": {
+    "type": "arc_strike",
+    "cone_angle": 90.0
+  },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 1.0 },
+    { "type": "fire", "seconds": 3 }
+  ],
+  "visual": {
+    "cast_animation": "fire_punch_swing",
+    "trail": "fire_punch_arc",
+    "impact": "fire_punch_impact"
+  },
+  "sound": {
+    "cast": "minecraft:entity.player.attack.sweep",
+    "impact": "minecraft:entity.blaze.hurt"
+  }
+}

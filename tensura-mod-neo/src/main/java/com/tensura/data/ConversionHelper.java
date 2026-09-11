@@ -4,11 +4,13 @@ import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
 import com.cobblemon.mod.common.api.pokemon.stats.Stat;
 import com.cobblemon.mod.common.api.pokemon.stats.Stats;
 import com.cobblemon.mod.common.pokemon.Pokemon;
+import com.minecolonies.api.colony.IColony;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.entity.citizen.Skill;
 import com.minecolonies.api.entity.citizen.citizenhandlers.ICitizenSkillHandler;
 import com.tensura.event.ColonyStartupEvents;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -24,6 +26,10 @@ public class ConversionHelper {
 
     private static final String SPECIES_TAG_PREFIX = "tensura:species:";
 
+    public static boolean isColonyOwner(IColony colony, Player player) {
+        return colony != null && player.getUUID().equals(colony.getPermissions().getOwner());
+    }
+
     // ── Public entry point ────────────────────────────────────────────────────
 
     /**
@@ -34,23 +40,28 @@ public class ConversionHelper {
     @Nullable
     public static Pokemon buildRecalledPokemon(
             int citizenId,
-            AbstractEntityCitizen citizen,
+            @Nullable AbstractEntityCitizen citizen,
             ICitizenSkillHandler skills,
             DynamicCitizenSpeciesData data,
             RegistryAccess registryAccess) {
 
         if (data.contains(citizenId)) {
             // Case A: enrolled
+            var savedPokemon = data.pokemonNbt.get(citizenId);
+            if (savedPokemon == null) return null;
             Pokemon pokemon = new Pokemon();
-            pokemon.loadFromNBT(registryAccess, data.pokemonNbt.get(citizenId));
+            pokemon.loadFromNBT(registryAccess, savedPokemon);
             applySkillProgression(pokemon, skills);
             return pokemon;
         } else {
             // Case B: non-enrolled
             String species = resolveSpecies(citizenId, citizen);
             if (species == null) return null;
-            String name = citizen.getName().getString();
-            boolean isFemale = citizen.isFemale();
+            // citizen is @Nullable: the GUI recall path runs with the entity unloaded, and
+            // resolveSpecies can still answer from the hardcoded map. Fall back to no nickname
+            // rather than dereferencing it.
+            String name = citizen == null ? null : citizen.getName().getString();
+            boolean isFemale = citizen != null && citizen.isFemale();
             return buildFreshPokemon(species, skills, name, isFemale);
         }
     }
@@ -79,7 +90,7 @@ public class ConversionHelper {
             Pokemon pokemon, Stat stat,
             ICitizenSkillHandler skills, Skill skill, int baseStat) {
 
-        int origLevel = Math.max(1, baseStat * 10 / 255); // level assigned at enrollment
+        int origLevel = Math.max(1, (int) (baseStat / 255.0 * pokemon.getLevel()));
         int currLevel = skills.getLevel(skill);
         int delta = Math.max(0, currLevel - origLevel);
         if (delta == 0) return;
@@ -105,7 +116,9 @@ public class ConversionHelper {
 
         Pokemon pokemon = new Pokemon();
         pokemon.setSpecies(speciesObj);
-        pokemon.setNickname(net.minecraft.network.chat.Component.literal(nickname));
+        if (nickname != null && !nickname.isBlank()) {
+            pokemon.setNickname(net.minecraft.network.chat.Component.literal(nickname));
+        }
         pokemon.setGender(isFemale ? com.cobblemon.mod.common.pokemon.Gender.FEMALE : com.cobblemon.mod.common.pokemon.Gender.MALE);
 
         // Level mirrors the average skill level (citizen skills range 0–100)
@@ -138,10 +151,12 @@ public class ConversionHelper {
      * Priority: entity tag ({@code tensura:species:*}) → hardcoded map in ColonyStartupEvents.
      */
     @Nullable
-    public static String resolveSpecies(int citizenId, AbstractEntityCitizen citizen) {
-        for (String tag : citizen.getTags()) {
-            if (tag.startsWith(SPECIES_TAG_PREFIX)) {
-                return tag.substring(SPECIES_TAG_PREFIX.length());
+    public static String resolveSpecies(int citizenId, @Nullable AbstractEntityCitizen citizen) {
+        if (citizen != null) {
+            for (String tag : citizen.getTags()) {
+                if (tag.startsWith(SPECIES_TAG_PREFIX)) {
+                    return tag.substring(SPECIES_TAG_PREFIX.length());
+                }
             }
         }
         return ColonyStartupEvents.getHardcodedSpeciesMap().get(citizenId);

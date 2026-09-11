@@ -1,0 +1,36 @@
+{
+  "pokemon_type": "bug",
+  "category": "status",
+  "power": 0.0,
+  "school": "nature",
+  "cooldown_ticks": 100,
+  "targeting": {
+    "type": "aim",
+    "range": 14.0,
+    "width": 0.7,
+    "max_targets": 1
+  },
+  "delivery": {
+    "type": "projectile",
+    "speed": 1.25
+  },
+  "impact": [
+    {
+      "type": "status_effect",
+      "effect": "minecraft:slowness",
+      "duration": 40,
+      "amplifier": 5,
+      "chance": 1.0
+    }
+  ],
+  "visual": {
+    "cast_animation": "string_shot_cast",
+    "projectile": "string_shot",
+    "trail": "silk_trail",
+    "impact": "web_bind"
+  },
+  "sound": {
+    "cast": "minecraft:entity.spider.ambient",
+    "impact": "minecraft:block.cobweb.place"
+  }
+}

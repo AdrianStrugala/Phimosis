@@ -1,0 +1,15 @@
+{
+  "pokemon_type": "electric",
+  "category": "physical",
+  "power": 9.0,
+  "school": "lightning",
+  "cooldown_ticks": 120,
+  "targeting": { "type": "aim", "range": 7.0, "max_targets": 1 },
+  "delivery": { "type": "dash", "distance": 7.0, "duration_ticks": 5, "steerable": true },
+  "impact": [
+    { "type": "damage" },
+    { "type": "chain_damage", "effect": "tensura:wet", "amount": 6.0, "damage_multiplier": 0.75 }
+  ],
+  "visual": { "cast_animation": "spark_dash_cast", "trail": "spark_dash_wake", "impact": "spark_chain_burst" },
+  "sound": { "cast": "minecraft:entity.lightning_bolt.thunder", "impact": "minecraft:entity.lightning_bolt.impact" }
+}

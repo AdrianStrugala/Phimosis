@@ -1,0 +1,19 @@
+{
+  "pokemon_type": "normal",
+  "category": "status",
+  "power": 0.0,
+  "school": "psychic",
+  "cooldown_ticks": 100,
+  "targeting": { "type": "self", "range": 0.0, "radius": 2.5, "width": 6.0 },
+  "delivery": { "type": "barrier_wall", "duration_ticks": 200 },
+  "impact": [],
+  "visual": {
+    "cast_animation": "protect_cast",
+    "trail": "protect_wall",
+    "impact": "protect_block"
+  },
+  "sound": {
+    "cast": "minecraft:block.beacon.activate",
+    "impact": "minecraft:block.amethyst_block.hit"
+  }
+}

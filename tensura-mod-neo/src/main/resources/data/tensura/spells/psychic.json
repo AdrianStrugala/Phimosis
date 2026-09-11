@@ -1,11 +1,22 @@
 {
+  "pokemon_type": "psychic",
+  "category": "special",
+  "power": 13.0,
   "school": "psychic",
   "cooldown_ticks": 160,
-  "targeting": { "type": "aim", "range": 20 },
-  "delivery": { "type": "instant", "speed": 1.0 },
+  "cast_time_ticks": 0,
+  "targeting": { "type": "aim", "range": 20.0, "width": 1.0, "max_targets": 1 },
+  "delivery": { "type": "instant" },
   "impact": [
-    { "type": "damage", "damage_multiplier": 2.5 },
-    { "type": "knockback", "strength": 3.0 },
-    { "type": "status_effect", "effect": "minecraft:weakness", "duration": 80, "amplifier": 0, "chance": 0.4 }
-  ]
+    { "type": "damage", "damage_multiplier": 1.0 }
+  ],
+  "visual": {
+    "cast_animation": "psychic_lift_cast",
+    "impact": "psychic_crush",
+    "aftermath": "psychic_ripples"
+  },
+  "sound": {
+    "cast": "minecraft:entity.evoker.cast_spell",
+    "impact": "minecraft:block.amethyst_block.resonate"
+  }
 }

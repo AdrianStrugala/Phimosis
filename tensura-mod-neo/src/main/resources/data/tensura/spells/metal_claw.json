@@ -1,0 +1,15 @@
+{
+  "pokemon_type": "steel",
+  "category": "physical",
+  "power": 10.0,
+  "school": "steel",
+  "cooldown_ticks": 140,
+  "targeting": { "type": "aim", "range": 3.5, "max_targets": 1 },
+  "delivery": { "type": "melee_combo", "combo_hits": 2, "combo_interval_ticks": 5 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 0.5 },
+    { "type": "guard", "recipient": "caster", "amount": 4.0, "duration": 80, "final_hit_only": true }
+  ],
+  "visual": { "cast_animation": "metal_claw_cross", "impact": "metal_claw_sparks", "aftermath": "metal_claw_guard" },
+  "sound": { "cast": "minecraft:entity.player.attack.sweep", "impact": "minecraft:block.chain.hit" }
+}

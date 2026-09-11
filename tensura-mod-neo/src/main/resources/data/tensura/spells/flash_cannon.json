@@ -1,10 +1,16 @@
 {
+  "pokemon_type": "steel",
+  "category": "special",
+  "power": 17.0,
   "school": "steel",
-  "cooldown_ticks": 160,
-  "targeting": { "type": "aim", "range": 20 },
-  "delivery": { "type": "beam", "speed": 2.0 },
+  "cooldown_ticks": 240,
+  "cast_time_ticks": 16,
+  "targeting": { "type": "beam", "range": 24.0, "width": 1.2, "max_targets": 8 },
+  "delivery": { "type": "beam" },
   "impact": [
-    { "type": "damage", "damage_multiplier": 2.5 },
-    { "type": "status_effect", "effect": "minecraft:weakness", "duration": 100, "amplifier": 1, "chance": 0.5 }
-  ]
+    { "type": "damage" },
+    { "type": "expose", "duration": 80 }
+  ],
+  "visual": { "cast_animation": "flash_cannon_charge", "telegraph": "flash_cannon_focus", "trail": "flash_cannon_beam", "impact": "flash_cannon_prism" },
+  "sound": { "cast": "minecraft:block.beacon.activate", "travel": "minecraft:block.beacon.ambient", "impact": "minecraft:entity.firework_rocket.blast" }
 }

@@ -1,0 +1,13 @@
+{
+  "entries": [
+    {
+      "enum": "net/minecraft/client/model/HumanoidModel$ArmPose",
+      "name": "TENSURA_BEAM_CAST",
+      "constructor": "(ZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
+      "parameters": {
+        "class": "com/tensura/client/BeamCastPose",
+        "field": "ENUM_PROXY"
+      }
+    }
+  ]
+}

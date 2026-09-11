@@ -1,9 +1,24 @@
 {
+  "pokemon_type": "rock",
+  "category": "physical",
+  "power": 17.0,
   "school": "earth",
   "cooldown_ticks": 200,
-  "targeting": { "type": "aim", "range": 16 },
-  "delivery": { "type": "instant", "speed": 1.0 },
+  "cast_time_ticks": 8,
+  "targeting": { "type": "wave", "range": 16.0, "radius": 1.0, "width": 1.25, "max_targets": 6 },
+  "delivery": { "type": "wave", "duration_ticks": 20, "movement_speed": 0.8 },
   "impact": [
-    { "type": "damage", "damage_multiplier": 4.0 }
-  ]
+    { "type": "damage", "damage_multiplier": 1.0, "armor_penetration": 4.0 }
+  ],
+  "visual": {
+    "cast_animation": "stone_edge_raise",
+    "telegraph": "stone_edge_marks",
+    "trail": "stone_edge_spires",
+    "impact": "stone_edge_eruption"
+  },
+  "sound": {
+    "cast": "minecraft:block.piston.extend",
+    "travel": "minecraft:block.pointed_dripstone.land",
+    "impact": "minecraft:block.stone.break"
+  }
 }

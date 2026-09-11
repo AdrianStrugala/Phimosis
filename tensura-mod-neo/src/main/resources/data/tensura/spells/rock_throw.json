@@ -1,9 +1,23 @@
 {
+  "pokemon_type": "rock",
+  "category": "physical",
+  "power": 8.0,
   "school": "earth",
   "cooldown_ticks": 80,
-  "targeting": { "type": "aim", "range": 16 },
-  "delivery": { "type": "projectile", "speed": 1.4 },
+  "targeting": { "type": "aim", "range": 18.0, "radius": 1.75, "width": 1.0, "max_targets": 3 },
+  "delivery": { "type": "projectile", "speed": 1.35 },
   "impact": [
-    { "type": "damage", "damage_multiplier": 1.2 }
-  ]
+    { "type": "damage", "damage_multiplier": 1.0 },
+    { "type": "knockback", "strength": 1.4 }
+  ],
+  "visual": {
+    "cast_animation": "rock_throw_heave",
+    "projectile": "spinning_boulder",
+    "trail": "rock_grit",
+    "impact": "rock_throw_shatter"
+  },
+  "sound": {
+    "cast": "minecraft:entity.snowball.throw",
+    "impact": "minecraft:block.stone.break"
+  }
 }

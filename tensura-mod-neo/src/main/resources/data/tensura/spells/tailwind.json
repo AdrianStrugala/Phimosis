@@ -1,0 +1,24 @@
+{
+  "pokemon_type": "flying",
+  "category": "status",
+  "power": 0.0,
+  "school": "wind",
+  "cooldown_ticks": 360,
+  "targeting": { "type": "self", "range": 0.0, "radius": 7.0, "max_targets": 12 },
+  "delivery": { "type": "protective_aura", "duration_ticks": 160, "tick_interval_ticks": 20 },
+  "impact": [
+    { "type": "status_effect", "effect": "minecraft:speed", "duration": 40, "amplifier": 0 }
+  ],
+  "visual": {
+    "cast_animation": "tailwind_cast",
+    "telegraph": "tailwind_team_ring",
+    "trail": "tailwind_ribbons",
+    "impact": "tailwind_swirl",
+    "aftermath": "tailwind_aura"
+  },
+  "sound": {
+    "cast": "minecraft:entity.breeze.jump",
+    "loop": "minecraft:item.elytra.flying",
+    "impact": "minecraft:entity.breeze.idle_air"
+  }
+}

@@ -1,10 +1,18 @@
 {
+  "pokemon_type": "fire",
+  "category": "special",
+  "power": 9.3333333333,
   "school": "fire",
-  "cooldown_ticks": 300,
-  "targeting": { "type": "area", "range": 10 },
-  "delivery": { "type": "instant", "speed": 1.0 },
+  "cooldown_ticks": 440,
+  "targeting": { "type": "cone", "range": 8.0, "max_targets": 8 },
+  "delivery": { "type": "channel_cone", "duration_ticks": 12, "tick_interval_ticks": 4, "cone_angle": 110.0, "recovery_ticks": 120 },
   "impact": [
-    { "type": "damage", "damage_multiplier": 6.0 },
-    { "type": "fire", "seconds": 8 }
-  ]
+    { "type": "damage" },
+    { "type": "fire", "seconds": 6 },
+    { "type": "knockback", "strength": 0.9 },
+    { "type": "status_effect", "recipient": "caster", "effect": "minecraft:slowness", "duration": 8, "amplifier": 4, "show_particles": false },
+    { "type": "status_effect", "recipient": "caster", "effect": "tensura:exhausted", "duration": 120, "final_hit_only": true }
+  ],
+  "visual": { "cast_animation": "overheat_release", "trail": "overheat_front", "impact": "overheat_burst", "aftermath": "overheat_smoke" },
+  "sound": { "cast": "minecraft:entity.blaze.shoot", "impact": "minecraft:entity.generic.explode" }
 }

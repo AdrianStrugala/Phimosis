@@ -1,10 +1,25 @@
 {
+  "pokemon_type": "fighting",
+  "category": "physical",
+  "power": 7.0,
   "school": "physical",
   "cooldown_ticks": 50,
-  "targeting": { "type": "aim", "range": 8 },
-  "delivery": { "type": "instant", "speed": 1.0 },
+  "charges": 2,
+  "charge_recovery_ticks": 70,
+  "targeting": { "type": "aim", "range": 7.0, "width": 1.0, "max_targets": 1 },
+  "delivery": { "type": "dash", "distance": 7.0, "duration_ticks": 3, "steerable": true },
   "impact": [
     { "type": "damage", "damage_multiplier": 1.0 },
-    { "type": "knockback", "strength": 1.5 }
-  ]
+    { "type": "knockback", "strength": 1.2 }
+  ],
+  "visual": {
+    "cast_animation": "mach_punch_flash_step",
+    "trail": "mach_speed_lines",
+    "impact": "mach_punch_ring",
+    "aftermath": "mach_afterimage"
+  },
+  "sound": {
+    "cast": "minecraft:entity.player.attack.strong",
+    "impact": "minecraft:entity.player.attack.knockback"
+  }
 }

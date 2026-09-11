@@ -1,9 +1,25 @@
 {
+  "pokemon_type": "grass",
+  "category": "special",
+  "power": 22.0,
   "school": "nature",
-  "cooldown_ticks": 260,
-  "targeting": { "type": "aim", "range": 30 },
-  "delivery": { "type": "projectile", "speed": 2.5 },
+  "cooldown_ticks": 280,
+  "cast_time_ticks": 36,
+  "targeting": { "type": "beam", "range": 30.0, "width": 1.4, "max_targets": 8 },
+  "delivery": { "type": "beam" },
   "impact": [
-    { "type": "damage", "damage_multiplier": 4.0 }
-  ]
+    { "type": "damage", "damage_multiplier": 1.0 }
+  ],
+  "visual": {
+    "cast_animation": "solar_beam_charge",
+    "telegraph": "solar_focus_ring",
+    "projectile": "solar_beam_column",
+    "trail": "sunlit_stream",
+    "impact": "solar_flare_burst"
+  },
+  "sound": {
+    "cast": "minecraft:block.beacon.activate",
+    "travel": "minecraft:block.beacon.ambient",
+    "impact": "minecraft:entity.generic.explode"
+  }
 }

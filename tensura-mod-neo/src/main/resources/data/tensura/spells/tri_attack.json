@@ -1,0 +1,40 @@
+{
+  "pokemon_type": "normal",
+  "category": "special",
+  "power": 15.0,
+  "school": "physical",
+  "cooldown_ticks": 240,
+  "targeting": {
+    "type": "aim",
+    "range": 18.0,
+    "width": 1.2,
+    "max_targets": 1
+  },
+  "delivery": {
+    "type": "projectile",
+    "speed": 1.8,
+    "projectile_count": 3,
+    "spread_degrees": 3.0
+  },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 0.3333333333 },
+    {
+      "type": "tri_status",
+      "duration": 80,
+      "amplifier": 1,
+      "seconds": 4,
+      "show_particles": true,
+      "show_icon": true
+    }
+  ],
+  "visual": {
+    "cast_animation": "triple_cast",
+    "projectile": "tri_shapes",
+    "trail": "tri_colors",
+    "impact": "tri_burst"
+  },
+  "sound": {
+    "cast": "minecraft:block.beacon.activate",
+    "impact": "minecraft:entity.firework_rocket.blast"
+  }
+}

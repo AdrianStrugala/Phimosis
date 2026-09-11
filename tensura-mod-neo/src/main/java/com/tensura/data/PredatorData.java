@@ -1,5 +1,6 @@
 package com.tensura.data;
 
+import com.tensura.engine.SpellIdAliases;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -8,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -22,14 +24,17 @@ public class PredatorData {
     private static final String KEY = "tensura:absorbed";
 
     public static boolean hasAbsorbed(Player player, ResourceLocation spellId) {
+        String canonicalId = SpellIdAliases.canonicalize(spellId).toString();
         ListTag list = getList(player);
-        for (int i = 0; i < list.size(); i++) {
-            if (list.getString(i).equals(spellId.toString())) return true;
+        for (int index = 0; index < list.size(); index++) {
+            if (list.getString(index).equals(canonicalId)) return true;
         }
         return false;
     }
 
     public static void markAbsorbed(Player player, ResourceLocation spellId) {
+        spellId = SpellIdAliases.canonicalize(spellId);
+        if (hasAbsorbed(player, spellId)) return;
         ListTag list = getList(player);
         list.add(StringTag.valueOf(spellId.toString()));
         persisted(player).put(KEY, list);
@@ -38,8 +43,8 @@ public class PredatorData {
     public static List<ResourceLocation> getAbsorbed(Player player) {
         ListTag list = getList(player);
         List<ResourceLocation> result = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            ResourceLocation id = ResourceLocation.tryParse(list.getString(i));
+        for (int index = 0; index < list.size(); index++) {
+            ResourceLocation id = ResourceLocation.tryParse(list.getString(index));
             if (id != null) result.add(id);
         }
         return result;
@@ -57,7 +62,7 @@ public class PredatorData {
     private static ListTag getList(Player player) {
         CompoundTag persisted = persisted(player);
         if (persisted.contains(KEY, Tag.TAG_LIST)) {
-            return persisted.getList(KEY, Tag.TAG_STRING);
+            return canonicalizeList(persisted, persisted.getList(KEY, Tag.TAG_STRING));
         }
         // Legacy layout: the list used to sit at the root of the persistent data. Move it over so
         // players who absorbed spells before this fix keep them.
@@ -66,8 +71,26 @@ public class PredatorData {
         if (!legacy.isEmpty()) {
             persisted.put(KEY, legacy.copy());
             root.remove(KEY);
-            return persisted.getList(KEY, Tag.TAG_STRING);
+            return canonicalizeList(persisted, persisted.getList(KEY, Tag.TAG_STRING));
         }
         return new ListTag();
+    }
+
+    private static ListTag canonicalizeList(CompoundTag persisted, ListTag source) {
+        LinkedHashSet<String> canonicalIds = new LinkedHashSet<>();
+        boolean changed = false;
+        for (int index = 0; index < source.size(); index++) {
+            String stored = source.getString(index);
+            ResourceLocation parsed = ResourceLocation.tryParse(stored);
+            String canonical = parsed == null
+                    ? stored : SpellIdAliases.canonicalize(parsed).toString();
+            canonicalIds.add(canonical);
+            changed |= !canonical.equals(stored);
+        }
+        if (!changed && canonicalIds.size() == source.size()) return source;
+        ListTag migrated = new ListTag();
+        canonicalIds.forEach(id -> migrated.add(StringTag.valueOf(id)));
+        persisted.put(KEY, migrated);
+        return migrated;
     }
 }

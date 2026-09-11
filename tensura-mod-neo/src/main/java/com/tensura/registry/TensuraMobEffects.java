@@ -20,4 +20,40 @@ public class TensuraMobEffects {
     public static final DeferredHolder<MobEffect, MobEffect> SCHOLAR_AURA =
             MOB_EFFECTS.register("scholar_aura",
                     () -> new MobEffect(MobEffectCategory.BENEFICIAL, 0xFFD700) {});
+
+    public static final DeferredHolder<MobEffect, MobEffect> ASLEEP =
+            MOB_EFFECTS.register("asleep",
+                    () -> new MobEffect(MobEffectCategory.HARMFUL, 0x6D83C5) {});
+
+    public static final DeferredHolder<MobEffect, MobEffect> WET =
+            MOB_EFFECTS.register("wet",
+                    () -> new MobEffect(MobEffectCategory.NEUTRAL, 0x3D9BE9) {});
+
+    public static final DeferredHolder<MobEffect, MobEffect> FROZEN =
+            MOB_EFFECTS.register("frozen",
+                    () -> new MobEffect(MobEffectCategory.HARMFUL, 0xA8E9FF) {});
+
+    public static final DeferredHolder<MobEffect, MobEffect> PARALYZED =
+            MOB_EFFECTS.register("paralyzed",
+                    () -> new MobEffect(MobEffectCategory.HARMFUL, 0xF6D743) {});
+
+    public static final DeferredHolder<MobEffect, MobEffect> EXHAUSTED =
+            MOB_EFFECTS.register("exhausted",
+                    () -> new MobEffect(MobEffectCategory.HARMFUL, 0x744A88) {});
+
+    public static final DeferredHolder<MobEffect, MobEffect> EXPOSED =
+            MOB_EFFECTS.register("exposed",
+                    () -> new MobEffect(MobEffectCategory.HARMFUL, 0xD96C5F) {});
+
+    public static final DeferredHolder<MobEffect, MobEffect> TOXIC =
+            MOB_EFFECTS.register("toxic",
+                    () -> new MobEffect(MobEffectCategory.HARMFUL, 0x8E3AAE) {});
+
+    public static final DeferredHolder<MobEffect, MobEffect> GROUNDED =
+            MOB_EFFECTS.register("grounded",
+                    () -> new MobEffect(MobEffectCategory.HARMFUL, 0x8C7557) {});
+
+    public static final DeferredHolder<MobEffect, MobEffect> SPECIAL_WEAKENED =
+            MOB_EFFECTS.register("special_weakened",
+                    () -> new MobEffect(MobEffectCategory.HARMFUL, 0x5A465E) {});
 }

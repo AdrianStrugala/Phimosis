@@ -1,9 +1,24 @@
 {
+  "pokemon_type": "dragon",
+  "category": "special",
+  "power": 15.0,
   "school": "dragon",
   "cooldown_ticks": 180,
-  "targeting": { "type": "aim", "range": 22 },
-  "delivery": { "type": "projectile", "speed": 1.6 },
+  "targeting": { "type": "aim", "range": 24.0, "radius": 2.0, "width": 1.1, "max_targets": 4 },
+  "delivery": { "type": "projectile", "speed": 1.7, "homing_strength": 0.1 },
   "impact": [
-    { "type": "damage", "damage_multiplier": 3.5 }
-  ]
+    { "type": "damage", "damage_multiplier": 1.0 },
+    { "type": "knockback", "strength": 1.2 }
+  ],
+  "visual": {
+    "cast_animation": "dragon_pulse_coil",
+    "projectile": "dragon_pulse_head",
+    "trail": "dragon_scale_wake",
+    "impact": "dragon_pulse_roar"
+  },
+  "sound": {
+    "cast": "minecraft:entity.ender_dragon.growl",
+    "travel": "minecraft:entity.ender_dragon.flap",
+    "impact": "minecraft:entity.dragon_fireball.explode"
+  }
 }

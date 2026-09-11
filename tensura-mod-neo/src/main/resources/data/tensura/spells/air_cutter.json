@@ -1,0 +1,23 @@
+{
+  "pokemon_type": "flying",
+  "category": "special",
+  "power": 3.4,
+  "school": "wind",
+  "cooldown_ticks": 120,
+  "targeting": { "type": "aim", "range": 20.0, "width": 1.4, "max_targets": 1 },
+  "delivery": { "type": "projectile", "speed": 2.4, "projectile_count": 3, "spread_degrees": 14.0 },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 1.0 }
+  ],
+  "visual": {
+    "cast_animation": "air_cutter_cast",
+    "projectile": "air_cutter_blade",
+    "trail": "wind_edge_trail",
+    "impact": "air_cutter_slice"
+  },
+  "sound": {
+    "cast": "minecraft:entity.player.attack.sweep",
+    "travel": "minecraft:entity.breeze.inhale",
+    "impact": "minecraft:entity.player.attack.crit"
+  }
+}

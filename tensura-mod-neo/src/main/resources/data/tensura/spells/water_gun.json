@@ -1,10 +1,24 @@
 {
+  "pokemon_type": "water",
+  "category": "special",
+  "power": 6.0,
   "school": "water",
   "cooldown_ticks": 60,
-  "targeting": { "type": "aim", "range": 14 },
-  "delivery": { "type": "beam", "speed": 1.0 },
+  "targeting": { "type": "beam", "range": 15.0, "width": 0.7, "max_targets": 2 },
+  "delivery": { "type": "beam" },
   "impact": [
     { "type": "damage", "damage_multiplier": 1.0 },
-    { "type": "knockback", "strength": 1.0 }
-  ]
+    { "type": "wet", "duration": 100 },
+    { "type": "knockback", "strength": 0.8 }
+  ],
+  "visual": {
+    "cast_animation": "water_gun_brace",
+    "projectile": "water_jet",
+    "trail": "water_mist",
+    "impact": "water_gun_splash"
+  },
+  "sound": {
+    "cast": "minecraft:entity.player.splash.high_speed",
+    "impact": "minecraft:entity.player.splash"
+  }
 }

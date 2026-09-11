@@ -1,9 +1,22 @@
 {
+  "pokemon_type": "normal",
+  "category": "special",
+  "power": 32.0,
   "school": "physical",
-  "cooldown_ticks": 400,
-  "targeting": { "type": "aim", "range": 30 },
-  "delivery": { "type": "beam", "speed": 3.0 },
+  "cooldown_ticks": 500,
+  "cast_time_ticks": 28,
+  "targeting": { "type": "beam", "range": 30.0, "width": 2.0, "radius": 2.5, "max_targets": 8 },
+  "delivery": {
+    "type": "channel_beam",
+    "duration_ticks": 1,
+    "tick_interval_ticks": 1,
+    "recovery_ticks": 80,
+    "aftershock_count": 3,
+    "aftershock_damage_multiplier": 0.25
+  },
   "impact": [
-    { "type": "damage", "damage_multiplier": 7.0 }
-  ]
+    { "type": "damage" }
+  ],
+  "visual": { "cast_animation": "hyper_beam_charge", "telegraph": "hyper_beam_focus", "trail": "hyper_beam_core", "impact": "hyper_beam_blast" },
+  "sound": { "cast": "minecraft:block.beacon.activate", "travel": "minecraft:entity.warden.sonic_boom", "impact": "minecraft:entity.generic.explode" }
 }

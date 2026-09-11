@@ -1,0 +1,32 @@
+{
+  "pokemon_type": "normal",
+  "category": "status",
+  "power": 0.0,
+  "school": "nature",
+  "cooldown_ticks": 300,
+  "cast_time_ticks": 20,
+  "targeting": {
+    "type": "self",
+    "range": 0.0
+  },
+  "delivery": {
+    "type": "self",
+    "speed": 0.0
+  },
+  "impact": [
+    {
+      "type": "heal_fraction",
+      "recipient": "target",
+      "amount": 0.5
+    }
+  ],
+  "visual": {
+    "cast_animation": "recover_focus",
+    "impact": "recover_bloom",
+    "aftermath": "recover_afterglow"
+  },
+  "sound": {
+    "cast": "minecraft:block.amethyst_block.chime",
+    "impact": "minecraft:entity.player.levelup"
+  }
+}

@@ -11,6 +11,11 @@ This repository contains two distinct Minecraft projects:
 
 Most active development happens in `tensura-mod-neo/`.
 
+Design documents live in `docs/`, grouped by role: `contracts/` (invariants enforced by
+validators), `specs/` (designs awaiting implementation), `operations/` (server-side plans),
+`trackers/` (experiment logs). `AGENTS.md` holds the authoritative register of what each
+document is and is not a source of truth for.
+
 ## Build Commands (Tensura Mod)
 
 All commands run from `tensura-mod-neo/`:
@@ -42,7 +47,7 @@ After `./gradlew build`, the JAR is in `tensura-mod-neo/build/libs/`. Copy it to
 - `TensuraItemRegistry`, `TensuraBlockRegistry`, `TensuraEntityRegistry`
 - `TensuraMenuRegistry`, `TensuraAttributes`, `TensuraMobEffects`
 
-**Spell/Predator system** (core mechanic): Players absorb abilities from Pokemon on kill via `PredatorEvents.java`. Spells are defined as data in `SpellDefinition`, loaded by `SpellLoader`, executed by `SpellExecutor`, and centrally managed by `SpellRegistry`.
+**Spell/Predator system** (core mechanic): Players absorb abilities from Pokemon on kill via `PredatorEvents.java`. Spells are defined as data in `SpellDefinition`, loaded by `SpellLoader`, executed by `SpellExecutor`, and centrally managed by `SpellRegistry`. `SpellCastController` owns pending casts and beam/cone channels; `SpellRuntimeController` owns persistent world effects and delivery state.
 
 **Event-driven logic**: All game behavior is in `events/` package — handlers registered to NeoForge's event bus. Key files: `PredatorEvents`, `CombatCompanionEvents`, `ColonyGamemodeEvents`.
 
@@ -54,6 +59,11 @@ After `./gradlew build`, the JAR is in `tensura-mod-neo/build/libs/`. Copy it to
 - **Cobblemon** (`/libs/cobblemon.jar`) — Pokemon are the source of absorbed skills
 - **MineColonies** (`/libs/minecolonies.jar`) — Colony/citizen mechanics and species system
 - **Kotlin for NeoForge** (`/libs/kotlinforforge.jar`) — Kotlin runtime support
+- **BlockUI** (`/libs/blockui.jar`) — MineColonies' GUI toolkit; required by the town hall workforce screen
+
+`libs/` is gitignored, so a fresh clone has none of these and `compileJava` fails with hundreds of
+"package does not exist" errors. Populate it by copying the matching mod jars out of a server's
+`mods/` folder under the short names above (e.g. `blockui-1.0.209-1.21.1.jar` → `libs/blockui.jar`).
 
 **Data persistence**: `PredatorData.java` handles per-player skill/predator state. `DynamicCitizenSpeciesData.java` tracks citizen species for MineColonies.
 

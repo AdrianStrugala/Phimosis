@@ -1,0 +1,16 @@
+{
+  "pokemon_type": "fighting",
+  "category": "physical",
+  "power": 11.0,
+  "school": "physical",
+  "cooldown_ticks": 140,
+  "targeting": { "type": "cone", "range": 4.0, "max_targets": 4 },
+  "delivery": { "type": "arc_strike", "cone_angle": 75.0 },
+  "impact": [
+    { "type": "damage" },
+    { "type": "knockback", "strength": 1.5 },
+    { "type": "status_effect", "effect": "tensura:paralyzed", "duration": 50, "max_distance": 2.5 }
+  ],
+  "visual": { "cast_animation": "force_palm_thrust", "trail": "force_palm_disc", "impact": "force_palm_burst" },
+  "sound": { "cast": "minecraft:entity.player.attack.sweep", "impact": "minecraft:entity.warden.sonic_boom" }
+}

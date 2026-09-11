@@ -1,10 +1,28 @@
 {
+  "pokemon_type": "poison",
+  "category": "physical",
+  "power": 6.0,
   "school": "poison",
   "cooldown_ticks": 60,
-  "targeting": { "type": "aim", "range": 14 },
-  "delivery": { "type": "projectile", "speed": 1.8 },
+  "targeting": { "type": "aim", "range": 16.0, "width": 0.7, "max_targets": 1 },
+  "delivery": {
+    "type": "projectile",
+    "speed": 2.2,
+    "projectile_count": 3,
+    "spread_degrees": 4.0
+  },
   "impact": [
-    { "type": "damage", "damage_multiplier": 0.8 },
-    { "type": "status_effect", "effect": "minecraft:poison", "duration": 120, "amplifier": 0, "chance": 0.6 }
-  ]
+    { "type": "damage", "damage_multiplier": 0.34 },
+    { "type": "status_effect", "effect": "minecraft:poison", "duration": 120, "chance": 0.45, "final_hit_only": true }
+  ],
+  "visual": {
+    "cast_animation": "poison_sting_volley",
+    "projectile": "poison_needles",
+    "trail": "venom_threads",
+    "impact": "poison_prick"
+  },
+  "sound": {
+    "cast": "minecraft:entity.arrow.shoot",
+    "impact": "minecraft:entity.spider.hurt"
+  }
 }

@@ -1,0 +1,15 @@
+{
+  "pokemon_type": "fighting",
+  "category": "physical",
+  "power": 14.0,
+  "school": "physical",
+  "cooldown_ticks": 200,
+  "targeting": { "type": "cone", "range": 3.2, "max_targets": 1 },
+  "delivery": { "type": "arc_strike", "cone_angle": 65.0 },
+  "impact": [
+    { "type": "damage" },
+    { "type": "heal_damage_fraction", "recipient": "caster", "amount": 0.4 }
+  ],
+  "visual": { "cast_animation": "drain_punch_swing", "trail": "drain_punch_arc", "impact": "drain_punch_siphon" },
+  "sound": { "cast": "minecraft:entity.player.attack.strong", "impact": "minecraft:block.beacon.power_select" }
+}

@@ -1,0 +1,1004 @@
+#!/usr/bin/env ruby
+
+require "json"
+require "zlib"
+
+SIZE = 32
+ROOT = File.expand_path("..", __dir__)
+SPELL_DIR = File.join(ROOT, "src/main/resources/data/tensura/spells")
+OUTPUT_DIR = File.join(ROOT, "src/main/resources/assets/tensura/textures/item/spell")
+
+TARGETS = {
+  "flamethrower" => :flame_breath,
+  "surf" => :surf_wave,
+  "toxic_spikes" => :toxic_spikes,
+  "close_combat" => :combat_burst,
+  "shadow_sneak" => :shadow_sneak,
+  "psybeam" => :psybeam,
+  "volt_tackle" => :volt_dash,
+  "fire_spin" => :fire_spiral,
+  "rock_slide" => :falling_rocks,
+  "recover" => :recover,
+  "dark_pulse" => :dark_pulse,
+  "aerial_ace" => :cross_wing,
+  "air_cutter" => :triple_blade,
+  "aqua_jet" => :drop_arrow,
+  "aurora_veil" => :curtain,
+  "blizzard" => :snowstorm,
+  "bug_buzz" => :buzz,
+  "bulldoze" => :earth_wedge,
+  "charm" => :heart,
+  "dazzling_gleam" => :dazzle,
+  "dig" => :burrow,
+  "draco_meteor" => :meteor,
+  "draining_kiss" => :kiss,
+  "earth_power" => :eruption,
+  "earthquake" => :quake,
+  "electro_ball" => :electric_orb,
+  "ember" => :ember,
+  "fairy_wind" => :fairy_swirl,
+  "future_sight" => :eye,
+  "gust" => :gust,
+  "hurricane" => :hurricane,
+  "hydro_pump" => :water_cannon,
+  "hyper_voice" => :voice,
+  "ice_beam" => :ice_ray,
+  "iron_defense" => :shield,
+  "moonblast" => :moon,
+  "mud_shot" => :mud,
+  "pin_missile" => :needles,
+  "quick_attack" => :speed,
+  "rest" => :rest,
+  "string_shot" => :web,
+  "sucker_punch" => :fist,
+  "swift" => :star,
+  "tailwind" => :feather,
+  "thunder" => :thunder,
+  "tri_attack" => :triad,
+  "u_turn" => :return,
+  "vine_whip" => :vine,
+  "whirlpool" => :whirlpool,
+  "x_scissor" => :scissor,
+  "water_gun" => :water_nozzle,
+  "thunder_shock" => :small_spark,
+  "psychic" => :psychic_eye,
+  "protect" => :protect_wall,
+  "razor_leaf" => :razor_leaves,
+  "leaf_blade" => :leaf_sword,
+  "poison_sting" => :poison_needle,
+  "rock_throw" => :thrown_rock,
+  "ice_shard" => :ice_shards,
+  "fire_blast" => :fire_star,
+  "bubble_beam" => :bubbles,
+  "petal_blizzard" => :petal_storm,
+  "solar_beam" => :sun_beam,
+  "stone_edge" => :stone_spires,
+  "discharge" => :electric_field,
+  "dragon_pulse" => :dragon_orb,
+  "bullet_punch" => :steel_charge,
+  "mach_punch" => :speed_fist,
+  "focus_blast" => :focus_orb,
+  "shadow_ball" => :shadow_orb,
+  "fire_punch" => :fire_fist,
+  "acid_spray" => :acid_spray,
+  "bite" => :bite,
+  "crunch" => :crunch,
+  "dragon_claw" => :dragon_claw,
+  "dragon_tail" => :dragon_tail,
+  "drain_punch" => :drain_fist,
+  "flame_charge" => :flame_dash,
+  "force_palm" => :open_palm,
+  "giga_drain" => :drain_vortex,
+  "ice_punch" => :ice_fist,
+  "icy_wind" => :icy_wind,
+  "iron_head" => :iron_head,
+  "lick" => :tongue,
+  "metal_claw" => :metal_claw,
+  "psycho_cut" => :psycho_cut,
+  "seismic_toss" => :seismic_toss,
+  "shadow_claw" => :shadow_claw,
+  "smack_down" => :smack_down,
+  "snarl" => :snarl,
+  "spark" => :spark_dash,
+  "thunder_punch" => :thunder_fist,
+  "venoshock" => :venoshock,
+  "tackle" => :body_charge,
+  "hyper_beam" => :hyper_beam,
+  "overheat" => :overheat,
+  "leech_seed" => :leech_seed,
+  "powder_snow" => :powder_snow,
+  "toxic" => :toxic_drop,
+  "night_shade" => :night_shade,
+  "hex" => :hex,
+  "dragon_breath" => :dragon_breath,
+  "outrage" => :outrage,
+  "foul_play" => :foul_play,
+  "flash_cannon" => :flash_cannon,
+  "dragon_rush" => :dragon_rush,
+  "phantom_force" => :phantom_force,
+  "rock_tomb" => :rock_tomb,
+  "stealth_rock" => :stealth_rock,
+  "trick_room" => :trick_room
+}.freeze
+
+REDRAW = %w[
+  fire_punch bite crunch dragon_claw drain_punch flame_charge force_palm giga_drain
+  lick psycho_cut seismic_toss shadow_claw smack_down spark thunder_punch venoshock
+  overheat leech_seed toxic night_shade dragon_breath outrage foul_play flash_cannon
+  dragon_rush phantom_force stealth_rock tackle trick_room
+  powder_snow icy_wind snarl ice_punch dragon_tail metal_claw hex acid_spray
+  hyper_beam rock_tomb iron_head draining_kiss dark_pulse sucker_punch
+].freeze
+
+ICON_ORDER = %w[
+  flamethrower surf toxic_spikes close_combat shadow_sneak psybeam volt_tackle
+  fire_spin rock_slide recover dark_pulse aqua_jet aurora_veil blizzard
+  draco_meteor electro_ball ember future_sight hydro_pump ice_beam iron_defense
+  quick_attack rest string_shot sucker_punch thunder tri_attack vine_whip
+  whirlpool pin_missile u_turn x_scissor bug_buzz mud_shot bulldoze dig
+  earth_power earthquake fairy_wind draining_kiss charm dazzling_gleam moonblast
+  gust air_cutter aerial_ace tailwind hurricane swift hyper_voice water_gun
+  thunder_shock psychic protect razor_leaf leaf_blade poison_sting rock_throw
+  ice_shard fire_blast bubble_beam petal_blizzard solar_beam stone_edge discharge
+  dragon_pulse bullet_punch mach_punch focus_blast shadow_ball fire_punch
+  acid_spray bite crunch dragon_claw dragon_tail drain_punch flame_charge force_palm
+  giga_drain ice_punch icy_wind iron_head lick metal_claw psycho_cut seismic_toss
+  shadow_claw smack_down snarl spark thunder_punch venoshock tackle hyper_beam
+  overheat leech_seed powder_snow toxic night_shade hex dragon_breath outrage
+  foul_play flash_cannon dragon_rush phantom_force rock_tomb stealth_rock trick_room
+].freeze
+
+duplicate_symbols = TARGETS.group_by { |_spell, symbol| symbol }
+  .select { |_symbol, entries| entries.size > 1 }
+abort "Shared icon symbols: #{duplicate_symbols}" unless duplicate_symbols.empty?
+abort "Icon targets differ from icon order" unless TARGETS.keys.sort == ICON_ORDER.sort
+
+PALETTES = {
+  "normal" => [[242, 240, 230, 255], [155, 151, 139, 255]],
+  "fire" => [[255, 102, 45, 255], [255, 202, 74, 255]],
+  "water" => [[45, 169, 255, 255], [91, 235, 238, 255]],
+  "electric" => [[255, 224, 52, 255], [255, 255, 188, 255]],
+  "grass" => [[89, 214, 91, 255], [188, 255, 120, 255]],
+  "ice" => [[130, 232, 255, 255], [231, 255, 255, 255]],
+  "fighting" => [[245, 74, 77, 255], [255, 190, 122, 255]],
+  "poison" => [[197, 91, 222, 255], [142, 245, 117, 255]],
+  "ground" => [[211, 148, 76, 255], [255, 214, 126, 255]],
+  "flying" => [[151, 213, 255, 255], [245, 252, 255, 255]],
+  "psychic" => [[245, 94, 184, 255], [112, 232, 255, 255]],
+  "bug" => [[157, 211, 59, 255], [231, 255, 138, 255]],
+  "rock" => [[190, 162, 83, 255], [238, 218, 153, 255]],
+  "ghost" => [[126, 101, 202, 255], [210, 170, 255, 255]],
+  "dragon" => [[116, 91, 255, 255], [255, 91, 98, 255]],
+  "dark" => [[45, 48, 54, 255], [156, 163, 173, 255]],
+  "steel" => [[164, 190, 205, 255], [238, 250, 255, 255]],
+  "fairy" => [[255, 135, 207, 255], [255, 235, 250, 255]]
+}.freeze
+
+class Canvas
+  def initialize(primary, secondary)
+    @pixels = Array.new(SIZE * SIZE) { [0, 0, 0, 0] }
+    @primary = primary
+    @secondary = secondary
+    disc
+  end
+
+  def pixel(x, y, color)
+    return unless x.between?(0, SIZE - 1) && y.between?(0, SIZE - 1)
+    @pixels[y * SIZE + x] = color
+  end
+
+  def dot(x, y, color = @primary, radius = 1)
+    (-radius..radius).each do |dy|
+      (-radius..radius).each do |dx|
+        pixel(x + dx, y + dy, color) if dx * dx + dy * dy <= radius * radius
+      end
+    end
+  end
+
+  def line(x0, y0, x1, y1, color = @primary, width = 1)
+    dx = (x1 - x0).abs
+    sx = x0 < x1 ? 1 : -1
+    dy = -(y1 - y0).abs
+    sy = y0 < y1 ? 1 : -1
+    error = dx + dy
+    loop do
+      dot(x0, y0, color, width - 1)
+      break if x0 == x1 && y0 == y1
+      doubled = 2 * error
+      if doubled >= dy
+        error += dy
+        x0 += sx
+      end
+      if doubled <= dx
+        error += dx
+        y0 += sy
+      end
+    end
+  end
+
+  def arc(cx, cy, radius, from, to, color = @primary, width = 1)
+    steps = [12, ((to - from).abs * radius / 3.0).ceil].max
+    points = (0..steps).map do |index|
+      angle = from + (to - from) * index / steps
+      [cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius]
+    end
+    points.each_cons(2) do |left, right|
+      line(left[0].round, left[1].round, right[0].round, right[1].round, color, width)
+    end
+  end
+
+  def render(symbol, signature = nil)
+    send(symbol)
+    add_signature(signature) if signature
+    @pixels
+  end
+
+  def add_signature(signature)
+    bits = Zlib.crc32(signature)
+    (4..27).each_with_index do |x, index|
+      pixel(x, 28, bits[index].zero? ? @primary : @secondary)
+    end
+  end
+
+  private
+
+  def disc
+    center = (SIZE - 1) / 2.0
+    SIZE.times do |y|
+      SIZE.times do |x|
+        distance = Math.sqrt((x - center)**2 + (y - center)**2)
+        pixel(x, y, [8, 12, 18, 255]) if distance <= 13.2
+        pixel(x, y, @secondary) if distance.between?(11.2, 12.8)
+        pixel(x, y, @primary) if distance.between?(12.8, 13.7)
+      end
+    end
+    dot(7, 8, [255, 255, 255, 170], 0)
+    dot(24, 23, @secondary, 0)
+  end
+
+  def flame_breath
+    line(6, 16, 12, 16, @secondary, 2)
+    line(10, 12, 15, 16, @primary); line(10, 20, 15, 16, @primary)
+    arc(19, 16, 7, -2.35, 2.35, @primary, 2)
+    line(15, 16, 20, 8, @secondary, 2); line(20, 8, 22, 15, @secondary, 2)
+    line(22, 15, 18, 22, @primary, 2)
+  end
+
+  def surf_wave
+    arc(14, 18, 9, 3.45, 6.0, @primary, 2)
+    arc(19, 18, 6, 0.4, 3.15, @secondary, 2)
+    line(7, 23, 25, 23, @primary, 2)
+    line(9, 19, 14, 19, @secondary); line(18, 15, 24, 15, @primary)
+  end
+
+  def toxic_spikes
+    line(7, 23, 11, 10, @primary, 2); line(11, 10, 15, 23, @secondary, 2)
+    line(13, 23, 17, 7, @secondary, 2); line(17, 7, 20, 23, @primary, 2)
+    line(19, 23, 23, 12, @primary, 2); line(23, 12, 26, 23, @secondary, 2)
+    dot(10, 8, @secondary, 1); dot(24, 9, @primary, 1)
+  end
+
+  def combat_burst
+    line(7, 11, 14, 16, @primary, 2); line(7, 21, 14, 16, @primary, 2)
+    line(25, 11, 18, 16, @secondary, 2); line(25, 21, 18, 16, @secondary, 2)
+    line(12, 7, 16, 13, @secondary); line(20, 7, 16, 13, @primary)
+    line(12, 25, 16, 19, @primary); line(20, 25, 16, 19, @secondary)
+    dot(16, 16, [255, 255, 255, 255], 2)
+  end
+
+  def shadow_sneak
+    arc(17, 16, 9, -1.45, 1.45, @secondary, 2)
+    arc(12, 16, 7, -1.25, 1.25, @primary, 2)
+    line(7, 21, 21, 10, @primary, 2); line(18, 9, 23, 9, @secondary, 2)
+    line(23, 9, 22, 14, @secondary, 2)
+  end
+
+  def psybeam
+    arc(13, 16, 6, 3.45, 5.95, @primary, 2)
+    arc(13, 16, 6, 0.35, 2.8, @secondary, 2)
+    dot(13, 16, @primary, 2)
+    line(18, 16, 26, 10, @secondary, 2); line(18, 16, 26, 16, @primary)
+    line(18, 16, 26, 22, @secondary, 2)
+  end
+
+  def volt_dash
+    line(7, 11, 14, 11, @secondary, 2); line(5, 16, 12, 16, @primary, 2)
+    line(8, 21, 14, 21, @secondary, 2)
+    line(19, 7, 12, 17, @primary, 2); line(12, 17, 18, 17, @primary, 2)
+    line(18, 17, 14, 25, @secondary, 2); line(14, 25, 25, 13, @secondary, 2)
+  end
+
+  def fire_spiral
+    arc(16, 16, 9, -0.6, 4.9, @primary, 2)
+    arc(16, 16, 5, 1.0, 6.1, @secondary, 2)
+    line(22, 8, 25, 11, @secondary, 2); line(25, 11, 21, 12, @primary)
+    dot(16, 16, @primary, 1)
+  end
+
+  def falling_rocks
+    line(8, 8, 12, 5, @secondary); line(12, 5, 16, 9, @primary, 2)
+    line(16, 9, 12, 13, @secondary, 2); line(12, 13, 8, 8, @primary)
+    line(17, 14, 21, 11, @primary); line(21, 11, 25, 16, @secondary, 2)
+    line(25, 16, 21, 20, @primary, 2); line(21, 20, 17, 14, @secondary)
+    line(8, 18, 12, 15, @primary); line(12, 15, 16, 21, @secondary, 2)
+    line(16, 21, 12, 25, @primary, 2); line(12, 25, 8, 18, @secondary)
+  end
+
+  def recover
+    line(16, 7, 16, 25, @primary, 2); line(7, 16, 25, 16, @primary, 2)
+    arc(16, 16, 8, -1.15, 0.9, @secondary, 2)
+    arc(16, 16, 8, 2.0, 4.05, @secondary, 2)
+    dot(9, 9, [255, 255, 255, 255], 1); dot(23, 23, @secondary, 1)
+  end
+
+  def dark_pulse
+    line(16, 10, 22, 16, @primary, 2); line(22, 16, 16, 22, @secondary, 2)
+    line(16, 22, 10, 16, @primary, 2); line(10, 16, 16, 10, @secondary, 2)
+    arc(16, 16, 10, -0.75, 0.75, @primary, 2)
+    arc(16, 16, 10, 2.4, 3.9, @secondary, 2)
+    dot(16, 16, [255, 255, 255, 255], 1)
+  end
+
+  def cross_wing
+    line(8, 20, 23, 11, @primary, 2); line(9, 11, 23, 20, @secondary, 2)
+    line(7, 16, 12, 16, @primary); line(20, 16, 25, 16, @secondary)
+  end
+
+  def triple_blade
+    line(8, 11, 23, 8, @secondary, 2); line(7, 16, 24, 13, @primary, 2)
+    line(8, 21, 23, 18, @secondary, 2)
+  end
+
+  def drop_arrow
+    line(16, 7, 10, 17, @secondary, 2); line(10, 17, 16, 24, @primary, 2)
+    line(16, 24, 22, 17, @primary, 2); line(22, 17, 16, 7, @secondary, 2)
+    line(9, 16, 23, 16, @primary); line(20, 13, 23, 16, @primary); line(20, 19, 23, 16, @primary)
+  end
+
+  def curtain
+    arc(16, 12, 7, Math::PI, Math::PI * 2, @secondary, 2)
+    line(9, 12, 9, 22, @primary); line(13, 10, 13, 20, @secondary)
+    line(18, 10, 18, 20, @primary); line(23, 12, 23, 22, @secondary)
+  end
+
+  def snowstorm
+    line(16, 7, 16, 25, @primary); line(8, 11, 24, 21, @secondary)
+    line(8, 21, 24, 11, @primary); arc(16, 16, 6, 0, Math::PI * 2, @secondary)
+  end
+
+  def buzz
+    arc(16, 16, 4, 0, Math::PI * 2, @primary, 2)
+    arc(16, 16, 8, -0.8, 0.8, @secondary, 2); arc(16, 16, 8, 2.3, 3.9, @secondary, 2)
+  end
+
+  def earth_wedge
+    line(7, 22, 25, 22, @secondary, 2); line(9, 20, 22, 9, @primary, 2)
+    line(22, 9, 25, 22, @primary, 2); line(12, 18, 22, 18, @secondary)
+  end
+
+  def heart
+    arc(12, 13, 4, 3.3, 6.2, @primary, 2); arc(20, 13, 4, 3.2, 6.1, @primary, 2)
+    line(8, 14, 16, 24, @primary, 2); line(24, 14, 16, 24, @secondary, 2)
+  end
+
+  def dazzle
+    line(16, 6, 16, 26, @primary, 2); line(6, 16, 26, 16, @primary, 2)
+    line(10, 10, 22, 22, @secondary); line(10, 22, 22, 10, @secondary)
+  end
+
+  def burrow
+    line(16, 7, 16, 21, @primary, 2); line(10, 16, 16, 23, @primary, 2); line(22, 16, 16, 23, @primary, 2)
+    line(8, 25, 24, 25, @secondary, 2)
+  end
+
+  def meteor
+    line(7, 8, 18, 17, @secondary, 2); line(10, 6, 20, 16, @primary)
+    dot(21, 20, @primary, 4); dot(22, 19, @secondary, 2)
+  end
+
+  def kiss
+    line(7, 16, 13, 11, @primary, 2); line(13, 11, 16, 14, @secondary, 2)
+    line(16, 14, 19, 11, @primary, 2); line(19, 11, 25, 16, @secondary, 2)
+    line(25, 16, 19, 22, @primary, 2); line(19, 22, 13, 22, @secondary, 2)
+    line(13, 22, 7, 16, @primary, 2); line(9, 16, 23, 16, @secondary)
+  end
+
+  def eruption
+    line(9, 24, 13, 15, @secondary, 2); line(13, 15, 16, 21, @primary, 2)
+    line(16, 21, 20, 11, @primary, 2); line(20, 11, 24, 24, @secondary, 2)
+    line(16, 8, 16, 13, @primary); line(11, 10, 13, 14, @secondary); line(22, 8, 20, 13, @secondary)
+  end
+
+  def quake
+    line(7, 10, 13, 14, @secondary, 2); line(13, 14, 10, 18, @primary, 2)
+    line(10, 18, 17, 22, @primary, 2); line(17, 22, 21, 16, @secondary, 2); line(21, 16, 25, 20, @primary, 2)
+  end
+
+  def electric_orb
+    arc(16, 16, 8, 0, Math::PI * 2, @secondary, 2)
+    line(17, 7, 12, 16, @primary, 2); line(12, 16, 18, 16, @primary, 2); line(18, 16, 14, 25, @primary, 2)
+  end
+
+  def ember
+    arc(16, 17, 7, -0.2, 3.4, @primary, 2); line(10, 17, 17, 7, @secondary, 2)
+    line(17, 7, 18, 15, @primary, 2); arc(16, 18, 3, 0, Math::PI * 2, @secondary)
+  end
+
+  def fairy_swirl
+    arc(16, 16, 8, -1.2, 3.7, @primary, 2); arc(16, 16, 4, 1.7, 6.1, @secondary, 2)
+    dot(23, 8, @primary, 1); dot(8, 21, @secondary, 1)
+  end
+
+  def eye
+    arc(16, 16, 9, 3.5, 5.9, @primary, 2); arc(16, 16, 9, 0.35, 2.75, @secondary, 2)
+    dot(16, 16, @primary, 3); dot(17, 15, [255, 255, 255, 255], 1)
+  end
+
+  def gust
+    arc(13, 12, 7, -1.2, 1.2, @primary, 2); line(7, 12, 19, 12, @primary)
+    arc(17, 19, 6, -1.1, 1.1, @secondary, 2); line(8, 19, 22, 19, @secondary)
+  end
+
+  def hurricane
+    arc(16, 15, 9, -1.1, 4.8, @primary, 2); arc(16, 16, 5, 1.0, 6.0, @secondary, 2)
+    dot(16, 16, [255, 255, 255, 255], 1)
+  end
+
+  def water_cannon
+    line(7, 18, 23, 12, @primary, 2); line(8, 22, 24, 16, @secondary, 2)
+    dot(24, 14, @primary, 2); line(9, 16, 6, 12, @secondary)
+  end
+
+  def voice
+    arc(10, 16, 5, -0.8, 0.8, @primary, 2); arc(10, 16, 9, -0.7, 0.7, @secondary, 2)
+    arc(10, 16, 13, -0.6, 0.6, @primary, 2); line(6, 13, 6, 19, @secondary, 2)
+  end
+
+  def ice_ray
+    line(7, 22, 24, 9, @primary, 2); line(11, 23, 25, 13, @secondary)
+    line(21, 7, 21, 14, @secondary); line(17, 10, 24, 10, @secondary)
+  end
+
+  def shield
+    line(16, 7, 8, 10, @secondary, 2); line(8, 10, 10, 21, @primary, 2)
+    line(10, 21, 16, 25, @primary, 2); line(16, 25, 22, 21, @secondary, 2); line(22, 21, 24, 10, @secondary, 2); line(24, 10, 16, 7, @primary, 2)
+  end
+
+  def moon
+    arc(17, 16, 9, -1.45, 1.45, @primary, 2); arc(12, 16, 8, -1.25, 1.25, @secondary, 2)
+    dot(23, 9, [255, 255, 255, 255], 1)
+  end
+
+  def mud
+    dot(15, 16, @primary, 6); dot(18, 13, @secondary, 3); dot(9, 23, @primary, 1); dot(23, 22, @secondary, 1)
+  end
+
+  def needles
+    line(8, 22, 14, 8, @primary, 2); line(14, 24, 18, 7, @secondary, 2); line(20, 23, 24, 10, @primary, 2)
+  end
+
+  def speed
+    line(7, 12, 19, 12, @secondary, 2); line(12, 8, 23, 16, @primary, 2)
+    line(23, 16, 12, 24, @primary, 2); line(7, 20, 19, 20, @secondary, 2)
+  end
+
+  def rest
+    line(9, 10, 20, 10, @primary, 2); line(20, 10, 10, 20, @primary, 2); line(10, 20, 21, 20, @secondary, 2)
+    line(19, 7, 24, 7, @secondary); line(24, 7, 20, 12, @secondary)
+  end
+
+  def web
+    line(16, 7, 16, 25, @primary); line(7, 16, 25, 16, @primary)
+    line(9, 9, 23, 23, @secondary); line(9, 23, 23, 9, @secondary)
+    arc(16, 16, 6, 0, Math::PI * 2, @primary); arc(16, 16, 10, 0, Math::PI * 2, @secondary)
+  end
+
+  def fist
+    line(9, 14, 23, 14, @primary, 2); line(10, 14, 11, 23, @secondary, 2)
+    line(11, 23, 20, 23, @primary, 2); line(20, 23, 24, 17, @secondary, 2)
+    line(12, 9, 12, 14, @primary, 2); line(17, 8, 17, 14, @secondary, 2); line(22, 10, 22, 15, @primary, 2)
+  end
+
+  def star
+    line(16, 6, 19, 13, @primary, 2); line(19, 13, 26, 14, @secondary, 2)
+    line(26, 14, 21, 19, @primary, 2); line(21, 19, 23, 26, @secondary, 2)
+    line(23, 26, 16, 22, @primary, 2); line(16, 22, 9, 26, @secondary, 2)
+    line(9, 26, 11, 19, @primary, 2); line(11, 19, 6, 14, @secondary, 2); line(6, 14, 13, 13, @primary, 2); line(13, 13, 16, 6, @secondary, 2)
+  end
+
+  def feather
+    arc(13, 13, 9, -0.8, 1.8, @primary, 2); line(9, 24, 22, 8, @secondary, 2)
+    line(12, 19, 8, 17, @primary); line(16, 15, 22, 14, @primary); line(18, 11, 23, 10, @secondary)
+  end
+
+  def thunder
+    line(19, 6, 10, 16, @secondary, 2); line(10, 16, 17, 16, @primary, 2)
+    line(17, 16, 12, 26, @primary, 2); line(12, 26, 24, 13, @secondary, 2); line(24, 13, 18, 13, @primary, 2)
+  end
+
+  def triad
+    line(16, 7, 7, 23, @primary, 2); line(7, 23, 25, 23, @secondary, 2); line(25, 23, 16, 7, @primary, 2)
+    dot(16, 12, @secondary, 1); dot(11, 20, @primary, 1); dot(21, 20, @secondary, 1)
+  end
+
+  def return
+    arc(16, 16, 8, -0.2, 4.7, @primary, 2); line(16, 8, 21, 8, @secondary, 2)
+    line(16, 8, 18, 13, @secondary, 2)
+  end
+
+  def vine
+    arc(13, 18, 8, -1.5, 1.7, @primary, 2); arc(19, 14, 7, 1.7, 4.8, @secondary, 2)
+    line(9, 19, 6, 15, @primary); line(21, 11, 25, 8, @secondary)
+  end
+
+  def whirlpool
+    arc(16, 16, 9, -0.5, 5.0, @primary, 2); arc(16, 16, 5, 1.0, 6.1, @secondary, 2)
+    dot(16, 16, @primary, 1)
+  end
+
+  def scissor
+    line(8, 8, 24, 24, @primary, 2); line(24, 8, 8, 24, @secondary, 2)
+    dot(10, 10, @secondary, 2); dot(22, 10, @primary, 2)
+  end
+
+  def water_nozzle
+    line(7, 18, 14, 18, @secondary, 2); line(14, 14, 14, 22, @primary, 2)
+    line(14, 16, 25, 11, @primary, 2); line(16, 20, 26, 17, @secondary, 2)
+  end
+
+  def small_spark
+    line(17, 7, 11, 15, @primary, 2); line(11, 15, 17, 15, @secondary, 2)
+    line(17, 15, 13, 24, @primary, 2); line(13, 24, 23, 13, @secondary, 2)
+  end
+
+  def psychic_eye
+    arc(16, 16, 9, 3.4, 5.95, @primary, 2); arc(16, 16, 9, 0.34, 2.88, @secondary, 2)
+    arc(16, 16, 4, 0, Math::PI * 2, @primary, 2); dot(17, 15, [255, 255, 255, 255], 1)
+  end
+
+  def protect_wall
+    line(9, 7, 9, 25, @primary, 2); line(23, 7, 23, 25, @secondary, 2)
+    line(9, 7, 23, 7, @secondary, 2); line(9, 25, 23, 25, @primary, 2)
+    line(12, 10, 12, 22, @secondary); line(16, 9, 16, 23, @primary)
+    line(20, 10, 20, 22, @secondary); dot(16, 16, [255, 255, 255, 255], 2)
+  end
+
+  def razor_leaves
+    line(7, 22, 22, 8, @primary, 2); line(12, 24, 25, 12, @secondary, 2)
+    arc(13, 15, 5, 2.3, 5.4, @secondary); arc(20, 17, 4, -0.9, 2.0, @primary)
+  end
+
+  def leaf_sword
+    line(9, 24, 23, 8, @primary, 2); line(12, 23, 25, 10, @secondary, 2)
+    line(8, 19, 15, 25, @secondary, 2); line(7, 24, 12, 19, @primary)
+  end
+
+  def wisp_flame
+    arc(16, 18, 7, -0.2, 3.5, @primary, 2); line(10, 18, 17, 7, @secondary, 2)
+    line(17, 7, 19, 16, @primary, 2); arc(16, 19, 3, 0, Math::PI * 2, @secondary)
+    dot(23, 10, @primary, 1)
+  end
+
+  def poison_needle
+    line(7, 23, 22, 8, @primary, 2); line(11, 24, 25, 11, @secondary, 2)
+    line(8, 18, 14, 24, @secondary); dot(23, 20, @primary, 2)
+  end
+
+  def thrown_rock
+    line(9, 11, 16, 7, @secondary, 2); line(16, 7, 24, 13, @primary, 2)
+    line(24, 13, 21, 23, @secondary, 2); line(21, 23, 10, 22, @primary, 2)
+    line(10, 22, 9, 11, @secondary, 2); line(13, 11, 20, 20, @primary)
+  end
+
+  def ice_shards
+    line(10, 24, 14, 8, @primary, 2); line(14, 8, 18, 23, @secondary, 2)
+    line(18, 23, 22, 10, @primary, 2); line(8, 18, 24, 16, @secondary)
+  end
+
+  def forked_bolt
+    line(18, 6, 10, 16, @primary, 2); line(10, 16, 17, 16, @secondary, 2)
+    line(17, 16, 12, 26, @primary, 2); line(17, 16, 24, 12, @secondary, 2)
+    line(17, 16, 23, 21, @primary, 2)
+  end
+
+  def fire_star
+    star
+    dot(16, 16, @secondary, 3)
+  end
+
+  def steam_drop
+    arc(16, 17, 7, -0.1, 3.25, @primary, 2); line(10, 17, 16, 7, @secondary, 2)
+    line(16, 7, 22, 17, @primary, 2); arc(12, 9, 3, 2.0, 4.8, @secondary)
+    arc(21, 8, 3, 2.0, 4.8, @primary)
+  end
+
+  def bubbles
+    arc(12, 18, 5, 0, Math::PI * 2, @primary, 2); arc(20, 12, 4, 0, Math::PI * 2, @secondary, 2)
+    arc(22, 21, 3, 0, Math::PI * 2, @primary); dot(10, 16, [255, 255, 255, 255], 1)
+  end
+
+  def energy_seed
+    arc(16, 16, 8, 0, Math::PI * 2, @primary, 2); dot(16, 16, @secondary, 3)
+    line(16, 8, 16, 24, @secondary); line(8, 16, 24, 16, @primary)
+    line(10, 10, 22, 22, @secondary); line(22, 10, 10, 22, @primary)
+  end
+
+  def petal_storm
+    (0...4).each do |index|
+      angle = index * Math::PI / 2.0
+      x = (16 + Math.cos(angle) * 6).round
+      y = (16 + Math.sin(angle) * 6).round
+      dot(x, y, index.even? ? @primary : @secondary, 3)
+    end
+    dot(16, 16, [255, 255, 255, 255], 2)
+  end
+
+  def sun_beam
+    arc(12, 16, 5, 0, Math::PI * 2, @secondary, 2); dot(12, 16, @primary, 2)
+    line(17, 16, 26, 16, @primary, 2); line(18, 12, 25, 10, @secondary)
+    line(18, 20, 25, 22, @secondary)
+  end
+
+  def stone_spires
+    line(7, 24, 11, 11, @primary, 2); line(11, 11, 15, 24, @secondary, 2)
+    line(13, 24, 18, 7, @secondary, 2); line(18, 7, 22, 24, @primary, 2)
+    line(20, 24, 24, 14, @primary, 2); line(24, 14, 26, 24, @secondary)
+  end
+
+  def electric_field
+    arc(16, 16, 9, 0, Math::PI * 2, @primary, 2); arc(16, 16, 5, 0, Math::PI * 2, @secondary)
+    line(16, 6, 16, 11, @secondary, 2); line(16, 21, 16, 26, @primary, 2)
+    line(6, 16, 11, 16, @primary, 2); line(21, 16, 26, 16, @secondary, 2)
+  end
+
+  def sacred_flame
+    line(16, 6, 11, 16, @secondary, 2); line(11, 16, 16, 25, @primary, 2)
+    line(16, 25, 22, 16, @secondary, 2); line(22, 16, 18, 10, @primary, 2)
+    arc(16, 17, 5, 0, Math::PI * 2, [255, 255, 255, 255], 1)
+  end
+
+  def dragon_orb
+    arc(16, 16, 7, 0, Math::PI * 2, @primary, 2); dot(16, 16, @secondary, 2)
+    line(9, 13, 5, 9, @secondary, 2); line(23, 13, 27, 9, @primary, 2)
+    line(10, 21, 7, 25, @primary); line(22, 21, 25, 25, @secondary)
+  end
+
+  def steel_charge
+    line(7, 16, 22, 8, @primary, 2); line(7, 16, 22, 24, @secondary, 2)
+    line(22, 8, 26, 16, @secondary, 2); line(26, 16, 22, 24, @primary, 2)
+    line(6, 11, 13, 11, @secondary); line(6, 21, 13, 21, @primary)
+  end
+
+  def speed_fist
+    line(11, 13, 23, 13, @primary, 2); line(12, 13, 11, 23, @secondary, 2)
+    line(11, 23, 20, 23, @primary, 2); line(20, 23, 25, 16, @secondary, 2)
+    line(13, 8, 13, 13, @primary, 2); line(18, 7, 18, 13, @secondary, 2)
+    line(6, 17, 10, 17, [255, 255, 255, 255], 1)
+  end
+
+  def focus_orb
+    arc(16, 16, 8, 0, Math::PI * 2, @primary, 2); arc(16, 16, 4, 0, Math::PI * 2, @secondary, 2)
+    line(16, 5, 16, 10, @secondary); line(16, 22, 16, 27, @primary)
+    line(5, 16, 10, 16, @primary); line(22, 16, 27, 16, @secondary)
+  end
+
+  def shadow_orb
+    arc(16, 16, 8, 0, Math::PI * 2, @secondary, 2); dot(16, 16, @primary, 4)
+    arc(16, 16, 11, -0.6, 1.0, @primary, 2); arc(16, 16, 11, 2.5, 4.1, @secondary, 2)
+  end
+
+  def fire_fist
+    fist
+    line(9, 12, 12, 6, @secondary, 2); line(12, 6, 15, 11, @primary, 2)
+  end
+
+  def thunder_fist
+    fist
+    line(8, 9, 12, 5, @secondary, 2); line(12, 5, 11, 11, @primary, 2)
+  end
+
+  def drain_fist
+    fist
+    arc(8, 9, 3, 0, Math::PI * 2, @secondary, 2); dot(8, 9, @primary, 1)
+  end
+
+  def open_palm
+    line(9, 13, 22, 13, @primary, 2); line(10, 13, 11, 23, @secondary, 2)
+    line(11, 23, 20, 23, @primary, 2); line(20, 23, 24, 17, @secondary, 2)
+    line(11, 8, 11, 14, @primary); line(15, 6, 15, 14, @secondary)
+    line(19, 7, 19, 14, @primary); line(23, 9, 23, 15, @secondary)
+  end
+
+  def bite
+    line(8, 10, 13, 15, @primary, 2); line(13, 15, 8, 21, @secondary, 2)
+    line(24, 10, 19, 15, @secondary, 2); line(19, 15, 24, 21, @primary, 2)
+    line(10, 8, 16, 12, @secondary); line(22, 8, 16, 12, @primary)
+    line(10, 23, 16, 19, @primary); line(22, 23, 16, 19, @secondary)
+  end
+
+  def crunch
+    bite
+    line(7, 7, 12, 11, @secondary, 2); line(25, 7, 20, 11, @primary, 2)
+    line(7, 25, 12, 21, @primary, 2); line(25, 25, 20, 21, @secondary, 2)
+  end
+
+  def flame_dash
+    volt_dash
+    arc(8, 9, 4, -0.2, 3.5, @primary, 2); line(6, 10, 9, 5, @secondary, 2)
+  end
+
+  def spark_dash
+    line(6, 10, 13, 10, @secondary, 2); line(5, 16, 11, 16, @primary, 2)
+    line(7, 22, 13, 22, @secondary, 2); line(19, 6, 12, 16, @primary, 2)
+    line(12, 16, 19, 16, @secondary, 2); line(19, 16, 14, 26, @primary, 2)
+    dot(24, 9, @secondary, 1); dot(24, 22, @primary, 1)
+  end
+
+  def dragon_rush
+    line(7, 16, 14, 9, @secondary, 2); line(7, 16, 14, 23, @primary, 2)
+    line(14, 9, 24, 13, @primary, 2); line(14, 23, 24, 19, @secondary, 2)
+    line(18, 11, 21, 6, @secondary, 2); line(18, 21, 21, 26, @primary, 2)
+    dot(23, 16, [255, 255, 255, 255], 2)
+  end
+
+  def leech_seed
+    arc(16, 17, 7, 0, Math::PI * 2, @primary, 2); dot(16, 17, @secondary, 3)
+    line(16, 10, 12, 6, @secondary, 2); line(16, 10, 21, 7, @primary, 2)
+    line(10, 22, 7, 25, @primary); line(22, 22, 25, 25, @secondary)
+  end
+
+  def drain_vortex
+    arc(16, 16, 9, -0.5, 5.0, @primary, 2); arc(16, 16, 5, 1.0, 6.1, @secondary, 2)
+    line(7, 7, 11, 11, @secondary, 2); line(25, 25, 21, 21, @primary, 2)
+    dot(16, 16, [255, 255, 255, 255], 1)
+  end
+
+  def tongue
+    arc(13, 14, 7, -1.2, 1.35, @primary, 2); line(9, 20, 17, 23, @primary, 2)
+    arc(19, 20, 6, 0.4, 2.6, @secondary, 2); line(22, 15, 25, 11, @secondary, 2)
+  end
+
+  def psycho_cut
+    arc(16, 16, 10, -1.0, 1.2, @primary, 2); arc(13, 16, 6, -0.9, 1.1, @secondary, 2)
+    line(7, 24, 25, 7, @primary, 2); line(11, 25, 26, 11, @secondary)
+  end
+
+  def seismic_toss
+    arc(16, 17, 9, 2.8, 5.7, @secondary, 2); line(23, 9, 25, 14, @primary, 2)
+    line(23, 9, 18, 10, @primary, 2); dot(10, 21, @primary, 4); dot(11, 20, @secondary, 2)
+  end
+
+  def shadow_claw
+    line(8, 24, 15, 7, @primary, 2); line(14, 25, 20, 7, @secondary, 2)
+    line(20, 24, 25, 10, @primary, 2); line(7, 20, 24, 20, @secondary)
+  end
+
+  def dragon_claw
+    line(7, 22, 13, 8, @secondary, 2); line(13, 24, 18, 7, @primary, 2)
+    line(19, 24, 24, 10, @secondary, 2); line(9, 22, 23, 17, @primary)
+  end
+
+  def smack_down
+    dot(15, 11, @primary, 4); dot(17, 10, @secondary, 2)
+    line(16, 15, 16, 25, @primary, 2); line(11, 21, 16, 26, @secondary, 2)
+    line(21, 21, 16, 26, @secondary, 2)
+  end
+
+  def venoshock
+    dot(16, 16, @primary, 4)
+    (0...8).each do |index|
+      angle = index * Math::PI / 4.0
+      line(16, 16, (16 + Math.cos(angle) * 10).round,
+        (16 + Math.sin(angle) * 10).round, index.even? ? @primary : @secondary, 2)
+    end
+  end
+
+  def toxic_drop
+    arc(16, 18, 7, -0.1, 3.25, @primary, 2); line(10, 18, 16, 6, @secondary, 2)
+    line(16, 6, 22, 18, @primary, 2); dot(16, 19, @secondary, 2)
+  end
+
+  def night_shade
+    arc(16, 15, 9, 3.4, 5.95, @secondary, 2); arc(16, 15, 9, 0.34, 2.88, @primary, 2)
+    dot(16, 15, @primary, 3); line(8, 24, 24, 24, @secondary, 2)
+  end
+
+  def overheat
+    arc(16, 17, 9, -0.3, 3.4, @primary, 2); line(8, 18, 13, 7, @secondary, 2)
+    line(13, 7, 16, 14, @primary, 2); line(16, 14, 21, 5, @secondary, 2)
+    line(21, 5, 23, 18, @primary, 2); dot(16, 20, @secondary, 3)
+  end
+
+  def dragon_breath
+    line(6, 16, 12, 16, @secondary, 2); line(10, 12, 15, 16, @primary)
+    line(10, 20, 15, 16, @primary); line(15, 16, 23, 10, @secondary, 2)
+    line(15, 16, 24, 16, @primary, 2); line(15, 16, 23, 22, @secondary, 2)
+    line(21, 8, 25, 8, @primary); line(21, 24, 25, 24, @primary)
+  end
+
+  def outrage
+    line(8, 9, 14, 15, @primary, 2); line(24, 9, 18, 15, @secondary, 2)
+    line(8, 23, 14, 17, @secondary, 2); line(24, 23, 18, 17, @primary, 2)
+    dot(16, 16, @primary, 3); line(16, 6, 16, 11, @secondary, 2)
+    line(16, 21, 16, 26, @primary, 2)
+  end
+
+  def foul_play
+    arc(16, 16, 9, -1.3, 1.3, @secondary, 2); line(7, 22, 22, 9, @primary, 2)
+    line(19, 8, 25, 8, @secondary, 2); line(25, 8, 23, 14, @secondary, 2)
+    dot(10, 10, @primary, 1)
+  end
+
+  def flash_cannon
+    arc(11, 16, 5, 0, Math::PI * 2, @secondary, 2); dot(11, 16, @primary, 2)
+    line(16, 12, 26, 9, @secondary, 2); line(16, 16, 27, 16, @primary, 2)
+    line(16, 20, 26, 23, @secondary, 2)
+  end
+
+  def phantom_force
+    arc(16, 16, 9, 0, Math::PI * 2, @secondary, 2)
+    arc(16, 16, 5, 1.0, 5.3, @primary, 2); line(7, 24, 24, 7, @primary, 2)
+    dot(21, 11, [255, 255, 255, 255], 1)
+  end
+
+  def stealth_rock
+    line(8, 23, 12, 11, @primary, 2); line(12, 11, 16, 23, @secondary, 2)
+    line(15, 23, 19, 7, @secondary, 2); line(19, 7, 23, 23, @primary, 2)
+    line(7, 25, 25, 25, @secondary, 2); dot(7, 8, @primary, 1); dot(25, 10, @secondary, 1)
+  end
+
+  def body_charge
+    line(6, 11, 14, 11, @secondary, 2); line(5, 16, 12, 16, @primary, 2)
+    line(6, 21, 14, 21, @secondary, 2); dot(20, 16, @primary, 5)
+    line(22, 11, 26, 16, @secondary, 2); line(26, 16, 22, 21, @secondary, 2)
+  end
+
+  def trick_room
+    line(8, 8, 24, 8, @primary, 2); line(24, 8, 24, 24, @secondary, 2)
+    line(24, 24, 8, 24, @primary, 2); line(8, 24, 8, 8, @secondary, 2)
+    line(11, 16, 21, 16, @primary, 2); line(11, 16, 15, 12, @secondary)
+    line(21, 16, 17, 20, @secondary)
+  end
+
+  def powder_snow
+    [[10, 10], [16, 7], [22, 11], [8, 18], [16, 17], [24, 20], [13, 25]].each_with_index do |point, index|
+      dot(point[0], point[1], index.even? ? @primary : @secondary, 1)
+    end
+    line(11, 15, 21, 21, @secondary); line(11, 21, 21, 15, @primary)
+  end
+
+  def icy_wind
+    gust
+    line(21, 7, 21, 13, @secondary); line(18, 10, 24, 10, @primary)
+    line(9, 22, 9, 26, @primary); line(7, 24, 11, 24, @secondary)
+  end
+
+  def snarl
+    line(7, 11, 12, 16, @primary, 2); line(7, 21, 12, 16, @secondary, 2)
+    line(12, 16, 16, 12, @primary); line(12, 16, 16, 20, @secondary)
+    arc(15, 16, 7, -0.8, 0.8, @primary, 2); arc(15, 16, 11, -0.7, 0.7, @secondary, 2)
+  end
+
+  def ice_fist
+    fist
+    line(8, 6, 8, 12, @secondary); line(5, 9, 11, 9, @primary)
+    line(6, 7, 10, 11, @secondary); line(10, 7, 6, 11, @primary)
+  end
+
+  def dragon_tail
+    arc(15, 15, 10, -1.0, 2.0, @primary, 2); arc(14, 15, 6, -0.8, 2.1, @secondary, 2)
+    line(7, 21, 12, 24, @primary, 2); line(12, 24, 10, 19, @secondary, 2)
+    line(21, 8, 25, 7, @secondary, 2)
+  end
+
+  def metal_claw
+    line(8, 24, 13, 7, @primary, 2); line(14, 25, 18, 6, @secondary, 2)
+    line(20, 24, 24, 9, @primary, 2); line(7, 21, 24, 16, @secondary)
+    dot(9, 9, [255, 255, 255, 255], 1)
+  end
+
+  def hex
+    [[16, 6], [24, 11], [24, 21], [16, 26], [8, 21], [8, 11], [16, 6]].each_cons(2) do |left, right|
+      line(left[0], left[1], right[0], right[1], @primary, 2)
+    end
+    line(11, 13, 21, 19, @secondary, 2); line(21, 13, 11, 19, @secondary, 2)
+    dot(16, 16, [255, 255, 255, 255], 1)
+  end
+
+  def acid_spray
+    line(7, 17, 14, 17, @secondary, 2); line(14, 13, 14, 21, @primary, 2)
+    line(14, 15, 21, 11, @primary, 2); line(14, 19, 22, 22, @secondary, 2)
+    dot(25, 9, @secondary, 1); dot(26, 16, @primary, 1); dot(25, 24, @secondary, 1)
+  end
+
+  def hyper_beam
+    arc(10, 16, 5, 0, Math::PI * 2, @secondary, 2); dot(10, 16, @primary, 2)
+    line(15, 11, 27, 8, @secondary, 2); line(15, 16, 28, 16, @primary, 3)
+    line(15, 21, 27, 24, @secondary, 2)
+  end
+
+  def rock_tomb
+    line(7, 24, 10, 11, @primary, 2); line(10, 11, 14, 24, @secondary, 2)
+    line(13, 24, 17, 7, @secondary, 2); line(17, 7, 21, 24, @primary, 2)
+    line(20, 24, 24, 12, @primary, 2); line(24, 12, 27, 24, @secondary, 2)
+    dot(16, 20, [255, 255, 255, 255], 2)
+  end
+
+  def iron_head
+    line(16, 7, 9, 12, @secondary, 2); line(9, 12, 10, 22, @primary, 2)
+    line(10, 22, 16, 25, @primary, 2); line(16, 25, 22, 22, @secondary, 2)
+    line(22, 22, 23, 12, @secondary, 2); line(23, 12, 16, 7, @primary, 2)
+    line(12, 16, 20, 16, @primary, 2); dot(13, 13, @secondary, 1); dot(19, 13, @primary, 1)
+  end
+end
+
+def png_chunk(type, data)
+  binary_type = type.b
+  [data.bytesize].pack("N") + binary_type + data +
+    [Zlib.crc32(binary_type + data)].pack("N")
+end
+
+def write_png(path, pixels)
+  rows = pixels.each_slice(SIZE).map { |row| "\x00".b + row.flatten.pack("C*") }.join
+  header = [SIZE, SIZE, 8, 6, 0, 0, 0].pack("NNC5")
+  png = "\x89PNG\r\n\x1a\n".b + png_chunk("IHDR", header)
+  png << png_chunk("IDAT", Zlib::Deflate.deflate(rows, Zlib::BEST_COMPRESSION))
+  png << png_chunk("IEND", "")
+  File.binwrite(path, png)
+end
+
+generated = []
+TARGETS.each do |spell, symbol|
+  output = File.join(OUTPUT_DIR, "#{spell}.png")
+  next if File.exist?(output) && !REDRAW.include?(spell)
+
+  definition = JSON.parse(File.read(File.join(SPELL_DIR, "#{spell}.json")))
+  palette = PALETTES.fetch(definition.fetch("pokemon_type"))
+  write_png(output, Canvas.new(*palette).render(symbol, spell))
+  generated << spell
+end
+
+model_directory = File.join(ROOT, "src/main/resources/assets/tensura/models/item")
+school_models = %w[
+  lightning fire water ice shadow psychic dragon nature poison earth wind fairy steel
+].freeze
+model_name = ->(spell) { school_models.include?(spell) ? "spell_custom_#{spell}" : "spell_#{spell}" }
+ICON_ORDER.each do |spell|
+  spell_model = {
+    "parent" => "item/generated",
+    "textures" => { "layer0" => "tensura:item/spell/#{spell}" }
+  }
+  File.write(File.join(model_directory, "#{model_name.call(spell)}.json"),
+    JSON.pretty_generate(spell_model) + "\n")
+  File.write(File.join(model_directory, "spell_icon_#{spell}.json"),
+    JSON.pretty_generate("parent" => "tensura:item/#{model_name.call(spell)}") + "\n")
+end
+
+overrides = school_models.each_with_index.map do |school, index|
+  { "predicate" => { "tensura:school" => index + 1 },
+    "model" => "tensura:item/spell_#{school}" }
+end
+overrides.concat(ICON_ORDER.each_with_index.map do |spell, index|
+  { "predicate" => { "tensura:icon" => index + 1 },
+    "model" => "tensura:item/#{model_name.call(spell)}" }
+end)
+spell_item_model = {
+  "parent" => "item/generated",
+  "textures" => { "layer0" => "cobblemon:item/type_gem/fighting_gem" },
+  "overrides" => overrides
+}
+File.write(File.join(model_directory, "spell_item.json"),
+  JSON.pretty_generate(spell_item_model) + "\n")
+
+focus_model_path = File.join(model_directory, "spell_focus.json")
+focus_model = JSON.parse(File.read(focus_model_path))
+focus_model.fetch("overrides").each do |override|
+  icon_index = override.dig("predicate", "tensura:icon")
+  next unless icon_index && icon_index.to_i > 0
+
+  spell = ICON_ORDER.fetch(icon_index.to_i - 1)
+  override["model"] = "tensura:item/#{model_name.call(spell)}"
+end
+File.write(focus_model_path, JSON.pretty_generate(focus_model) + "\n")
+
+puts "Generated #{generated.size} spell icons: #{generated.join(', ')}"

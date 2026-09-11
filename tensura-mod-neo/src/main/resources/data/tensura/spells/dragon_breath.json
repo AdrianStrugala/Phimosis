@@ -1,11 +1,33 @@
 {
+  "pokemon_type": "dragon",
+  "category": "special",
+  "power": 11.0,
   "school": "dragon",
-  "cooldown_ticks": 200,
-  "targeting": { "type": "aim", "range": 18 },
-  "delivery": { "type": "beam", "speed": 1.0 },
+  "cooldown_ticks": 0,
+  "targeting": {
+    "type": "cone",
+    "range": 18.0,
+    "max_targets": 8
+  },
+  "delivery": {
+    "type": "channel_cone",
+    "duration_ticks": 0,
+    "tick_interval_ticks": 4,
+    "hold_to_channel": true,
+    "cone_angle": 38.0
+  },
   "impact": [
-    { "type": "damage", "damage_multiplier": 3.0 },
-    { "type": "fire", "seconds": 5 },
-    { "type": "status_effect", "effect": "minecraft:poison", "duration": 60, "amplifier": 0, "chance": 0.5 }
-  ]
+    { "type": "damage", "damage_multiplier": 0.1818181818 },
+    {
+      "type": "status_effect",
+      "recipient": "caster",
+      "effect": "minecraft:slowness",
+      "duration": 6,
+      "amplifier": 4,
+      "show_particles": false,
+      "show_icon": false
+    }
+  ],
+  "visual": { "cast_animation": "dragon_breath_channel", "trail": "dragon_breath_cone", "impact": "dragon_breath_burst" },
+  "sound": { "cast": "minecraft:entity.ender_dragon.growl", "loop": "minecraft:entity.ender_dragon.flap", "impact": "minecraft:entity.ender_dragon.hurt" }
 }

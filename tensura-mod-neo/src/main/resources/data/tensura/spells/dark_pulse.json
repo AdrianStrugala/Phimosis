@@ -1,10 +1,41 @@
 {
+  "pokemon_type": "dark",
+  "category": "special",
+  "power": 16.0,
   "school": "shadow",
-  "cooldown_ticks": 140,
-  "targeting": { "type": "aim", "range": 18 },
-  "delivery": { "type": "projectile", "speed": 1.5 },
+  "cooldown_ticks": 200,
+  "targeting": {
+    "type": "area",
+    "range": 0.0,
+    "radius": 8.0,
+    "max_targets": 12
+  },
+  "delivery": {
+    "type": "pulse_ring",
+    "duration_ticks": 12,
+    "tick_interval_ticks": 6
+  },
   "impact": [
-    { "type": "damage", "damage_multiplier": 2.0 },
-    { "type": "status_effect", "effect": "minecraft:slowness", "duration": 40, "amplifier": 3, "chance": 0.3 }
-  ]
+    { "type": "interrupt_cast" },
+    { "type": "damage", "damage_multiplier": 1.0, "final_hit_only": true },
+    {
+      "type": "status_effect",
+      "effect": "minecraft:nausea",
+      "duration": 50,
+      "amplifier": 0,
+      "chance": 0.1,
+      "final_hit_only": true
+    }
+  ],
+  "visual": {
+    "cast_animation": "dark_focus",
+    "trail": "dark_pulse_beam",
+    "impact": "dark_pulse_impact",
+    "aftermath": "dark_residue"
+  },
+  "sound": {
+    "cast": "minecraft:entity.warden.sonic_boom",
+    "loop": "minecraft:block.sculk_sensor.clicking",
+    "impact": "minecraft:entity.warden.attack_impact"
+  }
 }

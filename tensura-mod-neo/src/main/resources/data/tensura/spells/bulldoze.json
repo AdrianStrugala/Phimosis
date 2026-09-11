@@ -1,0 +1,31 @@
+{
+  "pokemon_type": "ground",
+  "category": "physical",
+  "power": 11.0,
+  "school": "earth",
+  "cooldown_ticks": 160,
+  "targeting": { "type": "area", "range": 10.0, "width": 5.0, "max_targets": 10 },
+  "delivery": {
+    "type": "wave",
+    "distance": 10.0,
+    "duration_ticks": 12,
+    "movement_speed": 0.85
+  },
+  "impact": [
+    { "type": "damage", "damage_multiplier": 1.0 },
+    { "type": "status_effect", "effect": "minecraft:slowness", "duration": 100, "amplifier": 0 },
+    { "type": "knockback", "strength": 0.8 }
+  ],
+  "visual": {
+    "cast_animation": "earth_stomp_cast",
+    "projectile": "bulldoze_front",
+    "trail": "rolling_earth_plates",
+    "impact": "earth_heave",
+    "aftermath": "settling_dust"
+  },
+  "sound": {
+    "cast": "minecraft:entity.iron_golem.attack",
+    "travel": "minecraft:block.pointed_dripstone_block.break",
+    "impact": "minecraft:entity.generic.explode"
+  }
+}

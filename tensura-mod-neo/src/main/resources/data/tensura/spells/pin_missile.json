@@ -1,0 +1,37 @@
+{
+  "pokemon_type": "bug",
+  "category": "physical",
+  "power": 2.4,
+  "school": "bug",
+  "cooldown_ticks": 140,
+  "targeting": {
+    "type": "aim",
+    "range": 18.0,
+    "width": 0.6,
+    "max_targets": 1
+  },
+  "delivery": {
+    "type": "projectile",
+    "speed": 1.8,
+    "projectile_count": 5,
+    "spread_degrees": 7.0,
+    "homing_strength": 0.04
+  },
+  "impact": [
+    {
+      "type": "damage",
+      "damage_multiplier": 1.0
+    }
+  ],
+  "visual": {
+    "cast_animation": "bug_volley_cast",
+    "projectile": "pin_missile_dart",
+    "trail": "silk_streak",
+    "impact": "chitin_puncture"
+  },
+  "sound": {
+    "cast": "minecraft:entity.arrow.shoot",
+    "travel": "minecraft:entity.bee.loop",
+    "impact": "minecraft:entity.arrow.hit"
+  }
+}

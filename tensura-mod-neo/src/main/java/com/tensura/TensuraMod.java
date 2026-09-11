@@ -9,17 +9,21 @@ import com.tensura.event.ConversionEvents;
 import com.tensura.event.NoHungerEvents;
 import com.tensura.event.PredatorEvents;
 import com.tensura.event.PredatorSyncEvents;
+import com.tensura.event.SpellCastController;
+import com.tensura.event.SpellMovementController;
+import com.tensura.event.SpellRuntimeController;
+import com.tensura.event.SpellStatusEvents;
 import com.tensura.event.TensuraAttributeEffects;
-import com.tensura.gui.RecallStationScreen;
+import com.tensura.item.SpellFocusItem;
 import com.tensura.item.SpellItem;
 import com.tensura.network.NetworkHandler;
 import com.tensura.registry.TensuraAttributes;
 import com.tensura.registry.TensuraBlockRegistry;
+import com.tensura.registry.TensuraCreativeTabs;
 import com.tensura.registry.TensuraEntityRegistry;
 import com.tensura.registry.TensuraItemRegistry;
-import com.tensura.registry.TensuraMenuRegistry;
 import com.tensura.registry.TensuraMobEffects;
-import net.minecraft.client.renderer.entity.NoopRenderer;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -32,7 +36,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import org.apache.logging.log4j.LogManager;
@@ -49,10 +52,10 @@ public class TensuraMod {
 
         TensuraBlockRegistry.BLOCKS.register(modBus);
         TensuraItemRegistry.ITEMS.register(modBus);
-        TensuraMenuRegistry.MENUS.register(modBus);
         TensuraEntityRegistry.ENTITIES.register(modBus);
         TensuraAttributes.ATTRIBUTES.register(modBus);
         TensuraMobEffects.MOB_EFFECTS.register(modBus);
+        TensuraCreativeTabs.TABS.register(modBus);
 
         modBus.register(NetworkHandler.class);
 
@@ -63,6 +66,10 @@ public class TensuraMod {
         NeoForge.EVENT_BUS.register(new ColonyStartupEvents());
         NeoForge.EVENT_BUS.register(new PredatorEvents());
         NeoForge.EVENT_BUS.register(new PredatorSyncEvents());
+        NeoForge.EVENT_BUS.register(new SpellMovementController());
+        NeoForge.EVENT_BUS.register(new SpellCastController());
+        NeoForge.EVENT_BUS.register(new SpellRuntimeController());
+        NeoForge.EVENT_BUS.register(new SpellStatusEvents());
         // ConversionEvents must be registered BEFORE CombatCompanionEvents
         NeoForge.EVENT_BUS.register(ConversionEvents.class);
         ConversionEvents.registerCobblemonHooks();
@@ -85,11 +92,6 @@ public class TensuraMod {
     public static class ClientEvents {
 
         @SubscribeEvent
-        public static void onRegisterMenuScreens(RegisterMenuScreensEvent event) {
-            event.register(TensuraMenuRegistry.RECALL_STATION.get(), RecallStationScreen::new);
-        }
-
-        @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             event.enqueueWork(() -> {
                 ItemProperties.register(
@@ -97,12 +99,28 @@ public class TensuraMod {
                         ResourceLocation.fromNamespaceAndPath(MOD_ID, "school"),
                         (stack, level, entity, seed) -> SpellItem.getSchoolIndex(stack)
                 );
+                ItemProperties.register(
+                    TensuraItemRegistry.SPELL_ITEM.get(),
+                    ResourceLocation.fromNamespaceAndPath(MOD_ID, "icon"),
+                    (stack, level, entity, seed) -> SpellItem.getIconIndex(stack)
+                );
+                ItemProperties.register(
+                        TensuraItemRegistry.SPELL_FOCUS.get(),
+                        ResourceLocation.fromNamespaceAndPath(MOD_ID, "school"),
+                        (stack, level, entity, seed) -> SpellFocusItem.getSchoolIndex(stack)
+                );
+                ItemProperties.register(
+                        TensuraItemRegistry.SPELL_FOCUS.get(),
+                        ResourceLocation.fromNamespaceAndPath(MOD_ID, "icon"),
+                        (stack, level, entity, seed) -> SpellFocusItem.getIconIndex(stack)
+                );
             });
         }
 
         @SubscribeEvent
         public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
-            event.registerEntityRenderer(TensuraEntityRegistry.SPELL_PROJECTILE.get(), NoopRenderer::new);
+            event.registerEntityRenderer(TensuraEntityRegistry.SPELL_PROJECTILE.get(),
+                    context -> new ThrownItemRenderer<>(context, 1.25f, true));
         }
     }
 }
