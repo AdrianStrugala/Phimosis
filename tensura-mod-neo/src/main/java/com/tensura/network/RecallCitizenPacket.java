@@ -50,21 +50,20 @@ public record RecallCitizenPacket(int citizenId, int colonyId) implements Custom
             IColony colony = IColonyManager.getInstance().getColonyByWorld(pkt.colonyId(), level);
             if (colony == null) return;
             if (!WorkforceService.canAccess(sender, colony)) return;
-            if (!ConversionHelper.isColonyOwner(colony, sender)) {
-                sender.sendSystemMessage(Component.literal("§cTylko właściciel kolonii może przywracać jej citizenów."));
-                return;
-            }
 
             ICivilianData civilianData = colony.getCitizenManager().getCivilian(pkt.citizenId());
             if (civilianData == null) return;
 
             DynamicCitizenSpeciesData data = DynamicCitizenSpeciesData.get(level);
-            boolean enrolled = data.contains(pkt.citizenId());
-            UUID recipientId = enrolled ? data.ownerMap.get(pkt.citizenId()) : sender.getUUID();
-            if (recipientId == null) {
-                sender.sendSystemMessage(Component.literal("§cBrak informacji o właścicielu tego Pokémona."));
+            if (!data.contains(pkt.citizenId())) {
+                sender.sendSystemMessage(Component.literal("§cTen citizen nie jest zapisanym Pokémonem gracza."));
                 return;
             }
+            if (!ConversionHelper.canRecallPokemon(colony, sender, data, pkt.citizenId())) {
+                sender.sendSystemMessage(Component.literal("§cTylko pierwotny właściciel może przywrócić tego Pokémona."));
+                return;
+            }
+            UUID recipientId = sender.getUUID();
 
             AbstractEntityCitizen citizenEntity = civilianData.getEntity()
                     .filter(e -> e instanceof AbstractEntityCitizen)

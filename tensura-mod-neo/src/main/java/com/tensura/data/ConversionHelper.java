@@ -5,6 +5,7 @@ import com.cobblemon.mod.common.api.pokemon.stats.Stat;
 import com.cobblemon.mod.common.api.pokemon.stats.Stats;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.minecolonies.api.colony.IColony;
+import com.minecolonies.api.colony.permissions.Action;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.entity.citizen.Skill;
 import com.minecolonies.api.entity.citizen.citizenhandlers.ICitizenSkillHandler;
@@ -28,6 +29,16 @@ public class ConversionHelper {
 
     public static boolean isColonyOwner(IColony colony, Player player) {
         return colony != null && player.getUUID().equals(colony.getPermissions().getOwner());
+    }
+
+    public static boolean canManageColony(IColony colony, Player player) {
+        return colony != null && colony.getPermissions().hasPermission(player, Action.MANAGE_HUTS);
+    }
+
+    public static boolean canRecallPokemon(
+            IColony colony, Player player, DynamicCitizenSpeciesData data, int citizenId) {
+        return canManageColony(colony, player)
+                && player.getUUID().equals(data.ownerMap.get(citizenId));
     }
 
     // ── Public entry point ────────────────────────────────────────────────────

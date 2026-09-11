@@ -33,6 +33,7 @@ public class PokemonCitizenRenderHandler {
     // Separate from lastRenderedTick: that one is stamped on every render pass (cleanup uses it),
     // while this gates the limb-swing advance to once per game tick.
     private static final Map<Integer, Long> lastAnimTick = new HashMap<>();
+    private static final Map<Integer, Long> animationEpochTicks = new HashMap<>();
     // Set to true while we are manually rendering a fake entity — prevents our handler from cancelling its own render
     private static boolean manualRendering = false;
 
@@ -62,12 +63,14 @@ public class PokemonCitizenRenderHandler {
         if (fake == null) {
             fake = createFake(level, species);
             fakeEntities.put(citizenId, fake);
+            animationEpochTicks.put(citizenId, level.getGameTime());
         }
 
         if (!fake.getPokemon().getSpecies().getName().equalsIgnoreCase(species)) {
             removeFake(citizenId);
             fake = createFake(level, species);
             fakeEntities.put(citizenId, fake);
+            animationEpochTicks.put(citizenId, level.getGameTime());
         }
         lastRenderedTick.put(citizenId, level.getGameTime());
 
@@ -105,12 +108,14 @@ public class PokemonCitizenRenderHandler {
         fake.setDeltaMovement(citizen.getDeltaMovement());
         fake.getEntityData().set(PokemonEntity.getMOVING(), moving);
 
-        // FIX A: Sync POSE_TYPE so Cobblemon selects walk animations
         PoseType targetPose = resolvePoseType(fake, moving);
         if (fake.getEntityData().get(PokemonEntity.getPOSE_TYPE()) != targetPose) {
             fake.getEntityData().set(PokemonEntity.getPOSE_TYPE(), targetPose);
         }
         if (fake.getDelegate() instanceof PosableState posableState) {
+            long epochTick = animationEpochTicks.getOrDefault(citizenId, level.getGameTime());
+            long elapsedTicks = Math.max(0L, level.getGameTime() - epochTick);
+            posableState.updateAge((int) Math.min(Integer.MAX_VALUE, elapsedTicks));
             posableState.setPoseToFirstSuitable(targetPose);
         }
 
@@ -214,6 +219,7 @@ public class PokemonCitizenRenderHandler {
         PokemonEntity old = fakeEntities.remove(citizenId);
         lastRenderedTick.remove(citizenId);
         lastAnimTick.remove(citizenId);
+        animationEpochTicks.remove(citizenId);
         if (old != null) {
             fakeEntityIds.remove(old.getId());
             old.discard();

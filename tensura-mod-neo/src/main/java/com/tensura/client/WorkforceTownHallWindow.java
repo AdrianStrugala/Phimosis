@@ -36,6 +36,16 @@ public class WorkforceTownHallWindow extends AbstractWindowTownHall {
         registerButton("workplaceRow", this::selectWorkplace);
         registerButton("assignCitizen", this::assignCitizen);
         registerButton("recallCitizen", this::recallCitizen);
+        findPaneOfTypeByID("workforce1", Button.class).setText(
+            Component.translatable("tensura.gui.workforce.tab"));
+        findPaneOfTypeByID("workforceTitle", Text.class).setText(
+            Component.translatable("tensura.gui.workforce.title"));
+        findPaneOfTypeByID("workforceStatus", Text.class).setText(
+            Component.translatable("tensura.gui.workforce.loading"));
+        findPaneOfTypeByID("workplaceHeading", Text.class).setText(
+            Component.translatable("tensura.gui.workforce.workplaces"));
+        findPaneOfTypeByID("citizenHeading", Text.class).setText(
+            Component.translatable("tensura.gui.workforce.citizens"));
         configureLists();
     }
 
@@ -60,8 +70,8 @@ public class WorkforceTownHallWindow extends AbstractWindowTownHall {
         } else if (selectedWorkplace < 0 || selectedWorkplace >= workplaces.size()) {
             selectedWorkplace = 0;
         }
-        findPaneOfTypeByID("workforceStatus", Text.class).setText(Component.literal(
-                workplaces.size() + " stanowisk · " + citizens.size() + " citizenów"));
+        findPaneOfTypeByID("workforceStatus", Text.class).setText(Component.translatable(
+            "tensura.gui.workforce.status", workplaces.size(), citizens.size()));
         workplaceList.refreshElementPanes(true);
         citizenList.refreshElementPanes(true);
     }
@@ -106,10 +116,11 @@ public class WorkforceTownHallWindow extends AbstractWindowTownHall {
                 assign.setVisible(selectedWorkplace >= 0);
                 boolean selectedJob = isSelectedJob(citizen);
                 assign.setEnabled(!selectedJob);
-                assign.setText(Component.literal(selectedJob ? "✓" : "Praca"));
+                assign.setText(Component.translatable("tensura.gui.workforce.assign"));
 
                 Button recall = row.findPaneOfTypeByID("recallCitizen", Button.class);
                 recall.setVisible(citizen.canRecall());
+                recall.setText(Component.translatable("tensura.gui.workforce.recall"));
             }
         });
     }
@@ -121,7 +132,7 @@ public class WorkforceTownHallWindow extends AbstractWindowTownHall {
      */
     private static String workplaceLabel(WorkforceSnapshotPacket.WorkplaceEntry workplace) {
         return Component.translatable(workplace.buildingNameKey()).getString()
-                + " · " + workplace.jobName();
+                + " · " + Component.translatable(workplace.jobNameKey()).getString();
     }
 
     private void selectWorkplace(Button button) {
@@ -156,13 +167,19 @@ public class WorkforceTownHallWindow extends AbstractWindowTownHall {
     }
 
     private String currentWorkLabel(WorkforceSnapshotPacket.CitizenEntry citizen) {
-        if (citizen.workPosition() == null) return "Bez pracy";
-        return "Pracuje: " + citizen.workPosition().toShortString();
+        if (citizen.workPosition() == null) {
+            return Component.translatable("tensura.gui.workforce.unemployed").getString();
+        }
+        return Component.translatable("tensura.gui.workforce.working_at",
+                citizen.workPosition().toShortString()).getString();
     }
 
     private static String distanceLabel(BlockPos home, BlockPos workplace) {
-        if (home == null) return "Dom: brak";
-        return "Dom: " + Math.round(Math.sqrt(home.distSqr(workplace))) + " m";
+        if (home == null) {
+            return Component.translatable("tensura.gui.workforce.no_home").getString();
+        }
+        return Component.translatable("tensura.gui.workforce.home_distance",
+                Math.round(Math.sqrt(home.distSqr(workplace)))).getString();
     }
 
     private static String capitalize(String value) {

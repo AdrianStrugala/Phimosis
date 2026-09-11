@@ -46,23 +46,22 @@ public final class WorkforceService {
                                 module.getProducer().getRuntimeID(),
                                 // Raw key, translated on the client (see WorkplaceEntry).
                                 building.getBuildingDisplayName(),
-                                formatJobName(module),
+                                module.getJobEntry().getTranslationKey(),
                                 module.getAssignedCitizen().size(),
                                 module.getModuleMax())))
-                .sorted(Comparator.comparing(WorkforceSnapshotPacket.WorkplaceEntry::jobName,
+                .sorted(Comparator.comparing(WorkforceSnapshotPacket.WorkplaceEntry::jobNameKey,
                                 String.CASE_INSENSITIVE_ORDER)
                         .thenComparingInt(entry -> entry.position().getX())
                         .thenComparingInt(entry -> entry.position().getZ()))
                 .toList();
 
-        Map<Integer, String> species = DynamicCitizenSpeciesData.get(player.serverLevel())
-                .mergedWith(ColonyStartupEvents.getHardcodedSpeciesMap());
-        boolean mayRecall = ConversionHelper.isColonyOwner(colony, player);
+        DynamicCitizenSpeciesData data = DynamicCitizenSpeciesData.get(player.serverLevel());
+        Map<Integer, String> species = data.mergedWith(ColonyStartupEvents.getHardcodedSpeciesMap());
         List<WorkforceSnapshotPacket.CitizenEntry> citizens = colony.getCitizenManager().getCitizens().stream()
                 .map(citizen -> new WorkforceSnapshotPacket.CitizenEntry(
                         citizen.getId(), citizen.getName(), species.getOrDefault(citizen.getId(), "villager"),
                         citizen.getHomePosition(), workPosition(citizen), workModuleIndex(citizen),
-                        mayRecall && species.containsKey(citizen.getId())))
+                ConversionHelper.canRecallPokemon(colony, player, data, citizen.getId())))
                 .sorted(Comparator.comparing(WorkforceSnapshotPacket.CitizenEntry::citizenName,
                         String.CASE_INSENSITIVE_ORDER))
                 .toList();
@@ -90,11 +89,6 @@ public final class WorkforceService {
             }
         }
         return -1;
-    }
-
-    private static String formatJobName(IAssignsJob module) {
-        String path = module.getJobEntry().getKey().getPath().replace('_', ' ');
-        return Character.toUpperCase(path.charAt(0)) + path.substring(1);
     }
 
 }

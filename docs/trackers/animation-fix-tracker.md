@@ -29,7 +29,9 @@ Plik do edycji: `src/main/java/com/tensura/client/PokemonCitizenRenderHandler.ja
 | 1–30 | przed 2026-04-03 | ~30 wcześniejszych prób (nieudokumentowane) | ❌ | — |
 | 31 | 2026-04-03 | FIX A: set POSE_TYPE=WALK/STAND + FIX B: walkAnimation.update() | ❌ | walkAnimation nieistotne — Cobblemon używa Bedrock animations, nie vanilla limbSwing |
 | 32 | 2026-04-03 | FIX A + FIX B + sync `deltaMovement` z citizena | ❌ | Bytecode używanej wersji potwierdza, że client delegate nie wybiera pozy z deltaMovement |
-| 33 | 2026-09-09 | Bezpośrednie `PosableState.setPoseToFirstSuitable`, rodziny WALK/FLY/SWIM i cleanup fake entities | 🔄 do playtestu | `./gradlew build --max-workers=1` oraz oba walidatory przeszły |
+| 33 | 2026-09-09 | Bezpośrednie `PosableState.setPoseToFirstSuitable`, rodziny WALK/FLY/SWIM i cleanup fake entities | ❌ | Villager-Pokemony nadal suną bez animacji chodu |
+| 34 | 2026-09-11 | `setPoseToFirstSuitable` tylko przy zmianie typu pozy, nie przy każdym renderze | ⏭️ zastąpione przed playtestem | Bytecode potwierdził, że metoda już ignoruje aktywną pozę o tej samej nazwie |
+| 35 | 2026-09-11 | Jawny `PosableState.updateAge` z czasu świata i wybór pozy oparty o faktyczny `currentPose` | 🔄 do playtestu | Omija brak pewności, czy ręcznie dodana fake entity jest regularnie tickowana przez client level |
 
 ---
 
@@ -41,13 +43,19 @@ nie vanilla `walkAnimation.speed`. Zmiana `POSE_TYPE` nie przełącza `currentPo
 
 ## Aktualne podejście do testowania
 
-### Podejście 33 (aktywne) — bezpośrednie przełączenie `PosableState`
+### Podejście 35 (aktywne) — jawny zegar animacji pozy
 
-Zmiana w `onRenderLivingPre`, po ustawieniu `POSE_TYPE`:
+`PosableState.getAnimationSeconds()` korzysta z wewnętrznego pola `age`. Fake entity
+jest renderowana ręcznie, więc handler nie zakłada już, że client level niezawodnie
+przesunie ten zegar. Wiek pozy jest ustawiany z czasu świata. Wybór pozy jest ponawiany
+podczas renderu; `setPoseToFirstSuitable` ma własny guard po faktycznej nazwie
+`currentPose`, więc nie resetuje już aktywnej animacji, a ponowi wybór po późnym
+załadowaniu modelu:
 
 ```java
-PoseType targetPose = resolvePoseType(fake, moving);
 if (fake.getDelegate() instanceof PosableState posableState) {
+    long elapsedTicks = level.getGameTime() - animationEpochTicks.get(citizenId);
+    posableState.updateAge((int) elapsedTicks);
     posableState.setPoseToFirstSuitable(targetPose);
 }
 ```
@@ -67,6 +75,11 @@ if (fake.getDelegate() instanceof PosableState posableState) {
 *(uzupełniać po każdym teście)*
 
 ### Test 1 — data: —
-- Zastosowane podejście: 
-- Wynik: 
-- Obserwacje: 
+- Zastosowane podejście: 33
+- Wynik: nieudany
+- Obserwacje: villager-Pokemony suną w powietrzu bez animacji chodu
+
+### Test 2 — data: —
+- Zastosowane podejście: 35
+- Wynik:
+- Obserwacje:

@@ -37,7 +37,13 @@ na temat gymów i odznak. Wszystko poniżej służy temu, żeby ta przewaga dota
 
 ## 2. Blokery — bez tego nie otwieramy
 
-### 2.1 Konwersja pokemon ↔ obywatel nie sprawdza uprawnień
+### 2.1 Konwersja pokemon ↔ obywatel — autoryzacja wdrożona
+
+Status 2026-09-11: implementacja wymaga `MANAGE_HUTS` przy zasiedleniu i recall,
+a recall dodatkowo dopuszcza wyłącznie pierwotnego właściciela zapisanego w
+`DynamicCitizenSpeciesData`. Niezapisany citizen nie może zostać zamieniony w
+Pokémona zwykłą interakcją ani pakietem GUI. Zmiana oczekuje pełnego buildu i
+playtestu bezpieczeństwa.
 
 Napisana pod zamknięte grono. Na serwerze publicznym każdy z tych trzech punktów
 jest krytyczny:
@@ -48,9 +54,9 @@ jest krytyczny:
 | 2 | Dla obywatela spoza `DynamicCitizenSpeciesData`: `ownerUUID = event.getEntity().getUUID()` | Klikający **staje się właścicielem** i dostaje pokemona z IV/EV ze skilli tego obywatela — cała Caledonia jest farmą |
 | 3 | Zasiedlenie sprawdza tylko, czy stoisz w ratuszu, nie czyim | Obcy dorzuca ci mieszkańców i zjada limit populacji |
 
-**Fix:** `colony.getPermissions().hasPermission(player, ...)` w każdym z trzech miejsc
-plus porównanie `ownerMap` z UUID klikającego. Dla punktu 2 dodatkowo — obywatel
-niezapisany w `DynamicCitizenSpeciesData` nie powinien być konwertowalny poza trybem admina.
+**Fix wdrożony:** `colony.getPermissions().hasPermission(player, Action.MANAGE_HUTS)`
+w każdym wejściu oraz porównanie `ownerMap` z UUID gracza przy recall. Obywatel
+niezapisany w `DynamicCitizenSpeciesData` nie jest konwertowalny poza trybem admina.
 
 **Bonus:** punkt 1 odblokowany wyłącznie między stronami zadeklarowanej wojny zamienia
 się z griefu w legalny najazd. To jest gotowa mechanika wojenna, nie tylko łatka.
@@ -203,7 +209,7 @@ Uzupełniająco: podnieść automatyzację w configu MineColonies i rozważyć s
 ## 7. Checklist przed otwarciem
 
 **Blokery kodu**
-- [ ] Uprawnienia w `ConversionEvents` (3 miejsca, sekcja 2.1)
+- [x] Uprawnienia konwersji w trzech wejściach (sekcja 2.1; oczekuje playtestu)
 - [ ] Migracja datapacka (spec katalizatora, krok 0)
 - [ ] `KingdomData` + `/kingdom` + stan wojny
 

@@ -22,7 +22,7 @@ public record WorkforceSnapshotPacket(int colonyId, List<WorkplaceEntry> workpla
      * server would otherwise bake in its locale and players saw the bare key on screen.
      */
     public record WorkplaceEntry(BlockPos position, int moduleIndex, String buildingNameKey,
-                                 String jobName, int assignedWorkers, int capacity) {}
+                                 String jobNameKey, int assignedWorkers, int capacity) {}
 
     public record CitizenEntry(int citizenId, String citizenName, String species,
                                BlockPos homePosition, BlockPos workPosition, int workModuleIndex,
@@ -50,7 +50,7 @@ public record WorkforceSnapshotPacket(int colonyId, List<WorkplaceEntry> workpla
             buffer.writeBlockPos(workplace.position());
             buffer.writeVarInt(workplace.moduleIndex());
             buffer.writeUtf(workplace.buildingNameKey());
-            buffer.writeUtf(workplace.jobName());
+            buffer.writeUtf(workplace.jobNameKey());
             buffer.writeVarInt(workplace.assignedWorkers());
             buffer.writeVarInt(workplace.capacity());
         }

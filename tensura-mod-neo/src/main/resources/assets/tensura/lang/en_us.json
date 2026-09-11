@@ -11,5 +11,18 @@
   "effect.tensura.special_weakened": "Special Weakened",
   "item.tensura.spell_focus": "Spell Catalyst",
   "key.categories.tensura": "Tensura",
-  "key.tensura.open_radial": "Spell Catalyst — hold to choose"
+  "key.tensura.open_radial": "Spell Catalyst — hold to choose",
+  "tensura.gui.workforce.tab": "Workforce",
+  "tensura.gui.workforce.tooltip": "Workforce and Poké Ball recall",
+  "tensura.gui.workforce.title": "Colony workforce",
+  "tensura.gui.workforce.loading": "Loading...",
+  "tensura.gui.workforce.status": "%s workplaces · %s citizens",
+  "tensura.gui.workforce.workplaces": "Workplaces",
+  "tensura.gui.workforce.citizens": "Citizens",
+  "tensura.gui.workforce.assign": "Assign",
+  "tensura.gui.workforce.recall": "To Poké Ball",
+  "tensura.gui.workforce.unemployed": "Unemployed",
+  "tensura.gui.workforce.working_at": "Working: %s",
+  "tensura.gui.workforce.no_home": "Home: none",
+  "tensura.gui.workforce.home_distance": "Home: %s m"
 }
